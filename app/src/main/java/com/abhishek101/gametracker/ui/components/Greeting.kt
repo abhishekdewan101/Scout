@@ -4,13 +4,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 
 @Composable
-fun MainActivity() {
+fun HomeScreen() {
     GameTrackerTheme {
         // A surface container using the 'background' color from the theme
         Surface(color = MaterialTheme.colors.background) {
@@ -23,7 +21,7 @@ fun MainActivity() {
 fun Greeting(name: String) {
     Text(
         text = "Hello $name!",
-        style = TextStyle(fontSize = 48.sp)
+        style = MaterialTheme.typography.h3
     )
 }
 
