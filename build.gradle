@@ -10,7 +10,6 @@ buildscript {
     dependencies {
         classpath Libs.androidGradlePlugin
         classpath Libs.Kotlin.gradlePlugin
-        classpath Libs.Koin.gradlePlugin
     }
 }
 
@@ -33,7 +32,6 @@ subprojects {
     }
 
     apply plugin: 'com.diffplug.spotless'
-    apply plugin: 'koin'
     spotless {
         kotlin {
             target '**/*.kt'

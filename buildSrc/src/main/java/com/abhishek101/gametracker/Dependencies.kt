@@ -68,14 +68,6 @@ object Libs {
         const val junit = "junit:junit:$version"
     }
 
-    object Koin {
-        private const val version = "2.2.2"
-        const val gradlePlugin = "org.koin:koin-gradle-plugin:$version"
-        const val android = "org.koin:koin-android:$version"
-        const val androidScope = "org.koin:koin-android-scope:$version"
-        const val viewModel = "org.koin:koin-android-viewmodel:$version"
-    }
-
     object AndroidX {
         const val appcompat = "androidx.appcompat:appcompat:1.2.0"
         const val palette = "androidx.palette:palette:1.0.0"

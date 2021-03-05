@@ -11,7 +11,7 @@ android {
     compileSdkVersion AppVersions.compileSdkVersion
 
     buildFeatures {
-        viewBinding  true
+        viewBinding true
     }
 
     defaultConfig {
@@ -25,7 +25,16 @@ android {
     }
 
     buildTypes {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+        debug {
+            buildConfigField "String", "ClientId", properties.getProperty('clientId')
+            buildConfigField "String", "ClientSecret", properties.getProperty('clientSecret')
+        }
         release {
+            buildConfigField "String", "ClientId", properties.getProperty('clientId')
+            buildConfigField "String", "ClientSecret", properties.getProperty('clientSecret')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -59,11 +68,6 @@ dependencies {
     implementation Libs.AndroidX.Compose.tooling
     implementation Libs.AndroidX.Activity.activityCompose
     implementation Libs.AndroidX.Lifecycle.lifecyleRuntime
-
-    //koin
-    implementation Libs.Koin.android
-    implementation Libs.Koin.androidScope
-    implementation Libs.Koin.viewModel
 
     // Coroutines
     implementation Libs.Coroutines.android
