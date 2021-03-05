@@ -1,0 +1,96 @@
+import com.abhishek101.gametracker.AppVersions
+import com.abhishek101.gametracker.Libs
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion AppVersions.compileSdkVersion
+
+    buildFeatures {
+        viewBinding  true
+    }
+
+    defaultConfig {
+        applicationId "com.abhishek101.gametracker"
+        minSdkVersion AppVersions.minSdkVersion
+        targetSdkVersion AppVersions.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+        kotlinCompilerVersion Libs.Kotlin.version
+    }
+}
+
+dependencies {
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.AndroidX.material
+
+    // compose
+    implementation Libs.AndroidX.Compose.ui
+    implementation Libs.AndroidX.Compose.material
+    implementation Libs.AndroidX.Compose.tooling
+    implementation Libs.AndroidX.Activity.activityCompose
+    implementation Libs.AndroidX.Lifecycle.lifecyleRuntime
+
+    //koin
+    implementation Libs.Koin.android
+    implementation Libs.Koin.androidScope
+    implementation Libs.Koin.viewModel
+
+    // Coroutines
+    implementation Libs.Coroutines.android
+    implementation Libs.Coroutines.core
+
+    //Retrofit
+    implementation Libs.Networking.retrofit
+    implementation Libs.Networking.gsonConverter
+    implementation Libs.Networking.gson
+    implementation Libs.Networking.loggingInterceptor
+
+    //Timber
+    implementation Libs.timber
+
+    //Coil
+    implementation Libs.coil
+
+    //Room
+    implementation Libs.AndroidX.Room.runtime
+    kapt Libs.AndroidX.Room.compiler
+    implementation Libs.AndroidX.Room.ktx
+
+    // testing
+    testImplementation Libs.mockk
+    testImplementation Libs.googleTruth
+    testImplementation Libs.JUnit.junit
+    testImplementation Libs.Coroutines.test
+    androidTestImplementation Libs.AndroidX.Test.Ext.junit
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
+}
