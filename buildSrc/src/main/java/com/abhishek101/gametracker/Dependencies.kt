@@ -24,18 +24,11 @@ object Libs {
 
     const val googleTruth = "com.google.truth:truth:1.0.1"
 
-    object Networking {
-        private const val retrofitVersion = "2.8.1"
-        private const val gsonVersion = "2.8.6"
-        private const val loggingInterceptorVersion = "4.8.0"
+    object Ktor {
+        private const val version = "1.5.2"
 
-        const val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-        const val gsonConverter = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-
-        const val gson = "com.google.code.gson:gson:$gsonVersion"
-
-        const val loggingInterceptor =
-            "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
+        const val ktorCio = "io.ktor:ktor-client-cio:$version"
+        const val ktorSerialization = "io.ktor:ktor-client-serialization-jvm:$version"
     }
 
     object Accompanist {

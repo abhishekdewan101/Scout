@@ -6,6 +6,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
 }
 
 android {
@@ -74,11 +75,9 @@ dependencies {
     implementation Libs.Coroutines.android
     implementation Libs.Coroutines.core
 
-    //Retrofit
-    implementation Libs.Networking.retrofit
-    implementation Libs.Networking.gsonConverter
-    implementation Libs.Networking.gson
-    implementation Libs.Networking.loggingInterceptor
+    //Ktor
+    implementation Libs.Ktor.ktorCio
+    implementation Libs.Ktor.ktorSerialization
 
     //Timber
     implementation Libs.timber
