@@ -1,8 +1,10 @@
 package com.abhishek101.gametracker
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
+@HiltAndroidApp
 class GameTrackerApplication : Application() {
     override fun onCreate() {
         super.onCreate()

@@ -34,13 +34,22 @@ object Libs {
 
         const val gson = "com.google.code.gson:gson:$gsonVersion"
 
-        const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
+        const val loggingInterceptor =
+            "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
     }
 
     object Accompanist {
         private const val version = "0.6.0"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
+    }
+
+    object Hilt {
+        private const val version = "2.33-beta"
+
+        const val gradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
+        const val androidHilt = "com.google.dagger:hilt-android:$version"
+        const val hiltCompiler = "com.google.dagger:hilt-compiler:$version"
     }
 
     object Kotlin {

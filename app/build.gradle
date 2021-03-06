@@ -5,6 +5,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -81,6 +82,10 @@ dependencies {
 
     //Timber
     implementation Libs.timber
+
+    //Hilt
+    implementation Libs.Hilt.androidHilt
+    kapt Libs.Hilt.hiltCompiler
 
     //Coil
     implementation Libs.coil
