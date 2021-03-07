@@ -70,6 +70,11 @@ dependencies {
     implementation Libs.AndroidX.Compose.tooling
     implementation Libs.AndroidX.Activity.activityCompose
     implementation Libs.AndroidX.Lifecycle.lifecyleRuntime
+    implementation Libs.AndroidX.Lifecycle.viewModelCompose
+    implementation Libs.AndroidX.Lifecycle.viewmodel
+    implementation Libs.AndroidX.Compose.foundation
+    implementation Libs.AndroidX.Compose.materialIconsExtended
+
 
     // Coroutines
     implementation Libs.Coroutines.android

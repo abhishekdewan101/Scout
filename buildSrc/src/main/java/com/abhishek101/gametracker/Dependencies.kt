@@ -101,16 +101,17 @@ object Libs {
 
             const val ui = "androidx.compose.ui:ui:${version}"
             const val material = "androidx.compose.material:material:${version}"
-            const val materialIconsExtended = "androidx.compose.material:material-icons-extended:${version}"
-
+            const val materialIconsExtended =
+                "androidx.compose.material:material-icons-extended:${version}"
             const val tooling = "androidx.compose.ui:ui-tooling:${version}"
         }
 
         object Lifecycle {
             private const val version = "2.3.0"
-            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
             const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val lifecyleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0"
+            const val viewModelCompose =
+                "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
         }
 
         object Test {

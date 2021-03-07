@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.data
+package com.abhishek101.gametracker.data.repositories
 
 import com.abhishek101.gametracker.data.local.AuthenticationDao
 import com.abhishek101.gametracker.data.models.AuthenticationEntity

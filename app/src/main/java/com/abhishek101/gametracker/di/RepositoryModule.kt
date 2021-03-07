@@ -1,7 +1,7 @@
 package com.abhishek101.gametracker.di
 
-import com.abhishek101.gametracker.data.AuthenticationRepository
-import com.abhishek101.gametracker.data.AuthenticationRepositoryImpl
+import com.abhishek101.gametracker.data.repositories.AuthenticationRepository
+import com.abhishek101.gametracker.data.repositories.AuthenticationRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
