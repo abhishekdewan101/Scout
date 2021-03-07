@@ -12,6 +12,6 @@ abstract class AuthenticationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(authenticationEntity: AuthenticationEntity)
 
-    @Query("SELECT * from authentication where expiryDate <= :now")
+    @Query("SELECT * from authentication where expiryDate >= :now")
     abstract fun getAuthenticationData(now: Long): Flow<AuthenticationEntity?>
 }

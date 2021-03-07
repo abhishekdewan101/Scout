@@ -26,7 +26,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
 
     @ExperimentalTime
     override suspend fun getAuthenticationData(): Flow<AuthenticationEntity?> {
-        val timeNow = TimeSource.Monotonic.markNow().elapsedNow().toLong(TimeUnit.SECONDS);
+        val timeNow = TimeSource.Monotonic.markNow().elapsedNow().toLong(TimeUnit.SECONDS)
         return authenticationDao.getAuthenticationData(timeNow)
     }
 }
