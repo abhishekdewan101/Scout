@@ -78,6 +78,7 @@ dependencies {
     //Ktor
     implementation Libs.Ktor.ktorCio
     implementation Libs.Ktor.ktorSerialization
+    implementation Libs.Ktor.ktorLogging
 
     //Timber
     implementation Libs.timber

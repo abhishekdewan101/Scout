@@ -29,6 +29,7 @@ object Libs {
 
         const val ktorCio = "io.ktor:ktor-client-cio:$version"
         const val ktorSerialization = "io.ktor:ktor-client-serialization-jvm:$version"
+        const val ktorLogging = "io.ktor:ktor-client-logging:$version"
     }
 
     object Accompanist {
