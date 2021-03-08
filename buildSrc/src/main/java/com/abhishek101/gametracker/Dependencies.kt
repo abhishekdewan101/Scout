@@ -39,7 +39,7 @@ object Libs {
     }
 
     object Hilt {
-        private const val version = "2.33-beta"
+        private const val version = "2.31.2-alpha"
 
         const val gradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
         const val androidHilt = "com.google.dagger:hilt-android:$version"
@@ -79,12 +79,23 @@ object Libs {
 
         const val material = "com.google.android.material:material:1.3.0"
 
+        const val hiltNavigation = "androidx.hilt:hilt-navigation:1.0.0-alpha03"
+
         object Activity {
             const val activityCompose = "androidx.activity:activity-compose:1.3.0-alpha03"
         }
 
         object Constraint {
-            const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
+            const val constraintLayoutCompose =
+                "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
+        }
+
+        object Navigation {
+            private const val version = "2.3.3"
+
+            const val fragmentNavigation = "androidx.navigation:navigation-fragment:$version"
+            const val uiNavigation = "androidx.navigation:navigation-ui:$version"
+            const val composeNavigation = "androidx.navigation:navigation-compose:1.0.0-alpha08"
         }
 
         object Compose {

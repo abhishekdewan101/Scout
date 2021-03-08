@@ -1,17 +1,17 @@
-package com.abhishek101.gametracker.ui.features.splash
+package com.abhishek101.gametracker.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import com.abhishek101.gametracker.ui.components.MainApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SplashActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SplashScreen()
+            MainApp()
         }
     }
 }
