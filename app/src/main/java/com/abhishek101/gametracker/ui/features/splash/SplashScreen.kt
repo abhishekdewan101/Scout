@@ -10,16 +10,18 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 
 @Composable
-fun SplashScreen(viewModel: SplashViewModel) {
+fun SplashScreen() {
 
-    val viewState = viewModel.isAuthenticationValid.collectAsState()
+    val viewModel = viewModel(SplashViewModel::class.java)
+
+    val isAuthenticationValid = viewModel.isAuthenticationValid
 
     viewModel.checkAuthentication()
 
@@ -38,7 +40,7 @@ fun SplashScreen(viewModel: SplashViewModel) {
                     style = MaterialTheme.typography.h3,
                     color = MaterialTheme.colors.primary
                 )
-                if (!viewState.value) {
+                if (!isAuthenticationValid.value) {
                     CircularProgressIndicator(
                         modifier = Modifier.padding(top = 20.dp),
                         color = MaterialTheme.colors.primaryVariant
