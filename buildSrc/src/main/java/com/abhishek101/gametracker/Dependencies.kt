@@ -21,6 +21,7 @@ object Libs {
     const val coil = "io.coil-kt:coil:0.11.0"
 
     const val mockk = "io.mockk:mockk:1.10.0"
+    const val androidMockk = "io.mockk:mockk-android:1.10.0"
 
     const val googleTruth = "com.google.truth:truth:1.0.1"
 
@@ -115,6 +116,7 @@ object Libs {
             const val materialIconsExtended =
                 "androidx.compose.material:material-icons-extended:${version}"
             const val tooling = "androidx.compose.ui:ui-tooling:${version}"
+            const val testing = "androidx.compose.ui:ui-test-junit4:$version"
         }
 
         object Lifecycle {

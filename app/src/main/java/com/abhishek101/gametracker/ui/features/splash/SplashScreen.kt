@@ -13,22 +13,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.getBackStackEntry
-import androidx.navigation.compose.navigate
+import androidx.navigation.NavBackStackEntry
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
-
-    val viewModel: SplashViewModel = viewModel(
+fun SplashScreen(
+    backStackEntry: NavBackStackEntry,
+    viewModel: SplashViewModel = viewModel(
         factory = HiltViewModelFactory(
             LocalContext.current,
-            navController.getBackStackEntry("splash")
+            backStackEntry
         )
-    )
+    ),
+    navigateToHomeScreen: () -> Unit,
+) {
 
     val isAuthenticationValid = viewModel.isAuthenticationValid
 
@@ -49,11 +51,15 @@ fun SplashScreen(navController: NavHostController) {
                     color = MaterialTheme.colors.primary
                 )
                 CircularProgressIndicator(
-                    modifier = Modifier.padding(top = 20.dp),
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .semantics {
+                            testTag = "loadingBar"
+                        },
                     color = MaterialTheme.colors.primaryVariant
                 )
             } else {
-                navController.navigate("home")
+                navigateToHomeScreen()
             }
         }
     }
