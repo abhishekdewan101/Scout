@@ -14,4 +14,7 @@ abstract class AuthenticationDao {
 
     @Query("SELECT * from authentication where expiryDate >= :now")
     abstract fun getAuthenticationData(now: Long): Flow<AuthenticationEntity?>
+
+    @Query("DELETE from authentication")
+    abstract suspend fun clearAuthenticationData()
 }

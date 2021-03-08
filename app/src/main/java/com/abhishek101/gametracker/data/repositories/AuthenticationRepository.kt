@@ -21,6 +21,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
 ) : AuthenticationRepository {
 
     override suspend fun authenticateUser() {
+        authenticationDao.clearAuthenticationData()
         authenticationDao.insert(authenticationApi.authenticateUser().toDbEntity())
     }
 
