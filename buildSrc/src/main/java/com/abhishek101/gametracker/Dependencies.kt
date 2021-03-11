@@ -22,6 +22,7 @@ object Libs {
 
     const val mockk = "io.mockk:mockk:1.10.0"
     const val androidMockk = "io.mockk:mockk-android:1.10.0"
+    const val kotlinxDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
 
     const val googleTruth = "com.google.truth:truth:1.0.1"
 

@@ -1,11 +1,10 @@
 package com.abhishek101.core.models
 
 import com.abhishek101.core.db.Authentication
+import kotlinx.datetime.Clock
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
-import kotlin.time.TimeSource
 
 @Serializable
 data class AuthenticationRemoteEntity(
@@ -14,8 +13,8 @@ data class AuthenticationRemoteEntity(
 )
 
 @ExperimentalTime
-fun AuthenticationRemoteEntity.toAuthentication(timeSource: TimeSource = TimeSource.Monotonic): Authentication =
+fun AuthenticationRemoteEntity.toAuthentication(clock: Clock = Clock.System): Authentication =
     Authentication(
         accessToken = this.accessToken,
-        expiresBy = timeSource.markNow().elapsedNow().toLong(DurationUnit.SECONDS)
+        expiresBy = clock.now().epochSeconds + this.expiresIn
     )

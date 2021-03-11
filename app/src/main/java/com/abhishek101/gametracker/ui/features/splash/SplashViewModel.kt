@@ -17,7 +17,7 @@ class SplashViewModel constructor(private val authenticationRepository: Authenti
         viewModelScope.launch {
             authenticationRepository.getAuthenticationData()
                 .onEach {
-                    if (it.isNotEmpty()) {
+                    if (it.executeAsOneOrNull() != null) {
                         isAuthenticationValid.value = true
                     } else {
                         authenticationRepository.authenticateUser()

@@ -4,16 +4,15 @@ import com.abhishek101.core.db.Authentication
 import com.abhishek101.core.db.AuthenticationQueries
 import com.abhishek101.core.models.toAuthentication
 import com.abhishek101.core.remote.AuthenticationApi
+import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
-import kotlin.time.DurationUnit
+import kotlinx.datetime.Clock
 import kotlin.time.ExperimentalTime
-import kotlin.time.TimeSource
 
 interface AuthenticationRepository {
     suspend fun authenticateUser()
-    suspend fun getAuthenticationData(): Flow<List<Authentication>>
+    suspend fun getAuthenticationData(): Flow<Query<Authentication>>
 }
 
 @ExperimentalTime
@@ -30,8 +29,8 @@ class AuthenticationRepositoryImpl(
     }
 
     @ExperimentalTime
-    override suspend fun getAuthenticationData(): Flow<List<Authentication>> {
-        val timeNow = TimeSource.Monotonic.markNow().elapsedNow().toLong(DurationUnit.SECONDS)
-        return authenticationQueries.getAuthenticationData(timeNow).asFlow().mapToList()
+    override suspend fun getAuthenticationData(): Flow<Query<Authentication>> {
+        val timeNow = Clock.System.now().epochSeconds
+        return authenticationQueries.getAuthenticationData(timeNow).asFlow()
     }
 }

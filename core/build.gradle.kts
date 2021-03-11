@@ -62,6 +62,7 @@ kotlin {
                 implementation(SqlDelight.runtime)
                 implementation(Koin.koinCore)
                 implementation(Libs.Coroutines.core)
+                implementation(Libs.kotlinxDateTime)
                 //Ktor
                 implementation(Libs.Ktor.ktorCio)
                 implementation(Libs.Ktor.ktorLogging)
