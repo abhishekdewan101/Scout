@@ -11,7 +11,8 @@ buildscript {
     dependencies {
         classpath Libs.androidGradlePlugin
         classpath Libs.Kotlin.gradlePlugin
-        classpath Libs.Hilt.gradlePlugin
+        classpath Libs.SqlDelight.gradlePlugin
+        classpath "org.jetbrains.kotlin:kotlin-serialization:${Libs.Kotlin.version}"
     }
 }
 

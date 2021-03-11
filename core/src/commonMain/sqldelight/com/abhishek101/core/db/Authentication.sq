@@ -1,0 +1,15 @@
+CREATE TABLE Authentication(
+accessToken TEXT NOT NULL UNIQUE,
+expiresBy INTEGER NOT NULL
+);
+
+getAuthenticationData:
+SELECT * FROM Authentication
+WHERE expiresBy > ?;
+
+setAuthenticationData:
+INSERT INTO Authentication(accessToken, expiresBy)
+VALUES (?,?);
+
+clearAuthenticationData:
+DELETE FROM Authentication;

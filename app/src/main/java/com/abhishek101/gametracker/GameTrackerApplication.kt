@@ -1,14 +1,27 @@
 package com.abhishek101.gametracker
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import android.content.Context
+import com.abhishek101.core.di.initKoin
+import com.abhishek101.gametracker.ui.features.splash.SplashViewModel
+import org.koin.dsl.module
 import timber.log.Timber
 
-@HiltAndroidApp
 class GameTrackerApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
         setupLogger()
+        setupKoin()
+    }
+
+    private fun setupKoin() {
+        initKoin(
+            module {
+                single<Context> { this@GameTrackerApplication }
+                single { SplashViewModel(get()) }
+            }
+        )
     }
 
     private fun setupLogger() {

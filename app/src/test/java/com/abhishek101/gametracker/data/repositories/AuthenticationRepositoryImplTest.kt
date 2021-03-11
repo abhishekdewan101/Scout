@@ -1,14 +1,13 @@
 package com.abhishek101.gametracker.data.repositories
 
+import com.abhishek101.core.remote.AuthenticationApi
+import com.abhishek101.core.repositories.AuthenticationRepositoryImpl
 import com.abhishek101.gametracker.data.local.AuthenticationDao
 import com.abhishek101.gametracker.data.models.Authentication
-import com.abhishek101.gametracker.data.remote.AuthenticationApi
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerifyOrder
-import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runBlockingTest

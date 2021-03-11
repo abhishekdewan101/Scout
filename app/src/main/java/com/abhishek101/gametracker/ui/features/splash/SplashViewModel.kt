@@ -3,15 +3,12 @@ package com.abhishek101.gametracker.ui.features.splash
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.abhishek101.gametracker.data.repositories.AuthenticationRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.abhishek101.core.repositories.AuthenticationRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SplashViewModel @Inject constructor(private val authenticationRepository: AuthenticationRepository) :
+class SplashViewModel constructor(private val authenticationRepository: AuthenticationRepository) :
     ViewModel() {
 
     val isAuthenticationValid = mutableStateOf(false)
@@ -20,7 +17,7 @@ class SplashViewModel @Inject constructor(private val authenticationRepository: 
         viewModelScope.launch {
             authenticationRepository.getAuthenticationData()
                 .onEach {
-                    if (it != null) {
+                    if (it.isNotEmpty()) {
                         isAuthenticationValid.value = true
                     } else {
                         authenticationRepository.authenticateUser()

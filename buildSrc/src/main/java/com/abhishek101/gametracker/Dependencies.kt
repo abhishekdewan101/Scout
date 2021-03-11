@@ -25,26 +25,41 @@ object Libs {
 
     const val googleTruth = "com.google.truth:truth:1.0.1"
 
+    object SqlDelight {
+        private const val version = "1.4.4"
+
+        const val gradlePlugin = "com.squareup.sqldelight:gradle-plugin:$version"
+        const val androidDriver = "com.squareup.sqldelight:android-driver:$version"
+        const val nativeDriver = "com.squareup.sqldelight:native-driver:$version"
+        const val driver = "com.squareup.sqldelight:sqlite-driver:$version"
+        const val runtime = "com.squareup.sqldelight:runtime:$version"
+        const val coroutinesExtensions = "com.squareup.sqldelight:coroutines-extensions:$version"
+    }
+
     object Ktor {
         private const val version = "1.5.2"
 
         const val ktorCio = "io.ktor:ktor-client-cio:$version"
+        const val ktorJson = "io.ktor:ktor-client-json:$version"
         const val ktorSerialization = "io.ktor:ktor-client-serialization-jvm:$version"
         const val ktorLogging = "io.ktor:ktor-client-logging:$version"
+        const val androidCore = "io.ktor:ktor-client-okhttp:$version"
+        const val iosCore = "io.ktor:ktor-client-ios:$version"
+        const val commonSerialization = "io.ktor:ktor-client-serialization:$version"
+    }
+
+    object Koin {
+        private const val version = "3.0.1-beta-1"
+
+        const val koinCore = "io.insert-koin:koin-core:$version"
+        const val koinAndroid = "io.insert-koin:koin-android:$version"
+        const val koinCompose = "io.insert-koin:koin-androidx-compose:$version"
     }
 
     object Accompanist {
         private const val version = "0.6.0"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
-    }
-
-    object Hilt {
-        private const val version = "2.31.2-alpha"
-
-        const val gradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
-        const val androidHilt = "com.google.dagger:hilt-android:$version"
-        const val hiltCompiler = "com.google.dagger:hilt-compiler:$version"
     }
 
     object Kotlin {
@@ -79,8 +94,6 @@ object Libs {
         const val coreKtx = "androidx.core:core-ktx:1.3.2"
 
         const val material = "com.google.android.material:material:1.3.0"
-
-        const val hiltNavigation = "androidx.hilt:hilt-navigation:1.0.0-alpha03"
 
         object Activity {
             const val activityCompose = "androidx.activity:activity-compose:1.3.0-alpha03"

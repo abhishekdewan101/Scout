@@ -12,23 +12,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import org.koin.androidx.compose.get
 
 @Composable
 fun SplashScreen(
     backStackEntry: NavBackStackEntry,
-    viewModel: SplashViewModel = viewModel(
-        factory = HiltViewModelFactory(
-            LocalContext.current,
-            backStackEntry
-        )
-    ),
+    viewModel: SplashViewModel = get(),
     navigateToHomeScreen: () -> Unit,
 ) {
 

@@ -5,8 +5,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
 }
 
 repositories {
@@ -88,7 +86,6 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.viewmodel
     implementation Libs.AndroidX.Compose.foundation
     implementation Libs.AndroidX.Compose.materialIconsExtended
-    implementation Libs.AndroidX.hiltNavigation
     androidTestImplementation Libs.AndroidX.Compose.testing
 
 
@@ -101,17 +98,13 @@ dependencies {
     implementation Libs.Coroutines.android
     implementation Libs.Coroutines.core
 
-    //Ktor
-    implementation Libs.Ktor.ktorCio
-    implementation Libs.Ktor.ktorSerialization
-    implementation Libs.Ktor.ktorLogging
-
     //Timber
     implementation Libs.timber
 
-    //Hilt
-    implementation Libs.Hilt.androidHilt
-    kapt Libs.Hilt.hiltCompiler
+    //Koin
+    implementation Libs.Koin.koinCore
+    implementation Libs.Koin.koinAndroid
+    implementation Libs.Koin.koinCompose
 
     //Coil
     implementation Libs.coil
