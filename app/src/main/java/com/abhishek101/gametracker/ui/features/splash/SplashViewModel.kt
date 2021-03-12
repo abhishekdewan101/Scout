@@ -17,12 +17,12 @@ class SplashViewModel constructor(private val authenticationRepository: Authenti
         viewModelScope.launch {
             authenticationRepository.getAuthenticationData()
                 .collect {
-                    if (it.isNotEmpty()) {
+                    if (it != null) {
                         Timber.d("Valid Authentication Found")
                         isAuthenticationValid.value = true
                     } else {
                         Timber.d("Valid Authentication Not Found - Authenticating User")
-                        authenticationRepository.authenticateUser(it.isNotEmpty())
+                        authenticationRepository.authenticateUser()
                     }
                 }
         }
