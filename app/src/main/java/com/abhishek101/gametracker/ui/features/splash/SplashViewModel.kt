@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abhishek101.core.repositories.AuthenticationRepository
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class SplashViewModel constructor(private val authenticationRepository: AuthenticationRepository) :
     ViewModel() {
@@ -16,13 +16,15 @@ class SplashViewModel constructor(private val authenticationRepository: Authenti
     fun checkAuthentication() {
         viewModelScope.launch {
             authenticationRepository.getAuthenticationData()
-                .onEach {
-                    if (it.executeAsOneOrNull() != null) {
+                .collect {
+                    if (it.isNotEmpty()) {
+                        Timber.d("Valid Authentication Found")
                         isAuthenticationValid.value = true
                     } else {
-                        authenticationRepository.authenticateUser()
+                        Timber.d("Valid Authentication Not Found - Authenticating User")
+                        authenticationRepository.authenticateUser(it.isNotEmpty())
                     }
-                }.collect()
+                }
         }
     }
 }
