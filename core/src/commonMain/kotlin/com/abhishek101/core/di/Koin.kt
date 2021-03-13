@@ -7,7 +7,6 @@ import com.abhishek101.core.repositories.AuthenticationRepository
 import com.abhishek101.core.repositories.AuthenticationRepositoryImpl
 import com.abhishek101.core.utils.createAppConfig
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.DEFAULT
@@ -21,18 +20,19 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import kotlin.time.ExperimentalTime
 
-fun initKoin(appModule: Module): KoinApplication {
+@ExperimentalTime
+fun initKoin(appModules: List<Module>): KoinApplication {
+    val combined = appModules.toMutableList().apply {
+        add(platformModule)
+        add(coreModule)
+    }
     return startKoin {
-        modules(
-            appModule,
-            platformModule,
-            coreModule
-        )
+        modules(combined)
     }
 }
 
-@OptIn(ExperimentalTime::class)
-val coreModule = module {
+@ExperimentalTime
+val coreModule: Module = module {
     single {
         AppDb(get()).authenticationQueries
     }
@@ -40,7 +40,7 @@ val coreModule = module {
         AuthenticationApiImpl(get(), createAppConfig())
     }
     single {
-        HttpClient(CIO) {
+        HttpClient {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(
                     Json {

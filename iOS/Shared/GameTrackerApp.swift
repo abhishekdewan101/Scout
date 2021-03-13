@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct GameTrackerApp: App {
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashScreen()
         }
     }
 }

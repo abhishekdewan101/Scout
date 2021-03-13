@@ -3,10 +3,12 @@ package com.abhishek101.gametracker
 import android.app.Application
 import android.content.Context
 import com.abhishek101.core.di.initKoin
-import com.abhishek101.gametracker.ui.features.splash.SplashViewModel
+import com.abhishek101.gametracker.di.appModule
 import org.koin.dsl.module
 import timber.log.Timber
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 class GameTrackerApplication : Application() {
 
     override fun onCreate() {
@@ -17,10 +19,10 @@ class GameTrackerApplication : Application() {
 
     private fun setupKoin() {
         initKoin(
-            module {
-                single<Context> { this@GameTrackerApplication }
-                single { SplashViewModel(get()) }
-            }
+            listOf(
+                module { single<Context> { this@GameTrackerApplication } },
+                appModule
+            )
         )
     }
 
