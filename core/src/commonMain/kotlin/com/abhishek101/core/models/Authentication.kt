@@ -8,8 +8,8 @@ import kotlin.time.ExperimentalTime
 
 @Serializable
 data class AuthenticationRemoteEntity(
-    @SerialName("access_token") val accessToken: String,
-    @SerialName("expires_in") val expiresIn: Long
+    @SerialName("accessToken") val accessToken: String,
+    @SerialName("expiresIn") val expiresIn: Long
 )
 
 @ExperimentalTime

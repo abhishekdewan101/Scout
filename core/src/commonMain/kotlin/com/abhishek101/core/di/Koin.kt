@@ -5,7 +5,6 @@ import com.abhishek101.core.remote.AuthenticationApi
 import com.abhishek101.core.remote.AuthenticationApiImpl
 import com.abhishek101.core.repositories.AuthenticationRepository
 import com.abhishek101.core.repositories.AuthenticationRepositoryImpl
-import com.abhishek101.core.utils.createAppConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -37,7 +36,7 @@ val coreModule: Module = module {
         AppDb(get()).authenticationQueries
     }
     single<AuthenticationApi> {
-        AuthenticationApiImpl(get(), createAppConfig())
+        AuthenticationApiImpl(get())
     }
     single {
         HttpClient {

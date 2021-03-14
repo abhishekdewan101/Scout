@@ -1,9 +1,8 @@
 package com.abhishek101.core.remote
 
 import com.abhishek101.core.models.AuthenticationRemoteEntity
-import com.abhishek101.core.utils.AppConfig
 import io.ktor.client.HttpClient
-import io.ktor.client.request.post
+import io.ktor.client.request.get
 import io.ktor.http.takeFrom
 
 interface AuthenticationApi {
@@ -11,13 +10,12 @@ interface AuthenticationApi {
 }
 
 class AuthenticationApiImpl(
-    private val client: HttpClient,
-    private val appConfig: AppConfig
+    private val client: HttpClient
 ) : AuthenticationApi {
 
-    override suspend fun authenticateUser() = client.post<AuthenticationRemoteEntity> {
+    override suspend fun authenticateUser() = client.get<AuthenticationRemoteEntity> {
         url {
-            takeFrom("https://id.twitch.tv/oauth2/token?client_id=${appConfig.clientId}&client_secret=${appConfig.clientSecret}&grant_type=client_credentials")
+            takeFrom("https://px058nbguc.execute-api.us-east-1.amazonaws.com/default/authentication")
         }
     }
 }
