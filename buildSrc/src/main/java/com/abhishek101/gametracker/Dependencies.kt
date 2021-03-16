@@ -83,6 +83,11 @@ object Libs {
         const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
     }
 
+    object Kermit {
+        private const val version = "0.1.8"
+        const val common = "co.touchlab:kermit:$version"
+    }
+
     object JUnit {
         private const val version = "4.13.2"
         const val junit = "junit:junit:$version"

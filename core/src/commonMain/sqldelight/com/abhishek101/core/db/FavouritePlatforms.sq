@@ -1,0 +1,25 @@
+CREATE TABLE Platforms (
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+slug TEXT NOT NULL,
+name TEXT NOT NULL,
+logoHeight INTEGER NOT NULL,
+logoWidth INTEGER NOT NULL,
+logoUrl TEXT NOT NULL,
+isFavorite INTEGER AS Boolean DEFAULT 0
+);
+
+getAllPlatforms:
+SELECT * FROM Platforms;
+
+insertPlatform:
+INSERT INTO Platforms(slug, name, logoHeight, logoWidth, logoUrl)
+VALUES(?,?,?,?,?);
+
+updateFavoritePlatform:
+UPDATE Platforms
+SET isFavorite = ?
+WHERE slug = ?;
+
+getAllFavoritePlatforms:
+SELECT * FROM Platforms
+WHERE isFavorite = 1;

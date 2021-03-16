@@ -51,6 +51,8 @@ kotlin {
         binaries {
             framework {
                 baseName = "core"
+                export(Libs.Kermit.common)
+                transitiveExport = true
             }
         }
     }
@@ -68,6 +70,8 @@ kotlin {
                 implementation(Libs.Ktor.ktorLogging)
                 implementation(Libs.Ktor.ktorJson)
                 implementation(Libs.Ktor.commonSerialization)
+                //Kermit
+                api(Libs.Kermit.common)
             }
         }
         val androidMain by getting {

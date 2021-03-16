@@ -1,5 +1,7 @@
 package com.abhishek101.core.di
 
+import co.touchlab.kermit.Kermit
+import co.touchlab.kermit.NSLogLogger
 import com.abhishek101.core.db.AppDb
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
@@ -22,6 +24,9 @@ fun initKoinForIos(): KoinApplication {
 
 actual val platformModule = module {
     single<SqlDriver> { NativeSqliteDriver(AppDb.Schema, "appDb") }
+
+    val baseKermit = Kermit(NSLogLogger()).withTag("KampKit")
+    factory { (tag: String?) -> if (tag != null) baseKermit.withTag(tag) else baseKermit }
 }
 
 fun Koin.get(objCClass: ObjCClass, qualifier: Qualifier?, parameter: Any): Any {
