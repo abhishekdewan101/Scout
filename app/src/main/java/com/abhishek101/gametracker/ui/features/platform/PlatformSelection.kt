@@ -79,7 +79,7 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
                             }
                     ) {
                         if (platform.isFavorite == true) {
-                            Text(text = "Favourite")
+                            Text(text = "Owned")
                         }
                         CoilImage(
                             data = url,
