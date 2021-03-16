@@ -15,14 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavBackStackEntry
 import org.koin.androidx.compose.get
 
 @Composable
 fun SplashScreen(
-    backStackEntry: NavBackStackEntry,
     viewModel: SplashViewModel = get(),
-    navigateToHomeScreen: () -> Unit,
+    navigateToPlatformScreen: () -> Unit,
 ) {
 
     val isAuthenticationValid = viewModel.isAuthenticationValid
@@ -52,7 +50,7 @@ fun SplashScreen(
                     color = MaterialTheme.colors.primaryVariant
                 )
             } else {
-                navigateToHomeScreen()
+                navigateToPlatformScreen()
             }
         }
     }

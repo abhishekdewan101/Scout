@@ -87,6 +87,7 @@ dependencies {
     implementation Libs.AndroidX.Compose.foundation
     implementation Libs.AndroidX.Compose.materialIconsExtended
     androidTestImplementation Libs.AndroidX.Compose.testing
+    implementation Libs.coil
 
 
     //Navigation

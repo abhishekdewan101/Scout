@@ -18,7 +18,7 @@ object Libs {
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
-    const val coil = "io.coil-kt:coil:0.11.0"
+    const val coil = "com.google.accompanist:accompanist-coil:0.6.2"
 
     const val mockk = "io.mockk:mockk:1.10.0"
     const val androidMockk = "io.mockk:mockk-android:1.10.0"
@@ -94,7 +94,7 @@ object Libs {
     }
 
     object AndroidX {
-        const val appcompat = "androidx.appcompat:appcompat:1.2.0"
+        const val appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
         const val palette = "androidx.palette:palette:1.0.0"
 
         const val coreKtx = "androidx.core:core-ktx:1.3.2"

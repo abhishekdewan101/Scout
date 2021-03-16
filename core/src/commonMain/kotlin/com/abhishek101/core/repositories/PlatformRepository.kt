@@ -8,7 +8,6 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.Clock
 
@@ -42,7 +41,8 @@ class PlatformRepositoryImpl(
             return favouritePlatformsQueries.getAllPlatforms().asFlow().mapToList()
                 .flowOn(Dispatchers.Default)
         } else {
-            return flowOf(cachedPlatforms).flowOn(Dispatchers.Default)
+            return favouritePlatformsQueries.getAllPlatforms().asFlow().mapToList()
+                .flowOn(Dispatchers.Default)
         }
     }
 

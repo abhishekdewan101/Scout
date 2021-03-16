@@ -5,7 +5,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.navigation.NavBackStackEntry
 import com.abhishek101.gametracker.ui.MainActivity
 import io.mockk.every
 import io.mockk.just
@@ -19,7 +18,6 @@ class SplashScreenKtTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<MainActivity>()
 
-    private val navBackStackEntry: NavBackStackEntry = mockk()
     private val navigateToHomeScreen: () -> Unit = mockk(relaxed = true)
     private val isAuthenticationValid = mutableStateOf(false)
     private val splashViewModel: SplashViewModel = mockk() {
@@ -31,8 +29,7 @@ class SplashScreenKtTest {
     fun splashScreenRendersTextAndButton() {
         composeRule.setContent {
             SplashScreen(
-                backStackEntry = navBackStackEntry,
-                navigateToHomeScreen = navigateToHomeScreen,
+                navigateToPlatformScreen = navigateToHomeScreen,
                 viewModel = splashViewModel
             )
         }
@@ -45,8 +42,7 @@ class SplashScreenKtTest {
         isAuthenticationValid.value = true
         composeRule.setContent {
             SplashScreen(
-                backStackEntry = navBackStackEntry,
-                navigateToHomeScreen = navigateToHomeScreen,
+                navigateToPlatformScreen = navigateToHomeScreen,
                 viewModel = splashViewModel
             )
         }
