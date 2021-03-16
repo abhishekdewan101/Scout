@@ -12,7 +12,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.Clock
 
 interface PlatformRepository {
-    suspend fun getPlatforms(): Flow<List<Platforms>>
+    fun getPlatforms(): Flow<List<Platforms>>
+    suspend fun getPlatformsAndUpdate()
     fun updateFavoritePlatform(platform: Platforms, isFavorite: Boolean)
     fun getAllFavoritePlatforms(): Flow<List<Platforms>>
 }
@@ -23,26 +24,22 @@ class PlatformRepositoryImpl(
     private val authenticationQueries: AuthenticationQueries
 ) : PlatformRepository {
 
-    override suspend fun getPlatforms(): Flow<List<Platforms>> {
-        val cachedPlatforms = favouritePlatformsQueries.getAllPlatforms().executeAsList()
+    override fun getPlatforms(): Flow<List<Platforms>> {
+        return favouritePlatformsQueries.getAllPlatforms().asFlow().mapToList()
+            .flowOn(Dispatchers.Default)
+    }
 
-        if (cachedPlatforms.isEmpty()) {
-            val timeNow = Clock.System.now().epochSeconds
-            val accessToken = authenticationQueries.getAuthenticationData(timeNow).executeAsOne()
-            platformApi.getPlatforms(accessToken.accessToken).forEach {
-                favouritePlatformsQueries.insertPlatform(
-                    it.slug,
-                    it.name,
-                    it.logo.height.toLong(),
-                    it.logo.width.toLong(),
-                    it.logo.imageId
-                )
-            }
-            return favouritePlatformsQueries.getAllPlatforms().asFlow().mapToList()
-                .flowOn(Dispatchers.Default)
-        } else {
-            return favouritePlatformsQueries.getAllPlatforms().asFlow().mapToList()
-                .flowOn(Dispatchers.Default)
+    override suspend fun getPlatformsAndUpdate() {
+        val timeNow = Clock.System.now().epochSeconds
+        val accessToken = authenticationQueries.getAuthenticationData(timeNow).executeAsOne()
+        platformApi.getPlatforms(accessToken.accessToken).forEach {
+            favouritePlatformsQueries.insertPlatform(
+                it.slug,
+                it.name,
+                it.logo.height.toLong(),
+                it.logo.width.toLong(),
+                it.logo.imageId
+            )
         }
     }
 

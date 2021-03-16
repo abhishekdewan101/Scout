@@ -19,6 +19,9 @@ class PlatformSelectionViewModel(private val platformRepository: PlatformReposit
     fun getPlatforms() {
         viewModelScope.launch {
             platformRepository.getPlatforms().collect {
+                if (it.isEmpty()) {
+                    platformRepository.getPlatformsAndUpdate()
+                }
                 Timber.d("List of platforms - $it")
                 platforms.value = it
                 isLoading.value = false
