@@ -1,6 +1,5 @@
 package com.abhishek101.core.di
 
-import co.touchlab.kermit.Kermit
 import com.abhishek101.core.db.AppDb
 import com.abhishek101.core.remote.AuthenticationApi
 import com.abhishek101.core.remote.AuthenticationApiImpl
@@ -11,6 +10,7 @@ import com.abhishek101.core.repositories.AuthenticationRepositoryImpl
 import com.abhishek101.core.repositories.PlatformRepository
 import com.abhishek101.core.repositories.PlatformRepositoryImpl
 import com.abhishek101.core.utils.DatabaseHelper
+import com.abhishek101.core.utils.KtorLogger
 import com.abhishek101.core.utils.defaultAppConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
@@ -57,6 +57,7 @@ val coreModule: Module = module {
     }
     single {
         HttpClient {
+            val ktorLogger = get<Logger>()
             install(JsonFeature) {
                 serializer = KotlinxSerializer(
                     Json {
@@ -65,14 +66,13 @@ val coreModule: Module = module {
                 )
             }
             install(Logging) {
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        getWith<Kermit>("ClientLogger").d { message }
-                    }
-                }
+                logger = ktorLogger
                 level = LogLevel.ALL
             }
         }
+    }
+    single<Logger> {
+        KtorLogger(getWith("Ktor"))
     }
     single {
         defaultAppConfig()

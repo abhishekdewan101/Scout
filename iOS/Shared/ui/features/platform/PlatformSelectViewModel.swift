@@ -20,6 +20,17 @@ class PlatformSelectViewModel : ObservableObject {
     let platformRepository = koin.get(objCProtocol: PlatformRepository.self) as! PlatformRepository
     
     func getPlatforms() {
-        FlowExtensionsKt.asCommonFlow(platformRepository.getPlatforms{ _,_ in })
+        FlowExtensionsKt.asCommonFlow(platformRepository.getPlatforms()).watch(block: { [self] platforms in
+            if (platforms?.count == 0) {
+                self.platformRepository.getPlatformsAndUpdate(completionHandler: {_,_ in})
+            } else {
+                isLoading = false
+                platformList = (platforms as? [Platforms])!
+            }
+        })
+    }
+    
+    func setPlatformAsFavorite(platform: Platforms, isFavorite: Bool) {
+        platformRepository.updateFavoritePlatform(platform: platform, isFavorite: isFavorite)
     }
 }
