@@ -3,6 +3,7 @@ package com.abhishek101.gametracker.ui.features.platform
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -102,19 +103,31 @@ fun PlatformSelectionContent(
 fun PlatformListItem(platform: Platform, onPlatformSelected: (Platform) -> Unit) {
     val url =
         "https://images.igdb.com/igdb/image/upload/t_720p/${platform.logoUrl}.png"
+
+    val nonHighLighted = Modifier
+        .padding(10.dp)
+        .background(Color.White)
+        .clickable {
+            onPlatformSelected(platform)
+        }
+
+    val highLighted = Modifier
+        .border(2.dp, color = MaterialTheme.colors.secondaryVariant)
+        .padding(10.dp)
+        .background(Color.White)
+        .clickable {
+            onPlatformSelected(platform)
+        }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .padding(10.dp)
-            .background(Color.White)
-            .clickable {
-                onPlatformSelected(platform)
-            }
-    ) {
-        if (platform.isOwned == true) {
-            Text(text = "Owned")
+        modifier = if (platform.isOwned == true) {
+            highLighted
+        } else {
+            nonHighLighted
         }
+    ) {
+        //Todo: Refactor this to be a circular background that shows the icon and text and then shows an outline when the user has selected it
         CoilImage(
             data = url,
             contentDescription = null,
