@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.abhishek101.core.db.Platform
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
@@ -37,16 +39,20 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
     val platformList = viewModel.platforms
 
     Column {
-        Text(
-            "Owned Platforms",
-            style = MaterialTheme.typography.h4,
-            color = Color.White
-        )
-        Text(
-            "We will use these platforms to tailor your search results",
-            style = MaterialTheme.typography.subtitle2,
-            color = Color.Gray
-        )
+        Box(modifier = Modifier.padding(top = 15.dp, start = 15.dp)) {
+            Column {
+                Text(
+                    "Owned Platforms",
+                    style = MaterialTheme.typography.h4,
+                    color = Color.White
+                )
+                Text(
+                    "We will use these platforms to tailor your search results",
+                    style = MaterialTheme.typography.subtitle1,
+                    color = Color.Gray
+                )
+            }
+        }
         if (isLoading.value) {
             CircularProgressIndicator(
                 modifier = Modifier
@@ -60,39 +66,41 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
             Spacer(Modifier.size(20.dp))
             LazyVerticalGrid(cells = GridCells.Fixed(count = 2)) {
                 items(platformList.value.size) { index ->
-                    val platform = platformList.value[index]
-                    val url =
-                        "https://images.igdb.com/igdb/image/upload/t_720p/${platform.logoUrl}.png"
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .background(Color.White)
-                            .clickable {
-                                viewModel.updateOwnedPlatform(
-                                    platform = platform,
-                                    isOwned = platform.isOwned?.not() ?: false
-                                )
-                            }
-                    ) {
-                        if (platform.isOwned == true) {
-                            Text(text = "Owned")
-                        }
-                        CoilImage(
-                            data = url,
-                            contentDescription = null,
-                            modifier = Modifier.size(100.dp, 150.dp)
-                        )
-                        Text(
-                            text = platform.name,
-                            style = TextStyle(color = Color.Black, fontSize = 18.sp)
-                        )
+                    PlatformListItem(platform = platformList.value[index]) {
+                        viewModel.updateOwnedPlatform(it, it.isOwned?.not() ?: false)
                     }
-
                 }
             }
         }
+    }
+}
+
+@Composable
+fun PlatformListItem(platform: Platform, onPlatformSelected: (Platform) -> Unit) {
+    val url =
+        "https://images.igdb.com/igdb/image/upload/t_720p/${platform.logoUrl}.png"
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(10.dp)
+            .background(Color.White)
+            .clickable {
+                onPlatformSelected(platform)
+            }
+    ) {
+        if (platform.isOwned == true) {
+            Text(text = "Owned")
+        }
+        CoilImage(
+            data = url,
+            contentDescription = null,
+            modifier = Modifier.size(100.dp, 150.dp)
+        )
+        Text(
+            text = platform.name,
+            style = TextStyle(color = Color.Black, fontSize = 18.sp)
+        )
     }
 }
 
