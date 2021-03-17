@@ -25,7 +25,7 @@ struct PlatformSelect: View {
                 LazyVGrid(columns: layout, spacing: 20) {
                     ForEach(platformSelectViewModel.platformList, id: \.self) { item in
                         VStack {
-                            if (item.isFavorite == true) {
+                            if (item.isOwned == true) {
                                 Text("Owned")
                             }
                             RemoteImage(url: "https://images.igdb.com/igdb/image/upload/t_720p/\(item.logoUrl).png")
@@ -33,7 +33,7 @@ struct PlatformSelect: View {
                                        .frame(width: 80)
                             Text(item.name).bold()
                         }.onTapGesture {
-                            platformSelectViewModel.setPlatformAsFavorite(platform: item, isFavorite: !(item.isFavorite == true))
+                            platformSelectViewModel.setPlatformAsFavorite(platform: item, isOwned: !(item.isOwned == true))
                         }
                     }
                 }.padding(.horizontal)

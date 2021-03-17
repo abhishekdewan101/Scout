@@ -44,7 +44,7 @@ val coreModule: Module = module {
         get<DatabaseHelper>().authenticationQueries
     }
     single {
-        get<DatabaseHelper>().favouritePlatformsQueries
+        get<DatabaseHelper>().platformQueries
     }
     single {
         DatabaseHelper(AppDb(get()))

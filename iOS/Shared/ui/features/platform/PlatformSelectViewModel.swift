@@ -10,7 +10,7 @@ import core
 
 class PlatformSelectViewModel : ObservableObject {
     @Published var isLoading: Bool
-    @Published var platformList: [Platforms]
+    @Published var platformList: [Platform]
     
     init() {
         self.isLoading = false
@@ -20,17 +20,17 @@ class PlatformSelectViewModel : ObservableObject {
     let platformRepository = koin.get(objCProtocol: PlatformRepository.self) as! PlatformRepository
     
     func getPlatforms() {
-        FlowExtensionsKt.asCommonFlow(platformRepository.getPlatforms()).watch(block: { [self] platforms in
+        FlowExtensionsKt.asCommonFlow(platformRepository.getCachedPlatforms()).watch(block: { [self] platforms in
             if (platforms?.count == 0) {
-                self.platformRepository.getPlatformsAndUpdate(completionHandler: {_,_ in})
+                self.platformRepository.updateCachedPlatforms(completionHandler: {_,_ in})
             } else {
                 isLoading = false
-                platformList = (platforms as? [Platforms])!
+                platformList = (platforms as? [Platform])!
             }
         })
     }
     
-    func setPlatformAsFavorite(platform: Platforms, isFavorite: Bool) {
-        platformRepository.updateFavoritePlatform(platform: platform, isFavorite: isFavorite)
+    func setPlatformAsFavorite(platform: Platform, isOwned: Bool) {
+        platformRepository.setPlatformAsOwned(platform: platform, isOwned: isOwned)
     }
 }

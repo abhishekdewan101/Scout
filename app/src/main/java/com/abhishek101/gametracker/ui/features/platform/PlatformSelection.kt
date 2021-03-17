@@ -36,8 +36,6 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
     val isLoading = viewModel.isLoading
     val platformList = viewModel.platforms
 
-    viewModel.getPlatforms()
-
     Column {
         Text(
             "Owned Platforms",
@@ -72,13 +70,13 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
                             .padding(10.dp)
                             .background(Color.White)
                             .clickable {
-                                viewModel.setFavoritePlatform(
+                                viewModel.updateOwnedPlatform(
                                     platform = platform,
-                                    isFavorite = platform.isFavorite?.not() ?: false
+                                    isOwned = platform.isOwned?.not() ?: false
                                 )
                             }
                     ) {
-                        if (platform.isFavorite == true) {
+                        if (platform.isOwned == true) {
                             Text(text = "Owned")
                         }
                         CoilImage(
