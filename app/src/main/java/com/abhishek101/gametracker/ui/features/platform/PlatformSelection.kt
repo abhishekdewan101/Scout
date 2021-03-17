@@ -7,7 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
@@ -38,6 +38,21 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
     val isLoading = viewModel.isLoading
     val platformList = viewModel.platforms
 
+    PlatformSelectionContent(
+        isLoading = isLoading.value,
+        platformList = platformList.value,
+        onPlatformSelected = { platform: Platform, isOwned: Boolean ->
+            viewModel.updateOwnedPlatform(platform, isOwned)
+        })
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PlatformSelectionContent(
+    isLoading: Boolean,
+    platformList: List<Platform>,
+    onPlatformSelected: (Platform, Boolean) -> Unit
+) {
     Column {
         Box(modifier = Modifier.padding(top = 15.dp, start = 15.dp)) {
             Column {
@@ -53,21 +68,29 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
                 )
             }
         }
-        if (isLoading.value) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .semantics {
-                        testTag = "loadingBar"
-                    },
-                color = MaterialTheme.colors.primaryVariant
-            )
+        if (isLoading) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .semantics {
+                            testTag = "loadingBar"
+                        },
+                    color = MaterialTheme.colors.primaryVariant
+                )
+            }
         } else {
-            Spacer(Modifier.size(20.dp))
-            LazyVerticalGrid(cells = GridCells.Fixed(count = 2)) {
-                items(platformList.value.size) { index ->
-                    PlatformListItem(platform = platformList.value[index]) {
-                        viewModel.updateOwnedPlatform(it, it.isOwned?.not() ?: false)
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(count = 2),
+                modifier = Modifier.padding(top = 20.dp)
+            ) {
+                items(platformList.size) { index ->
+                    PlatformListItem(platform = platformList[index]) {
+                        onPlatformSelected(it, it.isOwned?.not() ?: false)
                     }
                 }
             }
@@ -106,8 +129,22 @@ fun PlatformListItem(platform: Platform, onPlatformSelected: (Platform) -> Unit)
 
 @Preview(device = Devices.PIXEL_4_XL, uiMode = Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
-fun PlatformSelectionScreen() {
+fun PlatformSelectionScreenLoadingState() {
     GameTrackerTheme {
-        PlatformSelection()
+        PlatformSelectionContent(
+            isLoading = true,
+            platformList = listOf(),
+            onPlatformSelected = { _, _ -> })
+    }
+}
+
+@Preview(device = Devices.PIXEL_4_XL, uiMode = Configuration.UI_MODE_TYPE_NORMAL)
+@Composable
+fun PlatformSelectionScreenListState() {
+    GameTrackerTheme {
+        PlatformSelectionContent(
+            isLoading = false,
+            platformList = listOf(Platform(0, "xbox", "xbox series x", 1080, 1080, "pleu", false)),
+            onPlatformSelected = { _, _ -> })
     }
 }
