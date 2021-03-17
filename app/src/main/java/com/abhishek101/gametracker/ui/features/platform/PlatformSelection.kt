@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -34,7 +37,10 @@ import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
+fun PlatformSelection(
+    viewModel: PlatformSelectionViewModel = get(),
+    navigateToHomeScreen: () -> Unit
+) {
 
     val isLoading = viewModel.isLoading
     val platformList = viewModel.platforms
@@ -44,7 +50,10 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
         platformList = platformList.value,
         onPlatformSelected = { platform: Platform, isOwned: Boolean ->
             viewModel.updateOwnedPlatform(platform, isOwned)
-        })
+        },
+        getOwnedPlatformCount = viewModel::getOwnedPlatformCount,
+        navigateToHomeScreen = navigateToHomeScreen
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -52,47 +61,65 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
 fun PlatformSelectionContent(
     isLoading: Boolean,
     platformList: List<Platform>,
-    onPlatformSelected: (Platform, Boolean) -> Unit
+    onPlatformSelected: (Platform, Boolean) -> Unit,
+    getOwnedPlatformCount: () -> Int,
+    navigateToHomeScreen: () -> Unit
 ) {
-    Column {
-        Box(modifier = Modifier.padding(top = 15.dp, start = 15.dp)) {
-            Column {
-                Text(
-                    "Owned Platforms",
-                    style = MaterialTheme.typography.h4,
-                    color = Color.White
-                )
-                Text(
-                    "We will use these platforms to tailor your search results",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = Color.Gray
-                )
-            }
-        }
-        if (isLoading) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.padding(top = 15.dp, start = 15.dp, end = 15.dp)) {
+            Text(
+                "Owned Platforms",
+                style = MaterialTheme.typography.h4,
+                color = Color.White
+            )
+            Text(
+                "We will use these platforms to tailor your search results",
+                style = MaterialTheme.typography.subtitle1,
+                color = Color.Gray
+            )
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()
             ) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                        .semantics {
-                            testTag = "loadingBar"
-                        },
-                    color = MaterialTheme.colors.primaryVariant
-                )
-            }
-        } else {
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(count = 2),
-                modifier = Modifier.padding(top = 20.dp)
-            ) {
-                items(platformList.size) { index ->
-                    PlatformListItem(platform = platformList[index]) {
-                        onPlatformSelected(it, it.isOwned?.not() ?: false)
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                            .semantics {
+                                testTag = "loadingBar"
+                            },
+                        color = MaterialTheme.colors.primaryVariant
+                    )
+                } else {
+                    LazyVerticalGrid(
+                        cells = GridCells.Fixed(count = 2),
+                        modifier = Modifier.padding(top = 20.dp)
+                    ) {
+                        items(platformList.size) { index ->
+                            PlatformListItem(platform = platformList[index]) {
+                                onPlatformSelected(it, it.isOwned?.not() ?: false)
+                            }
+                        }
                     }
+                }
+            }
+        }
+        if (getOwnedPlatformCount() > 0) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 15.dp, end = 15.dp),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Button(
+                    onClick = navigateToHomeScreen,
+                    modifier = Modifier
+                        .width(100.dp)
+                        .height(50.dp)
+                ) {
+                    Text("Done")
                 }
             }
         }
@@ -147,7 +174,9 @@ fun PlatformSelectionScreenLoadingState() {
         PlatformSelectionContent(
             isLoading = true,
             platformList = listOf(),
-            onPlatformSelected = { _, _ -> })
+            onPlatformSelected = { _, _ -> },
+            getOwnedPlatformCount = { return@PlatformSelectionContent 0 },
+            navigateToHomeScreen = {})
     }
 }
 
@@ -158,6 +187,8 @@ fun PlatformSelectionScreenListState() {
         PlatformSelectionContent(
             isLoading = false,
             platformList = listOf(Platform(0, "xbox", "xbox series x", 1080, 1080, "pleu", false)),
-            onPlatformSelected = { _, _ -> })
+            onPlatformSelected = { _, _ -> },
+            getOwnedPlatformCount = { return@PlatformSelectionContent 1 },
+            navigateToHomeScreen = {})
     }
 }

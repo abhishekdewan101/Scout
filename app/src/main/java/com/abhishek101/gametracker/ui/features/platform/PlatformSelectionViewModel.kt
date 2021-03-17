@@ -29,6 +29,14 @@ class PlatformSelectionViewModel(private val platformRepository: PlatformReposit
         }
     }
 
+    fun getOwnedPlatformCount(): Int {
+        var totalOwned = 0
+        platforms.value.forEach {
+            if (it.isOwned == true) totalOwned++
+        }
+        return totalOwned
+    }
+
     fun updateOwnedPlatform(platform: Platform, isOwned: Boolean) {
         platformRepository.setPlatformAsOwned(platform, isOwned)
     }

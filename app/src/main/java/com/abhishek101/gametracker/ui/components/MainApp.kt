@@ -31,7 +31,10 @@ fun MainApp() {
                 HomeScreen()
             }
             composable(NavDestinations.PLATFORM.name) {
-                PlatformSelection()
+                PlatformSelection() {
+                    navController.popBackStack()
+                    navController.navigate(NavDestinations.HOME.name)
+                }
             }
         }
     }
