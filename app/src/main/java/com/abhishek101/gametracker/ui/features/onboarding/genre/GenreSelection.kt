@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.features.genre
+package com.abhishek101.gametracker.ui.features.onboarding.genre
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi

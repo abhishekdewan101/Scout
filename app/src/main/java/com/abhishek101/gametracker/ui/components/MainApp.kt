@@ -5,17 +5,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import com.abhishek101.gametracker.ui.features.genre.GenreSelection
-import com.abhishek101.gametracker.ui.features.home.HomeScreen
-import com.abhishek101.gametracker.ui.features.platform.PlatformSelection
+import com.abhishek101.gametracker.ui.features.onboarding.OnBoarding
 import com.abhishek101.gametracker.ui.features.splash.SplashScreen
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 
 enum class NavDestinations {
     SPLASH,
-    HOME,
-    PLATFORM,
-    GENRE
+    ONBOARDING,
 }
 
 @Composable
@@ -26,23 +22,11 @@ fun MainApp() {
             composable(NavDestinations.SPLASH.name) {
                 SplashScreen {
                     navController.popBackStack()
-                    navController.navigate(NavDestinations.PLATFORM.name)
+                    navController.navigate(NavDestinations.ONBOARDING.name)
                 }
             }
-            composable(NavDestinations.HOME.name) {
-                HomeScreen()
-            }
-            composable(NavDestinations.PLATFORM.name) {
-                PlatformSelection() {
-                    navController.popBackStack()
-                    navController.navigate(NavDestinations.GENRE.name)
-                }
-            }
-            composable(NavDestinations.GENRE.name) {
-                GenreSelection() {
-                    navController.popBackStack()
-                    navController.navigate(NavDestinations.HOME.name)
-                }
+            composable(NavDestinations.ONBOARDING.name) {
+                OnBoarding()
             }
         }
     }

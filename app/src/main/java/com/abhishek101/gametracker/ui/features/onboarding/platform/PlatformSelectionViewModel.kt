@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.features.platform
+package com.abhishek101.gametracker.ui.features.onboarding.platform
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
