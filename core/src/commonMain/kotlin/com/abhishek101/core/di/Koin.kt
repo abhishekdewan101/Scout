@@ -3,10 +3,14 @@ package com.abhishek101.core.di
 import com.abhishek101.core.db.AppDb
 import com.abhishek101.core.remote.AuthenticationApi
 import com.abhishek101.core.remote.AuthenticationApiImpl
+import com.abhishek101.core.remote.GenreApi
+import com.abhishek101.core.remote.GenreApiImpl
 import com.abhishek101.core.remote.PlatformApi
 import com.abhishek101.core.remote.PlatformApiImpl
 import com.abhishek101.core.repositories.AuthenticationRepository
 import com.abhishek101.core.repositories.AuthenticationRepositoryImpl
+import com.abhishek101.core.repositories.GenreRepository
+import com.abhishek101.core.repositories.GenreRepositoryImpl
 import com.abhishek101.core.repositories.PlatformRepository
 import com.abhishek101.core.repositories.PlatformRepositoryImpl
 import com.abhishek101.core.utils.DatabaseHelper
@@ -47,6 +51,9 @@ val coreModule: Module = module {
         get<DatabaseHelper>().platformQueries
     }
     single {
+        get<DatabaseHelper>().genreQueries
+    }
+    single {
         DatabaseHelper(AppDb(get()))
     }
     single<AuthenticationApi> {
@@ -54,6 +61,9 @@ val coreModule: Module = module {
     }
     single<PlatformApi> {
         PlatformApiImpl(get(), get())
+    }
+    single<GenreApi> {
+        GenreApiImpl(get(), get())
     }
     single {
         HttpClient {
@@ -82,6 +92,9 @@ val coreModule: Module = module {
     }
     single<AuthenticationRepository> {
         AuthenticationRepositoryImpl(get(), get())
+    }
+    single<GenreRepository> {
+        GenreRepositoryImpl(get(), get(), get())
     }
 }
 

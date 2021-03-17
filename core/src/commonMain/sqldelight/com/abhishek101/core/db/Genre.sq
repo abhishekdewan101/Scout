@@ -1,0 +1,22 @@
+CREATE TABLE Genre (
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+slug TEXT NOT NULL,
+name TEXT NOT NULL,
+isFavorite INTEGER AS Boolean DEFAULT 0
+);
+
+getAllGenres:
+SELECT * FROM Genre;
+
+insertGenre:
+INSERT INTO Genre(slug, name)
+VALUES(?,?);
+
+updateFavorite:
+UPDATE Genre
+SET isFavorite = ?
+WHERE slug = ?;
+
+getAllFavoriteGenres:
+SELECT * FROM Genre
+WHERE isFavorite = 1;

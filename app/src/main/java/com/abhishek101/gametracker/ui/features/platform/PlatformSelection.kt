@@ -39,7 +39,7 @@ import org.koin.androidx.compose.get
 @Composable
 fun PlatformSelection(
     viewModel: PlatformSelectionViewModel = get(),
-    navigateToHomeScreen: () -> Unit
+    navigateToGenreScreen: () -> Unit
 ) {
 
     val isLoading = viewModel.isLoading
@@ -52,7 +52,7 @@ fun PlatformSelection(
             viewModel.updateOwnedPlatform(platform, isOwned)
         },
         getOwnedPlatformCount = viewModel::getOwnedPlatformCount,
-        navigateToHomeScreen = navigateToHomeScreen
+        navigateToGenreScreen = navigateToGenreScreen
     )
 }
 
@@ -63,7 +63,7 @@ fun PlatformSelectionContent(
     platformList: List<Platform>,
     onPlatformSelected: (Platform, Boolean) -> Unit,
     getOwnedPlatformCount: () -> Int,
-    navigateToHomeScreen: () -> Unit
+    navigateToGenreScreen: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.padding(top = 15.dp, start = 15.dp, end = 15.dp)) {
@@ -114,7 +114,7 @@ fun PlatformSelectionContent(
                 verticalArrangement = Arrangement.Bottom
             ) {
                 Button(
-                    onClick = navigateToHomeScreen,
+                    onClick = navigateToGenreScreen,
                     modifier = Modifier
                         .width(100.dp)
                         .height(50.dp)
@@ -176,7 +176,7 @@ fun PlatformSelectionScreenLoadingState() {
             platformList = listOf(),
             onPlatformSelected = { _, _ -> },
             getOwnedPlatformCount = { return@PlatformSelectionContent 0 },
-            navigateToHomeScreen = {})
+            navigateToGenreScreen = {})
     }
 }
 
@@ -189,6 +189,6 @@ fun PlatformSelectionScreenListState() {
             platformList = listOf(Platform(0, "xbox", "xbox series x", 1080, 1080, "pleu", false)),
             onPlatformSelected = { _, _ -> },
             getOwnedPlatformCount = { return@PlatformSelectionContent 1 },
-            navigateToHomeScreen = {})
+            navigateToGenreScreen = {})
     }
 }
