@@ -22,7 +22,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
@@ -65,17 +64,21 @@ fun PlatformSelectionContent(
     getOwnedPlatformCount: () -> Int,
     navigateToGenreScreen: () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
         Column(modifier = Modifier.padding(top = 15.dp, start = 15.dp, end = 15.dp)) {
             Text(
                 "Owned Platforms",
                 style = MaterialTheme.typography.h4,
-                color = Color.White
+                color = MaterialTheme.colors.onBackground
             )
             Text(
                 "We will use these platforms to tailor your search results",
                 style = MaterialTheme.typography.subtitle1,
-                color = Color.Gray
+                color = MaterialTheme.colors.onBackground
             )
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -89,7 +92,7 @@ fun PlatformSelectionContent(
                             .semantics {
                                 testTag = "loadingBar"
                             },
-                        color = MaterialTheme.colors.primaryVariant
+                        color = MaterialTheme.colors.primary
                     )
                 } else {
                     LazyVerticalGrid(
@@ -119,7 +122,7 @@ fun PlatformSelectionContent(
                         .width(100.dp)
                         .height(50.dp)
                 ) {
-                    Text("Done")
+                    Text("Done", color = MaterialTheme.colors.onPrimary)
                 }
             }
         }
@@ -133,15 +136,15 @@ fun PlatformListItem(platform: Platform, onPlatformSelected: (Platform) -> Unit)
 
     val nonHighLighted = Modifier
         .padding(10.dp)
-        .background(Color.White)
+        .background(MaterialTheme.colors.surface)
         .clickable {
             onPlatformSelected(platform)
         }
 
     val highLighted = Modifier
-        .border(2.dp, color = MaterialTheme.colors.secondaryVariant)
+        .border(3.dp, color = MaterialTheme.colors.primary)
         .padding(10.dp)
-        .background(Color.White)
+        .background(MaterialTheme.colors.surface)
         .clickable {
             onPlatformSelected(platform)
         }
@@ -154,7 +157,6 @@ fun PlatformListItem(platform: Platform, onPlatformSelected: (Platform) -> Unit)
             nonHighLighted
         }
     ) {
-        //Todo: Refactor this to be a circular background that shows the icon and text and then shows an outline when the user has selected it
         CoilImage(
             data = url,
             contentDescription = null,
@@ -162,7 +164,7 @@ fun PlatformListItem(platform: Platform, onPlatformSelected: (Platform) -> Unit)
         )
         Text(
             text = platform.name,
-            style = TextStyle(color = Color.Black, fontSize = 18.sp)
+            style = TextStyle(color = MaterialTheme.colors.onSurface, fontSize = 18.sp)
         )
     }
 }
@@ -186,7 +188,7 @@ fun PlatformSelectionScreenListState() {
     GameTrackerTheme {
         PlatformSelectionContent(
             isLoading = false,
-            platformList = listOf(Platform(0, "xbox", "xbox series x", 1080, 1080, "pleu", false)),
+            platformList = listOf(Platform(0, "xbox", "xbox series x", 1080, 1080, "pleu", true)),
             onPlatformSelected = { _, _ -> },
             getOwnedPlatformCount = { return@PlatformSelectionContent 1 },
             navigateToGenreScreen = {})

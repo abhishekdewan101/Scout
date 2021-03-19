@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextOverflow
@@ -59,17 +58,21 @@ fun GenreSelectionContent(
     onGenreSelected: (Genre, Boolean) -> Unit,
     getFavoriteGenreCount: () -> Int
 ) {
-    Box(Modifier.fillMaxSize()) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
         Column(modifier = Modifier.padding(top = 15.dp, start = 15.dp, end = 15.dp)) {
             Text(
                 "Favorite Genres",
                 style = MaterialTheme.typography.h4,
-                color = Color.White
+                color = MaterialTheme.colors.onBackground
             )
             Text(
                 "Select the genres that you like the most. We will use these to tailor your results",
                 style = MaterialTheme.typography.subtitle1,
-                color = Color.Gray
+                color = MaterialTheme.colors.onBackground
             )
             if (isLoading) {
                 Column(
@@ -83,7 +86,7 @@ fun GenreSelectionContent(
                             .semantics {
                                 testTag = "loadingBar"
                             },
-                        color = MaterialTheme.colors.primaryVariant
+                        color = MaterialTheme.colors.primary
                     )
                 }
             } else {
@@ -112,7 +115,7 @@ fun GenreSelectionContent(
                         .width(100.dp)
                         .height(50.dp)
                 ) {
-                    Text("Done")
+                    Text("Done", color = MaterialTheme.colors.onPrimary)
                 }
             }
         }
@@ -127,15 +130,15 @@ fun GenreSelectionListItem(genre: Genre, onSelected: (Genre, Boolean) -> Unit) {
         .height(100.dp)
         .padding(10.dp)
         .clip(RoundedCornerShape(10.dp))
-        .background(Color.White)
+        .background(MaterialTheme.colors.surface)
 
     val highLighted = Modifier
         .fillMaxWidth()
         .height(100.dp)
-        .border(2.dp, color = MaterialTheme.colors.secondaryVariant)
+        .border(3.dp, color = MaterialTheme.colors.primary)
         .padding(10.dp)
         .clip(RoundedCornerShape(10.dp))
-        .background(Color.White)
+        .background(MaterialTheme.colors.surface)
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -160,7 +163,7 @@ fun GenreSelectionListItem(genre: Genre, onSelected: (Genre, Boolean) -> Unit) {
                 Text(
                     genre.name,
                     style = MaterialTheme.typography.subtitle1,
-                    color = Color.Black,
+                    color = MaterialTheme.colors.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
