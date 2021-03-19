@@ -14,6 +14,8 @@
 		612E692A25FC935500721076 /* SplashScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E692825FC935500721076 /* SplashScreenViewModel.swift */; };
 		61AB55082600947200442BF9 /* PlatformSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB55072600947200442BF9 /* PlatformSelect.swift */; };
 		61AB550C2600949400442BF9 /* PlatformSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB550B2600949400442BF9 /* PlatformSelectViewModel.swift */; };
+		61BCD6AB26048128004AA34C /* Theme.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61BCD6AA26048128004AA34C /* Theme.xcassets */; };
+		61BCD6AC26048128004AA34C /* Theme.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61BCD6AA26048128004AA34C /* Theme.xcassets */; };
 		61DA99BC25F752120028CD06 /* GameTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA99A925F752110028CD06 /* GameTrackerApp.swift */; };
 		61DA99BD25F752120028CD06 /* GameTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA99A925F752110028CD06 /* GameTrackerApp.swift */; };
 		61DA99BE25F752120028CD06 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA99AA25F752110028CD06 /* SplashScreen.swift */; };
@@ -44,6 +46,7 @@
 		612E692825FC935500721076 /* SplashScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewModel.swift; sourceTree = "<group>"; };
 		61AB55072600947200442BF9 /* PlatformSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelect.swift; sourceTree = "<group>"; };
 		61AB550B2600949400442BF9 /* PlatformSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelectViewModel.swift; sourceTree = "<group>"; };
+		61BCD6AA26048128004AA34C /* Theme.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Theme.xcassets; sourceTree = "<group>"; };
 		61DA99A925F752110028CD06 /* GameTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTrackerApp.swift; sourceTree = "<group>"; };
 		61DA99AA25F752110028CD06 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		61DA99AB25F752120028CD06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -88,6 +91,7 @@
 		612E691725FC8A3900721076 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				61BCD6AE26048137004AA34C /* theme */,
 				612E692525FC930F00721076 /* features */,
 			);
 			path = ui;
@@ -127,6 +131,14 @@
 				61AB550B2600949400442BF9 /* PlatformSelectViewModel.swift */,
 			);
 			path = platform;
+			sourceTree = "<group>";
+		};
+		61BCD6AE26048137004AA34C /* theme */ = {
+			isa = PBXGroup;
+			children = (
+				61BCD6AA26048128004AA34C /* Theme.xcassets */,
+			);
+			path = theme;
 			sourceTree = "<group>";
 		};
 		61DA99A325F752110028CD06 = {
@@ -269,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61DA99C025F752120028CD06 /* Assets.xcassets in Resources */,
+				61BCD6AB26048128004AA34C /* Theme.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61DA99C125F752120028CD06 /* Assets.xcassets in Resources */,
+				61BCD6AC26048128004AA34C /* Theme.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

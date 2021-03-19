@@ -16,20 +16,30 @@ struct SplashScreen: View {
     }
     
     var body: some View {
-        if (splashScreenViewModel.isAuthenticationValid) {
+        SplashScreenContent(isAuthenticationValid: splashScreenViewModel.isAuthenticationValid)
+    }
+    
+}
+
+struct SplashScreenContent: View {
+    var isAuthenticationValid: Bool
+    
+    var body: some View {
+        if (isAuthenticationValid) {
             PlatformSelect()
         } else {
             VStack{
                 Text("GameTracker")
                     .padding()
-                    ProgressView()
-            }
+                    .foregroundColor(Color("Primary"))
+                ProgressView().foregroundColor(Color("Primary"))
+            }.background(Color("Background"))
         }
     }
 }
 
 struct SplashScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SplashScreen()
+        SplashScreenContent(isAuthenticationValid: false)
     }
 }
