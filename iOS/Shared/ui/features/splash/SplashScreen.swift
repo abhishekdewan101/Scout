@@ -32,14 +32,17 @@ struct SplashScreenContent: View {
                 Text("GameTracker")
                     .padding()
                     .foregroundColor(Color("Primary"))
-                ProgressView().foregroundColor(Color("Primary"))
-            }.background(Color("Background"))
+                    .padding(.top)
+                    .font(.largeTitle)
+                ProgressView().progressViewStyle(CircularProgressViewStyle(tint: Color("Primary")))
+                    .scaleEffect(2, anchor: .center)
+            }
         }
     }
 }
 
 struct SplashScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SplashScreenContent(isAuthenticationValid: false)
+        SplashScreenContent(isAuthenticationValid: false).preferredColorScheme(.dark)
     }
 }
