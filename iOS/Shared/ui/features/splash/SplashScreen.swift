@@ -26,7 +26,7 @@ struct SplashScreenContent: View {
     
     var body: some View {
         if (isAuthenticationValid) {
-            PlatformSelect()
+            OnBoarding()
         } else {
             VStack{
                 Text("GameTracker")

@@ -33,4 +33,8 @@ class PlatformSelectViewModel : ObservableObject {
     func setPlatformAsFavorite(platform: Platform, isOwned: Bool) {
         platformRepository.setPlatformAsOwned(platform: platform, isOwned: isOwned)
     }
+    
+    func getOwnedPlatformCount() -> Int {
+        return platformList.filter { $0.isOwned == true }.count
+    }
 }

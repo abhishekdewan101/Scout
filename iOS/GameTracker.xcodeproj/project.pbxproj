@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		6104B03A25FCA0E60092FF57 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6104B03925FCA0E60092FF57 /* HomeScreen.swift */; };
+		61126D71260725D2006CFB86 /* GenreSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61126D70260725D2006CFB86 /* GenreSelection.swift */; };
+		61126D76260726F8006CFB86 /* OnBoarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61126D75260726F8006CFB86 /* OnBoarding.swift */; };
+		61126D7A260727EA006CFB86 /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61126D79260727EA006CFB86 /* OnBoardingViewModel.swift */; };
 		612E691325FC871C00721076 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E691225FC871C00721076 /* Koin.swift */; };
 		612E691425FC871C00721076 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E691225FC871C00721076 /* Koin.swift */; };
 		612E692925FC935500721076 /* SplashScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E692825FC935500721076 /* SplashScreenViewModel.swift */; };
@@ -42,6 +45,9 @@
 
 /* Begin PBXFileReference section */
 		6104B03925FCA0E60092FF57 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		61126D70260725D2006CFB86 /* GenreSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelection.swift; sourceTree = "<group>"; };
+		61126D75260726F8006CFB86 /* OnBoarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoarding.swift; sourceTree = "<group>"; };
+		61126D79260727EA006CFB86 /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
 		612E691225FC871C00721076 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
 		612E692825FC935500721076 /* SplashScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewModel.swift; sourceTree = "<group>"; };
 		61AB55072600947200442BF9 /* PlatformSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelect.swift; sourceTree = "<group>"; };
@@ -88,6 +94,26 @@
 			path = home;
 			sourceTree = "<group>";
 		};
+		61126D6F260725BF006CFB86 /* genres */ = {
+			isa = PBXGroup;
+			children = (
+				61126D70260725D2006CFB86 /* GenreSelection.swift */,
+			);
+			path = genres;
+			sourceTree = "<group>";
+		};
+		61126D74260726D9006CFB86 /* onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				61126D6F260725BF006CFB86 /* genres */,
+				61AB55062600946200442BF9 /* platform */,
+				6104B03825FCA0D70092FF57 /* home */,
+				61126D75260726F8006CFB86 /* OnBoarding.swift */,
+				61126D79260727EA006CFB86 /* OnBoardingViewModel.swift */,
+			);
+			path = onboarding;
+			sourceTree = "<group>";
+		};
 		612E691725FC8A3900721076 /* ui */ = {
 			isa = PBXGroup;
 			children = (
@@ -108,8 +134,7 @@
 		612E692525FC930F00721076 /* features */ = {
 			isa = PBXGroup;
 			children = (
-				61AB55062600946200442BF9 /* platform */,
-				6104B03825FCA0D70092FF57 /* home */,
+				61126D74260726D9006CFB86 /* onboarding */,
 				612E692725FC933F00721076 /* splash */,
 			);
 			path = features;
@@ -325,8 +350,11 @@
 				61AB55082600947200442BF9 /* PlatformSelect.swift in Sources */,
 				612E691325FC871C00721076 /* Koin.swift in Sources */,
 				6104B03A25FCA0E60092FF57 /* HomeScreen.swift in Sources */,
+				61126D76260726F8006CFB86 /* OnBoarding.swift in Sources */,
 				61DA99BE25F752120028CD06 /* SplashScreen.swift in Sources */,
 				61DA99BC25F752120028CD06 /* GameTrackerApp.swift in Sources */,
+				61126D7A260727EA006CFB86 /* OnBoardingViewModel.swift in Sources */,
+				61126D71260725D2006CFB86 /* GenreSelection.swift in Sources */,
 				612E692925FC935500721076 /* SplashScreenViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -399,6 +427,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "\"-Xlinker -interposable\"";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -451,6 +480,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "\"-Xlinker -interposable\"";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
