@@ -16,14 +16,21 @@ struct OnBoarding: View {
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: PlatformSelect {self.selection = "Genre" }.navigationTitle("").navigationBarHidden(true), tag: "Platform", selection: $selection) { EmptyView() }
-                NavigationLink(destination: GenreSelection().navigationTitle("").navigationBarHidden(true), tag: "Genre", selection: $selection) { EmptyView()}
-                NavigationLink(destination: HomeScreen().navigationTitle("").navigationBarHidden(true), tag: "Home", selection: $selection) { EmptyView()}
+                NavigationLink(destination: PlatformSelect {self.selection = OnBoardingDestination.GENRE.rawValue }.navigationTitle("").navigationBarHidden(true), tag: OnBoardingDestination.PLATFORM.rawValue, selection: $selection) { EmptyView() }
+                NavigationLink(destination: GenreSelection{
+                    self.viewModel.setOnboardingAsComplete()
+                    self.selection = OnBoardingDestination.HOMESCREEN.rawValue
+                }.navigationTitle("").navigationBarHidden(true), tag: OnBoardingDestination.GENRE.rawValue, selection: $selection) { EmptyView()}
+                NavigationLink(destination: HomeScreen().navigationTitle("").navigationBarHidden(true), tag: OnBoardingDestination.HOMESCREEN.rawValue, selection: $selection) { EmptyView()}
             }
         }.navigationBarTitle("")
         .navigationBarHidden(true)
         .onAppear {
-            self.selection = "Platform"
+            if (self.viewModel.isOnboardingComplete()) {
+                self.selection = OnBoardingDestination.HOMESCREEN.rawValue
+            } else {
+                self.selection = OnBoardingDestination.PLATFORM.rawValue
+            }
         }
     }
 }

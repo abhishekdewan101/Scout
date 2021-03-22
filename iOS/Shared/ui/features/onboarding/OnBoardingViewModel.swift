@@ -7,21 +7,23 @@
 
 import Foundation
 
-enum OnBoardingDestination {
-    case PLATFORM
-    case GENRE
-    case HOMESCREEN
+enum OnBoardingDestination: String {
+    case PLATFORM = "Platform"
+    case GENRE = "Genre"
+    case HOMESCREEN = "HomeScreen"
 }
+
+let onBoardingCompleteKey = "onBoardingComplete"
 
 
 class OnBoardingViewModel: ObservableObject {
-    @Published var navigationDestination: OnBoardingDestination
+    let preferences = UserDefaults.standard
     
-    init() {
-        self.navigationDestination = OnBoardingDestination.PLATFORM
+    func isOnboardingComplete() -> Bool {
+        return preferences.bool(forKey: onBoardingCompleteKey)
     }
     
-    func updateNavigationDestination(destination: OnBoardingDestination) {
-        self.navigationDestination = destination
+    func setOnboardingAsComplete() {
+        preferences.setValue(true, forKey: onBoardingCompleteKey)
     }
 }
