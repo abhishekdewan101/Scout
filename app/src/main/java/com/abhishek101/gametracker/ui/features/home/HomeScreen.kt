@@ -2,7 +2,11 @@ package com.abhishek101.gametracker.ui.features.home
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
@@ -23,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.gametracker.ui.features.home.BottomNavigationState.GAME_LIST
 import com.abhishek101.gametracker.ui.features.home.BottomNavigationState.SEARCH
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
+import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 
 @Composable
@@ -116,11 +121,31 @@ private fun ScaffoldContent(bottomNavigationState: BottomNavigationState) {
 
 @Composable
 fun ListContent() {
-    Text(
-        "List Screen",
-        style = MaterialTheme.typography.h6,
-        color = MaterialTheme.colors.onBackground
-    )
+    val viewModel: HomeScreenViewModel = get()
+    viewModel.getBannerGamesPoster()
+    LazyRow(Modifier.padding(top = 15.dp)) {
+        val gameList = viewModel.bannerGameList.value
+        items(gameList.count()) {
+            Column(Modifier.padding(end = 10.dp, start = 10.dp)) {
+                CoilImage(
+                    data = "https://images.igdb.com/igdb/image/upload/t_720p/${gameList[it].screenShots[0].imageId}.jpeg",
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(400.dp, 300.dp)
+                        .border(
+                            5.dp,
+                            color = MaterialTheme.colors.onBackground,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                )
+                Text(
+                    gameList[it].name,
+                    style = MaterialTheme.typography.h5,
+                    color = MaterialTheme.colors.onBackground
+                )
+            }
+        }
+    }
 }
 
 @Composable

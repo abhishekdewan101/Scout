@@ -7,8 +7,10 @@ import com.abhishek101.core.models.GamePosterRemoteEntity
 import com.abhishek101.core.remote.GameApi
 import com.abhishek101.core.utils.QueryType.SHOWCASE
 import com.abhishek101.core.utils.buildQuery
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.Clock
 
 interface GameRepository {
@@ -35,6 +37,6 @@ class GameRepositoryImpl(
                 authentication.accessToken
             )
             emit(posterList)
-        }
+        }.flowOn(Dispatchers.Default)
     }
 }

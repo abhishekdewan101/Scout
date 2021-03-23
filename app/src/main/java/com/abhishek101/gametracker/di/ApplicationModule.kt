@@ -13,5 +13,5 @@ val appModule = module {
     single { PlatformSelectionViewModel(get()) }
     single { GenreSelectionViewModel(get()) }
     single { (context: Context) -> OnBoardingViewModel(context) }
-    single { HomeScreenViewModel() }
+    single { HomeScreenViewModel(get()) }
 }
