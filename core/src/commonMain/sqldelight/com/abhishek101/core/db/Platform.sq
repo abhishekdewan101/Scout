@@ -1,5 +1,5 @@
 CREATE TABLE Platform (
-id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+id INTEGER NOT NULL PRIMARY KEY,
 slug TEXT NOT NULL,
 name TEXT NOT NULL,
 logoHeight INTEGER NOT NULL,
@@ -12,8 +12,8 @@ getAllPlatforms:
 SELECT * FROM Platform;
 
 insertPlatform:
-INSERT INTO Platform(slug, name, logoHeight, logoWidth, logoUrl)
-VALUES(?,?,?,?,?);
+INSERT INTO Platform(id, slug, name, logoHeight, logoWidth, logoUrl)
+VALUES(?,?,?,?,?,?);
 
 updateFavoritePlatform:
 UPDATE Platform

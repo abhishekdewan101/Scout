@@ -1,5 +1,5 @@
 CREATE TABLE Genre (
-id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+id INTEGER NOT NULL PRIMARY KEY,
 slug TEXT NOT NULL,
 name TEXT NOT NULL,
 isFavorite INTEGER AS Boolean DEFAULT 0
@@ -9,8 +9,8 @@ getAllGenres:
 SELECT * FROM Genre;
 
 insertGenre:
-INSERT INTO Genre(slug, name)
-VALUES(?,?);
+INSERT INTO Genre(id,slug, name)
+VALUES(?,?,?);
 
 updateFavorite:
 UPDATE Genre

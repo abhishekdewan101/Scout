@@ -34,6 +34,7 @@ class PlatformRepositoryImpl(
         val accessToken = authenticationQueries.getAuthenticationData(timeNow).executeAsOne()
         platformApi.getPlatforms(accessToken.accessToken).forEach {
             platformQueries.insertPlatform(
+                it.id,
                 it.slug,
                 it.name,
                 it.logo.height.toLong(),

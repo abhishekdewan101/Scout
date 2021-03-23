@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PlatformRemoteEntity(
+    @SerialName("id") val id: Long,
     @SerialName("name") val name: String,
     @SerialName("slug") val slug: String,
     @SerialName("platform_logo") val logo: LogoRemoteEntity

@@ -32,7 +32,7 @@ class GenreRepositoryImpl(
         val timeNow = Clock.System.now().epochSeconds
         val accessToken = authenticationQueries.getAuthenticationData(timeNow).executeAsOne()
         genreApi.getGenres(accessToken.accessToken).forEach {
-            genreQueries.insertGenre(it.slug, it.name)
+            genreQueries.insertGenre(it.id, it.slug, it.name)
         }
     }
 

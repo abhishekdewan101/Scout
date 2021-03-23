@@ -3,12 +3,16 @@ package com.abhishek101.core.di
 import com.abhishek101.core.db.AppDb
 import com.abhishek101.core.remote.AuthenticationApi
 import com.abhishek101.core.remote.AuthenticationApiImpl
+import com.abhishek101.core.remote.GameApi
+import com.abhishek101.core.remote.GameApiImpl
 import com.abhishek101.core.remote.GenreApi
 import com.abhishek101.core.remote.GenreApiImpl
 import com.abhishek101.core.remote.PlatformApi
 import com.abhishek101.core.remote.PlatformApiImpl
 import com.abhishek101.core.repositories.AuthenticationRepository
 import com.abhishek101.core.repositories.AuthenticationRepositoryImpl
+import com.abhishek101.core.repositories.GameRepository
+import com.abhishek101.core.repositories.GameRepositoryImpl
 import com.abhishek101.core.repositories.GenreRepository
 import com.abhishek101.core.repositories.GenreRepositoryImpl
 import com.abhishek101.core.repositories.PlatformRepository
@@ -65,6 +69,10 @@ val coreModule: Module = module {
     single<GenreApi> {
         GenreApiImpl(get(), get())
     }
+    single<GameApi> {
+        GameApiImpl(get(), get())
+    }
+
     single {
         HttpClient {
             val ktorLogger = get<Logger>()
@@ -95,6 +103,9 @@ val coreModule: Module = module {
     }
     single<GenreRepository> {
         GenreRepositoryImpl(get(), get(), get())
+    }
+    single<GameRepository> {
+        GameRepositoryImpl(get(), get(), get(), get())
     }
 }
 
