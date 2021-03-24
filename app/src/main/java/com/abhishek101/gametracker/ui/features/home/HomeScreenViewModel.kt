@@ -17,15 +17,29 @@ enum class BottomNavigationState {
 class HomeScreenViewModel(private val gameRepository: GameRepository) : ViewModel() {
     val bottomSelected = mutableStateOf(GAME_LIST)
     val bannerGameList = mutableStateOf(listOf<GamePosterRemoteEntity>())
+    val topRatedGameList = mutableStateOf(listOf<GamePosterRemoteEntity>())
+
+    init {
+        getBannerGamesPoster()
+        getTopRatedGamesOfLastYear()
+    }
 
     fun updateBottomSelectedState(bottomNavigationState: BottomNavigationState) {
         bottomSelected.value = bottomNavigationState
     }
 
-    fun getBannerGamesPoster() {
+    private fun getBannerGamesPoster() {
         viewModelScope.launch {
             gameRepository.getHeadlineBannerPosters().collect {
                 bannerGameList.value = it
+            }
+        }
+    }
+
+    private fun getTopRatedGamesOfLastYear() {
+        viewModelScope.launch {
+            gameRepository.getTopRatedGamesOfLastYear().collect {
+                topRatedGameList.value = it
             }
         }
     }

@@ -1,14 +1,18 @@
 package com.abhishek101.gametracker.ui.features.home
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -24,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.abhishek101.core.models.GamePosterRemoteEntity
 import com.abhishek101.gametracker.ui.features.home.BottomNavigationState.GAME_LIST
 import com.abhishek101.gametracker.ui.features.home.BottomNavigationState.SEARCH
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
@@ -122,13 +127,56 @@ private fun ScaffoldContent(bottomNavigationState: BottomNavigationState) {
 @Composable
 fun ListContent() {
     val viewModel: HomeScreenViewModel = get()
-    viewModel.getBannerGamesPoster()
+    Column {
+        ShowcaseGameList(bannerGameList = viewModel.bannerGameList.value)
+        TopRatedGameSection(topRatedGameList = viewModel.topRatedGameList.value)
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun TopRatedGameSection(topRatedGameList: List<GamePosterRemoteEntity>) {
+    Column {
+        Text(
+            "Top Rated Games",
+            style = MaterialTheme.typography.h5,
+            color = MaterialTheme.colors.onBackground,
+            modifier = Modifier.padding(bottom = 10.dp)
+        )
+        LazyVerticalGrid(cells = GridCells.Fixed(2)) {
+            items(topRatedGameList.count()) {
+                Column {
+                    CoilImage(
+                        data = "https://images.igdb.com/igdb/image/upload/t_720p/${topRatedGameList[it].cover.imageId}.jpeg",
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(150.dp, 200.dp)
+                            .border(
+                                5.dp,
+                                color = MaterialTheme.colors.onBackground,
+                                shape = RoundedCornerShape(10.dp)
+                            ),
+                        error = {
+                            Text("Error")
+                        },
+                        loading = {
+                            CircularProgressIndicator()
+                        }
+                    )
+                    Text(topRatedGameList[it].name)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowcaseGameList(bannerGameList: List<GamePosterRemoteEntity>) {
     LazyRow(Modifier.padding(top = 15.dp)) {
-        val gameList = viewModel.bannerGameList.value
-        items(gameList.count()) {
+        items(bannerGameList.count()) {
             Column(Modifier.padding(end = 10.dp, start = 10.dp)) {
                 CoilImage(
-                    data = "https://images.igdb.com/igdb/image/upload/t_720p/${gameList[it].screenShots[0].imageId}.jpeg",
+                    data = "https://images.igdb.com/igdb/image/upload/t_720p/${bannerGameList[it].screenShots[0].imageId}.jpeg",
                     contentDescription = null,
                     modifier = Modifier
                         .size(400.dp, 300.dp)
@@ -139,7 +187,7 @@ fun ListContent() {
                         )
                 )
                 Text(
-                    gameList[it].name,
+                    bannerGameList[it].name,
                     style = MaterialTheme.typography.h5,
                     color = MaterialTheme.colors.onBackground
                 )
