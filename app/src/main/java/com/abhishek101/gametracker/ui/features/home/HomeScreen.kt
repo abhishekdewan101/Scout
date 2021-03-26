@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.CircularProgressIndicator
@@ -151,10 +153,11 @@ fun TopRatedGameSection(topRatedGameList: List<GamePosterRemoteEntity>) {
                         contentDescription = null,
                         modifier = Modifier
                             .size(150.dp, 200.dp)
+                            .clip(CircleShape.copy(CornerSize(20.dp)))
                             .border(
-                                5.dp,
+                                width = 5.dp,
                                 color = MaterialTheme.colors.onBackground,
-                                shape = RoundedCornerShape(10.dp)
+                                shape = MaterialTheme.shapes.large
                             ),
                         error = {
                             Text("Error")
