@@ -11,7 +11,7 @@ object AppVersions {
 }
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha09"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha12"
     const val jdkDesugar = "com.android.tools:desugar_jdk_libs:1.0.9"
 
     const val material = "com.google.android.material:material:1.1.0"
@@ -64,7 +64,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version = "1.4.30"
+        const val version = "1.4.31"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -120,7 +120,7 @@ object Libs {
 
         object Compose {
             private const val snapshot = ""
-            const val version = "1.0.0-beta01"
+            const val version = "1.0.0-beta02"
 
             @get:JvmStatic
             val snapshotUrl: String
