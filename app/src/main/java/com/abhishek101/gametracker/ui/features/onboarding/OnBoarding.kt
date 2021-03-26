@@ -1,7 +1,11 @@
 package com.abhishek101.gametracker.ui.features.onboarding
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
@@ -23,29 +27,31 @@ fun OnBoarding() {
     val context = LocalContext.current
     val viewModel: OnBoardingViewModel = get(parameters = { parametersOf(context) })
     val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = if (viewModel.getOnBoardingComplete()) {
-            OnBoardingDestinations.HOME.name
-        } else {
-            OnBoardingDestinations.PLATFORM.name
-        }
-
-    ) {
-        composable(OnBoardingDestinations.HOME.name) {
-            HomeScreen()
-        }
-        composable(OnBoardingDestinations.PLATFORM.name) {
-            PlatformSelection() {
-                navController.popBackStack()
-                navController.navigate(OnBoardingDestinations.GENRE.name)
+    Column(modifier = Modifier.semantics { testTag = "OnBoardingScreen" }) {
+        NavHost(
+            navController = navController,
+            startDestination = if (viewModel.getOnBoardingComplete()) {
+                OnBoardingDestinations.HOME.name
+            } else {
+                OnBoardingDestinations.PLATFORM.name
             }
-        }
-        composable(OnBoardingDestinations.GENRE.name) {
-            GenreSelection() {
-                viewModel.updateOnBoardingCompleted()
-                navController.popBackStack()
-                navController.navigate(OnBoardingDestinations.HOME.name)
+
+        ) {
+            composable(OnBoardingDestinations.HOME.name) {
+                HomeScreen()
+            }
+            composable(OnBoardingDestinations.PLATFORM.name) {
+                PlatformSelection() {
+                    navController.popBackStack()
+                    navController.navigate(OnBoardingDestinations.GENRE.name)
+                }
+            }
+            composable(OnBoardingDestinations.GENRE.name) {
+                GenreSelection() {
+                    viewModel.updateOnBoardingCompleted()
+                    navController.popBackStack()
+                    navController.navigate(OnBoardingDestinations.HOME.name)
+                }
             }
         }
     }
