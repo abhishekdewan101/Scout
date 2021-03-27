@@ -12,20 +12,25 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.navigate
+import com.abhishek101.gametracker.ui.components.navigation.LocalMainNavController
+import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations
 import org.koin.androidx.compose.get
 
 @Composable
 fun SplashScreen(
-    viewModel: SplashViewModel = get(),
-    navigateToPlatformScreen: () -> Unit,
+    viewModel: SplashViewModel = get()
 ) {
 
     val isAuthenticationValid = viewModel.isAuthenticationValid
 
     viewModel.checkAuthentication()
+
+    LocalContext
 
     Surface(
         color = MaterialTheme.colors.background
@@ -53,7 +58,8 @@ fun SplashScreen(
                     color = MaterialTheme.colors.primaryVariant
                 )
             } else {
-                navigateToPlatformScreen()
+                LocalMainNavController.current.popBackStack()
+                LocalMainNavController.current.navigate(MainNavigatorDestinations.OnBoarding.rawValue)
             }
         }
     }

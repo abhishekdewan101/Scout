@@ -29,7 +29,6 @@ class SplashScreenKtTest {
     fun splashScreenRendersTextAndButton() {
         composeRule.setContent {
             SplashScreen(
-                navigateToPlatformScreen = navigateToHomeScreen,
                 viewModel = splashViewModel
             )
         }
@@ -42,7 +41,6 @@ class SplashScreenKtTest {
         isAuthenticationValid.value = true
         composeRule.setContent {
             SplashScreen(
-                navigateToPlatformScreen = navigateToHomeScreen,
                 viewModel = splashViewModel
             )
         }
