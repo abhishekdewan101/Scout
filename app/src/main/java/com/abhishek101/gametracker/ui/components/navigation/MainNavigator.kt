@@ -38,7 +38,7 @@ val LocalUpdateOnBoardingCompleted = compositionLocalOf<UpdateOnBoardingComplete
 fun MainNavigator() {
     val mainNavController = rememberNavController()
     val viewModel: MainNavigatorViewModel = get()
-    val startDestinations = if (viewModel.isOnBoardingComplete()) {
+    val startDestination = if (viewModel.isOnBoardingComplete()) {
         HomeScreen.name
     } else {
         PlatformSelectionScreen.name
@@ -46,7 +46,7 @@ fun MainNavigator() {
 
     NavHost(
         navController = mainNavController,
-        startDestination = startDestinations
+        startDestination = startDestination
     ) {
 
         composable(SplashScreen.name) {
