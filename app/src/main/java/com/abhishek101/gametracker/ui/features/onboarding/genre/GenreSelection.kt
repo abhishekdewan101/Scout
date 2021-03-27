@@ -31,19 +31,29 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Genre
+import com.abhishek101.gametracker.ui.components.navigation.LocalMainNavController
+import com.abhishek101.gametracker.ui.components.navigation.LocalUpdateOnBoardingCompleted
+import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 import org.koin.androidx.compose.get
 
 @Composable
-fun GenreSelection(viewModel: GenreSelectionViewModel = get(), navigateForward: () -> Unit) {
+fun GenreSelection(viewModel: GenreSelectionViewModel = get()) {
     val isLoading = viewModel.isLoading
     val genreList = viewModel.genres
+    val navController = LocalMainNavController.current
+    val onBoardingCompleted = LocalUpdateOnBoardingCompleted.current
 
     GenreSelectionContent(
         isLoading = isLoading.value,
         genreList = genreList.value,
-        navigateForward = navigateForward,
+        navigateForward = {
+            onBoardingCompleted()
+            navController.popBackStack()
+            navController.navigate(MainNavigatorDestinations.HomeScreen.name)
+        },
         onGenreSelected = viewModel::updateGenreAsFavorite,
         getFavoriteGenreCount = viewModel::getFavoriteGenreCount
     )

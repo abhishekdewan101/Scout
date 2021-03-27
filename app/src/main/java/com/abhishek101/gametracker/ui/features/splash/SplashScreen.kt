@@ -18,7 +18,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
 import com.abhishek101.gametracker.ui.components.navigation.LocalMainNavController
-import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations
+import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.PlatformSelectionScreen
 import org.koin.androidx.compose.get
 
 @Composable
@@ -59,7 +59,7 @@ fun SplashScreen(
                 )
             } else {
                 LocalMainNavController.current.popBackStack()
-                LocalMainNavController.current.navigate(MainNavigatorDestinations.OnBoarding.rawValue)
+                LocalMainNavController.current.navigate(PlatformSelectionScreen.name)
             }
         }
     }

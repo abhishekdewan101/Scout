@@ -1,5 +1,4 @@
 package com.abhishek101.gametracker.ui.features.onboarding.platform
-
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -29,7 +28,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Platform
+import com.abhishek101.gametracker.ui.components.navigation.LocalMainNavController
+import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.GenreSelectionScreen
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
@@ -37,12 +39,12 @@ import org.koin.androidx.compose.get
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlatformSelection(
-    viewModel: PlatformSelectionViewModel = get(),
-    navigateToGenreScreen: () -> Unit
+    viewModel: PlatformSelectionViewModel = get()
 ) {
 
     val isLoading = viewModel.isLoading
     val platformList = viewModel.platforms
+    val navController = LocalMainNavController.current
 
     PlatformSelectionContent(
         isLoading = isLoading.value,
@@ -51,7 +53,10 @@ fun PlatformSelection(
             viewModel.updateOwnedPlatform(platform, isOwned)
         },
         getOwnedPlatformCount = viewModel::getOwnedPlatformCount,
-        navigateToGenreScreen = navigateToGenreScreen
+        navigateToGenreScreen = {
+            navController.popBackStack()
+            navController.navigate(GenreSelectionScreen.name)
+        }
     )
 }
 
