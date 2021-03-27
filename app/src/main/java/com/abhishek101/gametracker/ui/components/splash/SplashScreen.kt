@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.features.splash
+package com.abhishek101.gametracker.ui.components.splash
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,13 +12,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
 import com.abhishek101.gametracker.ui.components.navigation.LocalMainNavController
-import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.PlatformSelectionScreen
+import com.abhishek101.gametracker.ui.components.navigation.LocalSplashScreenDestination
 import org.koin.androidx.compose.get
 
 @Composable
@@ -29,8 +28,6 @@ fun SplashScreen(
     val isAuthenticationValid = viewModel.isAuthenticationValid
 
     viewModel.checkAuthentication()
-
-    LocalContext
 
     Surface(
         color = MaterialTheme.colors.background
@@ -59,7 +56,7 @@ fun SplashScreen(
                 )
             } else {
                 LocalMainNavController.current.popBackStack()
-                LocalMainNavController.current.navigate(PlatformSelectionScreen.name)
+                LocalMainNavController.current.navigate(LocalSplashScreenDestination.current)
             }
         }
     }

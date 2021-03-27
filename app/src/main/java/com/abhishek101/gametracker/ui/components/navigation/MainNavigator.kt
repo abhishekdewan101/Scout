@@ -11,10 +11,10 @@ import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestina
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.HomeScreen
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.PlatformSelectionScreen
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.SplashScreen
+import com.abhishek101.gametracker.ui.components.splash.SplashScreen
 import com.abhishek101.gametracker.ui.features.home.HomeScreen
 import com.abhishek101.gametracker.ui.features.onboarding.genre.GenreSelection
 import com.abhishek101.gametracker.ui.features.onboarding.platform.PlatformSelection
-import com.abhishek101.gametracker.ui.features.splash.SplashScreen
 import org.koin.androidx.compose.get
 
 enum class MainNavigatorDestinations {
@@ -34,11 +34,15 @@ val LocalUpdateOnBoardingCompleted = compositionLocalOf<UpdateOnBoardingComplete
     error("No shared preferences provided")
 }
 
+val LocalSplashScreenDestination = compositionLocalOf<String> {
+    error("No splash screen destination provided")
+}
+
 @Composable
 fun MainNavigator() {
     val mainNavController = rememberNavController()
     val viewModel: MainNavigatorViewModel = get()
-    val startDestination = if (viewModel.isOnBoardingComplete()) {
+    val splashScreenDestination = if (viewModel.isOnBoardingComplete()) {
         HomeScreen.name
     } else {
         PlatformSelectionScreen.name
@@ -46,11 +50,14 @@ fun MainNavigator() {
 
     NavHost(
         navController = mainNavController,
-        startDestination = startDestination
+        startDestination = SplashScreen.name
     ) {
 
         composable(SplashScreen.name) {
-            CompositionLocalProvider(LocalMainNavController provides mainNavController) {
+            CompositionLocalProvider(
+                LocalMainNavController provides mainNavController,
+                LocalSplashScreenDestination provides splashScreenDestination
+            ) {
                 SplashScreen()
             }
         }

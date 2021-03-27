@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.features.splash
+package com.abhishek101.gametracker.ui.components.splash
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
