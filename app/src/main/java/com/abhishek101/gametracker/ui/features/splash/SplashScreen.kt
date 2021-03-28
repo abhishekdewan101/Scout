@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.components.splash
+package com.abhishek101.gametracker.ui.features.splash
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
