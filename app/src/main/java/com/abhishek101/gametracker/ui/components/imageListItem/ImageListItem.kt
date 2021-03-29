@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.components.circularImageListItem
+package com.abhishek101.gametracker.ui.components.imageListItem
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
@@ -29,9 +29,9 @@ import com.abhishek101.gametracker.utils.buildImageString
 import com.google.accompanist.coil.CoilImage
 
 @Composable
-fun CircularImageListItem(
+fun ImageListItem(
     isSelected: Boolean,
-    data: CircularImageListItemData,
+    data: ImageListItemData,
     imageOnly: Boolean = false,
     onItemTapped: (() -> Unit) = {}
 ) {
@@ -89,7 +89,7 @@ fun CircularImageListItem(
 @Composable
 fun CircularImageListItemNotSelected() {
     GameTrackerTheme {
-        CircularImageListItem(isSelected = false, previewCircularImageListItemData)
+        ImageListItem(isSelected = false, previewCircularImageListItemData)
     }
 }
 
@@ -97,6 +97,6 @@ fun CircularImageListItemNotSelected() {
 @Composable
 fun CircularImageListItemSelected() {
     GameTrackerTheme {
-        CircularImageListItem(isSelected = true, previewCircularImageListItemData)
+        ImageListItem(isSelected = true, previewCircularImageListItemData)
     }
 }
