@@ -1,6 +1,8 @@
 package com.abhishek101.gametracker.ui.features.platformSelection
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +35,7 @@ import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestina
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 import org.koin.androidx.compose.get
 
+@ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
@@ -55,6 +58,7 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
     )
 }
 
+@ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlatformSelectionContent(
@@ -114,14 +118,14 @@ fun PlatformSelectionContent(
                 }
             }
         }
-        if (getOwnedPlatformCount() > 0) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 15.dp, end = 15.dp),
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Bottom
-            ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 15.dp, end = 15.dp),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            AnimatedVisibility(visible = getOwnedPlatformCount() > 0) {
                 Button(
                     onClick = navigateToGenreScreen,
                     modifier = Modifier
@@ -135,6 +139,7 @@ fun PlatformSelectionContent(
     }
 }
 
+@ExperimentalAnimationApi
 @Preview(device = Devices.PIXEL_4_XL, uiMode = Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 fun PlatformSelectionScreenLoadingState() {
@@ -149,6 +154,7 @@ fun PlatformSelectionScreenLoadingState() {
     }
 }
 
+@ExperimentalAnimationApi
 @Preview(device = Devices.PIXEL_4_XL, uiMode = Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 fun PlatformSelectionScreenListState() {

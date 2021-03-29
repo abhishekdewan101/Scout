@@ -1,6 +1,8 @@
 package com.abhishek101.gametracker.ui.features.onboarding.genre
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +35,8 @@ import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestina
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 import org.koin.androidx.compose.get
 
+@ExperimentalFoundationApi
+@ExperimentalAnimationApi
 @Composable
 fun GenreSelection(viewModel: GenreSelectionViewModel = get()) {
     val isLoading = viewModel.isLoading
@@ -53,7 +57,8 @@ fun GenreSelection(viewModel: GenreSelectionViewModel = get()) {
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@ExperimentalFoundationApi
+@ExperimentalAnimationApi
 @Composable
 fun GenreSelectionContent(
     isLoading: Boolean,
@@ -108,14 +113,14 @@ fun GenreSelectionContent(
             }
         }
 
-        if (getFavoriteGenreCount() > 0) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 15.dp, end = 15.dp),
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Bottom
-            ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 15.dp, end = 15.dp),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            AnimatedVisibility(visible = getFavoriteGenreCount() > 0) {
                 Button(
                     onClick = navigateForward,
                     modifier = Modifier
@@ -129,6 +134,8 @@ fun GenreSelectionContent(
     }
 }
 
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
 @Preview(device = Devices.PIXEL_4_XL, uiMode = Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 fun GenreSelectionContentLoadingState() {
@@ -143,6 +150,8 @@ fun GenreSelectionContentLoadingState() {
     }
 }
 
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
 @Preview(device = Devices.PIXEL_4_XL, uiMode = Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 fun GenreSelectionContentListState() {
