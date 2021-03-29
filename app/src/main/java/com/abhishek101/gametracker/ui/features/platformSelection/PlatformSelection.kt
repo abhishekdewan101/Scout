@@ -1,16 +1,14 @@
-package com.abhishek101.gametracker.ui.features.onboarding.platform
+package com.abhishek101.gametracker.ui.features.platformSelection
+
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -23,24 +21,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Platform
+import com.abhishek101.gametracker.ui.components.circularImageListItem.CircularImageListItem
+import com.abhishek101.gametracker.ui.components.circularImageListItem.toCircularImageListItemData
 import com.abhishek101.gametracker.ui.components.navigation.LocalMainNavController
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.GenreSelectionScreen
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
-import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PlatformSelection(
-    viewModel: PlatformSelectionViewModel = get()
-) {
+fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
 
     val isLoading = viewModel.isLoading
     val platformList = viewModel.platforms
@@ -105,8 +100,14 @@ fun PlatformSelectionContent(
                         modifier = Modifier.padding(top = 20.dp)
                     ) {
                         items(platformList.size) { index ->
-                            PlatformListItem(platform = platformList[index]) {
-                                onPlatformSelected(it, it.isOwned?.not() ?: false)
+                            platformList[index].apply {
+                                CircularImageListItem(
+                                    isSelected = this.isOwned ?: false,
+                                    data = this.toCircularImageListItemData(),
+                                    imageOnly = true
+                                ) {
+                                    onPlatformSelected(this, this.isOwned?.not() ?: false)
+                                }
                             }
                         }
                     }
@@ -134,46 +135,6 @@ fun PlatformSelectionContent(
     }
 }
 
-@Composable
-fun PlatformListItem(platform: Platform, onPlatformSelected: (Platform) -> Unit) {
-    val url =
-        "https://images.igdb.com/igdb/image/upload/t_720p/${platform.logoUrl}.png"
-
-    val nonHighLighted = Modifier
-        .padding(10.dp)
-        .background(MaterialTheme.colors.surface)
-        .clickable {
-            onPlatformSelected(platform)
-        }
-
-    val highLighted = Modifier
-        .border(3.dp, color = MaterialTheme.colors.primary)
-        .padding(10.dp)
-        .background(MaterialTheme.colors.surface)
-        .clickable {
-            onPlatformSelected(platform)
-        }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = if (platform.isOwned == true) {
-            highLighted
-        } else {
-            nonHighLighted
-        }
-    ) {
-        CoilImage(
-            data = url,
-            contentDescription = null,
-            modifier = Modifier.size(100.dp, 150.dp)
-        )
-        Text(
-            text = platform.name,
-            style = TextStyle(color = MaterialTheme.colors.onSurface, fontSize = 18.sp)
-        )
-    }
-}
-
 @Preview(device = Devices.PIXEL_4_XL, uiMode = Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 fun PlatformSelectionScreenLoadingState() {
@@ -183,7 +144,8 @@ fun PlatformSelectionScreenLoadingState() {
             platformList = listOf(),
             onPlatformSelected = { _, _ -> },
             getOwnedPlatformCount = { return@PlatformSelectionContent 0 },
-            navigateToGenreScreen = {})
+            navigateToGenreScreen = {}
+        )
     }
 }
 
@@ -196,6 +158,7 @@ fun PlatformSelectionScreenListState() {
             platformList = listOf(Platform(0, "xbox", "xbox series x", 1080, 1080, "pleu", true)),
             onPlatformSelected = { _, _ -> },
             getOwnedPlatformCount = { return@PlatformSelectionContent 1 },
-            navigateToGenreScreen = {})
+            navigateToGenreScreen = {}
+        )
     }
 }

@@ -129,7 +129,6 @@ fun GenreSelectionContent(
                 }
             }
         }
-
     }
 }
 
@@ -150,12 +149,14 @@ fun GenreSelectionListItem(genre: Genre, onSelected: (Genre, Boolean) -> Unit) {
         .clip(RoundedCornerShape(10.dp))
         .background(MaterialTheme.colors.surface)
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentSize(Alignment.Center)
-        .clickable {
-            onSelected(genre, genre.isFavorite?.not() ?: false)
-        }) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentSize(Alignment.Center)
+            .clickable {
+                onSelected(genre, genre.isFavorite?.not() ?: false)
+            }
+    ) {
         Box(
             modifier = if (genre.isFavorite == true) {
                 highLighted
@@ -191,7 +192,7 @@ fun GenreSelectionContentLoadingState() {
             genreList = listOf(),
             navigateForward = { /*TODO*/ },
             onGenreSelected = { _, _ -> },
-            getFavoriteGenreCount = { return@GenreSelectionContent 0}
+            getFavoriteGenreCount = { return@GenreSelectionContent 0 }
         )
     }
 }
@@ -205,7 +206,7 @@ fun GenreSelectionContentListState() {
             genreList = listOf(Genre(0, "action", "action", isFavorite = false)),
             navigateForward = { /*TODO*/ },
             onGenreSelected = { _, _ -> },
-            getFavoriteGenreCount =  { return@GenreSelectionContent 1}
+            getFavoriteGenreCount = { return@GenreSelectionContent 1 }
         )
     }
 }

@@ -89,7 +89,8 @@ private fun BottomBarContent(
             } else {
                 unselectedModifier
             },
-            onClick = { updateBottomSelected(GAME_LIST) }) {
+            onClick = { updateBottomSelected(GAME_LIST) }
+        ) {
             Icon(
                 Icons.Filled.Games,
                 "Game Lists",
@@ -106,9 +107,11 @@ private fun BottomBarContent(
             } else {
                 unselectedModifier
             },
-            onClick = { updateBottomSelected(SEARCH) }) {
+            onClick = { updateBottomSelected(SEARCH) }
+        ) {
             Icon(
-                Icons.Filled.Search, "Search", tint = if (bottomSelectedTab == SEARCH) {
+                Icons.Filled.Search, "Search",
+                tint = if (bottomSelectedTab == SEARCH) {
                     selectedColor
                 } else {
                     unSelectedColor

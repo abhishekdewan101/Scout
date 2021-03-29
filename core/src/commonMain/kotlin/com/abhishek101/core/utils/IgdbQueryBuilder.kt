@@ -27,7 +27,7 @@ fun buildQuery(queryType: QueryType, genres: List<Genre>, platforms: List<Platfo
 private fun buildTopRatedQuery(genreAndPreferenceFilter: String): String {
     return "f name, cover.image_id, screenshots.image_id;" +
         "w rating >= 70 & first_release_date >= ${
-            Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
+        Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
         } & $genreAndPreferenceFilter;" +
         "s rating desc;" +
         "l 8;"

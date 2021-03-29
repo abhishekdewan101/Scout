@@ -54,8 +54,8 @@ fun SplashScreenContent(isAuthenticationValid: Boolean, navigateForward: () -> U
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
-            .semantics { testTag = "SplashScreen" })
-    {
+            .semantics { testTag = "SplashScreen" }
+    ) {
         Text(
             "GameTracker",
             style = TextStyle(color = MaterialTheme.colors.onBackground, fontSize = 48.sp)
@@ -80,5 +80,3 @@ fun Splash_Screen_Invalid_Authentication_Preview() {
         SplashScreenContent(isAuthenticationValid = false)
     }
 }
-
-
