@@ -11,9 +11,9 @@ import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestina
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.HomeScreen
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.PlatformSelectionScreen
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.SplashScreen
+import com.abhishek101.gametracker.ui.features.genreselection.GenreSelection
 import com.abhishek101.gametracker.ui.features.home.HomeScreen
-import com.abhishek101.gametracker.ui.features.onboarding.genre.GenreSelection
-import com.abhishek101.gametracker.ui.features.platformSelection.PlatformSelection
+import com.abhishek101.gametracker.ui.features.platformselection.PlatformSelection
 import com.abhishek101.gametracker.ui.features.splash.SplashScreen
 import org.koin.androidx.compose.get
 

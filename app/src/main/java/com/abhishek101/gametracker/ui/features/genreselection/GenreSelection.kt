@@ -1,6 +1,5 @@
-package com.abhishek101.gametracker.ui.features.onboarding.genre
+package com.abhishek101.gametracker.ui.features.genreselection
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,8 +34,6 @@ import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestina
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 import org.koin.androidx.compose.get
 
-@ExperimentalFoundationApi
-@ExperimentalAnimationApi
 @Composable
 fun GenreSelection(viewModel: GenreSelectionViewModel = get()) {
     val isLoading = viewModel.isLoading

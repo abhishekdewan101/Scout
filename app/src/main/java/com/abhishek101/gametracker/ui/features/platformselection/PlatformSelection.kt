@@ -1,6 +1,5 @@
-package com.abhishek101.gametracker.ui.features.platformSelection
+package com.abhishek101.gametracker.ui.features.platformselection
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,7 +34,6 @@ import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestina
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
 import org.koin.androidx.compose.get
 
-@ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {

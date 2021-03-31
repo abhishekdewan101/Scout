@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.features.onboarding.genre
+package com.abhishek101.gametracker.ui.features.genreselection
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.features.platformSelection
+package com.abhishek101.gametracker.ui.features.platformselection
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
