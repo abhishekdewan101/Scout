@@ -28,8 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Platform
-import com.abhishek101.gametracker.ui.components.imageListItem.ImageListItem
-import com.abhishek101.gametracker.ui.components.imageListItem.toImageListItemData
+import com.abhishek101.gametracker.ui.components.listItems.ImageListItem
+import com.abhishek101.gametracker.ui.components.listItems.toImageListItemData
 import com.abhishek101.gametracker.ui.components.navigation.LocalMainNavController
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.GenreSelectionScreen
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme

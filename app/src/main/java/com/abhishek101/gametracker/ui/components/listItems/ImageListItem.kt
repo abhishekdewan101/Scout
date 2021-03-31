@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.components.imageListItem
+package com.abhishek101.gametracker.ui.components.listItems
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.ui.components.imageListItem
+package com.abhishek101.gametracker.ui.components.listItems
 
 import com.abhishek101.core.db.Platform
 
