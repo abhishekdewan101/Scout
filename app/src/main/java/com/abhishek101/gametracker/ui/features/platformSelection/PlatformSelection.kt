@@ -87,7 +87,6 @@ fun PlatformSelectionScaffold(
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PlatformSelectionFab(ownedPlatformCount: Int, navigateForward: () -> Unit) {
     if (ownedPlatformCount > 0) {
@@ -119,7 +118,6 @@ fun PlatformSelectionHeader() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlatformSelectionContent(
     isLoading: Boolean,
