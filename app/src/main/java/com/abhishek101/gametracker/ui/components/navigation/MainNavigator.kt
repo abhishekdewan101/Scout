@@ -8,11 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.GenreSelectionScreen
-import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.HomeScreen
+import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.MainAppScreen
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.PlatformSelectionScreen
 import com.abhishek101.gametracker.ui.components.navigation.MainNavigatorDestinations.SplashScreen
 import com.abhishek101.gametracker.ui.features.genreselection.GenreSelection
-import com.abhishek101.gametracker.ui.features.home.HomeScreen
+import com.abhishek101.gametracker.ui.features.mainapp.MainApp
 import com.abhishek101.gametracker.ui.features.platformselection.PlatformSelection
 import com.abhishek101.gametracker.ui.features.splash.SplashScreen
 import org.koin.androidx.compose.get
@@ -21,7 +21,7 @@ enum class MainNavigatorDestinations {
     SplashScreen,
     PlatformSelectionScreen,
     GenreSelectionScreen,
-    HomeScreen
+    MainAppScreen
 }
 
 typealias UpdateOnBoardingComplete = () -> Unit
@@ -43,7 +43,7 @@ fun MainNavigator() {
     val mainNavController = rememberNavController()
     val viewModel: MainNavigatorViewModel = get()
     val splashScreenDestination = if (viewModel.isOnBoardingComplete()) {
-        HomeScreen.name
+        MainAppScreen.name
     } else {
         PlatformSelectionScreen.name
     }
@@ -77,9 +77,9 @@ fun MainNavigator() {
             }
         }
 
-        composable(HomeScreen.name) {
+        composable(MainAppScreen.name) {
             CompositionLocalProvider(LocalMainNavController provides mainNavController) {
-                HomeScreen()
+                MainApp()
             }
         }
     }

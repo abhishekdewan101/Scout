@@ -1,11 +1,11 @@
-package com.abhishek101.gametracker.ui.features.home
+package com.abhishek101.gametracker.ui.features.mainapp.home
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abhishek101.core.models.GamePosterRemoteEntity
 import com.abhishek101.core.repositories.GameRepository
-import com.abhishek101.gametracker.ui.features.home.BottomNavigationState.GAME_LIST
+import com.abhishek101.gametracker.ui.features.mainapp.home.BottomNavigationState.GAME_LIST
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

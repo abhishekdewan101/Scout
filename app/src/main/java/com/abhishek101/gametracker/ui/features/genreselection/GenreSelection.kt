@@ -47,7 +47,7 @@ fun GenreSelection(viewModel: GenreSelectionViewModel = get()) {
         navigateForward = {
             onBoardingCompleted()
             navController.popBackStack()
-            navController.navigate(MainNavigatorDestinations.HomeScreen.name)
+            navController.navigate(MainNavigatorDestinations.MainAppScreen.name)
         },
         onGenreSelected = viewModel::updateGenreAsFavorite,
         getFavoriteGenreCount = viewModel::getFavoriteGenreCount

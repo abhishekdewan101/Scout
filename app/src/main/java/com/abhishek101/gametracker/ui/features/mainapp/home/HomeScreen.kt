@@ -1,46 +1,13 @@
-package com.abhishek101.gametracker.ui.features.home
+package com.abhishek101.gametracker.ui.features.mainapp.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import com.abhishek101.gametracker.ui.components.bottomnavigation.BottomNavigationPager
-import com.abhishek101.gametracker.ui.components.bottomnavigation.BottomNavigationTabData
-import org.koin.androidx.compose.get
 
 @Composable
-fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
-    val bottomTabs = listOf(
-        BottomNavigationTabData(Icons.Outlined.Home, "Home", "Home"),
-        BottomNavigationTabData(Icons.Outlined.Search, "Search", "Search"),
-        BottomNavigationTabData(Icons.Outlined.Person, "Profile", "Profile"),
-    )
-    BottomNavigationPager(
-        bottomTabs = bottomTabs,
-        pagerContent = { CreateHomeScreenContent(index = it) })
+fun HomeScreen() {
+    Text("Home Screen")
 }
 
-@Composable
-fun CreateHomeScreenContent(index: Int) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                when (index) {
-                    0 -> Color.Red.copy(alpha = 0.5f)
-                    1 -> Color.Green.copy(alpha = 0.5f)
-                    2 -> Color.Blue.copy(alpha = 0.5f)
-                    else -> Color.Black
-                }
-            )
-    )
-}
 
 // @Composable
 // fun HomeScreenContent(
@@ -62,61 +29,6 @@ fun CreateHomeScreenContent(index: Int) {
 //     )
 // }
 //
-// @Composable
-// private fun BottomBarContent(
-//     bottomSelectedTab: BottomNavigationState,
-//     updateBottomSelected: (BottomNavigationState) -> Unit
-// ) {
-//     BottomAppBar(backgroundColor = MaterialTheme.colors.background, elevation = 0.dp) {
-//         val selectedColor = MaterialTheme.colors.primary
-//         val unSelectedColor = MaterialTheme.colors.onBackground
-//
-//         val selectedModifier =
-//             Modifier
-//                 .weight(1f)
-//                 .padding(horizontal = 35.dp, vertical = 10.dp)
-//                 .clip(RoundedCornerShape(15.dp))
-//                 .background(MaterialTheme.colors.onBackground)
-//
-//         val unselectedModifier = Modifier.weight(1f)
-//
-//         IconButton(
-//             modifier = if (bottomSelectedTab == GAME_LIST) {
-//                 selectedModifier
-//             } else {
-//                 unselectedModifier
-//             },
-//             onClick = { updateBottomSelected(GAME_LIST) }
-//         ) {
-//             Icon(
-//                 Icons.Filled.Games,
-//                 "Game Lists",
-//                 tint = if (bottomSelectedTab == GAME_LIST) {
-//                     selectedColor
-//                 } else {
-//                     unSelectedColor
-//                 }
-//             )
-//         }
-//         IconButton(
-//             modifier = if (bottomSelectedTab == SEARCH) {
-//                 selectedModifier
-//             } else {
-//                 unselectedModifier
-//             },
-//             onClick = { updateBottomSelected(SEARCH) }
-//         ) {
-//             Icon(
-//                 Icons.Filled.Search, "Search",
-//                 tint = if (bottomSelectedTab == SEARCH) {
-//                     selectedColor
-//                 } else {
-//                     unSelectedColor
-//                 }
-//             )
-//         }
-//     }
-// }
 //
 // @Composable
 // private fun ScaffoldContent(bottomNavigationState: BottomNavigationState) {
