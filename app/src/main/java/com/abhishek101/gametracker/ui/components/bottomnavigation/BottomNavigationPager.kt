@@ -1,14 +1,17 @@
 package com.abhishek101.gametracker.ui.components.bottomnavigation
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -23,9 +26,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
-import timber.log.Timber
 
 @Composable
 fun BottomNavigationPager(
@@ -51,17 +55,24 @@ fun BottomNavigationBar(
     bottomTabs: List<BottomNavigationTabData>,
     selectedIndex: MutableState<Int>
 ) {
-    Timber.d("Selected Index - ${selectedIndex.value}")
-
     BottomAppBar {
         bottomTabs.forEachIndexed { index, tab ->
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
-                IconButton(onClick = { selectedIndex.value = index }) {
-                    Icon(tab.icon, tab.contentDescription)
-                }
-                AnimatedVisibility(visible = (selectedIndex.value == index)) {
-                    Text(tab.label)
-                }
+            val color = if (selectedIndex.value == index) {
+                MaterialTheme.colors.background
+            } else {
+                MaterialTheme.colors.onBackground
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .clickable(role = Role.Tab, onClick = { selectedIndex.value = index })
+            ) {
+                Icon(tab.icon, tab.contentDescription, tint = color)
+                Box(Modifier.size(10.dp, 0.dp))
+                Text(tab.label, color = color)
             }
         }
     }
