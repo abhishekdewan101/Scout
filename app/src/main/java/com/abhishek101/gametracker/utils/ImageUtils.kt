@@ -11,5 +11,9 @@ enum class ImageType {
 }
 
 @OptIn(ExperimentalStdlibApi::class)
-fun buildImageString(imageId: String, imageSize: ImageSize, imageType: ImageType) =
+fun buildImageString(
+    imageId: String,
+    imageSize: ImageSize = ImageSize.t_720p,
+    imageType: ImageType = ImageType.PNG
+) =
     "https://images.igdb.com/igdb/image/upload/${imageSize.name}/$imageId.${imageType.name.lowercase()}"
