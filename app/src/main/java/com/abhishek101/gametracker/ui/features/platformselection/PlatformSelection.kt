@@ -93,7 +93,6 @@ fun PlatformSelectionFab(ownedPlatformCount: Int, navigateForward: () -> Unit) {
             backgroundColor = MaterialTheme.colors.primary
         ) {
             Icon(Icons.Outlined.Done, "Done", tint = MaterialTheme.colors.onPrimary)
-
         }
     }
 }
@@ -179,7 +178,8 @@ fun PlatformSelectionWithData() {
             isLoading = false,
             platformList = platformTestData,
             onPlatformSelected = { _, _ -> },
-            getOwnedPlatformCount = { return@PlatformSelectionScaffold 2 }) {
+            getOwnedPlatformCount = { return@PlatformSelectionScaffold 2 }
+        ) {
         }
     }
 }
@@ -192,8 +192,8 @@ fun PlatformSelectionWithNoData() {
             isLoading = true,
             platformList = emptyList(),
             onPlatformSelected = { _, _ -> },
-            getOwnedPlatformCount = { return@PlatformSelectionScaffold 0 }) {
-
+            getOwnedPlatformCount = { return@PlatformSelectionScaffold 0 }
+        ) {
         }
     }
 }

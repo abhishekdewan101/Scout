@@ -30,7 +30,7 @@ private fun buildTopRatedQuery(genreAndPreferenceFilter: String): String {
         Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
         } & $genreAndPreferenceFilter;" +
         "s rating desc;" +
-        "l 8;"
+        "l 9;"
 }
 
 private fun buildShowcaseQuery(genreAndPreferenceFilter: String): String {

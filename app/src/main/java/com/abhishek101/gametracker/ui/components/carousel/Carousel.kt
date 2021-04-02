@@ -19,10 +19,18 @@ fun Carousel(data: Map<String, String>, onItemSelected: (String) -> Unit) {
     val ids = data.keys.toList()
     LazyRow {
         items(urlList.count()) {
-            Box(modifier = Modifier.clickable { onItemSelected(ids[it]) }.padding(horizontal = 10.dp)) {
-                CoilImage(data = urlList[it], contentDescription = "",
+            Box(
+                modifier = Modifier
+                    .clickable { onItemSelected(ids[it]) }
+                    .padding(end = 10.dp)
+            ) {
+                CoilImage(
+                    data = urlList[it], contentDescription = "",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(400.dp, 200.dp).clip(RoundedCornerShape(10.dp)))
+                    modifier = Modifier
+                        .size(400.dp, 200.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
             }
         }
     }

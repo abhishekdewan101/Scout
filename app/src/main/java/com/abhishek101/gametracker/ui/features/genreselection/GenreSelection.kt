@@ -139,7 +139,6 @@ fun GenreSelectionFab(favoriteGenreCount: Int, navigateForward: () -> Unit) {
             backgroundColor = MaterialTheme.colors.primary
         ) {
             Icon(Icons.Outlined.Done, "Done", tint = MaterialTheme.colors.onPrimary)
-
         }
     }
 }
@@ -170,8 +169,8 @@ fun GenreSelectionWithData() {
             isLoading = false,
             genreList = genreTestData,
             onGenreSelected = { _, _ -> },
-            getFavoriteGenreCount = { return@GenreSelectionScaffold 3 }) {
-
+            getFavoriteGenreCount = { return@GenreSelectionScaffold 3 }
+        ) {
         }
     }
 }

@@ -20,12 +20,13 @@ fun MainApp() {
     )
     BottomNavigationPager(
         bottomTabs = bottomTabs,
-        pagerContent = { CreateMainPagerContent(index = it) })
+        pagerContent = { CreateMainPagerContent(index = it) }
+    )
 }
 
 @Composable
 fun CreateMainPagerContent(index: Int) {
-    when(index) {
+    when (index) {
         0 -> HomeScreen()
         1 -> SearchScreen()
         2 -> ProfileScreen()
