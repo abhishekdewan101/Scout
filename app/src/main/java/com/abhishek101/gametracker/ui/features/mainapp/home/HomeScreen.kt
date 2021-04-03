@@ -42,7 +42,11 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
         Box(modifier = Modifier.padding(top = 20.dp)) {
             TitledGridList(
                 title = "Highly Rated Games",
-                viewModel.highlyRatedGameList, 3
+                viewModel.highlyRatedGameList,
+                3,
+                onViewMoreClicked = {
+                    Timber.d("View More List")
+                }
             ) {
                 Timber.d("User clicked on $it")
             }
