@@ -10,11 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.CoilImage
 
 @Composable
-fun Carousel(data: Map<String, String>, onItemSelected: (String) -> Unit) {
+fun Carousel(
+    data: Map<String, String>,
+    itemWidth: Dp,
+    itemHeight: Dp,
+    onItemSelected: (String) -> Unit
+) {
     val urlList = data.values.toList()
     val ids = data.keys.toList()
     LazyRow {
@@ -28,7 +34,7 @@ fun Carousel(data: Map<String, String>, onItemSelected: (String) -> Unit) {
                     data = urlList[it], contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(400.dp, 200.dp)
+                        .size(itemWidth, itemHeight)
                         .clip(RoundedCornerShape(10.dp))
                 )
             }

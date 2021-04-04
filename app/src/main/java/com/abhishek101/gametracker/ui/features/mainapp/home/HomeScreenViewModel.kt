@@ -14,17 +14,21 @@ class HomeScreenViewModel(private val gameRepository: GameRepository) : ViewMode
 
     val carouselGameMap = mutableStateMapOf<String, String>()
     val highlyRatedGameList = mutableStateListOf<TiledGridListItem>()
+    val comingSoonGames = mutableStateMapOf<String, String>()
+    val singlePlayerList = mutableStateListOf<TiledGridListItem>()
 
     init {
         getBannerGamesPoster()
         getTopRatedGamesOfLastYear()
+        getComingSoonGames()
+        getTopSinglePlayerGames()
     }
 
     private fun getBannerGamesPoster() {
         viewModelScope.launch {
             gameRepository.getHeadlineBannerPosters().collect { gamePosterList ->
                 carouselGameMap.putAll(
-                    gamePosterList.map { it.name to buildImageString(it.screenShots[0].imageId) }
+                    gamePosterList.map { it.slug to buildImageString(it.screenShots[0].imageId) }
                 )
             }
         }
@@ -36,10 +40,35 @@ class HomeScreenViewModel(private val gameRepository: GameRepository) : ViewMode
                 highlyRatedGameList.addAll(
                     posterList.map {
                         TiledGridListItem(
-                            it.name,
+                            it.slug,
                             buildImageString(it.cover.imageId)
                         )
                     }
+                )
+            }
+        }
+    }
+
+    private fun getTopSinglePlayerGames() {
+        viewModelScope.launch {
+            gameRepository.getSinglePlayerGames().collect { posterList ->
+                singlePlayerList.addAll(
+                    posterList.map {
+                        TiledGridListItem(
+                            it.slug,
+                            buildImageString(it.cover.imageId)
+                        )
+                    }
+                )
+            }
+        }
+    }
+
+    private fun getComingSoonGames() {
+        viewModelScope.launch {
+            gameRepository.getComingSoonGames().collect { posterList ->
+                comingSoonGames.putAll(
+                    posterList.map { it.slug to buildImageString(it.cover.imageId) }
                 )
             }
         }

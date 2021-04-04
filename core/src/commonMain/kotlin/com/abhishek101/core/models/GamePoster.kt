@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GamePosterRemoteEntity(
+    @SerialName("slug") val slug: String,
     @SerialName("name") val name: String,
     @SerialName("screenshots") val screenShots: List<Image>,
     @SerialName("cover") val cover: Image
