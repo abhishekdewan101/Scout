@@ -49,7 +49,7 @@ fun TitledGridList(
                 title,
                 style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onBackground)
             )
-            IconButton(onClick = {}) {
+            IconButton(onClick = onViewMoreClicked) {
                 Icon(Icons.Outlined.MoreVert, "More", tint = MaterialTheme.colors.onBackground)
             }
         }
