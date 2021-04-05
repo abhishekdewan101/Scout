@@ -2,6 +2,8 @@ import com.abhishek101.gametracker.AppVersions
 import com.abhishek101.gametracker.Libs
 import com.abhishek101.gametracker.Libs.Koin
 import com.abhishek101.gametracker.Libs.SqlDelight
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 
@@ -11,6 +13,7 @@ plugins {
     id("com.squareup.sqldelight")
     id("kotlin-kapt")
     id("kotlinx-serialization")
+    id("com.codingfeline.buildkonfig")
 }
 
 android {
@@ -21,19 +24,6 @@ android {
         create("testApi")
         create("testDebugApi")
         create("testReleaseApi")
-    }
-
-    buildTypes {
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-        debug {
-            buildConfigField("String", "ClientId", properties.getProperty("clientId"))
-            buildConfigField("String", "ClientSecret", properties.getProperty("clientSecret"))
-        }
-        release {
-            buildConfigField("String", "ClientId", properties.getProperty("clientId"))
-            buildConfigField("String", "ClientSecret", properties.getProperty("clientSecret"))
-        }
     }
 }
 
@@ -91,6 +81,26 @@ kotlin {
 sqldelight {
     database("AppDb") {
         packageName = "com.abhishek101.core.db"
+    }
+}
+
+buildkonfig {
+    packageName = "com.abhishek101.core"
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").inputStream())
+
+    defaultConfigs {
+        buildConfigField(STRING, "ClientId", properties.getProperty("clientId"))
+        buildConfigField(
+            BOOLEAN,
+            "UseTwitchAuthentication",
+            properties.getProperty("useTwitchAuthentication")
+        )
+        buildConfigField(
+            STRING,
+            "ClientAuthenticationUrl",
+            properties.getProperty("clientAuthenticationUrl")
+        )
     }
 }
 

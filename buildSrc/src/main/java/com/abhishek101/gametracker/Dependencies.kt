@@ -26,6 +26,8 @@ object Libs {
 
     const val googleTruth = "com.google.truth:truth:1.0.1"
 
+    const val buildKonfig = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.7.0"
+
     object SqlDelight {
         private const val version = "1.4.4"
 

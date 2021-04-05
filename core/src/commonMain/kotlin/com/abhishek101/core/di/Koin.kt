@@ -1,7 +1,6 @@
 package com.abhishek101.core.di
 
 import com.abhishek101.core.db.AppDb
-import com.abhishek101.core.remote.AuthenticationApi
 import com.abhishek101.core.remote.AuthenticationApiImpl
 import com.abhishek101.core.remote.GameApi
 import com.abhishek101.core.remote.GameApiImpl
@@ -60,9 +59,6 @@ val coreModule: Module = module {
     single {
         DatabaseHelper(AppDb(get()))
     }
-    single<AuthenticationApi> {
-        AuthenticationApiImpl(get())
-    }
     single<PlatformApi> {
         PlatformApiImpl(get(), get())
     }
@@ -99,7 +95,7 @@ val coreModule: Module = module {
         PlatformRepositoryImpl(get(), get(), get())
     }
     single<AuthenticationRepository> {
-        AuthenticationRepositoryImpl(get(), get())
+        AuthenticationRepositoryImpl(AuthenticationApiImpl(get()), get())
     }
     single<GenreRepository> {
         GenreRepositoryImpl(get(), get(), get())
