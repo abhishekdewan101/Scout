@@ -1,7 +1,7 @@
 package com.abhishek101.core.di
 
+import com.abhishek101.core.BuildKonfig
 import com.abhishek101.core.db.AppDb
-import com.abhishek101.core.remote.AuthenticationApi
 import com.abhishek101.core.remote.AuthenticationApiImpl
 import com.abhishek101.core.remote.GameApi
 import com.abhishek101.core.remote.GameApiImpl
@@ -9,6 +9,7 @@ import com.abhishek101.core.remote.GenreApi
 import com.abhishek101.core.remote.GenreApiImpl
 import com.abhishek101.core.remote.PlatformApi
 import com.abhishek101.core.remote.PlatformApiImpl
+import com.abhishek101.core.remote.TwitchAuthenticationApiImpl
 import com.abhishek101.core.repositories.AuthenticationRepository
 import com.abhishek101.core.repositories.AuthenticationRepositoryImpl
 import com.abhishek101.core.repositories.GameRepository
@@ -60,9 +61,6 @@ val coreModule: Module = module {
     single {
         DatabaseHelper(AppDb(get()))
     }
-    single<AuthenticationApi> {
-        AuthenticationApiImpl(get())
-    }
     single<PlatformApi> {
         PlatformApiImpl(get(), get())
     }
@@ -99,7 +97,11 @@ val coreModule: Module = module {
         PlatformRepositoryImpl(get(), get(), get())
     }
     single<AuthenticationRepository> {
-        AuthenticationRepositoryImpl(get(), get())
+        if (BuildKonfig.ClientAuthenticationUrl.isNullOrBlank()) {
+            AuthenticationRepositoryImpl(TwitchAuthenticationApiImpl(get()), get())
+        } else {
+            AuthenticationRepositoryImpl(AuthenticationApiImpl(get()), get())
+        }
     }
     single<GenreRepository> {
         GenreRepositoryImpl(get(), get(), get())

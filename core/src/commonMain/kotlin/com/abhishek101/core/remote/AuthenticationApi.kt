@@ -1,12 +1,24 @@
 package com.abhishek101.core.remote
 
+import com.abhishek101.core.BuildKonfig
 import com.abhishek101.core.models.AuthenticationRemoteEntity
+import com.abhishek101.core.models.TwitchAuthenticationEntity
+import com.abhishek101.core.models.toAuthenticationRemoteEntity
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import io.ktor.client.request.post
 import io.ktor.http.takeFrom
 
 interface AuthenticationApi {
     suspend fun authenticateUser(): AuthenticationRemoteEntity
+}
+
+class TwitchAuthenticationApiImpl(private val client: HttpClient) : AuthenticationApi {
+    override suspend fun authenticateUser() = client.post<TwitchAuthenticationEntity> {
+        url {
+            takeFrom("https://id.twitch.tv/oauth2/token?client_id=${BuildKonfig.ClientId}&client_secret=${BuildKonfig.ClientSecret}&grant_type=client_credentials")
+        }
+    }.toAuthenticationRemoteEntity()
 }
 
 class AuthenticationApiImpl(
@@ -15,7 +27,7 @@ class AuthenticationApiImpl(
 
     override suspend fun authenticateUser() = client.get<AuthenticationRemoteEntity> {
         url {
-            takeFrom("https://px058nbguc.execute-api.us-east-1.amazonaws.com/default/authentication")
+            takeFrom(BuildKonfig.ClientAuthenticationUrl!!)
         }
     }
 }

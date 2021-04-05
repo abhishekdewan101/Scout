@@ -33,14 +33,7 @@ android {
     buildTypes {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-        debug {
-            buildConfigField "String", "ClientId", properties.getProperty('clientId')
-            buildConfigField "String", "ClientSecret", properties.getProperty('clientSecret')
-        }
         release {
-            buildConfigField "String", "ClientId", properties.getProperty('clientId')
-            buildConfigField "String", "ClientSecret", properties.getProperty('clientSecret')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
