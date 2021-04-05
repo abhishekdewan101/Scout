@@ -47,7 +47,7 @@ fun buildComingSoonQuery(genreAndPreferenceFilter: String): String {
 private fun buildTopRatedQuery(genreAndPreferenceFilter: String): String {
     return "f slug, name, cover.image_id, screenshots.image_id;" +
         "w rating >= 70 & first_release_date >= ${
-            Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
+        Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
         } & $genreAndPreferenceFilter;" +
         "s rating desc;" +
         "l 9;"
@@ -56,6 +56,6 @@ private fun buildTopRatedQuery(genreAndPreferenceFilter: String): String {
 private fun buildShowcaseQuery(genreAndPreferenceFilter: String): String {
     return "f slug, name,cover.image_id, screenshots.image_id;w rating >= 75 & hypes > 0 & first_release_date < ${Clock.System.now().epochSeconds} " +
         "& first_release_date > ${
-            Clock.System.now().minus(6, DateTimeUnit.MONTH, currentSystemDefault()).epochSeconds
+        Clock.System.now().minus(6, DateTimeUnit.MONTH, currentSystemDefault()).epochSeconds
         } & $genreAndPreferenceFilter; s hypes desc; l 9;"
 }

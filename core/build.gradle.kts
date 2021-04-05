@@ -2,6 +2,7 @@ import com.abhishek101.gametracker.AppVersions
 import com.abhishek101.gametracker.Libs
 import com.abhishek101.gametracker.Libs.Koin
 import com.abhishek101.gametracker.Libs.SqlDelight
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.properties.Properties
@@ -90,8 +91,12 @@ buildkonfig {
 
     defaultConfigs {
         buildConfigField(STRING, "ClientId", properties.getProperty("clientId"))
-        buildConfigField(STRING, "ClientSecret", properties.getProperty("clientSecret"))
-        buildConfigNullableField(
+        buildConfigField(
+            BOOLEAN,
+            "UseTwitchAuthentication",
+            properties.getProperty("useTwitchAuthentication")
+        )
+        buildConfigField(
             STRING,
             "ClientAuthenticationUrl",
             properties.getProperty("clientAuthenticationUrl")

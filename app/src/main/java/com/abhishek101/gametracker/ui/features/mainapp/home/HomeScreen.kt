@@ -97,6 +97,5 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
                 Timber.d("User clicked on $it")
             }
         }
-
     }
 }

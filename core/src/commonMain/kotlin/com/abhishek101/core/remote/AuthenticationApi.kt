@@ -13,21 +13,28 @@ interface AuthenticationApi {
     suspend fun authenticateUser(): AuthenticationRemoteEntity
 }
 
-class TwitchAuthenticationApiImpl(private val client: HttpClient) : AuthenticationApi {
-    override suspend fun authenticateUser() = client.post<TwitchAuthenticationEntity> {
-        url {
-            takeFrom("https://id.twitch.tv/oauth2/token?client_id=${BuildKonfig.ClientId}&client_secret=${BuildKonfig.ClientSecret}&grant_type=client_credentials")
-        }
-    }.toAuthenticationRemoteEntity()
-}
-
 class AuthenticationApiImpl(
     private val client: HttpClient
 ) : AuthenticationApi {
 
-    override suspend fun authenticateUser() = client.get<AuthenticationRemoteEntity> {
-        url {
-            takeFrom(BuildKonfig.ClientAuthenticationUrl!!)
+    override suspend fun authenticateUser(): AuthenticationRemoteEntity {
+        return if (BuildKonfig.UseTwitchAuthentication) {
+            doTwitchAuthentication()
+        } else {
+            doApiAuthentication()
         }
     }
+
+    private suspend fun doApiAuthentication(): AuthenticationRemoteEntity =
+        client.get {
+            url {
+                takeFrom(BuildKonfig.ClientAuthenticationUrl)
+            }
+        }
+
+    private suspend fun doTwitchAuthentication() = client.post<TwitchAuthenticationEntity> {
+        url {
+            takeFrom(BuildKonfig.ClientAuthenticationUrl)
+        }
+    }.toAuthenticationRemoteEntity()
 }
