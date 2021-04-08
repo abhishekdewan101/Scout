@@ -2,24 +2,22 @@ CREATE TABLE Platform (
 id INTEGER NOT NULL PRIMARY KEY,
 slug TEXT NOT NULL,
 name TEXT NOT NULL,
-logoHeight INTEGER NOT NULL,
-logoWidth INTEGER NOT NULL,
-logoUrl TEXT NOT NULL,
+imageId TEXT NOT NULL,
 isOwned INTEGER AS Boolean DEFAULT 0
 );
 
 getAllPlatforms:
 SELECT * FROM Platform;
 
-insertPlatform:
-INSERT INTO Platform(id, slug, name, logoHeight, logoWidth, logoUrl)
-VALUES(?,?,?,?,?,?);
+savePlatform:
+INSERT INTO Platform(id, slug, name, imageId)
+VALUES(?,?,?,?);
 
-updateFavoritePlatform:
+ownPlatform:
 UPDATE Platform
 SET isOwned = ?
 WHERE slug = ?;
 
-getAllFavoritePlatforms:
+getUserOwnedPlatforms:
 SELECT * FROM Platform
 WHERE isOwned = 1;

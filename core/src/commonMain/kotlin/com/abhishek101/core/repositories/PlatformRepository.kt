@@ -33,23 +33,21 @@ class PlatformRepositoryImpl(
         val timeNow = Clock.System.now().epochSeconds
         val accessToken = authenticationQueries.getAuthenticationData(timeNow).executeAsOne()
         platformApi.getPlatforms(accessToken.accessToken).forEach {
-            platformQueries.insertPlatform(
+            platformQueries.savePlatform(
                 it.id,
                 it.slug,
                 it.name,
-                it.logo.height.toLong(),
-                it.logo.width.toLong(),
                 it.logo.imageId
             )
         }
     }
 
     override fun setPlatformAsOwned(platform: Platform, isOwned: Boolean) {
-        platformQueries.updateFavoritePlatform(isOwned, platform.slug)
+        platformQueries.ownPlatform(isOwned, platform.slug)
     }
 
     override fun getAllOwnedPlatforms(): Flow<List<Platform>> {
-        return platformQueries.getAllFavoritePlatforms().asFlow().mapToList()
+        return platformQueries.getUserOwnedPlatforms().asFlow().mapToList()
             .flowOn(Dispatchers.Default)
     }
 }
