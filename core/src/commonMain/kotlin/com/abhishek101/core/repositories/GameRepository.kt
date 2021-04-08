@@ -33,7 +33,7 @@ class GameRepositoryImpl(
     private val authentication = authenticationQueries.getAuthenticationData(timeNow).executeAsOne()
 
     private val favoriteGenres = genreQueries.getAllFavoriteGenres().executeAsList()
-    private val ownedPlatforms = platformQueries.getAllFavoritePlatforms().executeAsList()
+    private val ownedPlatforms = platformQueries.getUserOwnedPlatforms().executeAsList()
 
     override suspend fun getHeadlineBannerPosters(): Flow<List<GamePosterRemoteEntity>> {
         return flow {

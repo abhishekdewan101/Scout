@@ -1,6 +1,6 @@
 package com.abhishek101.core.remote
 
-import com.abhishek101.core.models.PlatformRemoteEntity
+import com.abhishek101.core.models.IgdbPlatform
 import com.abhishek101.core.utils.AppConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
@@ -8,7 +8,7 @@ import io.ktor.client.request.post
 import io.ktor.http.takeFrom
 
 interface PlatformApi {
-    suspend fun getPlatforms(accessToken: String): List<PlatformRemoteEntity>
+    suspend fun getPlatforms(accessToken: String): List<IgdbPlatform>
 }
 
 class PlatformApiImpl(
@@ -16,7 +16,7 @@ class PlatformApiImpl(
     private val appConfig: AppConfig
 ) : PlatformApi {
 
-    override suspend fun getPlatforms(accessToken: String): List<PlatformRemoteEntity> {
+    override suspend fun getPlatforms(accessToken: String): List<IgdbPlatform> {
         return client.post {
             headers {
                 append("Client-ID", appConfig.clientId)
