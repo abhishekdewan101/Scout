@@ -15,15 +15,15 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class)
 val repoModule = module {
     single<PlatformRepository> {
-        PlatformRepositoryImpl(get(), get(), get())
+        PlatformRepositoryImpl(get(), get())
     }
     single<AuthenticationRepository> {
         AuthenticationRepositoryImpl(AuthenticationApiImpl(get()), get())
     }
     single<GenreRepository> {
-        GenreRepositoryImpl(get(), get(), get())
+        GenreRepositoryImpl(get(), get())
     }
     single<GameRepository> {
-        GameRepositoryImpl(get(), get(), get(), get())
+        GameRepositoryImpl(get(), get())
     }
 }

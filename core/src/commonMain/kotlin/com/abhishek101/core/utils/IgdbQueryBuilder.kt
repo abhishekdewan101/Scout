@@ -1,61 +1,62 @@
 package com.abhishek101.core.utils
 
-import com.abhishek101.core.db.Genre
-import com.abhishek101.core.db.Platform
-import com.abhishek101.core.utils.QueryType.COMING_SOON
-import com.abhishek101.core.utils.QueryType.SHOWCASE
-import com.abhishek101.core.utils.QueryType.TOP_RATED_LAST_YEAR
-import com.abhishek101.core.utils.QueryType.TOP_RATED_SINGLE_PLAYER
+import com.abhishek101.core.repositories.ListType
+import com.abhishek101.core.repositories.ListType.COMING_SOON
+import com.abhishek101.core.repositories.ListType.MOST_HYPED
+import com.abhishek101.core.repositories.ListType.RECENT
+import com.abhishek101.core.repositories.ListType.SHOWCASE
+import com.abhishek101.core.repositories.ListType.TOP_RATED
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.minus
 
-enum class QueryType {
-    SHOWCASE,
-    TOP_RATED_LAST_YEAR,
-    COMING_SOON,
-    TOP_RATED_SINGLE_PLAYER,
-}
-
-fun buildQuery(queryType: QueryType, genres: List<Genre>, platforms: List<Platform>): String {
-    val ownedPlatformString = "platforms=(${platforms.joinToString(",") { it.id.toString() }})"
-    val favoriteGenreStrings = "genres=(${genres.joinToString(",") { it.id.toString() }})"
-    val genreAndPreferenceFilter = "$ownedPlatformString & $favoriteGenreStrings"
+fun buildQuery(queryType: ListType, genreFilter: String, platformFilter: String): String {
+    val genreAndPreferenceFilter = "$genreFilter & $platformFilter"
     return when (queryType) {
         SHOWCASE -> buildShowcaseQuery(genreAndPreferenceFilter)
-        TOP_RATED_LAST_YEAR -> buildTopRatedQuery(genreAndPreferenceFilter)
+        TOP_RATED -> buildTopRatedQuery(genreAndPreferenceFilter)
         COMING_SOON -> buildComingSoonQuery(genreAndPreferenceFilter)
-        TOP_RATED_SINGLE_PLAYER -> buildTopRatedSinglePLayer(genreAndPreferenceFilter)
+        MOST_HYPED -> buildMostHypedQuery(genreAndPreferenceFilter)
+        RECENT -> buildRecentGamesQuery(genreAndPreferenceFilter)
     }
 }
 
-fun buildTopRatedSinglePLayer(genreAndPreferenceFilter: String): String {
+// FIXME: Perhaps use a builder pattern that can be tested easily.
+private fun buildShowcaseQuery(genreAndPreferenceFilter: String): String {
+    return "f slug, name,cover.image_id, screenshots.image_id;w rating >= 75 & hypes > 0 & first_release_date < ${Clock.System.now().epochSeconds} " +
+        "& first_release_date > ${
+        Clock.System.now().minus(6, DateTimeUnit.MONTH, currentSystemDefault()).epochSeconds
+        } & $genreAndPreferenceFilter; s hypes desc; l 50;"
+}
+
+private fun buildTopRatedQuery(genreAndPreferenceFilter: String): String {
     return "f slug, name, cover.image_id, screenshots.image_id;" +
-        "w category=(0) & game_modes=(1) & rating >= 80 & $genreAndPreferenceFilter;" +
+        "w total_rating >= 80 & first_release_date >= ${
+        Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
+        } & $genreAndPreferenceFilter;" +
         "s rating desc;" +
-        "l 9;"
+        "l 50;"
 }
 
 fun buildComingSoonQuery(genreAndPreferenceFilter: String): String {
     return "f slug, name, cover.image_id, screenshots.image_id;" +
         "w hypes > 0 & first_release_date >= ${Clock.System.now().epochSeconds} & $genreAndPreferenceFilter;" +
         "s first_release_date asc;" +
-        "l 9;"
+        "l 50;"
 }
 
-private fun buildTopRatedQuery(genreAndPreferenceFilter: String): String {
+fun buildMostHypedQuery(genreAndPreferenceFilter: String): String {
     return "f slug, name, cover.image_id, screenshots.image_id;" +
-        "w rating >= 70 & first_release_date >= ${
-        Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
-        } & $genreAndPreferenceFilter;" +
-        "s rating desc;" +
-        "l 9;"
+        "w hypes > 0 & first_release_date >= ${Clock.System.now().epochSeconds} & $genreAndPreferenceFilter;" +
+        "s hypes desc;" +
+        "l 50;"
 }
 
-private fun buildShowcaseQuery(genreAndPreferenceFilter: String): String {
-    return "f slug, name,cover.image_id, screenshots.image_id;w rating >= 75 & hypes > 0 & first_release_date < ${Clock.System.now().epochSeconds} " +
-        "& first_release_date > ${
-        Clock.System.now().minus(6, DateTimeUnit.MONTH, currentSystemDefault()).epochSeconds
-        } & $genreAndPreferenceFilter; s hypes desc; l 9;"
+fun buildRecentGamesQuery(genreAndPreferenceFilter: String): String {
+    return "f slug, name, cover.image_id, screenshots.image_id;" +
+        "w total_rating >= 60 & first_release_date <= ${Clock.System.now().epochSeconds}" +
+        " & $genreAndPreferenceFilter;" +
+        "s first_release_date desc;" +
+        "l 50;"
 }

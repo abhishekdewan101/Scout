@@ -1,9 +1,9 @@
 package com.abhishek101.core.repositories
 
 import com.abhishek101.core.db.Authentication
-import com.abhishek101.core.db.AuthenticationQueries
 import com.abhishek101.core.models.toAuthentication
 import com.abhishek101.core.remote.AuthenticationApi
+import com.abhishek101.core.utils.DatabaseHelper
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +20,10 @@ interface AuthenticationRepository {
 @ExperimentalTime
 class AuthenticationRepositoryImpl(
     private val authenticationApi: AuthenticationApi,
-    private val authenticationQueries: AuthenticationQueries
+    dbHelper: DatabaseHelper
 ) : AuthenticationRepository {
+
+    private val authenticationQueries = dbHelper.authenticationQueries
 
     override suspend fun authenticateUser() {
         authenticationApi.authenticateUser().toAuthentication().apply {

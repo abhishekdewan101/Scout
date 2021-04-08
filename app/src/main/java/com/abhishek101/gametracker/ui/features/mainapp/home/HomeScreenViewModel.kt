@@ -1,75 +1,44 @@
 package com.abhishek101.gametracker.ui.features.mainapp.home
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.abhishek101.core.models.GameList
 import com.abhishek101.core.repositories.GameRepository
-import com.abhishek101.gametracker.ui.components.titledlist.TiledGridListItem
-import com.abhishek101.gametracker.utils.buildImageString
+import com.abhishek101.core.repositories.ListType
+import com.abhishek101.core.repositories.ListType.COMING_SOON
+import com.abhishek101.core.repositories.ListType.MOST_HYPED
+import com.abhishek101.core.repositories.ListType.RECENT
+import com.abhishek101.core.repositories.ListType.SHOWCASE
+import com.abhishek101.core.repositories.ListType.TOP_RATED
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(private val gameRepository: GameRepository) : ViewModel() {
-
-    val carouselGameMap = mutableStateMapOf<String, String>()
-    val highlyRatedGameList = mutableStateListOf<TiledGridListItem>()
-    val comingSoonGames = mutableStateMapOf<String, String>()
-    val singlePlayerList = mutableStateListOf<TiledGridListItem>()
+    val showcaseList = mutableStateOf<GameList?>(null)
+    val topRatedList = mutableStateOf<GameList?>(null)
+    val comingSoonList = mutableStateOf<GameList?>(null)
+    val recentList = mutableStateOf<GameList?>(null)
+    val mostHypedList = mutableStateOf<GameList?>(null)
 
     init {
-        getBannerGamesPoster()
-        getTopRatedGamesOfLastYear()
-        getComingSoonGames()
-        getTopSinglePlayerGames()
+        getListData(SHOWCASE)
+        getListData(COMING_SOON)
+        getListData(TOP_RATED)
+        getListData(RECENT)
+        getListData(MOST_HYPED)
     }
 
-    private fun getBannerGamesPoster() {
+    private fun getListData(listType: ListType) {
         viewModelScope.launch {
-            gameRepository.getHeadlineBannerPosters().collect { gamePosterList ->
-                carouselGameMap.putAll(
-                    gamePosterList.map { it.slug to buildImageString(it.screenShots[0].imageId) }
-                )
-            }
-        }
-    }
-
-    private fun getTopRatedGamesOfLastYear() {
-        viewModelScope.launch {
-            gameRepository.getTopRatedGamesOfLastYear().collect { posterList ->
-                highlyRatedGameList.addAll(
-                    posterList.map {
-                        TiledGridListItem(
-                            it.slug,
-                            buildImageString(it.cover.imageId)
-                        )
-                    }
-                )
-            }
-        }
-    }
-
-    private fun getTopSinglePlayerGames() {
-        viewModelScope.launch {
-            gameRepository.getSinglePlayerGames().collect { posterList ->
-                singlePlayerList.addAll(
-                    posterList.map {
-                        TiledGridListItem(
-                            it.slug,
-                            buildImageString(it.cover.imageId)
-                        )
-                    }
-                )
-            }
-        }
-    }
-
-    private fun getComingSoonGames() {
-        viewModelScope.launch {
-            gameRepository.getComingSoonGames().collect { posterList ->
-                comingSoonGames.putAll(
-                    posterList.map { it.slug to buildImageString(it.cover.imageId) }
-                )
+            gameRepository.getListDataForType(listType).collect {
+                when (listType) {
+                    SHOWCASE -> showcaseList.value = it
+                    TOP_RATED -> topRatedList.value = it
+                    COMING_SOON -> comingSoonList.value = it
+                    RECENT -> recentList.value = it
+                    MOST_HYPED -> mostHypedList.value = it
+                }
             }
         }
     }
