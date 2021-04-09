@@ -22,10 +22,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.abhishek101.core.utils.buildImageString
 import com.abhishek101.gametracker.ui.theme.GameTrackerTheme
-import com.abhishek101.gametracker.utils.ImageSize.t_720p
-import com.abhishek101.gametracker.utils.ImageType.PNG
-import com.abhishek101.gametracker.utils.buildImageString
 import com.google.accompanist.coil.CoilImage
 
 @Composable
@@ -52,7 +50,7 @@ fun ImageListItem(
                 modifier = Modifier.padding(10.dp)
             ) {
                 CoilImage(
-                    data = buildImageString(data.imageUrl, t_720p, PNG),
+                    data = buildImageString(data.imageUrl),
                     contentDescription = "",
                     modifier = Modifier.size(150.dp, 150.dp),
                     fadeIn = true,

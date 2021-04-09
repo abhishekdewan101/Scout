@@ -1,15 +1,13 @@
 package com.abhishek101.core.repositories
 
-import com.abhishek101.core.db.AuthenticationQueries
 import com.abhishek101.core.db.Platform
-import com.abhishek101.core.db.PlatformQueries
 import com.abhishek101.core.remote.PlatformApi
+import com.abhishek101.core.utils.DatabaseHelper
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.datetime.Clock
 
 interface PlatformRepository {
     fun getCachedPlatforms(): Flow<List<Platform>>
@@ -20,9 +18,10 @@ interface PlatformRepository {
 
 class PlatformRepositoryImpl(
     private val platformApi: PlatformApi,
-    private val platformQueries: PlatformQueries,
-    private val authenticationQueries: AuthenticationQueries
+    private val dbHelper: DatabaseHelper
 ) : PlatformRepository {
+
+    private val platformQueries = dbHelper.platformQueries
 
     override fun getCachedPlatforms(): Flow<List<Platform>> {
         return platformQueries.getAllPlatforms().asFlow().mapToList()
@@ -30,9 +29,7 @@ class PlatformRepositoryImpl(
     }
 
     override suspend fun updateCachedPlatforms() {
-        val timeNow = Clock.System.now().epochSeconds
-        val accessToken = authenticationQueries.getAuthenticationData(timeNow).executeAsOne()
-        platformApi.getPlatforms(accessToken.accessToken).forEach {
+        platformApi.getPlatforms(dbHelper.accessToken).forEach {
             platformQueries.savePlatform(
                 it.id,
                 it.slug,

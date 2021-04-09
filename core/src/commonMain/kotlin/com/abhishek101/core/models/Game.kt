@@ -4,14 +4,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GamePosterRemoteEntity(
+data class IgdbGame(
     @SerialName("slug") val slug: String,
     @SerialName("name") val name: String,
-    @SerialName("screenshots") val screenShots: List<Image>,
-    @SerialName("cover") val cover: Image
+    @SerialName("screenshots") val screenShots: List<IgdbImage>? = null,
+    @SerialName("cover") val cover: IgdbImage? = null
 )
 
 @Serializable
-data class Image(
+data class IgdbImage(
     @SerialName("image_id") val imageId: String
 )
+
+data class GameList(val title: String, val games: List<IgdbGame>)

@@ -1,4 +1,4 @@
-package com.abhishek101.gametracker.utils
+package com.abhishek101.core.utils
 
 enum class ImageSize {
     t_720p,
@@ -15,5 +15,4 @@ fun buildImageString(
     imageId: String,
     imageSize: ImageSize = ImageSize.t_720p,
     imageType: ImageType = ImageType.PNG
-) =
-    "https://images.igdb.com/igdb/image/upload/${imageSize.name}/$imageId.${imageType.name.lowercase()}"
+) = "https://images.igdb.com/igdb/image/upload/${imageSize.name}/$imageId.${imageType.name.lowercase()}"

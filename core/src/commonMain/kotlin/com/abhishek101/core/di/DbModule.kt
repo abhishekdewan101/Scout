@@ -6,15 +6,6 @@ import org.koin.dsl.module
 
 val dbModule = module {
     single {
-        get<DatabaseHelper>().authenticationQueries
-    }
-    single {
-        get<DatabaseHelper>().platformQueries
-    }
-    single {
-        get<DatabaseHelper>().genreQueries
-    }
-    single {
         DatabaseHelper(AppDb(get()))
     }
 }

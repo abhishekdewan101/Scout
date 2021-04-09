@@ -22,11 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.abhishek101.core.utils.buildImageString
 import com.abhishek101.gametracker.ui.components.carousel.Carousel
+import com.abhishek101.gametracker.ui.components.titledlist.TiledGridListItem
 import com.abhishek101.gametracker.ui.components.titledlist.TitledGridList
 import org.koin.androidx.compose.get
 import timber.log.Timber
 
+// TODO: Fix the UI code and make the list most modular.
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
     Column(
@@ -43,21 +46,40 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
         )
 
         Box(modifier = Modifier.padding(top = 20.dp)) {
-            Carousel(data = viewModel.carouselGameMap, 400.dp, 200.dp) {
-                Timber.d("User clicked on $it")
-            }
+            viewModel.showcaseList.value?.games?.take(9)
+                ?.map {
+                    it.slug to buildImageString(
+                        it.screenShots?.get(0)?.imageId ?: it.cover?.imageId ?: "/"
+                    )
+                }
+                ?.toMap()?.let {
+                    Carousel(
+                        data = it,
+                        400.dp,
+                        200.dp
+                    ) {
+                        Timber.d("User clicked on $it")
+                    }
+                }
         }
 
         Box(modifier = Modifier.padding(top = 20.dp)) {
-            TitledGridList(
-                title = "Highly Rated Games",
-                viewModel.highlyRatedGameList,
-                3,
-                onViewMoreClicked = {
-                    Timber.d("View More List")
+            viewModel.comingSoonList.value?.let { list ->
+                TitledGridList(
+                    title = list.title,
+                    list.games.take(9).map {
+                        TiledGridListItem(
+                            it.slug,
+                            buildImageString(it.cover?.imageId ?: "")
+                        )
+                    },
+                    3,
+                    onViewMoreClicked = {
+                        Timber.d("View More List")
+                    }
+                ) {
+                    Timber.d("User clicked on $it")
                 }
-            ) {
-                Timber.d("User clicked on $it")
             }
         }
 
@@ -67,10 +89,15 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    "Coming Soon",
-                    style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onBackground)
-                )
+                viewModel.topRatedList.value?.title?.let {
+                    Text(
+                        it,
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    )
+                }
                 IconButton(onClick = { Timber.d("User clicked on view more") }) {
                     Icon(Icons.Outlined.MoreVert, "More", tint = MaterialTheme.colors.onBackground)
                 }
@@ -80,21 +107,60 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
                     .fillMaxWidth()
                     .height(20.dp)
             )
-            Carousel(data = viewModel.comingSoonGames, 150.dp, 250.dp) {
-                Timber.d("User Clicked on $it")
+            viewModel.topRatedList.value?.games?.take(9)
+                ?.map {
+                    it.slug to buildImageString(
+                        it.cover?.imageId ?: "/"
+                    )
+                }
+                ?.toMap()?.let {
+                    Carousel(
+                        data = it,
+                        150.dp,
+                        200.dp
+                    ) {
+                        Timber.d("User clicked on $it")
+                    }
+                }
+        }
+
+        Box(modifier = Modifier.padding(top = 20.dp)) {
+            viewModel.recentList.value?.let { list ->
+                TitledGridList(
+                    title = list.title,
+                    list.games.take(9).map {
+                        TiledGridListItem(
+                            it.slug,
+                            buildImageString(it.cover?.imageId ?: "")
+                        )
+                    },
+                    3,
+                    onViewMoreClicked = {
+                        Timber.d("View More List")
+                    }
+                ) {
+                    Timber.d("User clicked on $it")
+                }
             }
         }
 
         Box(modifier = Modifier.padding(top = 20.dp)) {
-            TitledGridList(
-                title = "Top Single Player Games",
-                viewModel.singlePlayerList,
-                3,
-                onViewMoreClicked = {
-                    Timber.d("View More List")
+            viewModel.mostHypedList.value?.let { list ->
+                TitledGridList(
+                    title = list.title,
+                    list.games.take(9).map {
+                        TiledGridListItem(
+                            it.slug,
+                            buildImageString(it.cover?.imageId ?: "")
+                        )
+                    },
+                    3,
+                    onViewMoreClicked = {
+                        Timber.d("View More List")
+                    }
+                ) {
+                    Timber.d("User clicked on $it")
                 }
-            ) {
-                Timber.d("User clicked on $it")
             }
         }
     }

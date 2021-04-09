@@ -1,81 +1,41 @@
 package com.abhishek101.core.repositories
 
-import com.abhishek101.core.db.AuthenticationQueries
-import com.abhishek101.core.db.GenreQueries
-import com.abhishek101.core.db.PlatformQueries
-import com.abhishek101.core.models.GamePosterRemoteEntity
+import com.abhishek101.core.models.GameList
 import com.abhishek101.core.remote.GameApi
-import com.abhishek101.core.utils.QueryType.COMING_SOON
-import com.abhishek101.core.utils.QueryType.SHOWCASE
-import com.abhishek101.core.utils.QueryType.TOP_RATED_LAST_YEAR
-import com.abhishek101.core.utils.QueryType.TOP_RATED_SINGLE_PLAYER
+import com.abhishek101.core.utils.DatabaseHelper
 import com.abhishek101.core.utils.buildQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.datetime.Clock
+
+enum class ListType(val title: String) {
+    SHOWCASE("Showcase"),
+    TOP_RATED("Top Rated"),
+    COMING_SOON("Coming Soon"),
+    RECENT("Recent"),
+    MOST_HYPED("Most Hyped")
+}
 
 interface GameRepository {
-    suspend fun getHeadlineBannerPosters(): Flow<List<GamePosterRemoteEntity>>
-    suspend fun getTopRatedGamesOfLastYear(): Flow<List<GamePosterRemoteEntity>>
-    suspend fun getComingSoonGames(): Flow<List<GamePosterRemoteEntity>>
-    suspend fun getSinglePlayerGames(): Flow<List<GamePosterRemoteEntity>>
+    suspend fun getListDataForType(type: ListType): Flow<GameList>
 }
 
 class GameRepositoryImpl(
     private val gameApi: GameApi,
-    authenticationQueries: AuthenticationQueries,
-    genreQueries: GenreQueries,
-    platformQueries: PlatformQueries
+    private val dbHelper: DatabaseHelper
 ) : GameRepository {
-    private val timeNow = Clock.System.now().epochSeconds
-    private val authentication = authenticationQueries.getAuthenticationData(timeNow).executeAsOne()
-
-    private val favoriteGenres = genreQueries.getAllFavoriteGenres().executeAsList()
-    private val ownedPlatforms = platformQueries.getUserOwnedPlatforms().executeAsList()
-
-    override suspend fun getHeadlineBannerPosters(): Flow<List<GamePosterRemoteEntity>> {
+    override suspend fun getListDataForType(type: ListType): Flow<GameList> {
         return flow {
-            emit(emptyList())
-            val posterList = gameApi.getGamePostersForQuery(
-                buildQuery(SHOWCASE, favoriteGenres, ownedPlatforms),
-                authentication.accessToken
+            val poster = gameApi.getGamePostersForQuery(
+                buildQuery(
+                    type,
+                    dbHelper.genreFilter,
+                    dbHelper.platformFilter
+                ),
+                dbHelper.accessToken
             )
-            emit(posterList)
-        }.flowOn(Dispatchers.Default)
-    }
-
-    override suspend fun getTopRatedGamesOfLastYear(): Flow<List<GamePosterRemoteEntity>> {
-        return flow {
-            emit(emptyList())
-            val posterList = gameApi.getGamePostersForQuery(
-                buildQuery(TOP_RATED_LAST_YEAR, favoriteGenres, ownedPlatforms),
-                authentication.accessToken
-            )
-            emit(posterList)
-        }.flowOn(Dispatchers.Default)
-    }
-
-    override suspend fun getComingSoonGames(): Flow<List<GamePosterRemoteEntity>> {
-        return flow {
-            emit(emptyList())
-            val posterList = gameApi.getGamePostersForQuery(
-                buildQuery(COMING_SOON, favoriteGenres, ownedPlatforms),
-                authentication.accessToken
-            )
-            emit(posterList)
-        }.flowOn(Dispatchers.Default)
-    }
-
-    override suspend fun getSinglePlayerGames(): Flow<List<GamePosterRemoteEntity>> {
-        return flow {
-            emit(emptyList())
-            val posterList = gameApi.getGamePostersForQuery(
-                buildQuery(TOP_RATED_SINGLE_PLAYER, favoriteGenres, ownedPlatforms),
-                authentication.accessToken
-            )
-            emit(posterList)
+            emit(GameList(type.title, poster))
         }.flowOn(Dispatchers.Default)
     }
 }

@@ -1,6 +1,6 @@
 package com.abhishek101.core.remote
 
-import com.abhishek101.core.models.GamePosterRemoteEntity
+import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.utils.AppConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
@@ -11,7 +11,7 @@ interface GameApi {
     suspend fun getGamePostersForQuery(
         query: String,
         accessToken: String
-    ): List<GamePosterRemoteEntity>
+    ): List<IgdbGame>
 }
 
 class GameApiImpl(
@@ -21,7 +21,7 @@ class GameApiImpl(
     override suspend fun getGamePostersForQuery(
         query: String,
         accessToken: String
-    ): List<GamePosterRemoteEntity> {
+    ): List<IgdbGame> {
         return client.post {
             headers {
                 append("Client-ID", appConfig.clientId)
