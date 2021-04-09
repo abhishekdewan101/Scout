@@ -87,7 +87,15 @@ sqldelight {
 buildkonfig {
     packageName = "com.abhishek101.core"
     val properties = Properties()
-    properties.load(project.rootProject.file("local.properties").inputStream())
+    try {
+        properties.load(project.rootProject.file("local.properties").inputStream())
+    } catch (e: Exception) {
+        //FIXME: This needs to read from github workflow env variables
+        properties.setProperty("clientId", "")
+        properties.setProperty("useTwitchAuthentication", "false")
+        properties.setProperty("clientAuthenticationUrl", "")
+    }
+
 
     defaultConfigs {
         buildConfigField(STRING, "ClientId", properties.getProperty("clientId"))
