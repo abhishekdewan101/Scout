@@ -1,4 +1,7 @@
-# Game Tracker
+# Game Tracker 
+
+![Build Status](https://github.com/abhishekdewan101/GameTracker/actions/workflows/android.yml/badge.svg)
+
 
 Game tracker is a project aimed at developing an application that helps iOS and Android users keep track of their ever growing game libraries and then help them make decisions on what they should be playing next.
 
