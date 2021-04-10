@@ -1,8 +1,11 @@
 package com.abhishek101.gamescout.ui.features.splash
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import com.abhishek101.gametracker.ui.MainActivity
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import com.abhishek101.gamescout.ui.MainActivity
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -38,7 +41,7 @@ class SplashScreenKtTest {
     fun splashScreenNavigatesToHomeScreenIfAuthenticationIsValid() {
         isAuthenticationValid.value = true
         composeRule.setContent {
-            com.abhishek101.gamescout.ui.features.splash.SplashScreen(
+            SplashScreen(
                 viewModel = splashViewModel
             )
         }

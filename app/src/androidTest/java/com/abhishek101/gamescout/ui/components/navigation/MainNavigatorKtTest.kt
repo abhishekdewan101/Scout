@@ -1,7 +1,9 @@
 package com.abhishek101.gamescout.ui.components.navigation
 
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import com.abhishek101.gametracker.ui.MainActivity
+import androidx.compose.ui.test.onNodeWithTag
+import com.abhishek101.gamescout.ui.MainActivity
 import org.junit.Rule
 import org.junit.Test
 
