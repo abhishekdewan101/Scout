@@ -1,4 +1,4 @@
-# Game Tracker 
+# Scout 
 
 ![Build Status](https://github.com/abhishekdewan101/GameTracker/actions/workflows/android.yml/badge.svg)
 
