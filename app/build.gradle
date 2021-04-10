@@ -1,5 +1,5 @@
-import com.abhishek101.gametracker.AppVersions
-import com.abhishek101.gametracker.Libs
+import com.abhishek101.gamescout.AppVersions
+import com.abhishek101.gamescout.Libs
 
 plugins {
     id 'com.android.application'

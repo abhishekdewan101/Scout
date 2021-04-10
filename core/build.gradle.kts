@@ -1,7 +1,7 @@
-import com.abhishek101.gametracker.AppVersions
-import com.abhishek101.gametracker.Libs
-import com.abhishek101.gametracker.Libs.Koin
-import com.abhishek101.gametracker.Libs.SqlDelight
+import com.abhishek101.gamescout.AppVersions
+import com.abhishek101.gamescout.Libs
+import com.abhishek101.gamescout.Libs.Koin
+import com.abhishek101.gamescout.Libs.SqlDelight
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget

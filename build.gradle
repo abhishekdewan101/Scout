@@ -1,5 +1,5 @@
-import com.abhishek101.gametracker.Libs
-import com.abhishek101.gametracker.Versions
+import com.abhishek101.gamescout.Libs
+import com.abhishek101.gamescout.Versions
 
 buildscript {
     repositories {

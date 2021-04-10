@@ -5,6 +5,6 @@ dependencyResolutionManagement {
         jcenter()
     }
 }
-rootProject.name = "GameTracker"
+rootProject.name = "GameScout"
 include ':app'
 include ':core'
