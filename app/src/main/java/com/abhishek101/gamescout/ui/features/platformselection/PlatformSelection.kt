@@ -199,7 +199,7 @@ fun PlatformSelectionWithNoData() {
 }
 
 val platformTestData = listOf(
-    Platform(1, "slug", "name", "url", isOwned = false),
-    Platform(1, "slug", "name1", "url", isOwned = true),
-    Platform(1, "slug", "name2", "url", isOwned = true),
+    Platform(1, "slug", "name", 3, "url", isOwned = false),
+    Platform(1, "slug", "name1", 3, "url", isOwned = true),
+    Platform(1, "slug", "name2", 3, "url", isOwned = true),
 )

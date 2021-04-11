@@ -34,6 +34,7 @@ class PlatformRepositoryImpl(
                 it.id,
                 it.slug,
                 it.name,
+                it.generation,
                 it.logo.imageId
             )
         }

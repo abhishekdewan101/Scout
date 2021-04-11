@@ -2,16 +2,17 @@ CREATE TABLE Platform (
 id INTEGER NOT NULL PRIMARY KEY,
 slug TEXT NOT NULL,
 name TEXT NOT NULL,
+generation INTEGER NOT NULL,
 imageId TEXT NOT NULL,
 isOwned INTEGER AS Boolean DEFAULT 0
 );
 
 getAllPlatforms:
-SELECT * FROM Platform;
+SELECT * FROM Platform ORDER BY generation DESC;
 
 savePlatform:
-INSERT INTO Platform(id, slug, name, imageId)
-VALUES(?,?,?,?);
+INSERT INTO Platform(id, slug, name, generation, imageId)
+VALUES(?,?,?,?,?);
 
 ownPlatform:
 UPDATE Platform
