@@ -65,8 +65,8 @@ fun CollapsableButton(
 
     val color = transition.animateColor(label = "") { state ->
         when (state) {
-            AnimatedButtonState.EXPANDED -> finalColor
-            AnimatedButtonState.SHRUNK -> initialColor
+            AnimatedButtonState.EXPANDED -> initialColor
+            AnimatedButtonState.SHRUNK -> finalColor
         }
     }
 
@@ -134,13 +134,13 @@ fun AnimatedButtonPreview() {
         ) {
             CollapsableButton(
                 initialWidth = 200.dp,
-                initialColor = MaterialTheme.colors.secondary,
+                initialColor = MaterialTheme.colors.surface,
                 initialIcon = Icons.Outlined.Add,
                 initialLabel = "Add to favorites",
                 initialBorderRadius = 10.dp,
                 height = 50.dp,
                 finalWidth = 50.dp,
-                finalColor = MaterialTheme.colors.surface,
+                finalColor = MaterialTheme.colors.secondary,
                 finalIcon = Icons.Outlined.Done
             ) {
 
