@@ -85,7 +85,7 @@ fun CollapsableButton(
     Box(
         Modifier
             .width(width.value)
-            .height(height) // FIXME: Needs to be dynamic
+            .height(height)
             .clip(clipShape)
             .background(color.value)
             .clickable {
