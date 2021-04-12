@@ -16,12 +16,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,50 +32,68 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.abhishek101.gamescout.ui.theme.GameTrackerTheme
 
 enum class AnimatedButtonState {
-    IDLE,
-    PRESSED
+    EXPANDED,
+    SHRUNK
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AnimatedButton(minWidth: Dp, maxWidth: Dp, height: Dp) {
-    var buttonState by remember(AnimatedButtonState.IDLE) {
-        mutableStateOf(AnimatedButtonState.IDLE)
+fun CollapsableButton(
+    initialWidth: Dp,
+    initialColor: Color,
+    initialIcon: ImageVector,
+    initialLabel: String?,
+    initialBorderRadius: Dp,
+    finalWidth: Dp,
+    finalColor: Color,
+    finalIcon: ImageVector,
+    height: Dp,
+    onClick: () -> Unit
+) {
+    var buttonState by remember(AnimatedButtonState.EXPANDED) {
+        mutableStateOf(AnimatedButtonState.EXPANDED)
     }
 
-    val transition = updateTransition(targetState = buttonState)
+    val transition = updateTransition(targetState = buttonState, label = "")
 
     val color = transition.animateColor(label = "") { state ->
         when (state) {
-            AnimatedButtonState.IDLE -> MaterialTheme.colors.secondary
-            AnimatedButtonState.PRESSED -> MaterialTheme.colors.surface
+            AnimatedButtonState.EXPANDED -> finalColor
+            AnimatedButtonState.SHRUNK -> initialColor
         }
     }
 
     val width = transition.animateDp(label = "") { state ->
         when (state) {
-            AnimatedButtonState.IDLE -> maxWidth
-            AnimatedButtonState.PRESSED -> minWidth
+            AnimatedButtonState.EXPANDED -> initialWidth
+            AnimatedButtonState.SHRUNK -> finalWidth
         }
+    }
+
+    val clipShape = when (buttonState) {
+        AnimatedButtonState.SHRUNK -> MaterialTheme.shapes.small.copy(CornerSize(50))
+        AnimatedButtonState.EXPANDED -> RoundedCornerShape(initialBorderRadius)
     }
 
     Box(
         Modifier
             .width(width.value)
             .height(height) // FIXME: Needs to be dynamic
-            .clip(MaterialTheme.shapes.small.copy(CornerSize(percent = 50)))
+            .clip(clipShape)
             .background(color.value)
             .clickable {
                 buttonState = when (buttonState) {
-                    AnimatedButtonState.IDLE -> AnimatedButtonState.PRESSED
-                    AnimatedButtonState.PRESSED -> AnimatedButtonState.IDLE
+                    AnimatedButtonState.EXPANDED -> AnimatedButtonState.SHRUNK
+                    AnimatedButtonState.SHRUNK -> AnimatedButtonState.EXPANDED
                 }
+                onClick()
             }
     ) {
         Column(
@@ -82,19 +101,21 @@ fun AnimatedButton(minWidth: Dp, maxWidth: Dp, height: Dp) {
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            AnimatedVisibility(visible = buttonState == AnimatedButtonState.IDLE) {
+            AnimatedVisibility(visible = buttonState == AnimatedButtonState.EXPANDED) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Outlined.Add, "", tint = Color.White)
-                    Text(
-                        text = "Add to favorites",
-                        modifier = Modifier.padding(start = 5.dp),
-                        color = Color.White
-                    )
+                    Icon(initialIcon, "", tint = Color.White)
+                    initialLabel?.let {
+                        Text(
+                            text = it,
+                            modifier = Modifier.padding(start = 5.dp),
+                            color = Color.White
+                        )
+                    }
                 }
             }
-            AnimatedVisibility(visible = buttonState == AnimatedButtonState.PRESSED) {
+            AnimatedVisibility(visible = buttonState == AnimatedButtonState.SHRUNK) {
                 Row {
-                    Icon(Icons.Filled.Done, "", tint = Color.White)
+                    Icon(finalIcon, "", tint = Color.White)
                 }
             }
         }
@@ -106,9 +127,24 @@ fun AnimatedButton(minWidth: Dp, maxWidth: Dp, height: Dp) {
 @Composable
 fun AnimatedButtonPreview() {
     GameTrackerTheme {
-        Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
-            AnimatedButton(minWidth = 50.dp, maxWidth = 200.dp, height = 50.dp)
-            AnimatedButton(minWidth = 50.dp, maxWidth = 175.dp, height = 50.dp)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            CollapsableButton(
+                initialWidth = 200.dp,
+                initialColor = MaterialTheme.colors.secondary,
+                initialIcon = Icons.Outlined.Add,
+                initialLabel = "Add to favorites",
+                initialBorderRadius = 10.dp,
+                height = 50.dp,
+                finalWidth = 50.dp,
+                finalColor = MaterialTheme.colors.surface,
+                finalIcon = Icons.Outlined.Done
+            ) {
+
+            }
         }
     }
 }
