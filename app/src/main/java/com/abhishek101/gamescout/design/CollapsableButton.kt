@@ -36,7 +36,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.abhishek101.gamescout.ui.theme.GameTrackerTheme
+import com.abhishek101.gamescout.theme.GameTrackerTheme
 
 enum class AnimatedButtonState {
     EXPANDED,

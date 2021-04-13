@@ -13,7 +13,7 @@
         android:name="com.abhishek101.gamescout.GSApplication"
         android:theme="@style/Theme.GameTracker">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.GameTracker.NoActionBar">
