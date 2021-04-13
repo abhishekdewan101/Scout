@@ -14,6 +14,10 @@ Scout is a project aimed at developing an application that helps iOS and Android
 - Personalized results based on platforms you own and genres you like.
 - Personal stats on what types of games you like to play, how many hours you've played, etc.
 
+## Read More
+
+I sometimes blog about my journey in this project at my blog [learning-to-code](https://abhishekdewan101.github.io/learning-to-code/)
+
 ## Getting Started
 1. Clone the repo.
 2. In the root of the project create a local.properties files where you would be adding your authentication params.
