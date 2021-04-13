@@ -1,5 +1,6 @@
 package com.abhishek101.core.di
 
+import com.abhishek101.core.BuildKonfig
 import com.abhishek101.core.remote.GameApi
 import com.abhishek101.core.remote.GameApiImpl
 import com.abhishek101.core.remote.GenreApi
@@ -37,7 +38,7 @@ val apiModule = module {
             }
             install(Logging) {
                 logger = ktorLogger
-                level = LogLevel.ALL
+                level = if (BuildKonfig.EnableHttpLogging) LogLevel.ALL else LogLevel.NONE
             }
         }
     }
