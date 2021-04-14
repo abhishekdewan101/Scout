@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import com.google.accompanist.coil.CoilImage
 
@@ -51,6 +52,7 @@ fun TouchableImage(
         CoilImage(
             data = url,
             contentDescription = "",
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(width, height)
         )
