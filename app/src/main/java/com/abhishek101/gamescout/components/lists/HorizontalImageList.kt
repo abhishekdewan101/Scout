@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.components.carousel
+package com.abhishek101.gamescout.components.lists
 
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.MaterialTheme
@@ -9,26 +9,25 @@ import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.TouchableImage
 
 @Composable
-fun Carousel(
-    data: Map<String, String>,
+fun HorizontalImageList(
+    data: List<String>,
     itemWidth: Dp,
     itemHeight: Dp,
-    onItemSelected: (String) -> Unit
+    onIndexSelected: (Int) -> Unit
 ) {
-    val urlList = data.values.toList()
-    val ids = data.keys.toList()
     LazyRow {
-        items(urlList.count()) {
+        items(data.size) { index ->
+            val url = data[index]
             Padding(end = 20.dp) {
                 TouchableImage(
-                    url = urlList[it],
+                    url = url,
                     width = itemWidth,
                     height = itemHeight,
                     cornerRadius = 10.dp,
                     backgroundColor = null,
                     rippleColor = MaterialTheme.colors.primary
                 ) {
-                    onItemSelected(ids[it])
+                    onIndexSelected(index)
                 }
             }
         }

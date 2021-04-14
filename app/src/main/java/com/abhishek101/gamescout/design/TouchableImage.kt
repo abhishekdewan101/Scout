@@ -16,6 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import com.google.accompanist.coil.CoilImage
 
+//TODO: Add documentation
 @Composable
 fun TouchableImage(
     url: String,

@@ -23,7 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.utils.buildImageString
-import com.abhishek101.gamescout.components.carousel.Carousel
+import com.abhishek101.gamescout.components.lists.HorizontalImageList
 import com.abhishek101.gamescout.components.titledlist.TiledGridListItem
 import com.abhishek101.gamescout.components.titledlist.TitledGridList
 import org.koin.androidx.compose.get
@@ -46,21 +46,21 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
         )
 
         Box(modifier = Modifier.padding(top = 20.dp)) {
-            viewModel.showcaseList.value?.games?.take(9)
-                ?.map {
-                    it.slug to buildImageString(
-                        it.screenShots?.get(0)?.imageId ?: it.cover?.imageId ?: "/"
+            if (viewModel.showcaseList.value != null) {
+                val gameList = viewModel.showcaseList.value
+                val imageUrlList = gameList?.games?.map {
+                    buildImageString(
+                        it.screenShots?.get(0)?.imageId ?: it.cover?.imageId ?: ""
                     )
+                }!!
+                HorizontalImageList(
+                    data = imageUrlList,
+                    itemWidth = 400.dp,
+                    itemHeight = 200.dp
+                ) {
+                    Timber.d("User clicked on ${gameList.games[it]}")
                 }
-                ?.toMap()?.let {
-                    Carousel(
-                        data = it,
-                        400.dp,
-                        200.dp
-                    ) {
-                        Timber.d("User clicked on $it")
-                    }
-                }
+            }
         }
 
         Box(modifier = Modifier.padding(top = 20.dp)) {
@@ -107,21 +107,21 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
                     .fillMaxWidth()
                     .height(20.dp)
             )
-            viewModel.topRatedList.value?.games?.take(9)
-                ?.map {
-                    it.slug to buildImageString(
-                        it.cover?.imageId ?: "/"
+            if (viewModel.topRatedList.value != null) {
+                val gameList = viewModel.topRatedList.value
+                val imageUrlList = gameList?.games?.map {
+                    buildImageString(
+                        it.cover?.imageId ?: ""
                     )
+                }!!
+                HorizontalImageList(
+                    data = imageUrlList,
+                    itemWidth = 150.dp,
+                    itemHeight = 200.dp
+                ) {
+                    Timber.d("User clicked on ${gameList.games[it]}")
                 }
-                ?.toMap()?.let {
-                    Carousel(
-                        data = it,
-                        150.dp,
-                        200.dp
-                    ) {
-                        Timber.d("User clicked on $it")
-                    }
-                }
+            }
         }
 
         Box(modifier = Modifier.padding(top = 20.dp)) {

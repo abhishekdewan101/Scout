@@ -42,7 +42,7 @@ enum class AnimatedButtonState {
     EXPANDED,
     SHRUNK
 }
-
+//TODO: Add documentation
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CollapsableButton(
