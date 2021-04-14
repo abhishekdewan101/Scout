@@ -3,17 +3,26 @@ package com.abhishek101.gamescout.design
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
+import com.abhishek101.gamescout.R
 import com.google.accompanist.coil.CoilImage
 
 //TODO: Add documentation
@@ -22,9 +31,10 @@ fun TouchableImage(
     url: String,
     width: Dp,
     height: Dp,
-    cornerRadius: Dp?,
-    backgroundColor: Color?,
-    rippleColor: Color?,
+    cornerRadius: Dp? = null,
+    backgroundColor: Color? = null,
+    rippleColor: Color? = null,
+    loadingColor: Color? = null,
     onTouch: () -> Unit
 ) {
 
@@ -55,7 +65,28 @@ fun TouchableImage(
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(width, height)
+                .size(width, height),
+            loading = {
+                Column(
+                    Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = loadingColor ?: MaterialTheme.colors.primary
+                    )
+                }
+            },
+            error = {
+                Column(
+                    Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    val image = painterResource(id = R.drawable.error_outline_24)
+                    Icon(painter = image, "")
+                }
+            }
         )
     }
 }

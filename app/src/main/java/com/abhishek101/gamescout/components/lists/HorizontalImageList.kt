@@ -24,7 +24,6 @@ fun HorizontalImageList(
                     width = itemWidth,
                     height = itemHeight,
                     cornerRadius = 10.dp,
-                    backgroundColor = null,
                     rippleColor = MaterialTheme.colors.primary
                 ) {
                     onIndexSelected(index)
