@@ -23,7 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.utils.buildImageString
-import com.abhishek101.gamescout.components.TitledGridList
+import com.abhishek101.gamescout.components.TitledImageGridList
 import com.abhishek101.gamescout.design.HorizontalImageList
 import org.koin.androidx.compose.get
 import timber.log.Timber
@@ -66,7 +66,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
             viewModel.comingSoonList.value?.let { list ->
                 val data =
                     list.games.take(9).map { buildImageString(it.cover?.imageId ?: "") }.toList()
-                TitledGridList(
+                TitledImageGridList(
                     title = list.title,
                     data,
                     3,
@@ -124,7 +124,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
             viewModel.recentList.value?.let { list ->
                 val data =
                     list.games.take(9).map { buildImageString(it.cover?.imageId ?: "") }.toList()
-                TitledGridList(
+                TitledImageGridList(
                     title = list.title,
                     data,
                     3,
@@ -141,7 +141,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
             viewModel.mostHypedList.value?.let { list ->
                 val data =
                     list.games.take(9).map { buildImageString(it.cover?.imageId ?: "") }.toList()
-                TitledGridList(
+                TitledImageGridList(
                     title = list.title,
                     data,
                     3,
