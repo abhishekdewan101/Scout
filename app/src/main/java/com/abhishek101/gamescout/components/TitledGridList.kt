@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.components.titledlist
+package com.abhishek101.gamescout.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column

@@ -23,7 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.utils.buildImageString
-import com.abhishek101.gamescout.components.titledlist.TitledGridList
+import com.abhishek101.gamescout.components.TitledGridList
 import com.abhishek101.gamescout.design.HorizontalImageList
 import org.koin.androidx.compose.get
 import timber.log.Timber
