@@ -23,9 +23,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.utils.buildImageString
-import com.abhishek101.gamescout.components.lists.HorizontalImageList
-import com.abhishek101.gamescout.components.titledlist.TiledGridListItem
 import com.abhishek101.gamescout.components.titledlist.TitledGridList
+import com.abhishek101.gamescout.design.HorizontalImageList
 import org.koin.androidx.compose.get
 import timber.log.Timber
 
@@ -65,20 +64,17 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
 
         Box(modifier = Modifier.padding(top = 20.dp)) {
             viewModel.comingSoonList.value?.let { list ->
+                val data =
+                    list.games.take(9).map { buildImageString(it.cover?.imageId ?: "") }.toList()
                 TitledGridList(
                     title = list.title,
-                    list.games.take(9).map {
-                        TiledGridListItem(
-                            it.slug,
-                            buildImageString(it.cover?.imageId ?: "")
-                        )
-                    },
+                    data,
                     3,
                     onViewMoreClicked = {
                         Timber.d("View More List")
                     }
                 ) {
-                    Timber.d("User clicked on $it")
+                    Timber.d("User clicked on ${list.games[it]}")
                 }
             }
         }
@@ -126,40 +122,34 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
 
         Box(modifier = Modifier.padding(top = 20.dp)) {
             viewModel.recentList.value?.let { list ->
+                val data =
+                    list.games.take(9).map { buildImageString(it.cover?.imageId ?: "") }.toList()
                 TitledGridList(
                     title = list.title,
-                    list.games.take(9).map {
-                        TiledGridListItem(
-                            it.slug,
-                            buildImageString(it.cover?.imageId ?: "")
-                        )
-                    },
+                    data,
                     3,
                     onViewMoreClicked = {
                         Timber.d("View More List")
                     }
                 ) {
-                    Timber.d("User clicked on $it")
+                    Timber.d("User clicked on ${list.games[it]}")
                 }
             }
         }
 
         Box(modifier = Modifier.padding(top = 20.dp)) {
             viewModel.mostHypedList.value?.let { list ->
+                val data =
+                    list.games.take(9).map { buildImageString(it.cover?.imageId ?: "") }.toList()
                 TitledGridList(
                     title = list.title,
-                    list.games.take(9).map {
-                        TiledGridListItem(
-                            it.slug,
-                            buildImageString(it.cover?.imageId ?: "")
-                        )
-                    },
+                    data,
                     3,
                     onViewMoreClicked = {
                         Timber.d("View More List")
                     }
                 ) {
-                    Timber.d("User clicked on $it")
+                    Timber.d("User clicked on ${list.games[it]}")
                 }
             }
         }
