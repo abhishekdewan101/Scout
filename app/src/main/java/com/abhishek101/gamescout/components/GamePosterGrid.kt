@@ -9,7 +9,7 @@ import com.abhishek101.gamescout.design.TitleContainer
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TitledImageGridList(
+fun GamePosterGrid(
     title: String,
     data: List<String>,
     columns: Int,
