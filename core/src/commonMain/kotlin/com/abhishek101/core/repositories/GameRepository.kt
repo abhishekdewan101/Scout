@@ -1,6 +1,7 @@
 package com.abhishek101.core.repositories
 
-import com.abhishek101.core.models.GameList
+import com.abhishek101.core.models.GameListData
+import com.abhishek101.core.models.ListData
 import com.abhishek101.core.remote.GameApi
 import com.abhishek101.core.utils.DatabaseHelper
 import com.abhishek101.core.utils.buildQuery
@@ -18,16 +19,16 @@ enum class ListType(val title: String) {
 }
 
 interface GameRepository {
-    suspend fun getListDataForType(type: ListType): Flow<GameList>
+    suspend fun getListDataForType(type: ListType): Flow<ListData>
 }
 
 class GameRepositoryImpl(
     private val gameApi: GameApi,
     private val dbHelper: DatabaseHelper
 ) : GameRepository {
-    override suspend fun getListDataForType(type: ListType): Flow<GameList> {
+    override suspend fun getListDataForType(type: ListType): Flow<ListData> {
         return flow {
-            val poster = gameApi.getGamePostersForQuery(
+            val posters = gameApi.getGamePostersForQuery(
                 buildQuery(
                     type,
                     dbHelper.genreFilter,
@@ -35,7 +36,7 @@ class GameRepositoryImpl(
                 ),
                 dbHelper.accessToken
             )
-            emit(GameList(type.title, poster))
+            emit(GameListData(type.title, posters))
         }.flowOn(Dispatchers.Default)
     }
 }
