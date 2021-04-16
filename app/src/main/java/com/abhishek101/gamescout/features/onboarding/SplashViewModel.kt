@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.features.splash
+package com.abhishek101.gamescout.features.onboarding
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

@@ -3,6 +3,8 @@ package com.abhishek101.gamescout.features.splash
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.abhishek101.gamescout.MainActivity
+import com.abhishek101.gamescout.features.onboarding.SplashScreen
+import com.abhishek101.gamescout.features.onboarding.SplashViewModel
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -17,7 +19,7 @@ class SplashScreenKtTest {
 
     private val navigateToHomeScreen: () -> Unit = mockk(relaxed = true)
     private val isAuthenticationValid = mutableStateOf(false)
-    private val splashViewModel: com.abhishek101.gamescout.features.splash.SplashViewModel =
+    private val splashViewModel: SplashViewModel =
         mockk() {
             every { isAuthenticationValid } returns this@SplashScreenKtTest.isAuthenticationValid
             every { checkAuthentication() } just runs
@@ -26,7 +28,7 @@ class SplashScreenKtTest {
     @Test
     fun splashScreenRendersTextAndButton() {
         composeRule.setContent {
-            com.abhishek101.gamescout.features.splash.SplashScreen(
+            SplashScreen(
                 viewModel = splashViewModel
             )
         }

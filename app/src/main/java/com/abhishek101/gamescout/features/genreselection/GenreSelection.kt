@@ -27,9 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Genre
-import com.abhishek101.gamescout.components.navigation.LocalMainNavController
-import com.abhishek101.gamescout.components.navigation.LocalUpdateOnBoardingCompleted
-import com.abhishek101.gamescout.components.navigation.MainNavigatorDestinations
+import com.abhishek101.gamescout.features.onboarding.LocalMainNavController
+import com.abhishek101.gamescout.features.onboarding.LocalUpdateOnBoardingCompleted
+import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import com.abhishek101.gametracker.ui.components.ListItem
 import org.koin.androidx.compose.get

@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.components.navigation
+package com.abhishek101.gamescout.features.onboarding
 
 import android.content.SharedPreferences
 

@@ -1,6 +1,6 @@
-package com.abhishek101.gamescout.features.splash
+package com.abhishek101.gamescout.features.onboarding
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
@@ -20,8 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.navigate
-import com.abhishek101.gamescout.components.navigation.LocalMainNavController
-import com.abhishek101.gamescout.components.navigation.LocalSplashScreenDestination
+import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,12 +49,13 @@ fun SplashScreen(viewModel: SplashViewModel = get()) {
 
 @Composable
 fun SplashScreenContent(isAuthenticationValid: Boolean, navigateForward: () -> Unit = {}) {
+    val image: Painter = painterResource(id = R.drawable.background)
+    Image(painter = image, contentDescription = "", modifier = Modifier.fillMaxSize())
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.background)
             .semantics { testTag = "SplashScreen" }
     ) {
         Text(

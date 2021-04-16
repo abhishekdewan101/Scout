@@ -29,8 +29,8 @@ import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Platform
 import com.abhishek101.gamescout.components.listItems.ImageListItem
 import com.abhishek101.gamescout.components.listItems.toImageListItemData
-import com.abhishek101.gamescout.components.navigation.LocalMainNavController
-import com.abhishek101.gamescout.components.navigation.MainNavigatorDestinations.GenreSelectionScreen
+import com.abhishek101.gamescout.features.onboarding.LocalMainNavController
+import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.GenreSelectionScreen
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import org.koin.androidx.compose.get
 

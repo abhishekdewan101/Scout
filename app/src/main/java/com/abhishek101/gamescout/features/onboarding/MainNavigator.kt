@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.components.navigation
+package com.abhishek101.gamescout.features.onboarding
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -7,14 +7,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.abhishek101.gamescout.components.navigation.MainNavigatorDestinations.GenreSelectionScreen
-import com.abhishek101.gamescout.components.navigation.MainNavigatorDestinations.MainAppScreen
-import com.abhishek101.gamescout.components.navigation.MainNavigatorDestinations.PlatformSelectionScreen
-import com.abhishek101.gamescout.components.navigation.MainNavigatorDestinations.SplashScreen
 import com.abhishek101.gamescout.features.genreselection.GenreSelection
 import com.abhishek101.gamescout.features.mainapp.MainApp
+import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.GenreSelectionScreen
+import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.MainAppScreen
+import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.PlatformSelectionScreen
+import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.SplashScreen
 import com.abhishek101.gamescout.features.platformselection.PlatformSelection
-import com.abhishek101.gamescout.features.splash.SplashScreen
 import org.koin.androidx.compose.get
 
 enum class MainNavigatorDestinations {
