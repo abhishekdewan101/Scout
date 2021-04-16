@@ -58,9 +58,9 @@ fun BottomNavigationBar(
     BottomAppBar {
         bottomTabs.forEachIndexed { index, tab ->
             val color = if (selectedIndex.value == index) {
-                MaterialTheme.colors.background
-            } else {
                 MaterialTheme.colors.onBackground
+            } else {
+                MaterialTheme.colors.background
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
