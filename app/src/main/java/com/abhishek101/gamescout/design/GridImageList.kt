@@ -34,7 +34,7 @@ fun GridImageList(
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
         ) {
-            for (item in row) {
+            for ((index, item) in row.withIndex()) {
                 CoilImage(
                     data = item,
                     contentDescription = null,
@@ -42,6 +42,7 @@ fun GridImageList(
                     modifier = Modifier
                         .size(imageWidth, imageHeight)
                         .clip(RoundedCornerShape(10.dp))
+                        .then(getItemPadding(index = index, columns = columns))
                         .clickable {
                             onIndexSelected(data.indexOf(item))
                         },
@@ -54,5 +55,13 @@ fun GridImageList(
                 )
             }
         }
+    }
+}
+
+private fun getItemPadding(index: Int, columns: Int): Modifier {
+    return when (index) {
+        0 -> Modifier.padding(end = 5.dp)
+        columns - 1 -> Modifier.padding(start = 5.dp)
+        else -> Modifier.padding(horizontal = 5.dp)
     }
 }
