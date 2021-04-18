@@ -176,7 +176,7 @@ fun GenreSelectionWithData() {
 }
 
 val genreTestData = listOf(
-    Genre(1, "slug", "Genre 1", false),
-    Genre(1, "slug2", "Genre 2", true),
-    Genre(1, "slug3", "Genre 3", true),
+    Genre(1, "adventure", "Adventure", false),
+    Genre(1, "shooter", "Shooter", true),
+    Genre(1, "platform", "Platformer", true),
 )
