@@ -13,6 +13,7 @@ import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.G
 import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.MainAppScreen
 import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.PlatformSelectionScreen
 import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.SplashScreen
+import com.abhishek101.gamescout.features.onboarding.splash.SplashScreen
 import com.abhishek101.gamescout.features.platformselection.PlatformSelection
 import org.koin.androidx.compose.get
 

@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.features.onboarding
+package com.abhishek101.gamescout.features.onboarding.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,13 +27,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
 import com.abhishek101.gamescout.R
+import com.abhishek101.gamescout.features.onboarding.LocalMainNavController
+import com.abhishek101.gamescout.features.onboarding.LocalSplashScreenDestination
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
 @Composable
-fun SplashScreen(viewModel: SplashViewModel = get()) {
+fun SplashScreen(viewModel: SplashScreenVM = get()) {
 
     val isAuthenticationValid = viewModel.isAuthenticationValid
     val navController = LocalMainNavController.current

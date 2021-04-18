@@ -5,14 +5,14 @@ import android.content.SharedPreferences
 import com.abhishek101.gamescout.features.genreselection.GenreSelectionViewModel
 import com.abhishek101.gamescout.features.mainapp.home.HomeScreenViewModel
 import com.abhishek101.gamescout.features.onboarding.MainNavigatorViewModel
-import com.abhishek101.gamescout.features.onboarding.SplashViewModel
+import com.abhishek101.gamescout.features.onboarding.splash.SplashScreenVM
 import com.abhishek101.gamescout.features.platformselection.PlatformSelectionViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val appModule = module {
     // ViewModels
-    single { SplashViewModel(get()) }
+    single { SplashScreenVM(get()) }
     single { PlatformSelectionViewModel(get()) }
     single { GenreSelectionViewModel(get()) }
     single { MainNavigatorViewModel(get()) }

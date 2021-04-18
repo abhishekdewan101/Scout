@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.features.onboarding
+package com.abhishek101.gamescout.features.onboarding.splash
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class SplashViewModel constructor(private val authenticationRepository: AuthenticationRepository) :
+class SplashScreenVM constructor(private val authenticationRepository: AuthenticationRepository) :
     ViewModel() {
 
     val isAuthenticationValid = mutableStateOf(false)
