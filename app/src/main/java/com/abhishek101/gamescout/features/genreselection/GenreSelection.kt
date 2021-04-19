@@ -57,7 +57,6 @@ fun GenreSelection(viewModel: GenreSelectionViewModel = get()) {
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun GenreSelectionList(
     isLoading: Boolean,
@@ -83,35 +82,45 @@ fun GenreSelectionList(
                     }
                 }
             }
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                AnimatedVisibility(visible = favoriteCount > 0) {
-                    Padding(bottom = 15.dp) {
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(Color(240, 115, 101))
-                            .clickable {
-                                onBoardingCompleted()
-                                navController.navigate(MainNavigatorDestinations.MainAppScreen.toString())
-                            }) {
-                            Row(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Icon(
-                                    Icons.Outlined.Done,
-                                    "",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(30.dp)
-                                )
-                            }
-                        }
+            RenderDoneButton(favoriteCount, onBoardingCompleted, navController)
+        }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+private fun RenderDoneButton(
+    favoriteCount: Int,
+    onBoardingCompleted: UpdateOnBoardingComplete,
+    navController: NavController
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        AnimatedVisibility(visible = favoriteCount > 0) {
+            Padding(bottom = 15.dp) {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color(240, 115, 101))
+                    .clickable {
+                        onBoardingCompleted()
+                        navController.navigate(MainNavigatorDestinations.MainAppScreen.toString())
+                    }) {
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            Icons.Outlined.Done,
+                            "",
+                            tint = Color.White,
+                            modifier = Modifier.size(30.dp)
+                        )
                     }
                 }
             }
