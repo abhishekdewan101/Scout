@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flowOn
 interface GenreRepository {
     fun getCachedGenres(): Flow<List<Genre>>
     suspend fun updateCachedGenres()
-    fun setGenreAsFavorite(genre: Genre, isFavorite: Boolean)
+    fun setGenreAsFavorite(slug: String, isFavorite: Boolean)
     fun getFavoriteGenres(): Flow<List<Genre>>
 }
 
@@ -33,8 +33,8 @@ class GenreRepositoryImpl(
         }
     }
 
-    override fun setGenreAsFavorite(genre: Genre, isFavorite: Boolean) {
-        genreQueries.updateFavorite(isFavorite, genre.slug)
+    override fun setGenreAsFavorite(slug: String, isFavorite: Boolean) {
+        genreQueries.updateFavorite(isFavorite, slug)
     }
 
     override fun getFavoriteGenres(): Flow<List<Genre>> {

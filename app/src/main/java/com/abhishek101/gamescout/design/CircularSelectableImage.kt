@@ -38,12 +38,12 @@ fun CircularSelectableImage(
 ) {
     val borderStroke = BorderStroke(
         if (isSelected) 3.0.dp else 0.dp,
-        if (isSelected) MaterialTheme.colors.primary else Color.Transparent
+        if (isSelected) Color(240, 115, 101) else Color.Transparent
     )
 
     Box(
         modifier = Modifier
-            .size(200.dp)
+            .size(175.dp)
             .border(borderStroke, RoundedCornerShape(50))
             .clickable { onSelected() }
             .padding(10.dp)
@@ -59,7 +59,7 @@ fun CircularSelectableImage(
             CoilImage(
                 data = imageId,
                 contentDescription = "",
-                modifier = Modifier.size(75.dp, 75.dp),
+                modifier = Modifier.size(50.dp, 50.dp),
                 fadeIn = true,
                 loading = {
                     Icon(
@@ -77,11 +77,13 @@ fun CircularSelectableImage(
                 }
             )
             if (label != null) {
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.body1.copy(Color.Black),
-                    textAlign = TextAlign.Center
-                )
+                Padding(top = 10.dp) {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.body1.copy(Color.Black),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }

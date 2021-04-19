@@ -1,112 +1,118 @@
 package com.abhishek101.gamescout.features.genreselection
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Done
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Genre
+import com.abhishek101.gamescout.components.SelectableGenreGrid
+import com.abhishek101.gamescout.design.LoadingIndicator
+import com.abhishek101.gamescout.design.Padding
+import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.features.onboarding.LocalMainNavController
 import com.abhishek101.gamescout.features.onboarding.LocalUpdateOnBoardingCompleted
 import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations
+import com.abhishek101.gamescout.features.onboarding.UpdateOnBoardingComplete
 import com.abhishek101.gamescout.theme.GameTrackerTheme
-import com.abhishek101.gametracker.ui.components.ListItem
 import org.koin.androidx.compose.get
 
 @Composable
 fun GenreSelection(viewModel: GenreSelectionViewModel = get()) {
-    val isLoading = viewModel.isLoading
-    val genreList = viewModel.genres
+    val isLoading = viewModel.isLoading.value
+    val genreList = viewModel.genres.value
     val navController = LocalMainNavController.current
     val onBoardingCompleted = LocalUpdateOnBoardingCompleted.current
 
-    GenreSelectionScaffold(
-        isLoading = isLoading.value,
-        genreList = genreList.value,
-        navigateForward = {
-            onBoardingCompleted()
-            navController.popBackStack()
-            navController.navigate(MainNavigatorDestinations.MainAppScreen.name)
-        },
+    GenreSelectionList(
+        isLoading = isLoading,
+        genreList = genreList,
         onGenreSelected = viewModel::updateGenreAsFavorite,
-        getFavoriteGenreCount = viewModel::getFavoriteGenreCount
+        navController = navController,
+        onBoardingCompleted = onBoardingCompleted,
+        favoriteCount = viewModel.getFavoriteGenreCount()
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun GenreSelectionScaffold(
+fun GenreSelectionList(
     isLoading: Boolean,
     genreList: List<Genre>,
-    onGenreSelected: (Genre, Boolean) -> Unit,
-    getFavoriteGenreCount: () -> Int,
-    navigateForward: () -> Unit
+    onGenreSelected: (String, Boolean) -> Unit,
+    navController: NavController,
+    onBoardingCompleted: UpdateOnBoardingComplete,
+    favoriteCount: Int
 ) {
-    val scaffoldState = rememberScaffoldState()
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = { GenreSelectionHeader() },
-        content = {
-            GenreSelectionContent(
-                isLoading = isLoading,
-                genreList = genreList,
-                onGenreSelected = onGenreSelected
-            )
-        },
-        floatingActionButtonPosition = FabPosition.End,
-        floatingActionButton = {
-            GenreSelectionFab(
-                favoriteGenreCount = getFavoriteGenreCount(),
-                navigateForward = navigateForward
-            )
-        }
-    )
-}
-
-@Composable
-fun GenreSelectionContent(
-    isLoading: Boolean,
-    genreList: List<Genre>,
-    onGenreSelected: (Genre, Boolean) -> Unit
-) {
-    if (isLoading) {
-        GenreSelectionLoading()
-    } else {
-        GenreSelectionListContent(genreList, onGenreSelected)
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun GenreSelectionListContent(genreList: List<Genre>, onGenreSelected: (Genre, Boolean) -> Unit) {
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(count = 2),
-        modifier = Modifier.padding(top = 20.dp)
-    ) {
-        items(genreList.size) { index ->
-            genreList[index].apply {
-                ListItem(isSelected = this.isFavorite ?: false, data = this.name) {
-                    onGenreSelected(this, this.isFavorite?.not() ?: false)
+    SafeArea(padding = 15.dp) {
+        Box() {
+            Column(modifier = Modifier.fillMaxSize()) {
+                GenreSelectionHeader()
+                if (isLoading) {
+                    LoadingIndicator()
+                } else {
+                    Padding(top = 15.dp) {
+                        SelectableGenreGrid(
+                            data = genreList,
+                            columns = 2,
+                            onSelected = onGenreSelected
+                        )
+                    }
+                }
+            }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AnimatedVisibility(visible = favoriteCount > 0) {
+                    Padding(bottom = 15.dp) {
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(240, 115, 101))
+                            .clickable {
+                                onBoardingCompleted()
+                                navController.navigate(MainNavigatorDestinations.MainAppScreen.toString())
+                            }) {
+                            Row(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    Icons.Outlined.Done,
+                                    "",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(30.dp)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -114,50 +120,19 @@ fun GenreSelectionListContent(genreList: List<Genre>, onGenreSelected: (Genre, B
 }
 
 @Composable
-fun GenreSelectionLoading() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier
-                .padding(top = 20.dp)
-                .semantics {
-                    testTag = "loadingBar"
-                },
-            color = MaterialTheme.colors.primary
+private fun GenreSelectionHeader() {
+    Column(horizontalAlignment = Alignment.Start) {
+        Text(
+            "Genres",
+            style = MaterialTheme.typography.h4,
+            color = Color(240, 115, 101),
+            fontWeight = FontWeight.Bold
         )
-    }
-}
-
-@Composable
-fun GenreSelectionFab(favoriteGenreCount: Int, navigateForward: () -> Unit) {
-    if (favoriteGenreCount > 0) {
-        FloatingActionButton(
-            onClick = navigateForward,
-            backgroundColor = MaterialTheme.colors.primary
-        ) {
-            Icon(Icons.Outlined.Done, "Done", tint = MaterialTheme.colors.onPrimary)
-        }
-    }
-}
-
-@Composable
-fun GenreSelectionHeader() {
-    Box(modifier = Modifier.padding(top = 15.dp, start = 15.dp)) {
-        Column(horizontalAlignment = Alignment.Start) {
-            Text(
-                "Owned Platforms",
-                style = MaterialTheme.typography.h4,
-                color = MaterialTheme.colors.onBackground
-            )
-            Text(
-                "We will use these platforms to tailor your search results",
-                style = MaterialTheme.typography.subtitle1,
-                color = MaterialTheme.colors.onBackground
-            )
-        }
+        Text(
+            "Select your favorite genres and we will use them to tailor your search results",
+            style = MaterialTheme.typography.subtitle1,
+            color = MaterialTheme.colors.onBackground
+        )
     }
 }
 
@@ -165,13 +140,14 @@ fun GenreSelectionHeader() {
 @Composable
 fun GenreSelectionWithData() {
     GameTrackerTheme {
-        GenreSelectionScaffold(
+        GenreSelectionList(
             isLoading = false,
             genreList = genreTestData,
             onGenreSelected = { _, _ -> },
-            getFavoriteGenreCount = { return@GenreSelectionScaffold 3 }
-        ) {
-        }
+            navController = LocalMainNavController.current,
+            onBoardingCompleted = LocalUpdateOnBoardingCompleted.current,
+            favoriteCount = 1
+        )
     }
 }
 
