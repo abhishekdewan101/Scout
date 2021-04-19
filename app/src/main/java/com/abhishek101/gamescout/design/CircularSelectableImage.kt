@@ -1,6 +1,5 @@
 package com.abhishek101.gamescout.design
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,14 +30,15 @@ import com.google.accompanist.coil.CoilImage
 
 @Composable
 fun CircularSelectableImage(
-    @DrawableRes imageId: Int,
+    imageId: Any,
     label: String? = null,
     isSelected: Boolean = false,
-    onSelected: () -> Unit
+    selectedBorderColor: Color,
+    onSelected: () -> Unit,
 ) {
     val borderStroke = BorderStroke(
         if (isSelected) 3.0.dp else 0.dp,
-        if (isSelected) Color(240, 115, 101) else Color.Transparent
+        if (isSelected) selectedBorderColor else Color.Transparent
     )
 
     Box(
@@ -92,5 +92,10 @@ fun CircularSelectableImage(
 @Preview
 @Composable
 fun PreviewCircularSelectableImage() {
-    CircularSelectableImage(R.drawable.hack_slash, "Hack and Slash/Adventure", true) {}
+    CircularSelectableImage(
+        R.drawable.hack_slash,
+        "Hack and Slash/Adventure",
+        true,
+        Color(240, 115, 101)
+    ) {}
 }

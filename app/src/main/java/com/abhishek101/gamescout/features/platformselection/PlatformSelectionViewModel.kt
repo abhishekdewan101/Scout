@@ -37,7 +37,7 @@ class PlatformSelectionViewModel(private val platformRepository: PlatformReposit
         return totalOwned
     }
 
-    fun updateOwnedPlatform(platform: Platform, isOwned: Boolean) {
-        platformRepository.setPlatformAsOwned(platform, isOwned)
+    fun updateOwnedPlatform(slug: String, isOwned: Boolean) {
+        platformRepository.setPlatformAsOwned(slug, isOwned)
     }
 }

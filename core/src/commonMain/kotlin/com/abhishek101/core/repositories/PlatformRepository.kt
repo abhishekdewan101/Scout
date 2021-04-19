@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flowOn
 interface PlatformRepository {
     fun getCachedPlatforms(): Flow<List<Platform>>
     suspend fun updateCachedPlatforms()
-    fun setPlatformAsOwned(platform: Platform, isOwned: Boolean)
+    fun setPlatformAsOwned(slug: String, isOwned: Boolean)
     fun getAllOwnedPlatforms(): Flow<List<Platform>>
 }
 
@@ -40,8 +40,8 @@ class PlatformRepositoryImpl(
         }
     }
 
-    override fun setPlatformAsOwned(platform: Platform, isOwned: Boolean) {
-        platformQueries.ownPlatform(isOwned, platform.slug)
+    override fun setPlatformAsOwned(slug: String, isOwned: Boolean) {
+        platformQueries.ownPlatform(isOwned, slug)
     }
 
     override fun getAllOwnedPlatforms(): Flow<List<Platform>> {

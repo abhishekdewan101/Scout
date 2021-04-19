@@ -9,12 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.abhishek101.core.db.Genre
+import com.abhishek101.core.db.Platform
+import com.abhishek101.core.utils.buildImageString
 import com.abhishek101.gamescout.design.CircularSelectableImage
-import com.abhishek101.gamescout.features.genreselection.genreImageMap
 
 @Composable
-fun SelectableGenreGrid(data: List<Genre>, columns: Int, onSelected: (String, Boolean) -> Unit) {
+fun SelectablePlatformGrid(
+    data: List<Platform>,
+    columns: Int,
+    onSelected: (String, Boolean) -> Unit
+) {
     val chunked = data.chunked(columns)
     LazyColumn {
         for (row in chunked) {
@@ -27,12 +31,12 @@ fun SelectableGenreGrid(data: List<Genre>, columns: Int, onSelected: (String, Bo
                 ) {
                     for (item in row) {
                         CircularSelectableImage(
-                            imageId = genreImageMap[item.slug]!!,
+                            imageId = buildImageString(item.imageId),
                             label = item.name,
-                            isSelected = item.isFavorite!!,
-                            selectedBorderColor = Color(240, 115, 101)
+                            isSelected = item.isOwned!!,
+                            selectedBorderColor = Color(203, 112, 209)
                         ) {
-                            onSelected(item.slug, item.isFavorite!!.not())
+                            onSelected(item.slug, item.isOwned!!.not())
                         }
                     }
                 }

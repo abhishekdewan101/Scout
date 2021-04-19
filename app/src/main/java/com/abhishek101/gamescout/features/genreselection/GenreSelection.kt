@@ -71,7 +71,7 @@ fun GenreSelectionList(
             Column(modifier = Modifier.fillMaxSize()) {
                 GenreSelectionHeader()
                 if (isLoading) {
-                    LoadingIndicator()
+                    LoadingIndicator(Color(240, 115, 101))
                 } else {
                     Padding(top = 15.dp) {
                         SelectableGenreGrid(

@@ -44,14 +44,13 @@ fun SplashScreen(viewModel: SplashScreenVM = get()) {
 
     viewModel.checkAuthentication()
 
+    SplashScreenContent()
     if (isAuthenticationValid.value) {
         coroutineScope.launch {
-            delay(1500)
+            delay(2000)
             navController.popBackStack()
             navController.navigate(splashScreenDestination)
         }
-    } else {
-        SplashScreenContent()
     }
 }
 
