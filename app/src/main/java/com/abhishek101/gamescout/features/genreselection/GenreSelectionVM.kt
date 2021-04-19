@@ -9,7 +9,7 @@ import com.abhishek101.gamescout.R
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-val genreIconsMap = mapOf(
+val genreEmojiMap = mapOf(
     "point-and-click" to R.drawable.point_click,
     "fighting" to R.drawable.fighting,
     "shooter" to R.drawable.shooter,
@@ -53,8 +53,8 @@ class GenreSelectionViewModel(private val genreRepository: GenreRepository) : Vi
         }
     }
 
-    fun updateGenreAsFavorite(slug: String, isFavorite: Boolean) {
-        genreRepository.setGenreAsFavorite(slug = slug, isFavorite = isFavorite)
+    fun updateGenreAsFavorite(genre: Genre, isFavorite: Boolean) {
+        genreRepository.setGenreAsFavorite(genre = genre, isFavorite = isFavorite)
     }
 
     fun getFavoriteGenreCount(): Int {
