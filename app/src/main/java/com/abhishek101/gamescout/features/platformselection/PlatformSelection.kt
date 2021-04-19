@@ -62,7 +62,7 @@ fun PlatformSelectionList(
     navController: NavController,
     ownedCount: Int
 ) {
-    SafeArea(padding = 15.dp) {
+    SafeArea(padding = 15.dp, backgroundColor = Color(15, 27, 27)) {
         Box() {
             Column(modifier = Modifier.fillMaxSize()) {
                 PlatformSelectionHeader()
