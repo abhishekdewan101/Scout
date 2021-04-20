@@ -4,7 +4,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.abhishek101.gamescout.features.genreselection.GenreSelectionViewModel
 import com.abhishek101.gamescout.features.mainapp.home.HomeScreenViewModel
-import com.abhishek101.gamescout.features.onboarding.MainNavigatorViewModel
+import com.abhishek101.gamescout.features.onboarding.OnBoardingNavigatorViewModel
 import com.abhishek101.gamescout.features.onboarding.splash.SplashScreenVM
 import com.abhishek101.gamescout.features.platformselection.PlatformSelectionViewModel
 import org.koin.android.ext.koin.androidContext
@@ -15,7 +15,7 @@ val appModule = module {
     single { SplashScreenVM(get()) }
     single { PlatformSelectionViewModel(get()) }
     single { GenreSelectionViewModel(get()) }
-    single { MainNavigatorViewModel(get()) }
+    single { OnBoardingNavigatorViewModel(get()) }
     single { HomeScreenViewModel(get()) }
 
     // SharedPreferences

@@ -33,8 +33,8 @@ import com.abhishek101.gamescout.components.SelectablePlatformGrid
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
-import com.abhishek101.gamescout.features.onboarding.LocalMainNavController
-import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.GenreSelectionScreen
+import com.abhishek101.gamescout.features.onboarding.LocalOnBoardingNavigator
+import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.GenreSelectionScreen
 import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -43,7 +43,7 @@ fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
 
     val isLoading = viewModel.isLoading.value
     val platformList = viewModel.platforms.value
-    val navController = LocalMainNavController.current
+    val navController = LocalOnBoardingNavigator.current
 
     PlatformSelectionList(
         isLoading = isLoading,

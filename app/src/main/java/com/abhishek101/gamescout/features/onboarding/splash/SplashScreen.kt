@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
 import com.abhishek101.gamescout.R
-import com.abhishek101.gamescout.features.onboarding.LocalMainNavController
+import com.abhishek101.gamescout.features.onboarding.LocalOnBoardingNavigator
 import com.abhishek101.gamescout.features.onboarding.LocalSplashScreenDestination
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import kotlinx.coroutines.delay
@@ -38,7 +38,7 @@ import org.koin.androidx.compose.get
 fun SplashScreen(viewModel: SplashScreenVM = get()) {
 
     val isAuthenticationValid = viewModel.isAuthenticationValid
-    val navController = LocalMainNavController.current
+    val navController = LocalOnBoardingNavigator.current
     val splashScreenDestination = LocalSplashScreenDestination.current
     val coroutineScope = rememberCoroutineScope()
 

@@ -33,9 +33,9 @@ import com.abhishek101.gamescout.components.SelectableGenreGrid
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
-import com.abhishek101.gamescout.features.onboarding.LocalMainNavController
+import com.abhishek101.gamescout.features.onboarding.LocalOnBoardingNavigator
 import com.abhishek101.gamescout.features.onboarding.LocalUpdateOnBoardingCompleted
-import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations
+import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations
 import com.abhishek101.gamescout.features.onboarding.UpdateOnBoardingComplete
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import org.koin.androidx.compose.get
@@ -44,7 +44,7 @@ import org.koin.androidx.compose.get
 fun GenreSelection(viewModel: GenreSelectionViewModel = get()) {
     val isLoading = viewModel.isLoading.value
     val genreList = viewModel.genres.value
-    val navController = LocalMainNavController.current
+    val navController = LocalOnBoardingNavigator.current
     val onBoardingCompleted = LocalUpdateOnBoardingCompleted.current
 
     GenreSelectionList(
@@ -108,7 +108,7 @@ private fun RenderDoneButton(
                     .background(Color(240, 115, 101))
                     .clickable {
                         onBoardingCompleted()
-                        navController.navigate(MainNavigatorDestinations.MainAppScreen.toString())
+                        navController.navigate(OnBoardingDestinations.MainAppScreen.toString())
                     }) {
                     Row(
                         modifier = Modifier.fillMaxSize(),
@@ -153,7 +153,7 @@ fun GenreSelectionWithData() {
             isLoading = false,
             genreList = genreTestData,
             onGenreSelected = { _, _ -> },
-            navController = LocalMainNavController.current,
+            navController = LocalOnBoardingNavigator.current,
             onBoardingCompleted = LocalUpdateOnBoardingCompleted.current,
             favoriteCount = 1
         )

@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 
 const val onBoardingCompleteKey = "OnBoardingComplete"
 
-class MainNavigatorViewModel(
+class OnBoardingNavigatorViewModel(
     private val sharedPreferences: SharedPreferences
 ) {
 

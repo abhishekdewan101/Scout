@@ -9,15 +9,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.gamescout.features.genreselection.GenreSelection
 import com.abhishek101.gamescout.features.mainapp.MainApp
-import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.GenreSelectionScreen
-import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.MainAppScreen
-import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.PlatformSelectionScreen
-import com.abhishek101.gamescout.features.onboarding.MainNavigatorDestinations.SplashScreen
+import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.GenreSelectionScreen
+import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.MainAppScreen
+import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.PlatformSelectionScreen
+import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.SplashScreen
 import com.abhishek101.gamescout.features.onboarding.splash.SplashScreen
 import com.abhishek101.gamescout.features.platformselection.PlatformSelection
 import org.koin.androidx.compose.get
 
-enum class MainNavigatorDestinations {
+enum class OnBoardingDestinations {
     SplashScreen,
     PlatformSelectionScreen,
     GenreSelectionScreen,
@@ -26,7 +26,7 @@ enum class MainNavigatorDestinations {
 
 typealias UpdateOnBoardingComplete = () -> Unit
 
-val LocalMainNavController = compositionLocalOf<NavController> {
+val LocalOnBoardingNavigator = compositionLocalOf<NavController> {
     error("No nav host controller provided")
 }
 
@@ -39,9 +39,9 @@ val LocalSplashScreenDestination = compositionLocalOf<String> {
 }
 
 @Composable
-fun MainNavigator() {
-    val mainNavController = rememberNavController()
-    val viewModel: MainNavigatorViewModel = get()
+fun OnBoardingNavigator() {
+    val onBoardingNavigator = rememberNavController()
+    val viewModel: OnBoardingNavigatorViewModel = get()
     val splashScreenDestination = if (viewModel.isOnBoardingComplete()) {
         MainAppScreen.name
     } else {
@@ -49,13 +49,13 @@ fun MainNavigator() {
     }
 
     NavHost(
-        navController = mainNavController,
+        navController = onBoardingNavigator,
         startDestination = SplashScreen.name
     ) {
 
         composable(SplashScreen.name) {
             CompositionLocalProvider(
-                LocalMainNavController provides mainNavController,
+                LocalOnBoardingNavigator provides onBoardingNavigator,
                 LocalSplashScreenDestination provides splashScreenDestination
             ) {
                 SplashScreen()
@@ -63,14 +63,14 @@ fun MainNavigator() {
         }
 
         composable(PlatformSelectionScreen.name) {
-            CompositionLocalProvider(LocalMainNavController provides mainNavController) {
+            CompositionLocalProvider(LocalOnBoardingNavigator provides onBoardingNavigator) {
                 PlatformSelection()
             }
         }
 
         composable(GenreSelectionScreen.name) {
             CompositionLocalProvider(
-                LocalMainNavController provides mainNavController,
+                LocalOnBoardingNavigator provides onBoardingNavigator,
                 LocalUpdateOnBoardingCompleted provides viewModel::updateOnBoardingComplete
             ) {
                 GenreSelection()
@@ -78,7 +78,7 @@ fun MainNavigator() {
         }
 
         composable(MainAppScreen.name) {
-            CompositionLocalProvider(LocalMainNavController provides mainNavController) {
+            CompositionLocalProvider(LocalOnBoardingNavigator provides onBoardingNavigator) {
                 MainApp()
             }
         }
