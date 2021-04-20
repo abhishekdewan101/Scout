@@ -55,7 +55,7 @@ fun BottomNavigationBar(
     bottomTabs: List<BottomNavigationTabData>,
     selectedIndex: MutableState<Int>
 ) {
-    BottomAppBar {
+    BottomAppBar(backgroundColor = Color(27, 127, 254)) {
         bottomTabs.forEachIndexed { index, tab ->
             val color = if (selectedIndex.value == index) {
                 MaterialTheme.colors.onBackground
