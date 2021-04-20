@@ -4,6 +4,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.abhishek101.gamescout.features.genreselection.GenreSelectionViewModel
 import com.abhishek101.gamescout.features.mainapp.home.HomeScreenViewModel
+import com.abhishek101.gamescout.features.mainapp.viewmore.ViewMoreViewModel
 import com.abhishek101.gamescout.features.onboarding.OnBoardingNavigatorViewModel
 import com.abhishek101.gamescout.features.onboarding.splash.SplashScreenVM
 import com.abhishek101.gamescout.features.platformselection.PlatformSelectionViewModel
@@ -17,6 +18,7 @@ val appModule = module {
     single { GenreSelectionViewModel(get()) }
     single { OnBoardingNavigatorViewModel(get()) }
     single { HomeScreenViewModel(get()) }
+    single { ViewMoreViewModel(get()) }
 
     // SharedPreferences
     single<SharedPreferences> {

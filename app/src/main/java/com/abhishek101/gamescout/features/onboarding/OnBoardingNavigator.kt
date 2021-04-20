@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.gamescout.features.genreselection.GenreSelection
-import com.abhishek101.gamescout.features.mainapp.MainApp
+import com.abhishek101.gamescout.features.mainapp.navigator.MainNavigator
 import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.GenreSelectionScreen
 import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.MainAppScreen
 import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.PlatformSelectionScreen
@@ -79,7 +79,7 @@ fun OnBoardingNavigator() {
 
         composable(MainAppScreen.name) {
             CompositionLocalProvider(LocalOnBoardingNavigator provides onBoardingNavigator) {
-                MainApp()
+                MainNavigator()
             }
         }
     }

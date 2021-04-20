@@ -13,14 +13,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.navigate
 import com.abhishek101.core.models.EmptyList
 import com.abhishek101.core.models.GameListData
 import com.abhishek101.core.models.ListData
+import com.abhishek101.core.repositories.ListType
 import com.abhishek101.gamescout.components.GamePosterGrid
 import com.abhishek101.gamescout.components.GamePosterHorizontalList
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
+import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
+import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 import timber.log.Timber
 
@@ -78,7 +82,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
 fun RenderMostHypedList(mostHypedList: MutableState<ListData>) {
     if (mostHypedList.value != EmptyList) {
         val listData = (mostHypedList.value as GameListData)
-        CoverList(listData = listData)
+        CoverList(listData = listData, listType = ListType.MOST_HYPED)
     }
 }
 
@@ -86,7 +90,7 @@ fun RenderMostHypedList(mostHypedList: MutableState<ListData>) {
 fun RenderRecentList(recentList: MutableState<ListData>) {
     if (recentList.value != EmptyList) {
         val listData = (recentList.value as GameListData)
-        CoverList(listData = listData, isGrid = false)
+        CoverList(listData = listData, isGrid = false, listType = ListType.RECENT)
     }
 }
 
@@ -94,7 +98,7 @@ fun RenderRecentList(recentList: MutableState<ListData>) {
 fun RenderTopRatedList(topRatedList: MutableState<ListData>) {
     if (topRatedList.value != EmptyList) {
         val listData = (topRatedList.value as GameListData)
-        CoverList(listData = listData, isGrid = false)
+        CoverList(listData = listData, isGrid = false, listType = ListType.TOP_RATED)
     }
 }
 
@@ -102,7 +106,7 @@ fun RenderTopRatedList(topRatedList: MutableState<ListData>) {
 fun RenderComingSoonList(comingSoonList: MutableState<ListData>) {
     if (comingSoonList.value != EmptyList) {
         val listData = (comingSoonList.value as GameListData)
-        CoverList(listData = listData)
+        CoverList(listData = listData, listType = ListType.COMING_SOON)
     }
 }
 
@@ -125,24 +129,25 @@ fun RenderShowcaseList(showcaseList: MutableState<ListData>) {
 }
 
 @Composable
-private fun CoverList(listData: GameListData, isGrid: Boolean = true) {
+private fun CoverList(listData: GameListData, isGrid: Boolean = true, listType: ListType) {
     val games = listData.games
     val covers = games.filter { it.cover != null }
         .take(9)
         .map { it.cover!!.qualifiedUrl }.toList()
+    val mainNavigator = LocalMainNavigator.current
     if (isGrid) {
         GamePosterGrid(
             title = listData.title,
             data = covers,
             columns = 3,
-            onViewMoreClicked = { Timber.d("Show more coming soon games") }) {
+            onViewMoreClicked = { mainNavigator.navigate("${MainAppDestinations.ViewMore.name}/${listType.name}") }) {
             Timber.d("User clicked on ${games[it]}")
         }
     } else {
         GamePosterHorizontalList(
             title = listData.title,
             data = covers,
-            onViewMoreClicked = { Timber.d("Show more top rated games") }) {
+            onViewMoreClicked = { mainNavigator.navigate("${MainAppDestinations.ViewMore.name}/${listType.name}") }) {
             Timber.d("User clicked on ${games[it]}")
         }
     }
