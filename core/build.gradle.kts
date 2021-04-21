@@ -88,9 +88,10 @@ buildkonfig {
     packageName = "com.abhishek101.core"
     val properties = Properties()
     try {
+        println("Found local.properties so reading from that")
         properties.load(project.rootProject.file("local.properties").inputStream())
     } catch (e: Exception) {
-        //FIXME: This needs to read from github workflow env variables
+        println("No local.properties found so authentication won't work")
         properties.setProperty("clientId", "")
         properties.setProperty("useTwitchAuthentication", "false")
         properties.setProperty("clientAuthenticationUrl", "")

@@ -18,7 +18,12 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-
+      - shell: bash
+        env:
+          clientId: ${{secrets.clientId}}
+          clientAuthenticationUrl: ${{secrets.clientAuthenticationUrl}}
+          useTwitchAuthentication: ${{secrets.useTwitchAuthentication}}
+        run: touch local.properties & echo clientId="$clientId" >> local.properties & echo clientAuthenticationUrl="$clientAuthenticationUrl" >> local.properties & echo useTwitchAuthentication="$useTwitchAuthentication" >> local.properties
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build the Android App with Gradle
