@@ -26,7 +26,6 @@ import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
-import timber.log.Timber
 
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
@@ -113,6 +112,7 @@ fun RenderComingSoonList(comingSoonList: MutableState<ListData>) {
 @Composable
 fun RenderShowcaseList(showcaseList: MutableState<ListData>) {
     if (showcaseList.value != EmptyList) {
+        val mainNavigator = LocalMainNavigator.current
         val games = (showcaseList.value as GameListData).games
         val screenshots = games.filter { it.screenShots != null }
             .take(9)
@@ -123,7 +123,7 @@ fun RenderShowcaseList(showcaseList: MutableState<ListData>) {
             itemWidth = 400.dp,
             itemHeight = 200.dp
         ) {
-            Timber.d("User clicked on ${games[it]}")
+            mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
         }
     }
 }
@@ -141,14 +141,14 @@ private fun CoverList(listData: GameListData, isGrid: Boolean = true, listType: 
             data = covers,
             columns = 3,
             onViewMoreClicked = { mainNavigator.navigate("${MainAppDestinations.ViewMore.name}/${listType.name}") }) {
-            Timber.d("User clicked on ${games[it]}")
+            mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
         }
     } else {
         GamePosterHorizontalList(
             title = listData.title,
             data = covers,
             onViewMoreClicked = { mainNavigator.navigate("${MainAppDestinations.ViewMore.name}/${listType.name}") }) {
-            Timber.d("User clicked on ${games[it]}")
+            mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
         }
     }
 }

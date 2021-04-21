@@ -12,6 +12,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.core.repositories.ListType
 import com.abhishek101.gamescout.features.mainapp.MainApp
+import com.abhishek101.gamescout.features.mainapp.details.GameDetailScreen
 import com.abhishek101.gamescout.features.mainapp.viewmore.ViewMoreScreen
 
 enum class MainAppDestinations {
@@ -41,10 +42,20 @@ fun MainNavigator() {
         composable(
             "${MainAppDestinations.ViewMore.name}/{listType}",
             arguments = listOf(navArgument("listType") { type = NavType.StringType })
-        ) { entry ->
+        ) {
             CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
-                val listType = entry.arguments?.getString("listType")
+                val listType = it.arguments?.getString("listType")
                 ViewMoreScreen(listType = listType?.let { ListType.valueOf(it) })
+            }
+        }
+
+        composable(
+            "${MainAppDestinations.GameDetail.name}/{gameSlug}", arguments = listOf(
+                navArgument("gameSlug") { type = NavType.StringType })
+        ) {
+            CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
+                val gameSlug = it.arguments?.getString("gameSlug")
+                GameDetailScreen(gameSlug = gameSlug)
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.navigate
 import com.abhishek101.core.models.EmptyList
 import com.abhishek101.core.models.GameListData
 import com.abhishek101.core.repositories.ListType
@@ -13,6 +14,7 @@ import com.abhishek101.gamescout.design.LazyGridImageList
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
+import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 
 @Composable
@@ -37,7 +39,7 @@ fun ViewMoreScreen(viewModel: ViewMoreViewModel = get(), listType: ListType?) {
                         data = covers, columns = 3, imageWidth = 125.dp,
                         imageHeight = 175.dp
                     ) {
-
+                        mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${gameListData.games[it].slug}")
                     }
                 }
             } else {
