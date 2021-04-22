@@ -5,7 +5,10 @@
 
 Scout is a project aimed at developing an application that helps iOS and Android users keep track of their ever growing game libraries and then help them make decisions on what they should be playing next.
 
-![alt text](https://github.com/abhishekdewan101/GameTracker/blob/master/preview.png?raw=true)
+
+https://user-images.githubusercontent.com/2817833/115657460-c7eacc00-a2eb-11eb-82fb-9be253d91bed.mov
+
+
 
 ## Features
 
