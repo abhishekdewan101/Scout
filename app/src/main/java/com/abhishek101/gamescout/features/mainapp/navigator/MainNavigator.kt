@@ -1,9 +1,11 @@
 package com.abhishek101.gamescout.features.mainapp.navigator
 
+import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -55,7 +57,15 @@ fun MainNavigator() {
         ) {
             CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
                 val gameSlug = it.arguments?.getString("gameSlug")
-                GameDetailScreen(gameSlug = gameSlug)
+                if (gameSlug != null) {
+                    GameDetailScreen(gameSlug = gameSlug)
+                } else {
+                    Toast.makeText(
+                        LocalContext.current,
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

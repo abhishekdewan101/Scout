@@ -78,7 +78,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get()) {
 }
 
 @Composable
-fun RenderMostHypedList(mostHypedList: MutableState<ListData>) {
+private fun RenderMostHypedList(mostHypedList: MutableState<ListData>) {
     if (mostHypedList.value != EmptyList) {
         val listData = (mostHypedList.value as GameListData)
         CoverList(listData = listData, listType = ListType.MOST_HYPED)
@@ -86,7 +86,7 @@ fun RenderMostHypedList(mostHypedList: MutableState<ListData>) {
 }
 
 @Composable
-fun RenderRecentList(recentList: MutableState<ListData>) {
+private fun RenderRecentList(recentList: MutableState<ListData>) {
     if (recentList.value != EmptyList) {
         val listData = (recentList.value as GameListData)
         CoverList(listData = listData, isGrid = false, listType = ListType.RECENT)
@@ -94,7 +94,7 @@ fun RenderRecentList(recentList: MutableState<ListData>) {
 }
 
 @Composable
-fun RenderTopRatedList(topRatedList: MutableState<ListData>) {
+private fun RenderTopRatedList(topRatedList: MutableState<ListData>) {
     if (topRatedList.value != EmptyList) {
         val listData = (topRatedList.value as GameListData)
         CoverList(listData = listData, isGrid = false, listType = ListType.TOP_RATED)
@@ -102,7 +102,7 @@ fun RenderTopRatedList(topRatedList: MutableState<ListData>) {
 }
 
 @Composable
-fun RenderComingSoonList(comingSoonList: MutableState<ListData>) {
+private fun RenderComingSoonList(comingSoonList: MutableState<ListData>) {
     if (comingSoonList.value != EmptyList) {
         val listData = (comingSoonList.value as GameListData)
         CoverList(listData = listData, listType = ListType.COMING_SOON)
@@ -110,7 +110,7 @@ fun RenderComingSoonList(comingSoonList: MutableState<ListData>) {
 }
 
 @Composable
-fun RenderShowcaseList(showcaseList: MutableState<ListData>) {
+private fun RenderShowcaseList(showcaseList: MutableState<ListData>) {
     if (showcaseList.value != EmptyList) {
         val mainNavigator = LocalMainNavigator.current
         val games = (showcaseList.value as GameListData).games

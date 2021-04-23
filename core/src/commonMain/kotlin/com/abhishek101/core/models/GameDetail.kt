@@ -38,5 +38,4 @@ data class IgdbInvolvedCompany(
 data class IgdbCompany(
     @SerialName("slug") val slug: String,
     @SerialName("name") val name: String,
-
-    )
+)
