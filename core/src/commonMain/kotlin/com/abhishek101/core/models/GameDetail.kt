@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class IgdbGameDetail(
     @SerialName("slug") val slug: String,
     @SerialName("name") val name: String,
-    @SerialName("summary") val summary: String,
+    @SerialName("summary") val summary: String? = null,
     @SerialName("storyline") val storyline: String? = null,
     @SerialName("involved_companies") val involvedCompanies: List<IgdbInvolvedCompany>,
     @SerialName("platforms") val platform: List<IgdbPlatform>,

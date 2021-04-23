@@ -7,6 +7,7 @@ import org.koin.androidx.compose.get
 
 @Composable
 fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String?) {
+    println(gameSlug)
     gameSlug?.let { viewModel.getGameDetails(it) }
     Text(text = "Game Detail Screen for $gameSlug", style = MaterialTheme.typography.h1)
 }

@@ -8,7 +8,7 @@ data class IgdbPlatform(
     @SerialName("id") val id: Long,
     @SerialName("name") val name: String,
     @SerialName("slug") val slug: String,
-    @SerialName("generation") val generation: Long,
+    @SerialName("generation") val generation: Long = 0L,
     @SerialName("platform_logo") val logo: IgdbLogo
 )
 
