@@ -13,6 +13,13 @@ data class IgdbPlatform(
 )
 
 @Serializable
+data class IgdbPlatformAbbreviated(
+    @SerialName("id") val id: Long,
+    @SerialName("name") val name: String,
+    @SerialName("slug") val slug: String,
+)
+
+@Serializable
 data class IgdbLogo(
     @SerialName("image_id") val imageId: String
 )
