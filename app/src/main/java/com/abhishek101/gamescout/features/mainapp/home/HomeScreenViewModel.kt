@@ -32,7 +32,7 @@ class HomeScreenViewModel(private val gameRepository: GameRepository) : ViewMode
 
     private fun getSecondaryLists() {
         viewModelScope.launch {
-            delay(1000)
+            delay(1000) // To prevent hitting the image endpoint all at once.
             val topRatedFlow = getListData(TOP_RATED)
             val recentFlow = getListData(RECENT)
             val mostHypedFlow = getListData(MOST_HYPED)

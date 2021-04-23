@@ -3,6 +3,7 @@ package com.abhishek101.gamescout.di
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.abhishek101.gamescout.features.genreselection.GenreSelectionViewModel
+import com.abhishek101.gamescout.features.mainapp.details.GameDetailViewModel
 import com.abhishek101.gamescout.features.mainapp.home.HomeScreenViewModel
 import com.abhishek101.gamescout.features.mainapp.viewmore.ViewMoreViewModel
 import com.abhishek101.gamescout.features.onboarding.OnBoardingNavigatorViewModel
@@ -19,6 +20,7 @@ val appModule = module {
     single { OnBoardingNavigatorViewModel(get()) }
     single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }
+    single { GameDetailViewModel(get()) }
 
     // SharedPreferences
     single<SharedPreferences> {
