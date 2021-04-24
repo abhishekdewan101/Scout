@@ -33,3 +33,12 @@ jobs:
         with:
           name: app
           path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Upload to AppCenter
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: Scout-Master-Snapshot
+          token: ${{secrets.APP_CENTER_TOKEN}}
+          group: Collaborators
+          file: app/build/outputs/apk/debug/app-debug.apk
+          notifyTesters: true
+          debug: true
