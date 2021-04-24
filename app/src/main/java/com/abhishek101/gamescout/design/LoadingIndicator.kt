@@ -1,5 +1,6 @@
 package com.abhishek101.gamescout.design
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,9 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun LoadingIndicator(color: Color = MaterialTheme.colors.primary) {
+fun LoadingIndicator(
+    color: Color = MaterialTheme.colors.primary,
+    backgroundColor: Color = MaterialTheme.colors.background
+) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
