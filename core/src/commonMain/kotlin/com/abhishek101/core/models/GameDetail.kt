@@ -10,7 +10,7 @@ data class IgdbGameDetail(
     @SerialName("summary") val summary: String? = null,
     @SerialName("cover") val cover: IgdbImage? = null,
     @SerialName("storyline") val storyline: String? = null,
-    @SerialName("involved_companies") val involvedCompanies: List<IgdbInvolvedCompany>,
+    @SerialName("involved_companies") val involvedCompanies: List<IgdbInvolvedCompany>? = null,
     @SerialName("platforms") val platform: List<IgdbPlatformAbbreviated>,
     @SerialName("screenshots") val screenShots: List<IgdbImage>? = null,
     @SerialName("similar_games") val similarGames: List<IgdbGame>? = null,
