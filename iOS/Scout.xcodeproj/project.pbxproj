@@ -7,16 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6104B03A25FCA0E60092FF57 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6104B03925FCA0E60092FF57 /* HomeScreen.swift */; };
-		61126D71260725D2006CFB86 /* GenreSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61126D70260725D2006CFB86 /* GenreSelection.swift */; };
-		61126D76260726F8006CFB86 /* OnBoarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61126D75260726F8006CFB86 /* OnBoarding.swift */; };
-		61126D7A260727EA006CFB86 /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61126D79260727EA006CFB86 /* OnBoardingViewModel.swift */; };
+		4DC5C95A26368C820094F3B9 /* OnBoardingNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C95926368C820094F3B9 /* OnBoardingNavigator.swift */; };
+		4DC5C95E26368D1C0094F3B9 /* PlatformSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C95D26368D1C0094F3B9 /* PlatformSelection.swift */; };
 		612E691325FC871C00721076 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E691225FC871C00721076 /* Koin.swift */; };
 		612E691425FC871C00721076 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E691225FC871C00721076 /* Koin.swift */; };
 		612E692925FC935500721076 /* SplashScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E692825FC935500721076 /* SplashScreenViewModel.swift */; };
 		612E692A25FC935500721076 /* SplashScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E692825FC935500721076 /* SplashScreenViewModel.swift */; };
-		61AB55082600947200442BF9 /* PlatformSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB55072600947200442BF9 /* PlatformSelect.swift */; };
-		61AB550C2600949400442BF9 /* PlatformSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB550B2600949400442BF9 /* PlatformSelectViewModel.swift */; };
 		61BCD6AB26048128004AA34C /* Theme.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61BCD6AA26048128004AA34C /* Theme.xcassets */; };
 		61BCD6AC26048128004AA34C /* Theme.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61BCD6AA26048128004AA34C /* Theme.xcassets */; };
 		61DA99BC25F752120028CD06 /* GameTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA99A925F752110028CD06 /* GameTrackerApp.swift */; };
@@ -27,7 +23,6 @@
 		61DA99C125F752120028CD06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61DA99AB25F752120028CD06 /* Assets.xcassets */; };
 		61DA99DF25F755A60028CD06 /* core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61DA99CF25F753230028CD06 /* core.framework */; };
 		61DA99E025F755A60028CD06 /* core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 61DA99CF25F753230028CD06 /* core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		61DC209D2608589D00D65D5C /* GenreSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DC209C2608589D00D65D5C /* GenreSelectionViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,28 +40,23 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6104B03925FCA0E60092FF57 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
-		61126D70260725D2006CFB86 /* GenreSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelection.swift; sourceTree = "<group>"; };
-		61126D75260726F8006CFB86 /* OnBoarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoarding.swift; sourceTree = "<group>"; };
-		61126D79260727EA006CFB86 /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
+		4DC5C95926368C820094F3B9 /* OnBoardingNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingNavigator.swift; sourceTree = "<group>"; };
+		4DC5C95D26368D1C0094F3B9 /* PlatformSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelection.swift; sourceTree = "<group>"; };
 		612E691225FC871C00721076 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
 		612E692825FC935500721076 /* SplashScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewModel.swift; sourceTree = "<group>"; };
-		61AB55072600947200442BF9 /* PlatformSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelect.swift; sourceTree = "<group>"; };
-		61AB550B2600949400442BF9 /* PlatformSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelectViewModel.swift; sourceTree = "<group>"; };
 		61BCD6AA26048128004AA34C /* Theme.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Theme.xcassets; sourceTree = "<group>"; };
 		61DA99A925F752110028CD06 /* GameTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTrackerApp.swift; sourceTree = "<group>"; };
 		61DA99AA25F752110028CD06 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		61DA99AB25F752120028CD06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		61DA99B025F752120028CD06 /* GameTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61DA99B025F752120028CD06 /* Scout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61DA99B325F752120028CD06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		61DA99B825F752120028CD06 /* GameTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61DA99B825F752120028CD06 /* Scout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61DA99BA25F752120028CD06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		61DA99BB25F752120028CD06 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		61DA99CF25F753230028CD06 /* core.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = core.framework; path = "../core/build/xcode-frameworks/core.framework"; sourceTree = "<group>"; };
 		61DA99D525F754AD0028CD06 /* core.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = core.framework.dSYM; path = "../core/build/xcode-frameworks/core.framework.dSYM"; sourceTree = "<group>"; };
 		61DA99D625F754C00028CD06 /* core */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = core; path = "../core/build/xcode-frameworks/core.framework/core"; sourceTree = "<group>"; };
 		61DA99E625F756E60028CD06 /* core.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = core.framework; path = "../core/build/xcode-frameworks/core.framework"; sourceTree = "<group>"; };
-		61DC209C2608589D00D65D5C /* GenreSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelectionViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,33 +78,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6104B03825FCA0D70092FF57 /* home */ = {
+		4DC5C95526368B460094F3B9 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				6104B03925FCA0E60092FF57 /* HomeScreen.swift */,
+				612E692725FC933F00721076 /* Splash */,
+				4DC5C95926368C820094F3B9 /* OnBoardingNavigator.swift */,
 			);
-			path = home;
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		61126D6F260725BF006CFB86 /* genres */ = {
+		4DC5C95C26368D000094F3B9 /* PlatformSelection */ = {
 			isa = PBXGroup;
 			children = (
-				61126D70260725D2006CFB86 /* GenreSelection.swift */,
-				61DC209C2608589D00D65D5C /* GenreSelectionViewModel.swift */,
+				4DC5C95D26368D1C0094F3B9 /* PlatformSelection.swift */,
 			);
-			path = genres;
-			sourceTree = "<group>";
-		};
-		61126D74260726D9006CFB86 /* onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				61126D6F260725BF006CFB86 /* genres */,
-				61AB55062600946200442BF9 /* platform */,
-				6104B03825FCA0D70092FF57 /* home */,
-				61126D75260726F8006CFB86 /* OnBoarding.swift */,
-				61126D79260727EA006CFB86 /* OnBoardingViewModel.swift */,
-			);
-			path = onboarding;
+			path = PlatformSelection;
 			sourceTree = "<group>";
 		};
 		612E691725FC8A3900721076 /* ui */ = {
@@ -137,28 +115,19 @@
 		612E692525FC930F00721076 /* features */ = {
 			isa = PBXGroup;
 			children = (
-				61126D74260726D9006CFB86 /* onboarding */,
-				612E692725FC933F00721076 /* splash */,
+				4DC5C95C26368D000094F3B9 /* PlatformSelection */,
+				4DC5C95526368B460094F3B9 /* Onboarding */,
 			);
 			path = features;
 			sourceTree = "<group>";
 		};
-		612E692725FC933F00721076 /* splash */ = {
+		612E692725FC933F00721076 /* Splash */ = {
 			isa = PBXGroup;
 			children = (
 				61DA99AA25F752110028CD06 /* SplashScreen.swift */,
 				612E692825FC935500721076 /* SplashScreenViewModel.swift */,
 			);
-			path = splash;
-			sourceTree = "<group>";
-		};
-		61AB55062600946200442BF9 /* platform */ = {
-			isa = PBXGroup;
-			children = (
-				61AB55072600947200442BF9 /* PlatformSelect.swift */,
-				61AB550B2600949400442BF9 /* PlatformSelectViewModel.swift */,
-			);
-			path = platform;
+			path = Splash;
 			sourceTree = "<group>";
 		};
 		61BCD6AE26048137004AA34C /* theme */ = {
@@ -184,7 +153,6 @@
 		61DA99A825F752110028CD06 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				61DC209F26085FB300D65D5C /* utils */,
 				612E691925FC8ECF00721076 /* di */,
 				612E691725FC8A3900721076 /* ui */,
 				61DA99A925F752110028CD06 /* GameTrackerApp.swift */,
@@ -196,8 +164,8 @@
 		61DA99B125F752120028CD06 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61DA99B025F752120028CD06 /* GameTracker.app */,
-				61DA99B825F752120028CD06 /* GameTracker.app */,
+				61DA99B025F752120028CD06 /* Scout.app */,
+				61DA99B825F752120028CD06 /* Scout.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -229,19 +197,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		61DC209F26085FB300D65D5C /* utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = utils;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		61DA99AF25F752120028CD06 /* GameTracker (iOS) */ = {
+		61DA99AF25F752120028CD06 /* Scout (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61DA99C425F752120028CD06 /* Build configuration list for PBXNativeTarget "GameTracker (iOS)" */;
+			buildConfigurationList = 61DA99C425F752120028CD06 /* Build configuration list for PBXNativeTarget "Scout (iOS)" */;
 			buildPhases = (
 				61DA99AC25F752120028CD06 /* Sources */,
 				61DA99D325F753C00028CD06 /* ShellScript */,
@@ -253,14 +214,14 @@
 			);
 			dependencies = (
 			);
-			name = "GameTracker (iOS)";
+			name = "Scout (iOS)";
 			productName = "GameTracker (iOS)";
-			productReference = 61DA99B025F752120028CD06 /* GameTracker.app */;
+			productReference = 61DA99B025F752120028CD06 /* Scout.app */;
 			productType = "com.apple.product-type.application";
 		};
-		61DA99B725F752120028CD06 /* GameTracker (macOS) */ = {
+		61DA99B725F752120028CD06 /* Scout (macOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61DA99C725F752120028CD06 /* Build configuration list for PBXNativeTarget "GameTracker (macOS)" */;
+			buildConfigurationList = 61DA99C725F752120028CD06 /* Build configuration list for PBXNativeTarget "Scout (macOS)" */;
 			buildPhases = (
 				61DA99B425F752120028CD06 /* Sources */,
 				61DA99B525F752120028CD06 /* Frameworks */,
@@ -270,9 +231,9 @@
 			);
 			dependencies = (
 			);
-			name = "GameTracker (macOS)";
+			name = "Scout (macOS)";
 			productName = "GameTracker (macOS)";
-			productReference = 61DA99B825F752120028CD06 /* GameTracker.app */;
+			productReference = 61DA99B825F752120028CD06 /* Scout.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -292,7 +253,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 61DA99A725F752110028CD06 /* Build configuration list for PBXProject "GameTracker" */;
+			buildConfigurationList = 61DA99A725F752110028CD06 /* Build configuration list for PBXProject "Scout" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -305,8 +266,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				61DA99AF25F752120028CD06 /* GameTracker (iOS) */,
-				61DA99B725F752120028CD06 /* GameTracker (macOS) */,
+				61DA99AF25F752120028CD06 /* Scout (iOS) */,
+				61DA99B725F752120028CD06 /* Scout (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -357,16 +318,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61AB550C2600949400442BF9 /* PlatformSelectViewModel.swift in Sources */,
-				61AB55082600947200442BF9 /* PlatformSelect.swift in Sources */,
 				612E691325FC871C00721076 /* Koin.swift in Sources */,
-				6104B03A25FCA0E60092FF57 /* HomeScreen.swift in Sources */,
-				61DC209D2608589D00D65D5C /* GenreSelectionViewModel.swift in Sources */,
-				61126D76260726F8006CFB86 /* OnBoarding.swift in Sources */,
 				61DA99BE25F752120028CD06 /* SplashScreen.swift in Sources */,
+				4DC5C95A26368C820094F3B9 /* OnBoardingNavigator.swift in Sources */,
+				4DC5C95E26368D1C0094F3B9 /* PlatformSelection.swift in Sources */,
 				61DA99BC25F752120028CD06 /* GameTrackerApp.swift in Sources */,
-				61126D7A260727EA006CFB86 /* OnBoardingViewModel.swift in Sources */,
-				61126D71260725D2006CFB86 /* GenreSelection.swift in Sources */,
 				612E692925FC935500721076 /* SplashScreenViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,7 +457,7 @@
 		61DA99C525F752120028CD06 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = appIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_PREVIEWS = YES;
@@ -512,8 +468,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abhishekdewan101.GameTracker;
-				PRODUCT_NAME = GameTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abhishekdewan101.Scout;
+				PRODUCT_NAME = Scout;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -523,7 +479,7 @@
 		61DA99C625F752120028CD06 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = appIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_PREVIEWS = YES;
@@ -534,8 +490,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abhishekdewan101.GameTracker;
-				PRODUCT_NAME = GameTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abhishekdewan101.Scout;
+				PRODUCT_NAME = Scout;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -559,7 +515,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abhishekdewan101.GameTracker;
-				PRODUCT_NAME = GameTracker;
+				PRODUCT_NAME = Scout;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -581,7 +537,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abhishekdewan101.GameTracker;
-				PRODUCT_NAME = GameTracker;
+				PRODUCT_NAME = Scout;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -590,7 +546,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61DA99A725F752110028CD06 /* Build configuration list for PBXProject "GameTracker" */ = {
+		61DA99A725F752110028CD06 /* Build configuration list for PBXProject "Scout" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61DA99C225F752120028CD06 /* Debug */,
@@ -599,7 +555,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61DA99C425F752120028CD06 /* Build configuration list for PBXNativeTarget "GameTracker (iOS)" */ = {
+		61DA99C425F752120028CD06 /* Build configuration list for PBXNativeTarget "Scout (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61DA99C525F752120028CD06 /* Debug */,
@@ -608,7 +564,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61DA99C725F752120028CD06 /* Build configuration list for PBXNativeTarget "GameTracker (macOS)" */ = {
+		61DA99C725F752120028CD06 /* Build configuration list for PBXNativeTarget "Scout (macOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61DA99C825F752120028CD06 /* Debug */,

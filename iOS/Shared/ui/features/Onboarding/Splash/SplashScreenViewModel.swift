@@ -20,14 +20,17 @@ class SplashScreenViewModel : Injectable, ObservableObject {
     func authenticateUser() {
         FlowExtensionsKt.asCommonFlow(authenticationRepository.getAuthenticationData())
             .watch { result in
-                let auth = result as? Authentication
-                if (auth != nil) {
-                    print("Found a valid authentication - Can proceed")
-                    self.isAuthenticationValid = true
-                } else {
-                    print("Didn't find a valid authentication")
-                    self.authenticationRepository.authenticateUser {_,_ in }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    let auth = result as? Authentication
+                    if (auth != nil) {
+                        print("Found a valid authentication - Can proceed")
+                        self.isAuthenticationValid = true
+                    } else {
+                        print("Didn't find a valid authentication")
+                        self.authenticationRepository.authenticateUser {_,_ in }
+                    }
                 }
+                
             }
     }
 }
