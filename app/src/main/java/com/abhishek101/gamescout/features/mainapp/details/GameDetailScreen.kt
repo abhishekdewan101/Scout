@@ -28,6 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.models.IgdbGameDetail
+import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
@@ -75,35 +76,37 @@ fun RenderMainContent(gameDetails: IgdbGameDetail) {
                 RenderCoverImage(gameDetails)
                 RenderGameInformation(gameDetails)
             }
-            gameDetails.summary?.let {
-                SafeArea(padding = 0.dp, topOverride = 10.dp) {
-                    TitleContainer(
-                        title = "Summary",
-                        titleColor = Color.White.copy(alpha = 0.5f),
-                        hasViewMore = false
-                    ) {
-                        Text(
-                            it,
-                            color = Color.White,
-                            fontSize = 16.sp,
-                        )
-                    }
-                }
+            RenderGameSummary(gameDetails)
+            RenderGameStoryline(gameDetails)
+        }
+    }
+}
+
+@Composable
+private fun RenderGameStoryline(gameDetails: IgdbGameDetail) {
+    gameDetails.storyline?.let {
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            TitleContainer(
+                title = "Storyline",
+                titleColor = Color.White.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                CollapsableText(data = it, maxLines = 7, fontSize = 16)
             }
-            gameDetails.storyline?.let {
-                SafeArea(padding = 0.dp, topOverride = 10.dp) {
-                    TitleContainer(
-                        title = "Storyline",
-                        titleColor = Color.White.copy(alpha = 0.5f),
-                        hasViewMore = false
-                    ) {
-                        Text(
-                            it,
-                            color = Color.White,
-                            fontSize = 16.sp,
-                        )
-                    }
-                }
+        }
+    }
+}
+
+@Composable
+private fun RenderGameSummary(gameDetails: IgdbGameDetail) {
+    gameDetails.summary?.let {
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            TitleContainer(
+                title = "Summary",
+                titleColor = Color.White.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                CollapsableText(data = it, maxLines = 7, fontSize = 16)
             }
         }
     }
