@@ -21,6 +21,26 @@ android {
         viewBinding true
     }
 
+    signingConfigs {
+        Properties properties
+        try {
+            properties = new Properties()
+            properties.load(new FileReader(project.rootProject.file("local.properties")))
+            if (properties.getProperty("debugKeyAlias") == null) {
+                throw IllegalStateException("No debug signing key")
+            }
+        } catch (Exception e) {
+            println("No Local Properties Found for Signing")
+            throw e
+        }
+        debug {
+            keyAlias properties.getProperty("debugKeyAlias")
+            keyPassword properties.getProperty("debugKeyPassword")
+            storeFile file(rootDir.getCanonicalPath() + "/" + properties.getProperty("debugStoreFileName"))
+            storePassword properties.getProperty("debugStorePassword")
+        }
+    }
+
     defaultConfig {
         applicationId "com.abhishek101.gametracker"
         minSdkVersion AppVersions.minSdkVersion
@@ -32,6 +52,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
