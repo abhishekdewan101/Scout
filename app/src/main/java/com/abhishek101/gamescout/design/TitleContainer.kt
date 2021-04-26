@@ -15,25 +15,37 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun TitleContainer(
     title: String,
-    hasViewMore: Boolean,
-    onViewMoreClicked: () -> Unit,
+    titleColor: Color = MaterialTheme.colors.onBackground,
+    hasViewMore: Boolean = true,
+    onViewMoreClicked: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     Column {
-        TitleRow(title = title, onViewMoreClicked = onViewMoreClicked, hasViewMore = hasViewMore)
+        TitleRow(
+            title = title,
+            titleColor = titleColor,
+            onViewMoreClicked = onViewMoreClicked,
+            hasViewMore = hasViewMore
+        )
         Spacer(modifier = Modifier.height(15.dp))
         content()
     }
 }
 
 @Composable
-fun TitleRow(title: String, onViewMoreClicked: () -> Unit, hasViewMore: Boolean) {
+fun TitleRow(
+    title: String,
+    titleColor: Color,
+    onViewMoreClicked: (() -> Unit)?,
+    hasViewMore: Boolean
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -42,9 +54,9 @@ fun TitleRow(title: String, onViewMoreClicked: () -> Unit, hasViewMore: Boolean)
     ) {
         Text(
             title,
-            style = MaterialTheme.typography.h5.copy(color = MaterialTheme.colors.onBackground)
+            style = MaterialTheme.typography.h5.copy(color = titleColor)
         )
-        if (hasViewMore) {
+        if (hasViewMore && onViewMoreClicked != null) {
             IconButton(onClick = onViewMoreClicked) {
                 Icon(Icons.Outlined.MoreVert, "More", tint = MaterialTheme.colors.onBackground)
             }

@@ -17,6 +17,7 @@ data class IgdbGameDetail(
     @SerialName("artworks") val artworks: List<IgdbImage>? = null,
     @SerialName("dlcs") val dlc: List<IgdbGame>? = null,
     @SerialName("expansions") val expansions: List<IgdbGame>? = null,
+    @SerialName("total_rating") val totalRating: Float? = null,
     @SerialName("remasters") val remasters: List<IgdbGame>? = null,
     @SerialName("collection") val collection: IgdbCollection? = null
 )
