@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.gamescout.design.CollapsableText
+import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
@@ -78,6 +80,23 @@ fun RenderMainContent(gameDetails: IgdbGameDetail) {
             }
             RenderGameSummary(gameDetails)
             RenderGameStoryline(gameDetails)
+            RenderScreenShots(gameDetails)
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
+
+@Composable
+private fun RenderScreenShots(gameDetails: IgdbGameDetail) {
+    gameDetails.screenShots?.map { it.qualifiedUrl }?.let {
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            TitleContainer(
+                title = "Screenshots",
+                titleColor = Color.White.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                HorizontalImageList(data = it, itemWidth = 400.dp, itemHeight = 200.dp) {}
+            }
         }
     }
 }
