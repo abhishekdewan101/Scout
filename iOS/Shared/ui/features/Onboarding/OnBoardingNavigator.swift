@@ -19,16 +19,16 @@ struct OnBoardingNavigator: View {
         NavigationView {
             VStack {
                 NavigationLink(
-                    destination: SplashScreen(){
+                    destination: LazyView(SplashScreen(){
                         selection = OnBoardingDestinations.PlatformSelectionScreen.rawValue
                         return EmptyView()
-                    }.navigationTitle("").navigationBarHidden(true),
+                    }).navigationTitle("").navigationBarHidden(true),
                     tag: OnBoardingDestinations.SplashScreen.rawValue,
                     selection: $selection,
                     label: {EmptyView()})
                 
                 NavigationLink(
-                    destination: PlatformSelection().navigationTitle("").navigationBarHidden(true),
+                    destination: LazyView(PlatformSelection()).navigationTitle("").navigationBarHidden(true),
                     tag: OnBoardingDestinations.PlatformSelectionScreen.rawValue,
                     selection: $selection,
                     label: {EmptyView()})

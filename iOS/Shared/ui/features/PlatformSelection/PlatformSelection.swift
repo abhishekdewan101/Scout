@@ -6,15 +6,52 @@
 //
 
 import SwiftUI
+import core
 
 struct PlatformSelection: View {
+    
+    @ObservedObject var viewModel = PlatformSelectViewModel()
+    
     var body: some View {
-        Text("Platform Selection").foregroundColor(Color.black)
+        FullScreenZStack {
+            if (viewModel.isLoading) {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.purple))
+                    .scaleEffect(x: 2, y: 2, anchor: .center)
+            } else {
+                MainContent
+            }
+        }
+    }
+    
+    private var MainContent: some View {
+        FullScreenVStack(alignment: HorizontalAlignment.leading) {
+            Text("Platforms").font(.system(size: 34)).foregroundColor(.purple).fontWeight(.bold).padding(.leading)
+            Text("Select the platforms your currently own").font(.body).foregroundColor(.white).padding(.leading)
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 10, pinnedViews: [], content: {
+                ForEach(0 ..< viewModel.platformList.count) { index in
+                    let platform = viewModel.platformList[index] as Platform
+                    let isPlatformOwned = viewModel.platformList[index].isOwned == true
+                    CircularSelectableImage(isSelected: isPlatformOwned, isSelectedColor: .purple, imageId: "Arcade", title: platform.name) {
+                        viewModel.setPlatformAsFavorite(platform: platform, isOwned: !isPlatformOwned)
+                    }
+                }
+            }).padding(.all)
+        }
     }
 }
 
-struct PlatformSelection_Previews: PreviewProvider {
+struct PlatformProvider: PreviewProvider {
     static var previews: some View {
-        PlatformSelection()
+        let view = PlatformSelection()
+        view.viewModel.isLoading = false
+        view.viewModel.platformList = [
+            Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: false)),
+            Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: true)),
+            Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: false)),
+            Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: true)),
+        ]
+        return view
     }
 }
+
