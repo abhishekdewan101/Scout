@@ -44,5 +44,5 @@ jobs:
           token: ${{secrets.APP_CENTER_TOKEN}}
           group: Testers
           file: app/build/outputs/apk/debug/app-debug.apk
-          notifyTesters: true
+          notifyTesters: false
           debug: true

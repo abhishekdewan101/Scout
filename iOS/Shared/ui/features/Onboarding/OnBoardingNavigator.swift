@@ -10,6 +10,7 @@ import SwiftUI
 enum OnBoardingDestinations: String {
     case PlatformSelectionScreen = "PlatformSelectionScreen"
     case SplashScreen = "SplashScreen"
+    case GenreSelectionScreen = "GenreSelectionScreen"
 }
 
 struct OnBoardingNavigator: View {
@@ -28,8 +29,20 @@ struct OnBoardingNavigator: View {
                     label: {EmptyView()})
                 
                 NavigationLink(
-                    destination: LazyView(PlatformSelection()).navigationTitle("").navigationBarHidden(true),
+                    destination: LazyView(PlatformSelection(){
+                        selection = OnBoardingDestinations.GenreSelectionScreen.rawValue
+                        return EmptyView()
+                    }).navigationTitle("").navigationBarHidden(true),
                     tag: OnBoardingDestinations.PlatformSelectionScreen.rawValue,
+                    selection: $selection,
+                    label: {EmptyView()})
+                
+                NavigationLink(
+                    destination: LazyView(GenreSelection(){
+                        selection = OnBoardingDestinations.GenreSelectionScreen.rawValue
+                        return EmptyView()
+                    }).navigationTitle("").navigationBarHidden(true),
+                    tag: OnBoardingDestinations.GenreSelectionScreen.rawValue,
                     selection: $selection,
                     label: {EmptyView()})
             }

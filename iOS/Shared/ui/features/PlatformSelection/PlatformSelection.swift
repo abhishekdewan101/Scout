@@ -12,6 +12,12 @@ struct PlatformSelection: View {
     
     @ObservedObject var viewModel = PlatformSelectViewModel()
     
+    var navigateForward: () -> EmptyView
+    
+    init(navigateForward: @escaping () -> EmptyView) {
+        self.navigateForward = navigateForward
+    }
+    
     var body: some View {
         FullScreenZStack {
             if (viewModel.isLoading) {
@@ -20,6 +26,19 @@ struct PlatformSelection: View {
                     .scaleEffect(x: 2, y: 2, anchor: .center)
             } else {
                 MainContent
+                if (viewModel.getOwnedPlatformCount() > 0) {
+                    VStack{
+                        Spacer()
+                        Button(action: {navigateForward()}) {
+                            Text("Done")
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                                .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 50)
+                                .background(Color.purple)
+                        }.cornerRadius(10.0)
+                        .padding([.leading, .trailing], 30)
+                    }
+                }
             }
         }
     }
@@ -28,22 +47,24 @@ struct PlatformSelection: View {
         FullScreenVStack(alignment: HorizontalAlignment.leading) {
             Text("Platforms").font(.system(size: 34)).foregroundColor(.purple).fontWeight(.bold).padding(.leading)
             Text("Select the platforms your currently own").font(.body).foregroundColor(.white).padding(.leading)
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 10, pinnedViews: [], content: {
-                ForEach(0 ..< viewModel.platformList.count) { index in
-                    let platform = viewModel.platformList[index] as Platform
-                    let isPlatformOwned = viewModel.platformList[index].isOwned == true
-                    CircularSelectableImage(isSelected: isPlatformOwned, isSelectedColor: .purple, imageId: "Arcade", title: platform.name) {
-                        viewModel.setPlatformAsFavorite(platform: platform, isOwned: !isPlatformOwned)
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 10, pinnedViews: [], content: {
+                    ForEach(0 ..< viewModel.platformList.count) { index in
+                        let platform = viewModel.platformList[index] as Platform
+                        let isPlatformOwned = platform.isOwned == true
+                        CircularSelectableImage(isSelected: isPlatformOwned, isSelectedColor: .purple, imageId: platform.imageId, isImageRemote: true, title: platform.name) {
+                            viewModel.setPlatformAsFavorite(platform: platform, isOwned: !isPlatformOwned)
+                        }
                     }
-                }
-            }).padding(.all)
+                }).padding(.all)
+            }
         }
     }
 }
 
 struct PlatformProvider: PreviewProvider {
     static var previews: some View {
-        let view = PlatformSelection()
+        let view = PlatformSelection(navigateForward: {return EmptyView()})
         view.viewModel.isLoading = false
         view.viewModel.platformList = [
             Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: false)),
