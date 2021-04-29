@@ -12,9 +12,9 @@ struct PlatformSelection: View {
     
     @ObservedObject var viewModel = PlatformSelectViewModel()
     
-    var navigateForward: () -> EmptyView
+    var navigateForward: () -> Void
     
-    init(navigateForward: @escaping () -> EmptyView) {
+    init(navigateForward: @escaping () -> Void) {
         self.navigateForward = navigateForward
     }
     
@@ -64,7 +64,7 @@ struct PlatformSelection: View {
 
 struct PlatformProvider: PreviewProvider {
     static var previews: some View {
-        let view = PlatformSelection(navigateForward: {return EmptyView()})
+        let view = PlatformSelection(navigateForward: {})
         view.viewModel.isLoading = false
         view.viewModel.platformList = [
             Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: false)),

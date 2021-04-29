@@ -25,10 +25,8 @@ class PlatformSelectViewModel : ObservableObject {
             if (platforms?.count == 0) {
                 self.platformRepository.updateCachedPlatforms(completionHandler: {_,_ in})
             } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    isLoading = false
-                    platformList = (platforms as? [Platform])!
-                }
+                isLoading = false
+                platformList = (platforms as? [Platform])!
             }
         })
     }

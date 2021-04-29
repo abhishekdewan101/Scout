@@ -18,6 +18,9 @@
 		4DC5C981263937F10094F3B9 /* UrlUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C980263937F10094F3B9 /* UrlUtils.swift */; };
 		4DC5C98926393C120094F3B9 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C98826393C120094F3B9 /* ViewExtensions.swift */; };
 		4DC5C98D26393FF40094F3B9 /* GenreSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C98C26393FF40094F3B9 /* GenreSelection.swift */; };
+		4DC5C991263A74DA0094F3B9 /* GenreSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C990263A74DA0094F3B9 /* GenreSelectionViewModel.swift */; };
+		4DC5C994263A7B8C0094F3B9 /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C993263A7B8C0094F3B9 /* OnBoardingViewModel.swift */; };
+		4DC5C998263A7C200094F3B9 /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C997263A7C200094F3B9 /* MainApp.swift */; };
 		612E691325FC871C00721076 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E691225FC871C00721076 /* Koin.swift */; };
 		612E691425FC871C00721076 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E691225FC871C00721076 /* Koin.swift */; };
 		612E692925FC935500721076 /* SplashScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612E692825FC935500721076 /* SplashScreenViewModel.swift */; };
@@ -59,6 +62,9 @@
 		4DC5C980263937F10094F3B9 /* UrlUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlUtils.swift; sourceTree = "<group>"; };
 		4DC5C98826393C120094F3B9 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		4DC5C98C26393FF40094F3B9 /* GenreSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelection.swift; sourceTree = "<group>"; };
+		4DC5C990263A74DA0094F3B9 /* GenreSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelectionViewModel.swift; sourceTree = "<group>"; };
+		4DC5C993263A7B8C0094F3B9 /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
+		4DC5C997263A7C200094F3B9 /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
 		612E691225FC871C00721076 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
 		612E692825FC935500721076 /* SplashScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewModel.swift; sourceTree = "<group>"; };
 		61BCD6AA26048128004AA34C /* Theme.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Theme.xcassets; sourceTree = "<group>"; };
@@ -101,6 +107,7 @@
 			children = (
 				612E692725FC933F00721076 /* Splash */,
 				4DC5C95926368C820094F3B9 /* OnBoardingNavigator.swift */,
+				4DC5C993263A7B8C0094F3B9 /* OnBoardingViewModel.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -145,8 +152,17 @@
 			isa = PBXGroup;
 			children = (
 				4DC5C98C26393FF40094F3B9 /* GenreSelection.swift */,
+				4DC5C990263A74DA0094F3B9 /* GenreSelectionViewModel.swift */,
 			);
 			path = GenreSelection;
+			sourceTree = "<group>";
+		};
+		4DC5C996263A7C040094F3B9 /* MainApp */ = {
+			isa = PBXGroup;
+			children = (
+				4DC5C997263A7C200094F3B9 /* MainApp.swift */,
+			);
+			path = MainApp;
 			sourceTree = "<group>";
 		};
 		612E691725FC8A3900721076 /* ui */ = {
@@ -172,6 +188,7 @@
 		612E692525FC930F00721076 /* features */ = {
 			isa = PBXGroup;
 			children = (
+				4DC5C996263A7C040094F3B9 /* MainApp */,
 				4DC5C98B26393FE70094F3B9 /* GenreSelection */,
 				4DC5C95C26368D000094F3B9 /* PlatformSelection */,
 				4DC5C95526368B460094F3B9 /* Onboarding */,
@@ -385,13 +402,16 @@
 				612E691325FC871C00721076 /* Koin.swift in Sources */,
 				4DC5C96E2637DAD10094F3B9 /* FullScreenZStack.swift in Sources */,
 				61DA99BE25F752120028CD06 /* SplashScreen.swift in Sources */,
+				4DC5C994263A7B8C0094F3B9 /* OnBoardingViewModel.swift in Sources */,
 				4DC5C95A26368C820094F3B9 /* OnBoardingNavigator.swift in Sources */,
 				4DC5C9722637E5A90094F3B9 /* FullScreenVStack.swift in Sources */,
 				4DC5C981263937F10094F3B9 /* UrlUtils.swift in Sources */,
 				4DC5C95E26368D1C0094F3B9 /* PlatformSelection.swift in Sources */,
 				4DC5C98926393C120094F3B9 /* ViewExtensions.swift in Sources */,
 				4DC5C96A2637D9D40094F3B9 /* LazyView.swift in Sources */,
+				4DC5C991263A74DA0094F3B9 /* GenreSelectionViewModel.swift in Sources */,
 				61DA99BC25F752120028CD06 /* GameTrackerApp.swift in Sources */,
+				4DC5C998263A7C200094F3B9 /* MainApp.swift in Sources */,
 				612E692925FC935500721076 /* SplashScreenViewModel.swift in Sources */,
 				4DC5C979263924EB0094F3B9 /* CircularSelectableImage.swift in Sources */,
 				4DC5C98D26393FF40094F3B9 /* GenreSelection.swift in Sources */,
