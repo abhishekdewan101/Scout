@@ -28,7 +28,7 @@ struct OnBoardingNavigator: View {
                             selection = OnBoardingDestinations.MainAppScreen.rawValue
                         } else {
                             selection = OnBoardingDestinations.PlatformSelectionScreen.rawValue
-                        }                    
+                        }
                         return EmptyView()
                     }).navigationTitle("").navigationBarHidden(true),
                     tag: OnBoardingDestinations.SplashScreen.rawValue,
