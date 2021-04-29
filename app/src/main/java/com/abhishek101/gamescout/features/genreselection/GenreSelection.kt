@@ -66,7 +66,7 @@ fun GenreSelectionList(
     onBoardingCompleted: UpdateOnBoardingComplete,
     favoriteCount: Int
 ) {
-    SafeArea(padding = 15.dp, backgroundColor = Color(15, 27, 27)) {
+    SafeArea(padding = 15.dp, backgroundColor = Color.Black) {
         Box() {
             Column(modifier = Modifier.fillMaxSize()) {
                 GenreSelectionHeader()
