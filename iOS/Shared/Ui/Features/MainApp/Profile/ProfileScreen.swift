@@ -1,5 +1,5 @@
 //
-//  MainApp.swift
+//  ProfileScreen.swift
 //  Scout (iOS)
 //
 //  Created by Abhishek Dewan on 4/28/21.
@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct MainApp: View {
+struct ProfileScreen: View {
     var body: some View {
-        Text("Hello, World MainApp!")
+        Text("Profile Screen")
     }
 }
 
-struct MainApp_Previews: PreviewProvider {
+struct ProfileScreen_Previews: PreviewProvider {
     static var previews: some View {
-        MainApp()
+        ProfileScreen()
     }
 }
