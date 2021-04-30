@@ -1,3 +1,8 @@
+iOS/.idea/*
+iOS/Scout.xcodeproj/project.xcworkspace/xcshareddata/*
+iOS/Scout.xcodeproj/xcuserdata/abhishekdewan.xcuserdatad/xcschemes/Scout (iOS).xcscheme
+
+
 # Built application files
 *.apk
 *.aar
