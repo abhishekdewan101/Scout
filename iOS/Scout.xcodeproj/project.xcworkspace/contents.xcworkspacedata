@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/abhishekdewan/Documents/Workspace/Android/Scout/iOS/Scout.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>
