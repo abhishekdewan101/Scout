@@ -9,20 +9,20 @@ import SwiftUI
 import URLImage
 
 struct GamePosterGrid: View {
-    
+
     var imageIdList: [String]
-    
+
     var onImageSelected: (Int) -> Void
-    
+
     init(imageIdList: [String], onImageSelected: @escaping (Int) -> Void) {
         self.imageIdList = imageIdList
         self.onImageSelected = onImageSelected
     }
-    
+
     var body: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()),GridItem(.flexible())], alignment: .leading, spacing: 10, pinnedViews: [], content: {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 10, pinnedViews: [], content: {
             ForEach(0 ..< imageIdList.count) { index in
-                URLImage(url: URL(string: imageIdList[index])!,content: { image in
+                URLImage(url: URL(string: imageIdList[index])!, content: { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -39,8 +39,8 @@ struct GamePosterGrid: View {
 
 struct GamePosterGrid_Previews: PreviewProvider {
     static var previews: some View {
-        GamePosterGrid(imageIdList: ["arcade","adventure","sport","arcade","adventure","sport"]) { _ in
-            
+        GamePosterGrid(imageIdList: ["arcade", "adventure", "sport", "arcade", "adventure", "sport"]) { _ in
+
         }
     }
 }

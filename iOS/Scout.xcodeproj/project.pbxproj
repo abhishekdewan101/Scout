@@ -341,8 +341,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 61DA99C425F752120028CD06 /* Build configuration list for PBXNativeTarget "Scout (iOS)" */;
 			buildPhases = (
-				61DA99AC25F752120028CD06 /* Sources */,
+				4D218D1C263E880C006F5024 /* ShellScript */,
 				61DA99D325F753C00028CD06 /* ShellScript */,
+				61DA99AC25F752120028CD06 /* Sources */,
 				61DA99AD25F752120028CD06 /* Frameworks */,
 				61DA99AE25F752120028CD06 /* Resources */,
 				61DA99E125F755A60028CD06 /* Embed Frameworks */,
@@ -437,6 +438,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4D218D1C263E880C006F5024 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nswiftlint autocorrect\n";
+		};
 		61DA99D325F753C00028CD06 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

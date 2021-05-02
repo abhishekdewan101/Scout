@@ -12,7 +12,7 @@ struct ProfileScreen: View {
         FullScreenVStack(alignment: .leading) {
             ScrollView {
                 Text("Profile").font(.largeTitle).fontWeight(.bold).foregroundColor(Color.init("TitleColor")).padding(EdgeInsets(top: 15, leading: 10, bottom: 0, trailing: 0))
-                
+
             }
         }
         .padding(.all)

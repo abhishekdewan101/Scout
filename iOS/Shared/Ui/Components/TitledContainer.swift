@@ -8,18 +8,17 @@
 import SwiftUI
 
 struct TitledContainer<Content: View>: View {
-    
-    
+
     var title: String
     var onViewMoreClicked: () -> Void
     var content: () -> Content
-    
+
     init(title: String, onViewMoreClicked: @escaping () -> Void, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.content = content
         self.onViewMoreClicked = onViewMoreClicked
     }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {

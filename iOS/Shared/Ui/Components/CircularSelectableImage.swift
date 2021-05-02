@@ -15,7 +15,7 @@ struct CircularSelectableImage: View {
     var isImageRemote: Bool
     var title: String
     var onSelected: () -> Void
-    
+
     init(isSelected: Bool, isSelectedColor: Color, imageId: String, isImageRemote: Bool, title: String, onSelected: @escaping () -> Void) {
         self.isSelected = isSelected
         self.isSelectedColor = isSelectedColor
@@ -24,9 +24,9 @@ struct CircularSelectableImage: View {
         self.title = title
         self.onSelected = onSelected
     }
-    
+
     var body: some View {
-        ZStack{
+        ZStack {
             Circle()
                 .fill(Color.white)
                 .frame(width: 150, height: 150)
@@ -35,8 +35,8 @@ struct CircularSelectableImage: View {
                     view.overlay(Circle().stroke(isSelectedColor, lineWidth: 5))
                 }
             VStack {
-                if (isImageRemote) {
-                    URLImage(url: buildImageUrl(imageId: imageId)!,content: { image in
+                if isImageRemote {
+                    URLImage(url: buildImageUrl(imageId: imageId)!, content: { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)

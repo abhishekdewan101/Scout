@@ -6,27 +6,27 @@ import SwiftUI
 import URLImage
 
 struct HorizontalImageList: View {
-    
+
     var imageIdList: [String]
-    
+
     var onImageSelected: (Int) -> Void
-    
+
     var imageWidth: CGFloat
-    
+
     var imageHeight: CGFloat
-    
-    init(imageIdList:[String], imageWidth: CGFloat, imageHeight: CGFloat, onImageSelected: @escaping (Int) -> Void) {
+
+    init(imageIdList: [String], imageWidth: CGFloat, imageHeight: CGFloat, onImageSelected: @escaping (Int) -> Void) {
         self.imageIdList = imageIdList
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
         self.onImageSelected = onImageSelected
     }
-    
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
                 ForEach(0 ..< imageIdList.count) { index in
-                    URLImage(url: URL(string: imageIdList[index])!,content: { image in
+                    URLImage(url: URL(string: imageIdList[index])!, content: { image in
                         image
                             .resizable()
                             .scaledToFill()
@@ -36,7 +36,7 @@ struct HorizontalImageList: View {
                     }).onTapGesture {
                         onImageSelected(index)
                     }
-                    
+
                 }
             }
             .padding(.leading, 10)

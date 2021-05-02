@@ -9,25 +9,25 @@ import SwiftUI
 import core
 
 struct PlatformSelection: View {
-    
+
     @ObservedObject var viewModel = PlatformSelectViewModel()
-    
+
     var navigateForward: () -> Void
-    
+
     init(navigateForward: @escaping () -> Void) {
         self.navigateForward = navigateForward
     }
-    
+
     var body: some View {
         FullScreenZStack {
-            if (viewModel.isLoading) {
+            if viewModel.isLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.purple))
                     .scaleEffect(x: 2, y: 2, anchor: .center)
             } else {
                 MainContent
-                if (viewModel.getOwnedPlatformCount() > 0) {
-                    VStack{
+                if viewModel.getOwnedPlatformCount() > 0 {
+                    VStack {
                         Spacer()
                         Button(action: {navigateForward()}) {
                             Text("Done")
@@ -42,7 +42,7 @@ struct PlatformSelection: View {
             }
         }
     }
-    
+
     private var MainContent: some View {
         FullScreenVStack(alignment: HorizontalAlignment.leading) {
             Text("Platforms").font(.system(size: 34)).foregroundColor(.purple).fontWeight(.bold).padding(.leading)
@@ -70,9 +70,8 @@ struct PlatformProvider: PreviewProvider {
             Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: false)),
             Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: true)),
             Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: false)),
-            Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: true)),
+            Platform(id: 0, slug: "arcade", name: "Arcade", generation: 2, imageId: "something", isOwned: KotlinBoolean(bool: true))
         ]
         return view
     }
 }
-

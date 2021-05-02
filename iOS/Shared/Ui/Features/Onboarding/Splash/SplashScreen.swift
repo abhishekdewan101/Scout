@@ -8,34 +8,34 @@
 import SwiftUI
 
 struct SplashScreen: View {
-    
+
     var navigateForward: () -> EmptyView
-    
+
     @ObservedObject var splashScreenViewModel = SplashScreenViewModel()
-    
+
     init(navigateForward: @escaping () -> EmptyView) {
         self.navigateForward = navigateForward
         splashScreenViewModel.authenticateUser()
     }
-    
+
     var body: some View {
         SplashScreenContent(isAuthenticationValid: splashScreenViewModel.isAuthenticationValid, navigateForward: navigateForward)
     }
-    
+
 }
 
 struct SplashScreenContent: View {
     var isAuthenticationValid: Bool
     var navigateForward: () -> EmptyView
-    
+
     var body: some View {
-        if (isAuthenticationValid) {
+        if isAuthenticationValid {
             navigateForward()
         } else {
-            ZStack{
+            ZStack {
                 Image("background").resizable().aspectRatio(contentMode: .fill).edgesIgnoringSafeArea(.all)
                 Rectangle().fill(Color.black.opacity(0.5)).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                
+
                 VStack {
                     Text("Scout")
                         .font(.system(size: 60.0))

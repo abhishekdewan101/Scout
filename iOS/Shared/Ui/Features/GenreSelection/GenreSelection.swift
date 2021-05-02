@@ -9,24 +9,24 @@ import SwiftUI
 import core
 
 struct GenreSelection: View {
-    
+
     var navigateForward: () -> Void
     @ObservedObject var viewModel = GenreSelectionViewModel()
-    
+
     init(navigateForward: @escaping () -> Void) {
         self.navigateForward = navigateForward
     }
-    
+
     var body: some View {
         FullScreenZStack {
-            if (viewModel.isLoading) {
+            if viewModel.isLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.orange))
                     .scaleEffect(x: 2, y: 2, anchor: .center)
             } else {
                 MainContent
-                if (viewModel.getFavoriteGenreCount() > 0) {
-                    VStack{
+                if viewModel.getFavoriteGenreCount() > 0 {
+                    VStack {
                         Spacer()
                         Button(action: {navigateForward()}) {
                             Text("Done")
@@ -41,7 +41,7 @@ struct GenreSelection: View {
             }
         }
     }
-    
+
     private var MainContent: some View {
         FullScreenVStack(alignment: HorizontalAlignment.leading) {
             Text("Platforms").font(.system(size: 34)).foregroundColor(.orange).fontWeight(.bold).padding(.leading)
@@ -63,8 +63,8 @@ struct GenreSelection: View {
 
 struct GenreSelection_Previews: PreviewProvider {
     static var previews: some View {
-        GenreSelection() {
-        
+        GenreSelection {
+
         }
     }
 }

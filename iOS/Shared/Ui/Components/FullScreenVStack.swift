@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct FullScreenVStack<Content: View> : View {
+struct FullScreenVStack<Content: View>: View {
     var content: () -> Content
     var alignment: HorizontalAlignment
-    
+
     init(alignment: HorizontalAlignment, @ViewBuilder content: @escaping () -> Content) {
         self.alignment = alignment
         self.content = content
     }
-    
+
     var body: some View {
         VStack(alignment: alignment, spacing: nil, content: {
           content()
@@ -28,4 +28,3 @@ struct FullScreenVStack<Content: View> : View {
         )
     }
 }
-

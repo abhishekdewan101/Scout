@@ -8,10 +8,10 @@
 import Foundation
 import core
 
-private var _koin: Koin_coreKoin? = nil
+private var _koin: Koin_coreKoin?
 
 var koin: Koin_coreKoin {
-    if (_koin == nil) {
+    if _koin == nil {
         startKoin()
     }
     return _koin!

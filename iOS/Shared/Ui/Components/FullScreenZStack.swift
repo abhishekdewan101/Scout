@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct FullScreenZStack<Content: View> : View {
+struct FullScreenZStack<Content: View>: View {
     var content: () -> Content
-    
+
     init(@ViewBuilder content: @escaping () -> Content) {
         self.content = content
     }
-    
+
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
@@ -27,4 +27,3 @@ struct FullScreenZStack<Content: View> : View {
         )
     }
 }
-

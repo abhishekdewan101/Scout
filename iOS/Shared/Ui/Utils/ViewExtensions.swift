@@ -12,8 +12,7 @@ extension View {
     func `if`<Content: View>(_ condition: Bool, content: (Self) -> Content) -> some View {
         if condition {
             content(self)
-        }
-        else {
+        } else {
             self
         }
     }

@@ -10,7 +10,7 @@ import Foundation
 let onBoardingCompleteKey = "onBoardingComplete"
 
 class OnBoardingViewModel: ObservableObject {
-    
+
      let preferences = UserDefaults.standard
 
      func isOnboardingComplete() -> Bool {

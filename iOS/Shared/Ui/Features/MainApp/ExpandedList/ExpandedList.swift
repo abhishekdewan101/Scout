@@ -9,23 +9,23 @@ import SwiftUI
 import core
 
 struct ExpandedList: View {
-    
+
     var listData: GameListData?
     var navigateBack: () -> Void
     var navigateForward: (MainAppDestination, GameListData?, String?) -> Void
-    
+
     init(listData: GameListData?, navigateBack: @escaping () -> Void, navigateForward: @escaping (MainAppDestination, GameListData?, String?) -> Void) {
         self.listData = listData
         self.navigateBack = navigateBack
         self.navigateForward = navigateForward
     }
-    
+
     var body: some View {
-        ZStack{
+        ZStack {
             Color.black
-            if (listData != nil) {
+            if listData != nil {
                 ScrollView {
-                    VStack(alignment: .leading){
+                    VStack(alignment: .leading) {
                         HStack(alignment: .center) {
                             Image(systemName: "chevron.left")
                                 .frame(width: 24, height: 24)
@@ -46,16 +46,16 @@ struct ExpandedList: View {
                         maxWidth: .infinity,
                         alignment: .topLeading
                     )
-                    
-                    if (listData != nil) {
+
+                    if listData != nil {
                         let games = listData!.games
                         let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
-                        
-                        GamePosterGrid(imageIdList: imageIdList.map{$0}) { index in
+
+                        GamePosterGrid(imageIdList: imageIdList.map {$0}) { index in
                             self.navigateForward(MainAppDestination.DetailScreen, nil, games[index].slug)
                         }
                     }
-                    
+
                 }.padding(.top)
             }
         }.edgesIgnoringSafeArea(.all)
