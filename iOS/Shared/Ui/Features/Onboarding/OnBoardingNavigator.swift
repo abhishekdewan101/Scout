@@ -52,7 +52,7 @@ struct OnBoardingNavigator: View {
                     selection: $selection,
                     label: {EmptyView()})
                 
-                NavigationLink(destination: LazyView(MainApp()).navigationTitle("").navigationBarHidden(true),
+                NavigationLink(destination: LazyView(MainAppNavigator()).navigationTitle("").navigationBarHidden(true),
                                tag: OnBoardingDestinations.MainAppScreen.rawValue,
                                selection: $selection,
                                label: {EmptyView()})
