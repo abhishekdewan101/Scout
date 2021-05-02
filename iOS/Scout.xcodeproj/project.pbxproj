@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4D067D1A263BDBC00048864A /* HomeScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D067D19263BDBC00048864A /* HomeScreenViewModel.swift */; };
 		4D3CFB48263E0E8900721289 /* TitledContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3CFB47263E0E8900721289 /* TitledContainer.swift */; };
+		4DBF2B72263E202200C3087D /* GamePosterGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF2B71263E202100C3087D /* GamePosterGrid.swift */; };
 		4DC5C95A26368C820094F3B9 /* OnBoardingNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C95926368C820094F3B9 /* OnBoardingNavigator.swift */; };
 		4DC5C95E26368D1C0094F3B9 /* PlatformSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C95D26368D1C0094F3B9 /* PlatformSelection.swift */; };
 		4DC5C9652637D7BA0094F3B9 /* PlatformSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC5C9642637D7BA0094F3B9 /* PlatformSelectionViewModel.swift */; };
@@ -60,6 +61,7 @@
 /* Begin PBXFileReference section */
 		4D067D19263BDBC00048864A /* HomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewModel.swift; sourceTree = "<group>"; };
 		4D3CFB47263E0E8900721289 /* TitledContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledContainer.swift; sourceTree = "<group>"; };
+		4DBF2B71263E202100C3087D /* GamePosterGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePosterGrid.swift; sourceTree = "<group>"; };
 		4DC5C95926368C820094F3B9 /* OnBoardingNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingNavigator.swift; sourceTree = "<group>"; };
 		4DC5C95D26368D1C0094F3B9 /* PlatformSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelection.swift; sourceTree = "<group>"; };
 		4DC5C9642637D7BA0094F3B9 /* PlatformSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelectionViewModel.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				4DC5C978263924EB0094F3B9 /* CircularSelectableImage.swift */,
 				6A03AABF469C3C0DACBAFCB4 /* HorizontalImageList.swift */,
 				4D3CFB47263E0E8900721289 /* TitledContainer.swift */,
+				4DBF2B71263E202100C3087D /* GamePosterGrid.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 				4DC5C96A2637D9D40094F3B9 /* LazyView.swift in Sources */,
 				4DC5C9A2263A814D0094F3B9 /* SearchScreen.swift in Sources */,
 				4D067D1A263BDBC00048864A /* HomeScreenViewModel.swift in Sources */,
+				4DBF2B72263E202200C3087D /* GamePosterGrid.swift in Sources */,
 				4DC5C991263A74DA0094F3B9 /* GenreSelectionViewModel.swift in Sources */,
 				61DA99BC25F752120028CD06 /* GameTrackerApp.swift in Sources */,
 				4DC5C998263A7C200094F3B9 /* MainApp.swift in Sources */,

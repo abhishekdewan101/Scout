@@ -23,28 +23,18 @@ struct TitledContainer<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(title).font(.title)
+                Text(title).font(.title).foregroundColor(Color.white)
                 Spacer()
                 Image(systemName: "ellipsis").rotationEffect(.degrees(-90)).onTapGesture {
                     onViewMoreClicked()
-                }
+                }.foregroundColor(Color.white)
             }.padding(.leading)
             .padding(.trailing)
-            .padding(.bottom)
             content()
         }.frame(
             minWidth: 0,
             maxWidth: .infinity,
             alignment: .topLeading
         )
-    }
-}
-
-struct TitledContainer_Previews: PreviewProvider {
-    static var previews: some View {
-        TitledContainer(title: "Showcase", onViewMoreClicked: {}) {
-            HorizontalImageList(imageIdList: ["arcade","adventure","sport"]) { _ in
-            }
-        }
     }
 }

@@ -11,8 +11,14 @@ struct HorizontalImageList: View {
     
     var onImageSelected: (Int) -> Void
     
-    init(imageIdList:[String], onImageSelected: @escaping (Int) -> Void) {
+    var imageWidth: CGFloat
+    
+    var imageHeight: CGFloat
+    
+    init(imageIdList:[String], imageWidth: CGFloat, imageHeight: CGFloat, onImageSelected: @escaping (Int) -> Void) {
         self.imageIdList = imageIdList
+        self.imageWidth = imageWidth
+        self.imageHeight = imageHeight
         self.onImageSelected = onImageSelected
     }
     
@@ -24,7 +30,7 @@ struct HorizontalImageList: View {
                         image
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 400, height: 200)
+                            .frame(width: imageWidth, height: imageHeight)
                             .border(Color.gray.opacity(0.5), width: 0.5)
                             .cornerRadius(8)
                     }).onTapGesture {
@@ -35,14 +41,6 @@ struct HorizontalImageList: View {
             }
             .padding(.leading, 10)
             .frame(height: 200)
-        }
-    }
-}
-
-struct HorizontalImageListPreview: PreviewProvider {
-    static var previews: some View {
-        HorizontalImageList(imageIdList: ["arcade","adventure","arcade","adventure","arcade","adventure","arcade","adventure"]) { index in
-            print("Index selected \(index)")
         }
     }
 }
