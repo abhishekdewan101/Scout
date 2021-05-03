@@ -40,7 +40,7 @@ struct OnBoardingNavigator: View {
                 selection = .mainAppScreen
             }
         }.transition(.move(edge: .trailing)))
-        case .mainAppScreen: LazyView(MainAppNavigator().transition(.move(edge: .trailing)))
+        case .mainAppScreen: LazyView(MainApp().transition(.move(edge: .trailing)))
         }
     }
 }

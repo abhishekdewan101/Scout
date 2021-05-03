@@ -13,12 +13,6 @@ struct HomeScreen: View {
 
     @ObservedObject var viewModel = HomeScreenViewModel()
 
-    var navigateForward: (MainAppDestination, GameListData?, String?) -> Void
-
-    init(navigateForward: @escaping (MainAppDestination, GameListData?, String?) -> Void) {
-        self.navigateForward = navigateForward
-    }
-
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -32,8 +26,9 @@ struct HomeScreen: View {
                 if viewModel.showcaseListData.games.count > 0 {
                     let games = viewModel.showcaseListData.games
                     let imageIdList = games.filter {$0.screenShots != nil}.map {$0.screenShots![0].qualifiedUrl}
-                    HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0}, imageWidth: 400, imageHeight: 200) { index in
-                        navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
+                    HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0},
+                            imageWidth: 400, imageHeight: 200) { index in
+                        print("Game Selected \(games[index])")
                     }
                 }
 
@@ -43,10 +38,10 @@ struct HomeScreen: View {
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
                     TitledContainer(title: listData.title, onViewMoreClicked: {
-                        navigateForward(MainAppDestination.expandedListScreen, listData, nil)
+                        print("View More Clicked")
                     }) {
                         GamePosterGrid(imageIdList: imageIdList.prefix(9).map {$0}) { index in
-                            navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
+                            print("Game Selected \(games[index])")
                         }
                     }
                     .padding(.top)
@@ -57,9 +52,12 @@ struct HomeScreen: View {
                     let games = listData.games
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                    TitledContainer(title: listData.title, onViewMoreClicked: { navigateForward(MainAppDestination.expandedListScreen, listData, nil) }) {
-                        HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0}, imageWidth: 150, imageHeight: 200) { index in
-                            navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
+                    TitledContainer(title: listData.title, onViewMoreClicked: {
+                        print("View More Clicked")
+                    }) {
+                        HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0},
+                                imageWidth: 150, imageHeight: 200) { index in
+                            print("Game Selected \(games[index])")
                         }
                     }
                     .padding(.top)
@@ -70,9 +68,9 @@ struct HomeScreen: View {
                     let games = listData.games
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                    TitledContainer(title: listData.title, onViewMoreClicked: {navigateForward(MainAppDestination.expandedListScreen, listData, nil) }) {
+                    TitledContainer(title: listData.title, onViewMoreClicked: { print("View More Clicked") }) {
                         GamePosterGrid(imageIdList: imageIdList.prefix(9).map {$0}) { index in
-                            navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
+                            print("Game Selected \(games[index])")
                         }
                     }
                     .padding(.top)
@@ -83,9 +81,10 @@ struct HomeScreen: View {
                     let games = listData.games
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                    TitledContainer(title: listData.title, onViewMoreClicked: { navigateForward(MainAppDestination.expandedListScreen, listData, nil) }) {
-                        HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0}, imageWidth: 150, imageHeight: 200) { index in
-                            navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
+                    TitledContainer(title: listData.title, onViewMoreClicked: { print("View More Clicked") }) {
+                        HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0},
+                                imageWidth: 150, imageHeight: 200) { index in
+                            print("Game Selected \(games[index])")
                         }
                     }
                     .padding(.top)
@@ -106,6 +105,6 @@ struct HomeScreen: View {
 
 struct HomeScreenPreview: PreviewProvider {
     static var previews: some View {
-        HomeScreen { _, _, _  in}
+        HomeScreen()
     }
 }

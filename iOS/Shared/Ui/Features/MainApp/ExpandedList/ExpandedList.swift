@@ -11,13 +11,9 @@ import core
 struct ExpandedList: View {
 
     var listData: GameListData?
-    var navigateBack: () -> Void
-    var navigateForward: (MainAppDestination, GameListData?, String?) -> Void
 
-    init(listData: GameListData?, navigateBack: @escaping () -> Void, navigateForward: @escaping (MainAppDestination, GameListData?, String?) -> Void) {
+    init(listData: GameListData?) {
         self.listData = listData
-        self.navigateBack = navigateBack
-        self.navigateForward = navigateForward
     }
 
     var body: some View {
@@ -32,7 +28,7 @@ struct ExpandedList: View {
                                 .foregroundColor(Color.white)
                                 .padding(.top, 20)
                                 .onTapGesture {
-                                    navigateBack()
+
                                 }
                             Text(listData!.title)
                                 .font(.system(size: 36))
@@ -51,8 +47,8 @@ struct ExpandedList: View {
                         let games = listData!.games
                         let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                        GamePosterGrid(imageIdList: imageIdList.map {$0}) { index in
-                            self.navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
+                        GamePosterGrid(imageIdList: imageIdList.map {$0}) { _ in
+
                         }
                     }
 

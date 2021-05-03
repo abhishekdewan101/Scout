@@ -10,15 +10,9 @@ import core
 
 struct MainApp: View {
 
-    var navigateForward: (MainAppDestination, GameListData?, String?) -> Void
-
-    init(navigateForward: @escaping (MainAppDestination, GameListData?, String?) -> Void) {
-        self.navigateForward = navigateForward
-    }
-
     var body: some View {
         TabView {
-            HomeScreen(navigateForward: navigateForward).tabItem {
+            HomeScreen().tabItem {
                 Label("Home", systemImage: "house")
             }
             SearchScreen().tabItem {
@@ -37,8 +31,6 @@ struct MainApp: View {
 
 struct MainApp_Previews: PreviewProvider {
     static var previews: some View {
-        MainApp { _, _, _ in
-
-        }
+        MainApp()
     }
 }
