@@ -52,7 +52,7 @@ struct ExpandedList: View {
                         let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
                         GamePosterGrid(imageIdList: imageIdList.map {$0}) { index in
-                            self.navigateForward(MainAppDestination.DetailScreen, nil, games[index].slug)
+                            self.navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
                         }
                     }
 

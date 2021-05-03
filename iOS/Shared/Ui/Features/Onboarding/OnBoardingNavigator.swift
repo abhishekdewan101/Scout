@@ -8,39 +8,39 @@
 import SwiftUI
 
 enum OnBoardingDestinations {
-    case PlatformSelectionScreen
-    case SplashScreen
-    case GenreSelectionScreen
-    case MainAppScreen
+    case platformSelectionScreen
+    case splashScreen
+    case genreSelectionScreen
+    case mainAppScreen
 }
 
 struct OnBoardingNavigator: View {
-    @State private var selection: OnBoardingDestinations = .SplashScreen
+    @State private var selection: OnBoardingDestinations = .splashScreen
 
     let viewModel = OnBoardingViewModel()
 
     var body: some View {
         switch selection {
-        case .SplashScreen: LazyView(SplashScreen {
+        case .splashScreen: LazyView(SplashScreen {
             if viewModel.isOnboardingComplete() {
                 withAnimation {
-                    selection = .MainAppScreen
+                    selection = .mainAppScreen
                 }
             } else {
                 withAnimation {
-                    selection = .PlatformSelectionScreen
+                    selection = .platformSelectionScreen
                 }
             }
         })
-        case .PlatformSelectionScreen: LazyView(PlatformSelection { withAnimation {selection = .GenreSelectionScreen}}
+        case .platformSelectionScreen: LazyView(PlatformSelection { withAnimation {selection = .genreSelectionScreen}}
                 .transition(.move(edge: .trailing)))
-        case .GenreSelectionScreen: LazyView(GenreSelection {
+        case .genreSelectionScreen: LazyView(GenreSelection {
             viewModel.setOnboardingAsComplete()
             withAnimation {
-                selection = .MainAppScreen
+                selection = .mainAppScreen
             }
         }.transition(.move(edge: .trailing)))
-        case .MainAppScreen: LazyView(MainAppNavigator().transition(.move(edge: .trailing)))
+        case .mainAppScreen: LazyView(MainAppNavigator().transition(.move(edge: .trailing)))
         }
     }
 }

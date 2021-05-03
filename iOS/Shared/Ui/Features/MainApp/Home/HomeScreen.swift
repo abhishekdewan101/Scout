@@ -33,7 +33,7 @@ struct HomeScreen: View {
                     let games = viewModel.showcaseListData.games
                     let imageIdList = games.filter {$0.screenShots != nil}.map {$0.screenShots![0].qualifiedUrl}
                     HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0}, imageWidth: 400, imageHeight: 200) { index in
-                        navigateForward(MainAppDestination.DetailScreen, nil, games[index].slug)
+                        navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
                     }
                 }
 
@@ -43,10 +43,10 @@ struct HomeScreen: View {
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
                     TitledContainer(title: listData.title, onViewMoreClicked: {
-                        navigateForward(MainAppDestination.ExpandedListScreen, listData, nil)
+                        navigateForward(MainAppDestination.expandedListScreen, listData, nil)
                     }) {
                         GamePosterGrid(imageIdList: imageIdList.prefix(9).map {$0}) { index in
-                            navigateForward(MainAppDestination.DetailScreen, nil, games[index].slug)
+                            navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
                         }
                     }
                     .padding(.top)
@@ -57,9 +57,9 @@ struct HomeScreen: View {
                     let games = listData.games
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                    TitledContainer(title: listData.title, onViewMoreClicked: { navigateForward(MainAppDestination.ExpandedListScreen, listData, nil) }) {
+                    TitledContainer(title: listData.title, onViewMoreClicked: { navigateForward(MainAppDestination.expandedListScreen, listData, nil) }) {
                         HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0}, imageWidth: 150, imageHeight: 200) { index in
-                            navigateForward(MainAppDestination.DetailScreen, nil, games[index].slug)
+                            navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
                         }
                     }
                     .padding(.top)
@@ -70,9 +70,9 @@ struct HomeScreen: View {
                     let games = listData.games
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                    TitledContainer(title: listData.title, onViewMoreClicked: {navigateForward(MainAppDestination.ExpandedListScreen, listData, nil) }) {
+                    TitledContainer(title: listData.title, onViewMoreClicked: {navigateForward(MainAppDestination.expandedListScreen, listData, nil) }) {
                         GamePosterGrid(imageIdList: imageIdList.prefix(9).map {$0}) { index in
-                            navigateForward(MainAppDestination.DetailScreen, nil, games[index].slug)
+                            navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
                         }
                     }
                     .padding(.top)
@@ -83,9 +83,9 @@ struct HomeScreen: View {
                     let games = listData.games
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                    TitledContainer(title: listData.title, onViewMoreClicked: { navigateForward(MainAppDestination.ExpandedListScreen, listData, nil) }) {
+                    TitledContainer(title: listData.title, onViewMoreClicked: { navigateForward(MainAppDestination.expandedListScreen, listData, nil) }) {
                         HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0}, imageWidth: 150, imageHeight: 200) { index in
-                            navigateForward(MainAppDestination.DetailScreen, nil, games[index].slug)
+                            navigateForward(MainAppDestination.detailScreen, nil, games[index].slug)
                         }
                     }
                     .padding(.top)
