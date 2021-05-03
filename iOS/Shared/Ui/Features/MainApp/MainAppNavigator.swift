@@ -24,26 +24,29 @@ struct MainAppNavigator: View {
         NavigationView {
             VStack {
                 NavigationLink(
-                    destination: LazyView(MainApp(navigateForward: navigateForward)).navigationTitle("").navigationBarHidden(true),
-                    tag: MainAppDestination.MainScreen.rawValue,
-                    selection: $selection,
-                    label: {EmptyView()})
+                        destination: LazyView(MainApp(navigateForward: navigateForward))
+                                .navigationTitle("").navigationBarHidden(true),
+                        tag: MainAppDestination.MainScreen.rawValue,
+                        selection: $selection,
+                        label: { EmptyView() })
 
                 NavigationLink(
-                    destination: LazyView(ExpandedList(listData: listData, navigateBack: {self.navigateBack(destination: MainAppDestination.MainScreen)}, navigateForward: navigateForward)).navigationTitle("").navigationBarHidden(true),
-                    tag: MainAppDestination.ExpandedListScreen.rawValue,
-                    selection: $selection,
-                    label: {EmptyView()})
+                        destination: LazyView(ExpandedList(listData: listData, navigateBack: {
+                            self.navigateBack(destination: MainAppDestination.MainScreen) },
+                                navigateForward: navigateForward)).navigationTitle("").navigationBarHidden(true),
+                        tag: MainAppDestination.ExpandedListScreen.rawValue,
+                        selection: $selection,
+                        label: { EmptyView() })
 
                 NavigationLink(
-                    destination: LazyView(GameDetailScreen()).navigationTitle("").navigationBarHidden(true),
-                    tag: MainAppDestination.DetailScreen.rawValue,
-                    selection: $selection,
-                    label: {EmptyView()})
+                        destination: LazyView(GameDetailScreen()).navigationTitle("").navigationBarHidden(true),
+                        tag: MainAppDestination.DetailScreen.rawValue,
+                        selection: $selection,
+                        label: { EmptyView() })
 
             }
-            .navigationTitle("")
-            .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarHidden(true)
         }
     }
 

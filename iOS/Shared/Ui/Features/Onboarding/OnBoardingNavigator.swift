@@ -7,61 +7,40 @@
 
 import SwiftUI
 
-enum OnBoardingDestinations: String {
-    case PlatformSelectionScreen = "PlatformSelectionScreen"
-    case SplashScreen = "SplashScreen"
-    case GenreSelectionScreen = "GenreSelectionScreen"
-    case MainAppScreen = "MainAppScreen"
+enum OnBoardingDestinations {
+    case PlatformSelectionScreen
+    case SplashScreen
+    case GenreSelectionScreen
+    case MainAppScreen
 }
 
 struct OnBoardingNavigator: View {
-    @State private var selection: String? = OnBoardingDestinations.SplashScreen.rawValue
+    @State private var selection: OnBoardingDestinations = .SplashScreen
 
     let viewModel = OnBoardingViewModel()
 
     var body: some View {
-        NavigationView {
-            VStack {
-                NavigationLink(
-                    destination: LazyView(SplashScreen {
-                        if viewModel.isOnboardingComplete() {
-                            selection = OnBoardingDestinations.MainAppScreen.rawValue
-                        } else {
-                            selection = OnBoardingDestinations.PlatformSelectionScreen.rawValue
-                        }
-                        return EmptyView()
-                    }).navigationTitle("").navigationBarHidden(true),
-                    tag: OnBoardingDestinations.SplashScreen.rawValue,
-                    selection: $selection,
-                    label: {EmptyView()})
-
-                NavigationLink(
-                    destination: LazyView(PlatformSelection {
-                        selection = OnBoardingDestinations.GenreSelectionScreen.rawValue
-                    }).navigationTitle("").navigationBarHidden(true),
-                    tag: OnBoardingDestinations.PlatformSelectionScreen.rawValue,
-                    selection: $selection,
-                    label: {EmptyView()})
-
-                NavigationLink(
-                    destination: LazyView(GenreSelection {
-                        viewModel.setOnboardingAsComplete()
-                        selection = OnBoardingDestinations.MainAppScreen.rawValue
-                    }).navigationTitle("").navigationBarHidden(true),
-                    tag: OnBoardingDestinations.GenreSelectionScreen.rawValue,
-                    selection: $selection,
-                    label: {EmptyView()})
-
-                NavigationLink(destination: LazyView(MainAppNavigator()).navigationTitle("").navigationBarHidden(true),
-                               tag: OnBoardingDestinations.MainAppScreen.rawValue,
-                               selection: $selection,
-                               label: {EmptyView()})
+        switch selection {
+        case .SplashScreen: LazyView(SplashScreen {
+            if viewModel.isOnboardingComplete() {
+                withAnimation {
+                    selection = .MainAppScreen
+                }
+            } else {
+                withAnimation {
+                    selection = .PlatformSelectionScreen
+                }
             }
-            .navigationTitle("")
-            .navigationBarHidden(true)
-            .onAppear {
-
+        })
+        case .PlatformSelectionScreen: LazyView(PlatformSelection { withAnimation {selection = .GenreSelectionScreen}}
+                .transition(.move(edge: .trailing)))
+        case .GenreSelectionScreen: LazyView(GenreSelection {
+            viewModel.setOnboardingAsComplete()
+            withAnimation {
+                selection = .MainAppScreen
             }
+        }.transition(.move(edge: .trailing)))
+        case .MainAppScreen: LazyView(MainAppNavigator().transition(.move(edge: .trailing)))
         }
     }
 }
