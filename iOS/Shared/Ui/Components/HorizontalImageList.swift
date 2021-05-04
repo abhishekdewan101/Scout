@@ -9,13 +9,13 @@ struct HorizontalImageList: View {
 
     var imageIdList: [String]
 
-    var onImageSelected: (Int) -> String
+    var onImageSelected: ((Int) -> String)?
 
     var imageWidth: CGFloat
 
     var imageHeight: CGFloat
 
-    init(imageIdList: [String], imageWidth: CGFloat, imageHeight: CGFloat, onImageSelected: @escaping (Int) -> String) {
+    init(imageIdList: [String], imageWidth: CGFloat, imageHeight: CGFloat, onImageSelected: ((Int) -> String)?) {
         self.imageIdList = imageIdList
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
@@ -26,18 +26,30 @@ struct HorizontalImageList: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
                 ForEach(0 ..< imageIdList.count) { index in
-                    NavigationLink(
-                        destination: GameDetailScreen(gameSlug: onImageSelected(index)),
-                        label: {
-                            URLImage(url: URL(string: imageIdList[index])!, content: { image in
-                                                       image
-                                                           .resizable()
-                                                           .scaledToFill()
-                                                           .frame(width: imageWidth, height: imageHeight)
-                                                           .border(Color.gray.opacity(0.5), width: 0.5)
-                                                           .cornerRadius(8)
-                                                   })
+                    if onImageSelected != nil {
+                        NavigationLink(
+                            destination: LazyView(GameDetailScreen(gameSlug: onImageSelected!(index))),
+                            label: {
+                                URLImage(url: URL(string: imageIdList[index])!, content: { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: imageWidth, height: imageHeight)
+                                        .border(Color.gray.opacity(0.5), width: 0.5)
+                                        .cornerRadius(8)
+                                })
+                            })
+                    } else {
+                        URLImage(url: URL(string: imageIdList[index])!, content: { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: imageWidth, height: imageHeight)
+                                .border(Color.gray.opacity(0.5), width: 0.5)
+                                .cornerRadius(8)
                         })
+                    }
+
                 }
             }
             .padding(.leading, 10)

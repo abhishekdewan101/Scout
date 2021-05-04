@@ -23,7 +23,7 @@ struct GamePosterGrid: View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 10, pinnedViews: [], content: {
             ForEach(0 ..< imageIdList.count) { index in
                 NavigationLink(
-                    destination: GameDetailScreen(gameSlug: onImageSelected(index)),
+                    destination: LazyView(GameDetailScreen(gameSlug: onImageSelected(index))),
                     label: {
                         URLImage(url: URL(string: imageIdList[index])!, content: { image in
                             image

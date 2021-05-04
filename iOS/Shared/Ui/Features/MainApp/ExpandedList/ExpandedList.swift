@@ -25,56 +25,14 @@ struct ExpandedList: View {
 
                 GamePosterGrid(imageIdList: imageIdList.map { $0 }) { index in
                     return games[index].slug
-                }
+                }.navigationTitle("")
 
             }.padding(.top)
-        }.navigationBarItems(leading: Text(listData.title)
+        }.navigationBarColor(.clear)
+        .navigationBarItems(leading: Text(listData.title)
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color.init("TitleColor")))
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarColor(.black)
     }
-}
-
-struct NavigationBarModifier: ViewModifier {
-
-    var backgroundColor: UIColor?
-
-    init( backgroundColor: UIColor?) {
-        self.backgroundColor = backgroundColor
-        let coloredAppearance = UINavigationBarAppearance()
-        coloredAppearance.configureWithTransparentBackground()
-        coloredAppearance.backgroundColor = .clear
-        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-
-        UINavigationBar.appearance().standardAppearance = coloredAppearance
-        UINavigationBar.appearance().compactAppearance = coloredAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
-        UINavigationBar.appearance().tintColor = .white
-
-    }
-
-    func body(content: Content) -> some View {
-        ZStack {
-            content
-            VStack {
-                GeometryReader { geometry in
-                    Color(self.backgroundColor ?? .clear)
-                        .frame(height: geometry.safeAreaInsets.top)
-                        .edgesIgnoringSafeArea(.top)
-                    Spacer()
-                }
-            }
-        }
-    }
-}
-
-extension View {
-
-    func navigationBarColor(_ backgroundColor: UIColor?) -> some View {
-        self.modifier(NavigationBarModifier(backgroundColor: backgroundColor))
-    }
-
 }
