@@ -10,50 +10,71 @@ import core
 
 struct ExpandedList: View {
 
-    var listData: GameListData?
+    var listData: GameListData
 
-    init(listData: GameListData?) {
+    init(listData: GameListData) {
         self.listData = listData
     }
 
     var body: some View {
         ZStack {
-            Color.black
-            if listData != nil {
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        HStack(alignment: .center) {
-                            Image(systemName: "chevron.left")
-                                .frame(width: 24, height: 24)
-                                .foregroundColor(Color.white)
-                                .padding(.top, 20)
-                                .onTapGesture {
+            Color.black.edgesIgnoringSafeArea(.all)
+            ScrollView {
+                let games = listData.games
+                let imageIdList = games.filter { $0.cover != nil }.map { $0.cover!.qualifiedUrl }
 
-                                }
-                            Text(listData!.title)
-                                .font(.system(size: 36))
+                GamePosterGrid(imageIdList: imageIdList.map { $0 }) { index in
+                    return games[index].slug
+                }
+
+            }.padding(.top)
+        }.navigationBarItems(leading: Text(listData.title)
+                                .font(.title)
                                 .fontWeight(.bold)
-                                .foregroundColor(Color.init("TitleColor"))
-                                .padding(.leading, 10)
-                                .padding(.top, 20)
-                        }.padding(.leading)
-                    }.frame(
-                        minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading
-                    )
-
-                    if listData != nil {
-                        let games = listData!.games
-                        let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
-
-                        GamePosterGrid(imageIdList: imageIdList.map {$0}) { _ in
-
-                        }
-                    }
-
-                }.padding(.top)
-            }
-        }.edgesIgnoringSafeArea(.all)
+                                .foregroundColor(Color.init("TitleColor")))
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarColor(.black)
     }
+}
+
+struct NavigationBarModifier: ViewModifier {
+
+    var backgroundColor: UIColor?
+
+    init( backgroundColor: UIColor?) {
+        self.backgroundColor = backgroundColor
+        let coloredAppearance = UINavigationBarAppearance()
+        coloredAppearance.configureWithTransparentBackground()
+        coloredAppearance.backgroundColor = .clear
+        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+
+        UINavigationBar.appearance().standardAppearance = coloredAppearance
+        UINavigationBar.appearance().compactAppearance = coloredAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
+        UINavigationBar.appearance().tintColor = .white
+
+    }
+
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            VStack {
+                GeometryReader { geometry in
+                    Color(self.backgroundColor ?? .clear)
+                        .frame(height: geometry.safeAreaInsets.top)
+                        .edgesIgnoringSafeArea(.top)
+                    Spacer()
+                }
+            }
+        }
+    }
+}
+
+extension View {
+
+    func navigationBarColor(_ backgroundColor: UIColor?) -> some View {
+        self.modifier(NavigationBarModifier(backgroundColor: backgroundColor))
+    }
+
 }

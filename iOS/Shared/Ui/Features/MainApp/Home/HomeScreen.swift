@@ -28,7 +28,7 @@ struct HomeScreen: View {
                     let imageIdList = games.filter {$0.screenShots != nil}.map {$0.screenShots![0].qualifiedUrl}
                     HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0},
                             imageWidth: 400, imageHeight: 200) { index in
-                        print("Game Selected \(games[index])")
+                        return games[index].slug
                     }
                 }
 
@@ -38,10 +38,10 @@ struct HomeScreen: View {
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
                     TitledContainer(title: listData.title, onViewMoreClicked: {
-                        print("View More Clicked")
+                        return listData
                     }) {
                         GamePosterGrid(imageIdList: imageIdList.prefix(9).map {$0}) { index in
-                            print("Game Selected \(games[index])")
+                            return games[index].slug
                         }
                     }
                     .padding(.top)
@@ -53,11 +53,11 @@ struct HomeScreen: View {
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
                     TitledContainer(title: listData.title, onViewMoreClicked: {
-                        print("View More Clicked")
+                        return listData
                     }) {
                         HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0},
                                 imageWidth: 150, imageHeight: 200) { index in
-                            print("Game Selected \(games[index])")
+                            return games[index].slug
                         }
                     }
                     .padding(.top)
@@ -68,9 +68,9 @@ struct HomeScreen: View {
                     let games = listData.games
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                    TitledContainer(title: listData.title, onViewMoreClicked: { print("View More Clicked") }) {
+                    TitledContainer(title: listData.title, onViewMoreClicked: { return listData }) {
                         GamePosterGrid(imageIdList: imageIdList.prefix(9).map {$0}) { index in
-                            print("Game Selected \(games[index])")
+                            return games[index].slug
                         }
                     }
                     .padding(.top)
@@ -81,10 +81,10 @@ struct HomeScreen: View {
                     let games = listData.games
                     let imageIdList = games.filter {$0.cover != nil}.map {$0.cover!.qualifiedUrl}
 
-                    TitledContainer(title: listData.title, onViewMoreClicked: { print("View More Clicked") }) {
+                    TitledContainer(title: listData.title, onViewMoreClicked: { return listData }) {
                         HorizontalImageList(imageIdList: imageIdList.prefix(9).map {$0},
                                 imageWidth: 150, imageHeight: 200) { index in
-                            print("Game Selected \(games[index])")
+                            return games[index].slug
                         }
                     }
                     .padding(.top)

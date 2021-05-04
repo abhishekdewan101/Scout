@@ -12,9 +12,9 @@ struct GamePosterGrid: View {
 
     var imageIdList: [String]
 
-    var onImageSelected: (Int) -> Void
+    var onImageSelected: (Int) -> String
 
-    init(imageIdList: [String], onImageSelected: @escaping (Int) -> Void) {
+    init(imageIdList: [String], onImageSelected: @escaping (Int) -> String) {
         self.imageIdList = imageIdList
         self.onImageSelected = onImageSelected
     }
@@ -22,16 +22,18 @@ struct GamePosterGrid: View {
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 10, pinnedViews: [], content: {
             ForEach(0 ..< imageIdList.count) { index in
-                URLImage(url: URL(string: imageIdList[index])!, content: { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 125, height: 175)
-                        .border(Color.gray.opacity(0.5), width: 0.5)
-                        .cornerRadius(8)
-                }).onTapGesture {
-                    onImageSelected(index)
-                }
+                NavigationLink(
+                    destination: GameDetailScreen(gameSlug: onImageSelected(index)),
+                    label: {
+                        URLImage(url: URL(string: imageIdList[index])!, content: { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 125, height: 175)
+                                .border(Color.gray.opacity(0.5), width: 0.5)
+                                .cornerRadius(8)
+                        })
+                    })
             }
         }).padding(.all)
     }
@@ -40,7 +42,7 @@ struct GamePosterGrid: View {
 struct GamePosterGrid_Previews: PreviewProvider {
     static var previews: some View {
         GamePosterGrid(imageIdList: ["arcade", "adventure", "sport", "arcade", "adventure", "sport"]) { _ in
-
+            return ""
         }
     }
 }

@@ -11,20 +11,23 @@ import core
 struct MainApp: View {
 
     var body: some View {
-        TabView {
-            HomeScreen().tabItem {
-                Label("Home", systemImage: "house")
-            }
-            SearchScreen().tabItem {
-                Label("Search", systemImage: "magnifyingglass")
-            }
-            ProfileScreen().tabItem {
-                Label("Profile", systemImage: "person.crop.circle")
-            }
-        }.onAppear {
-            UITabBar.appearance().barTintColor = UIColor.init(Color.blue)
-            UITabBar.appearance().unselectedItemTintColor = UIColor.init(Color.black)
-            UITabBar.appearance().isTranslucent = false
+        NavigationView {
+            TabView {
+                HomeScreen().tabItem {
+                    Label("Home", systemImage: "house")
+                }
+                SearchScreen().tabItem {
+                    Label("Search", systemImage: "magnifyingglass")
+                }
+                ProfileScreen().tabItem {
+                    Label("Profile", systemImage: "person.crop.circle")
+                }
+            }.onAppear {
+                UITabBar.appearance().barTintColor = UIColor.init(Color.blue)
+                UITabBar.appearance().unselectedItemTintColor = UIColor.init(Color.black)
+                UITabBar.appearance().isTranslucent = false
+            }.accentColor(.white)
+            .navigationBarTitle("")
         }.accentColor(.white)
     }
 }

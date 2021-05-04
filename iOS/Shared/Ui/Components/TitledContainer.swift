@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import core
 
 struct TitledContainer<Content: View>: View {
 
     var title: String
-    var onViewMoreClicked: () -> Void
+    var onViewMoreClicked: () -> GameListData
     var content: () -> Content
 
-    init(title: String, onViewMoreClicked: @escaping () -> Void, @ViewBuilder content: @escaping () -> Content) {
+    init(title: String, onViewMoreClicked: @escaping () -> GameListData, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.content = content
         self.onViewMoreClicked = onViewMoreClicked
@@ -24,9 +25,11 @@ struct TitledContainer<Content: View>: View {
             HStack {
                 Text(title).font(.title).foregroundColor(Color.white)
                 Spacer()
-                Image(systemName: "ellipsis").rotationEffect(.degrees(-90)).onTapGesture {
-                    onViewMoreClicked()
-                }.foregroundColor(Color.white)
+                NavigationLink(
+                    destination: ExpandedList(listData: onViewMoreClicked()) ,
+                    label: {
+                        Image(systemName: "ellipsis").rotationEffect(.degrees(-90)).foregroundColor(Color.white)
+                    })
             }.padding(.leading)
             .padding(.trailing)
             content()

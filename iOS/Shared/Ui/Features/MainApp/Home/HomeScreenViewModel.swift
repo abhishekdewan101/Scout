@@ -21,11 +21,9 @@ class HomeScreenViewModel: ObservableObject {
     init() {
         getShowcaseGames()
         getComingSoonGames()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.getRecentGames()
-            self.getHypedGames()
-            self.getTopRatedGames()
-        }
+        getRecentGames()
+        getHypedGames()
+        getTopRatedGames()
     }
 
     private func getShowcaseGames() {
