@@ -2,15 +2,10 @@ package com.abhishek101.gamescout.design
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ExpandLess
-import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,13 +16,21 @@ import androidx.compose.ui.unit.sp
 fun CollapsableText(data: String, maxLines: Int = 5, fontSize: Int) {
     val collapsedState = remember { mutableStateOf(true) }
     val needsCollapsing = remember { mutableStateOf(false) }
-    Row(verticalAlignment = if (collapsedState.value) Alignment.Top else Alignment.Bottom) {
+    Row {
         Text(
             data,
             color = Color.White,
             fontSize = fontSize.sp,
             maxLines = if (collapsedState.value) maxLines else 100,
-            modifier = Modifier.weight(8f),
+            modifier = Modifier
+                .weight(8f)
+                .then(
+                    if (needsCollapsing.value) {
+                        Modifier.clickable { collapsedState.value = !collapsedState.value }
+                    } else {
+                        Modifier
+                    }
+                ),
             overflow = TextOverflow.Ellipsis,
             onTextLayout = {
                 if (collapsedState.value) {
@@ -35,23 +38,12 @@ fun CollapsableText(data: String, maxLines: Int = 5, fontSize: Int) {
                 }
             }
         )
-        if (needsCollapsing.value) {
-            if (collapsedState.value) {
-                Icon(Icons.Outlined.ExpandMore, "", tint = Color.White, modifier = Modifier
-                    .weight(1f)
-                    .clickable { collapsedState.value = false })
-            } else {
-                Icon(Icons.Outlined.ExpandLess, "", tint = Color.White, modifier = Modifier
-                    .weight(1f)
-                    .clickable { collapsedState.value = true })
-            }
-        }
     }
 }
 
 @Preview
 @Composable
-fun PreviewCollapsableText() {
+fun PreviewLargeCollapsableText() {
     CollapsableText(
         data = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sagittis felis maximus elit interdum ultrices. Nullam at risus id tellus laoreet pretium. Aenean eget elementum lectus, vel elementum tortor. Vivamus in leo sapien. Nulla at imperdiet elit. Proin et dictum ante. Donec faucibus ullamcorper pellentesque. Etiam ut lacus vel justo auctor tincidunt sit amet egestas nunc. Nulla rutrum est in odio venenatis euismod. Donec consectetur congue suscipit. Integer imperdiet lacus sed mauris molestie porta. Nulla rhoncus pretium neque in varius. Sed interdum metus nec odio tristique, et imperdiet nibh porttitor. Proin ut hendrerit mi. Pellentesque elementum lorem nunc, eget tristique justo accumsan sed.\n" +
             "\n" +
@@ -63,5 +55,13 @@ fun PreviewCollapsableText() {
             "\n" +
             "Etiam ornare massa sed turpis ultrices mattis. Nunc aliquet neque nisl, et viverra ante feugiat ornare. Maecenas in lectus mattis elit elementum convallis. Phasellus euismod bibendum nibh, vitae imperdiet lacus pharetra quis. In dui ipsum, hendrerit quis tempus non, sagittis hendrerit massa. Nullam molestie quam ut pharetra vulputate. Nunc laoreet risus arcu, ac sodales sapien hendrerit eu. Sed urna orci, placerat vel efficitur et, interdum at lacus. Integer sodales libero eget felis tempus, vitae imperdiet odio tincidunt. Mauris suscipit accumsan auctor. Ut augue sapien, dapibus vitae congue vitae, facilisis imperdiet elit.",
         5, 16
+    )
+}
+
+@Preview
+@Composable
+fun PreviewSmallCollapsableText() {
+    CollapsableText(
+        data = "Pellentesque elementum lorem nunc, eget tristique justo accumsan sed.\n", 5, 16
     )
 }
