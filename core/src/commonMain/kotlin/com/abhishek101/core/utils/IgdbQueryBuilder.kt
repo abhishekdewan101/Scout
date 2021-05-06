@@ -12,7 +12,7 @@ import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.minus
 
 fun buildGameDetailQuery(slug: String): String {
-    return "f slug, name, summary, total_rating,storyline, cover.image_id, screenshots.image_id, platforms.id, platforms.name, platforms.slug, similar_games.*, similar_games.screenshots.image_id, similar_games.cover.image_id, artworks.image_id, involved_companies.*,involved_companies.company.*, dlcs.*, dlcs.cover.image_id, dlcs.screenshots.image_id, expansions.*, expansions.cover.image_id, expansions.screenshots.image_id, remasters.*, remasters.cover.image_id, remasters.screenshots.image_id, collection.*, collection.games.*, collection.games.cover.image_id, collection.games.screenshots.image_id;" +
+    return "f slug, name, summary, total_rating,storyline, cover.image_id, videos.*, screenshots.image_id, platforms.id, platforms.name, platforms.slug, similar_games.*, similar_games.screenshots.image_id, similar_games.cover.image_id, artworks.image_id, involved_companies.*,involved_companies.company.*, dlcs.*, dlcs.cover.image_id, dlcs.screenshots.image_id, expansions.*, expansions.cover.image_id, expansions.screenshots.image_id, remasters.*, remasters.cover.image_id, remasters.screenshots.image_id, collection.*, collection.games.*, collection.games.cover.image_id, collection.games.screenshots.image_id;" +
         "w slug = \"$slug\";"
 }
 

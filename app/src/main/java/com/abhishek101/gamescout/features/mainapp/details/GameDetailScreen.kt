@@ -26,15 +26,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
+import com.abhishek101.gamescout.design.HorizontalVideoList
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
 import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
+import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 import kotlin.math.roundToInt
@@ -81,7 +84,49 @@ fun RenderMainContent(gameDetails: IgdbGameDetail) {
             RenderGameSummary(gameDetails)
             RenderGameStoryline(gameDetails)
             RenderScreenShots(gameDetails)
+            RenderArtwork(gameDetails)
+            RenderVideos(gameDetails)
             Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
+
+@Composable
+fun RenderVideos(gameDetails: IgdbGameDetail) {
+    gameDetails.videos?.let { list ->
+        val imageIdList = list.map { video -> video.screenShotUrl }.toList()
+        val titles = list.map { video -> video.name }.toList()
+        val context = LocalContext.current
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            TitleContainer(
+                title = "Videos",
+                titleColor = Color.White.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                HorizontalVideoList(
+                    screenshots = imageIdList,
+                    titles = titles,
+                    itemWidth = 400.dp,
+                    itemHeight = 200.dp
+                ) {
+                    context.startActivity(buildYoutubeIntent(list[it].youtubeUrl))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RenderArtwork(gameDetails: IgdbGameDetail) {
+    gameDetails.artworks?.map { it.qualifiedUrl }?.let {
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            TitleContainer(
+                title = "Artwork",
+                titleColor = Color.White.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                HorizontalImageList(data = it, itemWidth = 400.dp, itemHeight = 200.dp) {}
+            }
         }
     }
 }

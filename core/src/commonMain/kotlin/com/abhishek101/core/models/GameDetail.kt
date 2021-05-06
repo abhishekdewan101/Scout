@@ -1,5 +1,7 @@
 package com.abhishek101.core.models
 
+import com.abhishek101.core.utils.buildVideoScreenShotUrl
+import com.abhishek101.core.utils.buildYoutubeUrl
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -19,7 +21,8 @@ data class IgdbGameDetail(
     @SerialName("expansions") val expansions: List<IgdbGame>? = null,
     @SerialName("total_rating") val totalRating: Float? = null,
     @SerialName("remasters") val remasters: List<IgdbGame>? = null,
-    @SerialName("collection") val collection: IgdbCollection? = null
+    @SerialName("collection") val collection: IgdbCollection? = null,
+    @SerialName("videos") val videos: List<IgdbVideo>? = null
 )
 
 @Serializable
@@ -41,3 +44,15 @@ data class IgdbCompany(
     @SerialName("slug") val slug: String,
     @SerialName("name") val name: String,
 )
+
+@Serializable
+data class IgdbVideo(
+    @SerialName("video_id") val videoId: String,
+    @SerialName("name") val name: String
+) {
+    val screenShotUrl: String
+        get() = buildVideoScreenShotUrl(videoId)
+
+    val youtubeUrl: String
+        get() = buildYoutubeUrl(videoId)
+}
