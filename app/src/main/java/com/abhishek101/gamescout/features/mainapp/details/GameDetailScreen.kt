@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -103,13 +104,15 @@ fun RenderVideos(gameDetails: IgdbGameDetail) {
                 titleColor = Color.White.copy(alpha = 0.5f),
                 hasViewMore = false
             ) {
-                HorizontalVideoList(
-                    screenshots = imageIdList,
-                    titles = titles,
-                    itemWidth = 400.dp,
-                    itemHeight = 200.dp
-                ) {
-                    context.startActivity(buildYoutubeIntent(list[it].youtubeUrl))
+                BoxWithConstraints {
+                    HorizontalVideoList(
+                        screenshots = imageIdList,
+                        titles = titles,
+                        itemWidth = maxWidth,
+                        itemHeight = 200.dp
+                    ) {
+                        context.startActivity(buildYoutubeIntent(list[it].youtubeUrl))
+                    }
                 }
             }
         }
@@ -125,7 +128,9 @@ private fun RenderArtwork(gameDetails: IgdbGameDetail) {
                 titleColor = Color.White.copy(alpha = 0.5f),
                 hasViewMore = false
             ) {
-                HorizontalImageList(data = it, itemWidth = 400.dp, itemHeight = 200.dp) {}
+                BoxWithConstraints {
+                    HorizontalImageList(data = it, itemWidth = maxWidth, itemHeight = 200.dp) {}
+                }
             }
         }
     }
@@ -140,7 +145,9 @@ private fun RenderScreenShots(gameDetails: IgdbGameDetail) {
                 titleColor = Color.White.copy(alpha = 0.5f),
                 hasViewMore = false
             ) {
-                HorizontalImageList(data = it, itemWidth = 400.dp, itemHeight = 200.dp) {}
+                BoxWithConstraints {
+                    HorizontalImageList(data = it, itemWidth = maxWidth, itemHeight = 200.dp) {}
+                }
             }
         }
     }

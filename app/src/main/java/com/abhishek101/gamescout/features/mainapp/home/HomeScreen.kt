@@ -1,6 +1,7 @@
 package com.abhishek101.gamescout.features.mainapp.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -118,12 +119,14 @@ private fun RenderShowcaseList(showcaseList: MutableState<ListData>) {
             .take(9)
             .map { it.screenShots!![0].qualifiedUrl }
             .toList()
-        HorizontalImageList(
-            data = screenshots,
-            itemWidth = 400.dp,
-            itemHeight = 200.dp
-        ) {
-            mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
+        BoxWithConstraints {
+            HorizontalImageList(
+                data = screenshots,
+                itemWidth = maxWidth,
+                itemHeight = 200.dp
+            ) {
+                mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
+            }
         }
     }
 }
