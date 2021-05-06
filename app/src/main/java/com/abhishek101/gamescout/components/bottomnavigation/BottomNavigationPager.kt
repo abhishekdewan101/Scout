@@ -16,7 +16,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -84,7 +84,7 @@ fun BottomNavigationBarNormal() {
     val bottomTabs = listOf(
         BottomNavigationTabData(Icons.Outlined.Home, "Home", "Home"),
         BottomNavigationTabData(Icons.Outlined.Search, "Search", "Search"),
-        BottomNavigationTabData(Icons.Outlined.Person, "Profile", "Profile"),
+        BottomNavigationTabData(Icons.Outlined.List, "List", "Lists"),
     )
 
     GameTrackerTheme {

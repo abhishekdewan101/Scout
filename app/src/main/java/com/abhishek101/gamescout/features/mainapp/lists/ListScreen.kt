@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.features.mainapp.profile
+package com.abhishek101.gamescout.features.mainapp.lists
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ProfileScreen() {
+fun ListScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -21,7 +21,7 @@ fun ProfileScreen() {
     ) {
 
         Text(
-            "Profile",
+            "Lists",
             style = TextStyle(color = MaterialTheme.colors.onBackground, fontSize = 28.sp),
             modifier = Modifier.padding(top = 15.dp, start = 15.dp)
         )
