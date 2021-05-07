@@ -69,11 +69,9 @@ fun TitleRow(
 fun PreviewTitledContainer() {
     Column {
         TitleContainer(title = "Title", hasViewMore = true, onViewMoreClicked = { }) {
-
         }
 
         TitleContainer(title = "Title", hasViewMore = false, onViewMoreClicked = { }) {
-
         }
     }
 }

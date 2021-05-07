@@ -50,29 +50,33 @@ fun BottomSheetContainer(sheetContent: @Composable () -> Unit, content: @Composa
 fun PreviewBottomSheetContainer() {
     val coroutine = rememberCoroutineScope()
     GameTrackerTheme {
-        BottomSheetContainer(sheetContent = {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .background(Color.Red)
-            ) {
-                Text(
-                    "Something is happening",
-                    style = MaterialTheme.typography.h1.copy(color = Color.White)
-                )
+        BottomSheetContainer(
+            sheetContent = {
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .background(Color.Red)
+                ) {
+                    Text(
+                        "Something is happening",
+                        style = MaterialTheme.typography.h1.copy(color = Color.White)
+                    )
+                }
             }
-        }) {
+        ) {
             val bottomSheetState = LocalBottomSheetState.current
             Column {
-                Button(onClick = {
-                    coroutine.launch {
-                        if (bottomSheetState.isExpanded) {
-                            bottomSheetState.collapse()
-                        } else {
-                            bottomSheetState.expand()
+                Button(
+                    onClick = {
+                        coroutine.launch {
+                            if (bottomSheetState.isExpanded) {
+                                bottomSheetState.collapse()
+                            } else {
+                                bottomSheetState.expand()
+                            }
                         }
                     }
-                }) {
+                ) {
                     Text(text = "Expand/Collapse Bottom Sheet")
                 }
             }

@@ -96,14 +96,16 @@ private fun RenderDoneButton(
     ) {
         AnimatedVisibility(visible = ownedCount > 0) {
             Padding(bottom = 15.dp) {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color(203, 112, 209))
-                    .clickable {
-                        navController.navigate(GenreSelectionScreen.toString())
-                    }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(203, 112, 209))
+                        .clickable {
+                            navController.navigate(GenreSelectionScreen.toString())
+                        }
+                ) {
                     Row(
                         modifier = Modifier.fillMaxSize(),
                         verticalAlignment = Alignment.CenterVertically,

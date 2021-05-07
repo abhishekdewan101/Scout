@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
  * Composable that allows you add a padding around your content without having to deal with the
  * modifiers
  */
-//TODO: Add documentation
+// TODO: Add documentation
 @Composable
 fun SafeArea(
     padding: Dp,

@@ -12,6 +12,8 @@ interface GameApi {
     suspend fun getGamePostersForQuery(query: String, accessToken: String): List<IgdbGame>
 
     suspend fun getGameDetailsForQuery(query: String, accessToken: String): IgdbGameDetail
+
+    suspend fun searchGamesForQuery(query: String, accessToken: String): List<IgdbGame>
 }
 
 class GameApiImpl(
@@ -48,5 +50,18 @@ class GameApiImpl(
             }
             body = query
         }[0]
+    }
+
+    override suspend fun searchGamesForQuery(query: String, accessToken: String): List<IgdbGame> {
+        return client.post {
+            headers {
+                append("Client-ID", appConfig.clientId)
+                append("Authorization", "Bearer $accessToken")
+            }
+            url {
+                takeFrom("https://api.igdb.com/v4/games")
+            }
+            body = query
+        }
     }
 }

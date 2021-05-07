@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.Dp
 import com.abhishek101.gamescout.R
 import com.google.accompanist.coil.CoilImage
 
-//TODO: Add documentation
+// TODO: Add documentation
 @Composable
 fun TouchableImage(
     url: String,
@@ -53,7 +53,8 @@ fun TouchableImage(
             if (rippleColor != null) {
                 Modifier.clickable(
                     indication = rememberRipple(color = rippleColor),
-                    interactionSource = remember { MutableInteractionSource() }) { onTouch() }
+                    interactionSource = remember { MutableInteractionSource() }
+                ) { onTouch() }
             } else {
                 Modifier.clickable { onTouch() }
             }

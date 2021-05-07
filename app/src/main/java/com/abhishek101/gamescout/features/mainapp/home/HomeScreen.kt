@@ -143,14 +143,16 @@ private fun CoverList(listData: GameListData, isGrid: Boolean = true, listType: 
             title = listData.title,
             data = covers,
             columns = 3,
-            onViewMoreClicked = { mainNavigator.navigate("${MainAppDestinations.ViewMore.name}/${listType.name}") }) {
+            onViewMoreClicked = { mainNavigator.navigate("${MainAppDestinations.ViewMore.name}/${listType.name}") }
+        ) {
             mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
         }
     } else {
         GamePosterHorizontalList(
             title = listData.title,
             data = covers,
-            onViewMoreClicked = { mainNavigator.navigate("${MainAppDestinations.ViewMore.name}/${listType.name}") }) {
+            onViewMoreClicked = { mainNavigator.navigate("${MainAppDestinations.ViewMore.name}/${listType.name}") }
+        ) {
             mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
         }
     }

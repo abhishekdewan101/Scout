@@ -42,7 +42,7 @@ enum class AnimatedButtonState {
     EXPANDED,
     SHRUNK
 }
-//TODO: Add documentation
+// TODO: Add documentation
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CollapsableButton(
@@ -119,7 +119,6 @@ fun CollapsableButton(
                 }
             }
         }
-
     }
 }
 
@@ -143,7 +142,6 @@ fun AnimatedButtonPreview() {
                 finalColor = MaterialTheme.colors.secondary,
                 finalIcon = Icons.Outlined.Done
             ) {
-
             }
         }
     }

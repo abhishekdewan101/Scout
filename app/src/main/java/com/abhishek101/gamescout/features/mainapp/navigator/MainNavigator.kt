@@ -52,8 +52,10 @@ fun MainNavigator() {
         }
 
         composable(
-            "${MainAppDestinations.GameDetail.name}/{gameSlug}", arguments = listOf(
-                navArgument("gameSlug") { type = NavType.StringType })
+            "${MainAppDestinations.GameDetail.name}/{gameSlug}",
+            arguments = listOf(
+                navArgument("gameSlug") { type = NavType.StringType }
+            )
         ) {
             CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
                 val gameSlug = it.arguments?.getString("gameSlug")

@@ -101,15 +101,17 @@ private fun RenderDoneButton(
     ) {
         AnimatedVisibility(visible = favoriteCount > 0) {
             Padding(bottom = 15.dp) {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color(240, 115, 101))
-                    .clickable {
-                        onBoardingCompleted()
-                        navController.navigate(OnBoardingDestinations.MainAppScreen.toString())
-                    }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(240, 115, 101))
+                        .clickable {
+                            onBoardingCompleted()
+                            navController.navigate(OnBoardingDestinations.MainAppScreen.toString())
+                        }
+                ) {
                     Row(
                         modifier = Modifier.fillMaxSize(),
                         verticalAlignment = Alignment.CenterVertically,

@@ -7,6 +7,7 @@ import com.abhishek101.core.remote.GameApi
 import com.abhishek101.core.utils.DatabaseHelper
 import com.abhishek101.core.utils.buildGameDetailQuery
 import com.abhishek101.core.utils.buildQuery
+import com.abhishek101.core.utils.buildSearchQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,6 +25,8 @@ interface GameRepository {
     suspend fun getListDataForType(type: ListType): Flow<ListData>
 
     suspend fun getGameDetailForSlug(slug: String): Flow<IgdbGameDetail>
+
+    suspend fun searchForGames(searchTerm: String): Flow<ListData>
 }
 
 class GameRepositoryImpl(
@@ -47,6 +50,14 @@ class GameRepositoryImpl(
     override suspend fun getGameDetailForSlug(slug: String): Flow<IgdbGameDetail> {
         return flow {
             emit(gameApi.getGameDetailsForQuery(buildGameDetailQuery(slug), dbHelper.accessToken))
+        }.flowOn(Dispatchers.Default)
+    }
+
+    override suspend fun searchForGames(searchTerm: String): Flow<ListData> {
+        return flow {
+            val posters =
+                gameApi.searchGamesForQuery(buildSearchQuery(searchTerm), dbHelper.accessToken)
+            emit(GameListData("Search Results", posters))
         }.flowOn(Dispatchers.Default)
     }
 }

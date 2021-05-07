@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.abhishek101.gamescout.features.genreselection.GenreSelectionViewModel
 import com.abhishek101.gamescout.features.mainapp.details.GameDetailViewModel
 import com.abhishek101.gamescout.features.mainapp.home.HomeScreenViewModel
+import com.abhishek101.gamescout.features.mainapp.search.SearchScreenViewModel
 import com.abhishek101.gamescout.features.mainapp.viewmore.ViewMoreViewModel
 import com.abhishek101.gamescout.features.onboarding.OnBoardingNavigatorViewModel
 import com.abhishek101.gamescout.features.onboarding.splash.SplashScreenVM
@@ -21,6 +22,7 @@ val appModule = module {
     single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }
     single { GameDetailViewModel(get()) }
+    single { SearchScreenViewModel(get()) }
 
     // SharedPreferences
     single<SharedPreferences> {
