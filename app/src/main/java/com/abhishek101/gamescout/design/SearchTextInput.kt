@@ -1,6 +1,7 @@
 package com.abhishek101.gamescout.design
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.width
@@ -12,6 +13,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +26,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SearchTextInput(color: Color, prefillSearchTerm: String, executeSearch: (String) -> Unit) {
+fun SearchTextInput(
+    color: Color,
+    prefillSearchTerm: String,
+    onTextFieldClearing: () -> Unit,
+    executeSearch: (String) -> Unit
+) {
     val textState = remember {
         if (prefillSearchTerm.isNotBlank()) {
             mutableStateOf(TextFieldValue(text = prefillSearchTerm))
@@ -53,7 +60,15 @@ fun SearchTextInput(color: Color, prefillSearchTerm: String, executeSearch: (Str
                 trailingIconColor = color
             ),
             trailingIcon = {
-                Icon(Icons.Outlined.Search, "")
+                if (textState.value.text.isEmpty()) {
+                    Icon(Icons.Outlined.Search, "")
+                } else {
+                    Icon(Icons.Outlined.Close, "", modifier = Modifier.clickable {
+                        onTextFieldClearing()
+                        textState.value = TextFieldValue("")
+                    })
+                }
+
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
@@ -72,7 +87,7 @@ fun SearchTextInput(color: Color, prefillSearchTerm: String, executeSearch: (Str
 @Composable
 fun SearchTextInputPreview() {
     Box(modifier = Modifier.background(Color.White)) {
-        SearchTextInput(Color(203, 112, 209), prefillSearchTerm = "") {
+        SearchTextInput(Color(203, 112, 209), prefillSearchTerm = "", {}) {
 
         }
     }
