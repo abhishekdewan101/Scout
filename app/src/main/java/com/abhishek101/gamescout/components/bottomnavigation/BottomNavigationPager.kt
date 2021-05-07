@@ -1,109 +1,66 @@
 package com.abhishek101.gamescout.components.bottomnavigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.BottomAppBar
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.List
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.abhishek101.gamescout.theme.GameTrackerTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.KEY_ROUTE
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
+import com.abhishek101.gamescout.features.mainapp.MainAppBottomItems
 
 @Composable
 fun BottomNavigationPager(
-    bottomTabs: List<BottomNavigationTabData>,
-    pagerContent: @Composable (Int) -> Unit
+    bottomTabs: Map<MainAppBottomItems, BottomNavigationTabData>,
+    pagerContent: @Composable (NavHostController) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    val selectedIndex = remember { mutableStateOf(0) }
+    val navController = rememberNavController()
     Scaffold(
         scaffoldState = scaffoldState,
         content = {
-            pagerContent(selectedIndex.value)
+            pagerContent(navController)
         },
         bottomBar = {
-            BottomNavigationBar(bottomTabs = bottomTabs, selectedIndex)
-        }
-    )
-}
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
 
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun BottomNavigationBar(
-    bottomTabs: List<BottomNavigationTabData>,
-    selectedIndex: MutableState<Int>
-) {
-    BottomAppBar(backgroundColor = Color(27, 127, 254)) {
-        bottomTabs.forEachIndexed { index, tab ->
-            val color = if (selectedIndex.value == index) {
-                MaterialTheme.colors.onBackground
-            } else {
-                MaterialTheme.colors.background
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .clickable(role = Role.Tab, onClick = { selectedIndex.value = index })
-            ) {
-                Icon(tab.icon, tab.contentDescription, tint = color)
-                Box(Modifier.size(10.dp, 0.dp))
-                Text(tab.label, color = color)
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun BottomNavigationBarNormal() {
-    val bottomTabs = listOf(
-        BottomNavigationTabData(Icons.Outlined.Home, "Home", "Home"),
-        BottomNavigationTabData(Icons.Outlined.Search, "Search", "Search"),
-        BottomNavigationTabData(Icons.Outlined.List, "List", "Lists"),
-    )
-
-    GameTrackerTheme {
-        BottomNavigationPager(bottomTabs = bottomTabs, pagerContent = { PreviewContent(index = 0) })
-    }
-}
-
-@Composable
-fun PreviewContent(index: Int) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                when (index) {
-                    0 -> Color.Red
-                    1 -> Color.Green
-                    2 -> Color.Blue
-                    else -> Color.Black
+            BottomNavigation(backgroundColor = Color(27, 127, 254)) {
+                bottomTabs.forEach { (key, tab) ->
+                    val color = if (currentRoute == key.name) {
+                        MaterialTheme.colors.onBackground
+                    } else {
+                        MaterialTheme.colors.background
+                    }
+                    BottomNavigationItem(
+                        icon = {
+                            Icon(
+                                tab.icon,
+                                tab.contentDescription,
+                                tint = color
+                            )
+                        },
+                        label = {
+                            Text(tab.label, color = color)
+                        },
+                        selected = currentRoute == key.name,
+                        onClick = {
+                            navController.navigate(key.name) {
+                                popUpTo = navController.graph.startDestination
+                                launchSingleTop = true
+                            }
+                        }
+                    )
                 }
-            )
+            }
+        }
     )
 }
