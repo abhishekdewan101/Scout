@@ -42,10 +42,12 @@ fun SearchTextInput(
 
     val focusManager = LocalFocusManager.current
 
-    val keyboardActions = KeyboardActions(onSearch = {
-        focusManager.clearFocus()
-        executeSearch(textState.value.text)
-    })
+    val keyboardActions = KeyboardActions(
+        onSearch = {
+            focusManager.clearFocus()
+            executeSearch(textState.value.text)
+        }
+    )
 
     BoxWithConstraints {
         OutlinedTextField(
@@ -68,12 +70,14 @@ fun SearchTextInput(
                 if (textState.value.text.isEmpty()) {
                     Icon(Icons.Outlined.Search, "")
                 } else {
-                    Icon(Icons.Outlined.Close, "", modifier = Modifier.clickable {
-                        onTextFieldClearing()
-                        textState.value = TextFieldValue("")
-                    })
+                    Icon(
+                        Icons.Outlined.Close, "",
+                        modifier = Modifier.clickable {
+                            onTextFieldClearing()
+                            textState.value = TextFieldValue("")
+                        }
+                    )
                 }
-
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
@@ -93,7 +97,6 @@ fun SearchTextInput(
 fun SearchTextInputPreview() {
     Box(modifier = Modifier.background(Color.White)) {
         SearchTextInput(Color(203, 112, 209), prefillSearchTerm = "", {}) {
-
         }
     }
 }

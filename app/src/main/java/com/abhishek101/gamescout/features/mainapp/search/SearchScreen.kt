@@ -65,7 +65,6 @@ fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get()) {
                 }
             }
         }
-
     }
 }
 
@@ -104,8 +103,8 @@ fun RenderNoResults() {
 
 @Composable
 private fun RenderSearchGrid(results: List<IgdbGame>) {
-    val covers = results.filter { it.cover != null }
-        .map { it.cover!!.qualifiedUrl }.toList()
+    val games = results.filter { it.cover != null }
+    val covers = results.map { it.cover!!.qualifiedUrl }.toList()
     val mainNavigator = LocalMainNavigator.current
     LazyColumn {
         item {
@@ -115,7 +114,7 @@ private fun RenderSearchGrid(results: List<IgdbGame>) {
                 imageWidth = 125.dp,
                 imageHeight = 175.dp
             ) {
-                mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${results[it].slug}")
+                mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
             }
         }
     }

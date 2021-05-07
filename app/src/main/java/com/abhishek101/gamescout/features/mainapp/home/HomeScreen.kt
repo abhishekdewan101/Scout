@@ -133,8 +133,8 @@ private fun RenderShowcaseList(showcaseList: MutableState<ListData>) {
 
 @Composable
 private fun CoverList(listData: GameListData, isGrid: Boolean = true, listType: ListType) {
-    val games = listData.games
-    val covers = games.filter { it.cover != null }
+    val games = listData.games.filter { it.cover != null }
+    val covers = games
         .take(9)
         .map { it.cover!!.qualifiedUrl }.toList()
     val mainNavigator = LocalMainNavigator.current

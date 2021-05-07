@@ -32,14 +32,14 @@ fun ViewMoreScreen(viewModel: ViewMoreViewModel = get(), listType: ListType?) {
             if (data != EmptyList) {
 
                 val gameListData = data as GameListData
-                val covers = gameListData.games.filter { it.cover != null }
-                    .map { it.cover!!.qualifiedUrl }.toList()
+                val games = gameListData.games.filter { it.cover != null }
+                val covers = games.map { it.cover!!.qualifiedUrl }.toList()
                 HeadingContainer(heading = gameListData.title) {
                     LazyGridImageList(
                         data = covers, columns = 3, imageWidth = 125.dp,
                         imageHeight = 175.dp
                     ) {
-                        mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${gameListData.games[it].slug}")
+                        mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
                     }
                 }
             } else {
