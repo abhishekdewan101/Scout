@@ -53,8 +53,11 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
         viewModel.gameDetails.value = null
         mainNavigator.popBackStack()
     }
-    viewModel.getGameDetails(gameSlug)
 
+    if (gameDetails == null) {
+        viewModel.getGameDetails(gameSlug)
+    }
+    
     if (gameDetails != null) {
         RenderGameDetails(gameDetails)
     } else {
