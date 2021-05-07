@@ -47,7 +47,7 @@ import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 import kotlin.math.roundToInt
 
-val LocaGameDetailViewModel = compositionLocalOf<GameDetailViewModel> {
+val LocalGameDetailViewModel = compositionLocalOf<GameDetailViewModel> {
     error("No GameDetailViewModel provided")
 }
 
@@ -67,7 +67,7 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
     }
 
     if (gameDetails != null) {
-        CompositionLocalProvider(LocaGameDetailViewModel provides viewModel) {
+        CompositionLocalProvider(LocalGameDetailViewModel provides viewModel) {
             RenderGameDetails(gameDetails)
         }
     } else {
@@ -113,7 +113,7 @@ private fun RenderDlcs(gameDetails: IgdbGameDetail) {
         val imageIdList =
             similarGames.filter { it.cover != null }.map { it.cover!!.qualifiedUrl }.toList()
         val mainNavigator = LocalMainNavigator.current
-        val viewModel = LocaGameDetailViewModel.current
+        val viewModel = LocalGameDetailViewModel.current
         SafeArea(padding = 0.dp, topOverride = 10.dp) {
             TitleContainer(
                 title = "Downloadable Content",
@@ -135,7 +135,7 @@ private fun RenderSimilarGames(gameDetails: IgdbGameDetail) {
         val imageIdList =
             similarGames.filter { it.cover != null }.map { it.cover!!.qualifiedUrl }.toList()
         val mainNavigator = LocalMainNavigator.current
-        val viewModel = LocaGameDetailViewModel.current
+        val viewModel = LocalGameDetailViewModel.current
         SafeArea(padding = 0.dp, topOverride = 10.dp) {
             TitleContainer(
                 title = "Similar Games",

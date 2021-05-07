@@ -22,7 +22,7 @@ val appModule = module {
     single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }
     single { GameDetailViewModel(get()) }
-    single { SearchScreenViewModel(get()) }
+    factory { SearchScreenViewModel(get()) }
 
     // SharedPreferences
     single<SharedPreferences> {
