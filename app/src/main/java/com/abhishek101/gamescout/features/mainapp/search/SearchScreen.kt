@@ -104,7 +104,7 @@ fun RenderNoResults() {
 @Composable
 private fun RenderSearchGrid(results: List<IgdbGame>) {
     val games = results.filter { it.cover != null }
-    val covers = results.map { it.cover!!.qualifiedUrl }.toList()
+    val covers = games.map { it.cover!!.qualifiedUrl }.toList()
     val mainNavigator = LocalMainNavigator.current
     LazyColumn {
         item {
