@@ -50,7 +50,12 @@ fun SearchTextInput(
     BoxWithConstraints {
         OutlinedTextField(
             value = textState.value,
-            onValueChange = { textState.value = it },
+            onValueChange = {
+                textState.value = it
+                if (it.text.isEmpty()) {
+                    onTextFieldClearing()
+                }
+            },
             modifier = Modifier.width(maxWidth),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = color,
