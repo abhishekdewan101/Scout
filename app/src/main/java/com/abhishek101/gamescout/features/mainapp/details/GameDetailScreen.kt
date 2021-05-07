@@ -101,7 +101,30 @@ fun RenderMainContent(gameDetails: IgdbGameDetail) {
             RenderArtwork(gameDetails)
             RenderVideos(gameDetails)
             RenderSimilarGames(gameDetails)
+            RenderDlcs(gameDetails)
             Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
+
+@Composable
+private fun RenderDlcs(gameDetails: IgdbGameDetail) {
+    gameDetails.dlc?.let { similarGames ->
+        val imageIdList =
+            similarGames.filter { it.cover != null }.map { it.cover!!.qualifiedUrl }.toList()
+        val mainNavigator = LocalMainNavigator.current
+        val viewModel = LocaGameDetailViewModel.current
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            TitleContainer(
+                title = "Downloadable Content",
+                titleColor = Color.White.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                HorizontalImageList(data = imageIdList, itemWidth = 150.dp, itemHeight = 200.dp) {
+                    viewModel.gameDetails.value = null
+                    mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${similarGames[it].slug}")
+                }
+            }
         }
     }
 }
