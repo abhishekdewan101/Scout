@@ -1,29 +1,31 @@
 package com.abhishek101.gamescout.features.mainapp.lists
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.abhishek101.gamescout.design.SafeArea
 
 @Composable
 fun ListScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background)
-    ) {
-
-        Text(
-            "Lists",
-            style = TextStyle(color = MaterialTheme.colors.onBackground, fontSize = 28.sp),
-            modifier = Modifier.padding(top = 15.dp, start = 15.dp)
-        )
+    SafeArea(padding = 15.dp, bottomOverride = 56.dp) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            item {
+                Text(
+                    "Lists",
+                    style = MaterialTheme.typography.h4.copy(
+                        color = MaterialTheme.colors.onBackground,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+        }
     }
 }

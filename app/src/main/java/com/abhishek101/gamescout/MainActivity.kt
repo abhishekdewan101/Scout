@@ -1,11 +1,10 @@
 package com.abhishek101.gamescout
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.toArgb
 import com.abhishek101.gamescout.features.onboarding.OnBoardingNavigator
-import com.abhishek101.gamescout.theme.Black
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 
 class MainActivity : AppCompatActivity() {
@@ -13,8 +12,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             GameTrackerTheme {
-                window.statusBarColor = Black.toArgb()
-                window.navigationBarColor = Black.toArgb()
+                window.statusBarColor = Color.BLACK
+                window.navigationBarColor = Color.BLACK
                 OnBoardingNavigator()
             }
         }
