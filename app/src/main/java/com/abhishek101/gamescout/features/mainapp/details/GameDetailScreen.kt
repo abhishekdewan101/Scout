@@ -22,6 +22,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.navigate
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
@@ -38,10 +41,15 @@ import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
 import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
+import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 import kotlin.math.roundToInt
+
+val LocaGameDetailViewModel = compositionLocalOf<GameDetailViewModel> {
+    error("No GameDetailViewModel provided")
+}
 
 @Composable
 fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
@@ -57,9 +65,11 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
     if (gameDetails == null) {
         viewModel.getGameDetails(gameSlug)
     }
-    
+
     if (gameDetails != null) {
-        RenderGameDetails(gameDetails)
+        CompositionLocalProvider(LocaGameDetailViewModel provides viewModel) {
+            RenderGameDetails(gameDetails)
+        }
     } else {
         LoadingIndicator(Color(203, 112, 209), backgroundColor = Color.Black)
     }
@@ -90,7 +100,30 @@ fun RenderMainContent(gameDetails: IgdbGameDetail) {
             RenderScreenShots(gameDetails)
             RenderArtwork(gameDetails)
             RenderVideos(gameDetails)
+            RenderSimilarGames(gameDetails)
             Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
+
+@Composable
+private fun RenderSimilarGames(gameDetails: IgdbGameDetail) {
+    gameDetails.similarGames?.let { similarGames ->
+        val imageIdList =
+            similarGames.filter { it.cover != null }.map { it.cover!!.qualifiedUrl }.toList()
+        val mainNavigator = LocalMainNavigator.current
+        val viewModel = LocaGameDetailViewModel.current
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            TitleContainer(
+                title = "Similar Games",
+                titleColor = Color.White.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                HorizontalImageList(data = imageIdList, itemWidth = 150.dp, itemHeight = 200.dp) {
+                    viewModel.gameDetails.value = null
+                    mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${similarGames[it].slug}")
+                }
+            }
         }
     }
 }
