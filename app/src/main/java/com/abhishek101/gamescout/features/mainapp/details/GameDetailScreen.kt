@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
@@ -259,40 +260,48 @@ private fun RenderGameInformation(gameDetails: IgdbGameDetail) {
                 modifier = Modifier.padding(top = 10.dp)
             )
         }
-        RenderGameRating(gameDetails)
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RenderGameRating(gameDetails)
+                Text(
+                    gameDetails.humanReadableFirstReleaseDate,
+                    color = Color.White.copy(alpha = 0.5f),
+                    fontSize = 16.sp,
+                )
+            }
+        }
     }
 }
 
 @Composable
 private fun RenderGameRating(gameDetails: IgdbGameDetail) {
-    SafeArea(padding = 0.dp, topOverride = 10.dp) {
-        gameDetails.totalRating?.roundToInt()?.let {
-            val backgroundColor = when {
-                it >= 75 -> Color.Green.copy(alpha = 0.5f)
-                it in 55..74 -> Color.Yellow.copy(alpha = 0.5f)
-                else -> Color.Red.copy(alpha = 0.5f)
-            }
-            Box(
+    gameDetails.totalRating?.roundToInt()?.let {
+        val backgroundColor = when {
+            it >= 75 -> Color.Green.copy(alpha = 0.5f)
+            it in 55..74 -> Color.Yellow.copy(alpha = 0.5f)
+            else -> Color.Red.copy(alpha = 0.5f)
+        }
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .clip(RoundedCornerShape(50))
+                .background(backgroundColor)
+        ) {
+            Column(
                 modifier = Modifier
                     .size(36.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(backgroundColor)
+                    .clip(RoundedCornerShape(50)),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(50)),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        it.toString(),
-                        color = Color.White,
-                        fontSize = 16.sp
-                    )
-                }
+                Text(
+                    it.toString(),
+                    color = Color.White,
+                    fontSize = 16.sp
+                )
             }
         }
+        Spacer(modifier = Modifier.width(10.dp))
     }
 }
 
