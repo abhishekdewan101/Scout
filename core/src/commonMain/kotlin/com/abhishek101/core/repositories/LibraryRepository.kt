@@ -1,33 +1,31 @@
 package com.abhishek101.core.repositories
 
+import com.abhishek101.core.db.Library
 import com.abhishek101.core.models.IgdbGame
-import com.abhishek101.core.models.IgdbPlatform
 import com.abhishek101.core.utils.DatabaseHelper
 import com.abhishek101.core.utils.enums.GameStatus
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.Clock
 
 interface LibraryRepository {
-    fun addGameToLibrary(game: IgdbGame, ownedPlatform: IgdbPlatform)
+    fun addGameToLibrary(
+        slug: String,
+        name: String,
+        coverId: String,
+        ownedPlatform: String,
+        firstReleaseDate: Long
+    )
+
+    fun getLibraryGames(): Flow<List<Library>>
     fun updateGameToNowPlaying(game: IgdbGame)
     fun updateGameToCompleted(didFinish: Boolean, comments: String, rating: Int, game: IgdbGame)
 }
 
 class LibraryRepositoryImpl(private val dbHelper: DatabaseHelper) : LibraryRepository {
-    override fun addGameToLibrary(game: IgdbGame, ownedPlatform: IgdbPlatform) {
-        val now = Clock.System.now().epochSeconds
-        val gameStatus = when {
-            now > game.firstReleaseDate -> GameStatus.OWNED
-            else -> GameStatus.WANT
-        }
-        dbHelper.libraryQueries.addGameToLibrary(
-            game.slug,
-            game.name,
-            game.cover!!.imageId, // we already filter games without covers before showing them to user
-            ownedPlatform.name,
-            gameStatus,
-            now
-        )
-    }
 
     override fun updateGameToCompleted(
         didFinish: Boolean,
@@ -44,6 +42,36 @@ class LibraryRepositoryImpl(private val dbHelper: DatabaseHelper) : LibraryRepos
             comments,
             game.slug
         )
+    }
+
+    override fun addGameToLibrary(
+        slug: String,
+        name: String,
+        coverId: String,
+        ownedPlatform: String,
+        firstReleaseDate: Long
+    ) {
+        val now = Clock.System.now().epochSeconds
+        val gameStatus = when {
+            now > firstReleaseDate -> GameStatus.OWNED
+            else -> GameStatus.WANT
+        }
+        dbHelper.libraryQueries.addGameToLibrary(
+            slug,
+            name,
+            coverId,
+            ownedPlatform,
+            gameStatus,
+            now
+        )
+    }
+
+    override fun getLibraryGames(): Flow<List<Library>> {
+        return dbHelper.libraryQueries
+            .getLibraryGames()
+            .asFlow()
+            .mapToList()
+            .flowOn(Dispatchers.Default)
     }
 
     override fun updateGameToNowPlaying(game: IgdbGame) {

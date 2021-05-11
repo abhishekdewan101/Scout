@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Error
@@ -245,6 +246,7 @@ private fun RenderGameSummary(gameDetails: IgdbGameDetail) {
 
 @Composable
 private fun RenderGameInformation(gameDetails: IgdbGameDetail) {
+    val viewModel = LocalGameDetailViewModel.current
     Column(modifier = Modifier.padding(start = 10.dp)) {
         Text(
             gameDetails.name,
@@ -267,6 +269,19 @@ private fun RenderGameInformation(gameDetails: IgdbGameDetail) {
                     gameDetails.humanReadableFirstReleaseDate,
                     color = Color.White.copy(alpha = 0.5f),
                     fontSize = 16.sp,
+                )
+            }
+        }
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            OutlinedButton(onClick = {
+                viewModel.saveGameToLibrary(
+                    gameDetails,
+                    gameDetails.platform[0].name
+                )
+            }) {
+                Text(
+                    "Add to library", color = Color.White.copy(alpha = 0.5f),
+                    fontSize = 16.sp
                 )
             }
         }

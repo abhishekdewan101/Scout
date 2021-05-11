@@ -21,7 +21,7 @@ val appModule = module {
     single { OnBoardingNavigatorViewModel(get()) }
     single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }
-    single { GameDetailViewModel(get()) }
+    single { GameDetailViewModel(get(), get()) }
     single { SearchScreenViewModel(get()) }
 
     // SharedPreferences

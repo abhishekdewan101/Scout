@@ -9,7 +9,6 @@ data class IgdbGame(
     @SerialName("slug") val slug: String,
     @SerialName("name") val name: String,
     @SerialName("screenshots") val screenShots: List<IgdbImage>? = null,
-    @SerialName("first_release_date") val firstReleaseDate: Long,
     @SerialName("cover") val cover: IgdbImage? = null
 )
 
