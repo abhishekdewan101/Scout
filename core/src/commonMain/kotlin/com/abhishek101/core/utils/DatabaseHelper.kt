@@ -7,6 +7,7 @@ class DatabaseHelper(appDb: AppDb) {
     val authenticationQueries = appDb.authenticationQueries
     val platformQueries = appDb.platformQueries
     val genreQueries = appDb.genreQueries
+    val libraryQueries = appDb.libraryQueries
 
     val accessToken by lazy {
         val timeNow = Clock.System.now().epochSeconds
@@ -18,17 +19,17 @@ class DatabaseHelper(appDb: AppDb) {
 
     val genreFilter by lazy {
         "genres=( ${
-        genreQueries.getAllFavoriteGenres()
-            .executeAsList()
-            .joinToString(",") { it.id.toString() }
+            genreQueries.getAllFavoriteGenres()
+                .executeAsList()
+                .joinToString(",") { it.id.toString() }
         } )"
     }
 
     val platformFilter by lazy {
         "platforms=(${
-        platformQueries.getUserOwnedPlatforms()
-            .executeAsList()
-            .joinToString(",") { it.id.toString() }
+            platformQueries.getUserOwnedPlatforms()
+                .executeAsList()
+                .joinToString(",") { it.id.toString() }
         })"
     }
 }

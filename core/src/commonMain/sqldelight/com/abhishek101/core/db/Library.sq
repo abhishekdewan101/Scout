@@ -1,0 +1,30 @@
+import com.abhishek101.core.utils.enums.GameStatus;
+
+CREATE TABLE Library (
+slug TEXT NOT NULL,
+name TEXT NOT NULL,
+coverId TEXT NOT NULL,
+platform TEXT NOT NULL,
+status TEXT AS GameStatus,
+addedOn INTEGER NOT NULL,
+completedOn INTEGER,
+rating INTEGER,
+comments TEXT
+);
+
+getLibraryGames:
+SELECT * FROM Library;
+
+addGameToLibrary:
+INSERT INTO Library(slug, name, coverId, platform, status, addedOn)
+VALUES(?,?,?,?,?,?);
+
+updateGameAsNowPlaying:
+UPDATE Library
+SET status = ?
+WHERE slug = ?;
+
+updateGameAsCompleted:
+UPDATE Library
+SET status = ? , completedOn = ? , rating = ? , comments = ?
+WHERE slug = ?;
