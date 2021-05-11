@@ -2,15 +2,17 @@ package com.abhishek101.gamescout.features.mainapp
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.components.bottomnavigation.BottomNavigationPager
 import com.abhishek101.gamescout.components.bottomnavigation.BottomNavigationTabData
 import com.abhishek101.gamescout.features.mainapp.home.HomeScreen
-import com.abhishek101.gamescout.features.mainapp.lists.ListScreen
+import com.abhishek101.gamescout.features.mainapp.library.LibraryScreen
 import com.abhishek101.gamescout.features.mainapp.search.SearchScreen
 
 enum class MainAppBottomItems {
@@ -33,9 +35,9 @@ fun MainApp() {
             "Search"
         ),
         MainAppBottomItems.LISTS to BottomNavigationTabData(
-            Icons.Outlined.List,
-            "Lists",
-            "Lists"
+            ImageVector.Companion.vectorResource(id = R.drawable.library),
+            "Library",
+            "Library"
         ),
     )
     BottomNavigationPager(
@@ -43,7 +45,7 @@ fun MainApp() {
     ) {
         NavHost(navController = it, startDestination = MainAppBottomItems.HOME.name) {
             composable(MainAppBottomItems.HOME.name) { HomeScreen() }
-            composable(MainAppBottomItems.LISTS.name) { ListScreen() }
+            composable(MainAppBottomItems.LISTS.name) { LibraryScreen() }
             composable(MainAppBottomItems.SEARCH.name) { SearchScreen() }
         }
     }
@@ -54,6 +56,6 @@ fun CreateMainPagerContent(index: Int) {
     when (index) {
         0 -> HomeScreen()
         1 -> SearchScreen()
-        2 -> ListScreen()
+        2 -> LibraryScreen()
     }
 }

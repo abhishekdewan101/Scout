@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.features.mainapp.lists
+package com.abhishek101.gamescout.features.mainapp.library
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.gamescout.design.SafeArea
 
 @Composable
-fun ListScreen() {
+fun LibraryScreen() {
     SafeArea(padding = 15.dp, bottomOverride = 56.dp) {
         LazyColumn(
             modifier = Modifier
@@ -19,7 +19,7 @@ fun ListScreen() {
         ) {
             item {
                 Text(
-                    "Lists",
+                    "Library",
                     style = MaterialTheme.typography.h4.copy(
                         color = MaterialTheme.colors.onBackground,
                         fontWeight = FontWeight.Bold
