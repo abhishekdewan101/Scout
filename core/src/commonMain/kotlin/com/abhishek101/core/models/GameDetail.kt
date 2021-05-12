@@ -15,7 +15,7 @@ data class IgdbGameDetail(
     @SerialName("first_release_date") val firstReleaseDate: Long,
     @SerialName("storyline") val storyline: String? = null,
     @SerialName("involved_companies") val involvedCompanies: List<IgdbInvolvedCompany>? = null,
-    @SerialName("platforms") val platform: List<IgdbPlatformAbbreviated>,
+    @SerialName("platforms") val platform: List<IgdbPlatformAbbreviated>? = null,
     @SerialName("screenshots") val screenShots: List<IgdbImage>? = null,
     @SerialName("similar_games") val similarGames: List<IgdbGame>? = null,
     @SerialName("artworks") val artworks: List<IgdbImage>? = null,
