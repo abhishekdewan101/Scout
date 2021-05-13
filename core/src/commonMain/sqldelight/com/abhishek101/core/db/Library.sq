@@ -1,0 +1,39 @@
+import com.abhishek101.core.models.LibraryGameStatus;
+
+CREATE TABLE LibraryGame(
+gameSlug TEXT NOT NULL UNIQUE,
+gameName TEXT NOT NULL,
+coverId TEXT NOT NULL,
+releaseDate INTEGER NOT NULL,
+status TEXT AS LibraryGameStatus NOT NULL,
+platform TEXT NOT NULL,
+startedOn INTEGER,
+finishedOn INTEGER,
+userRating INTEGER,
+userNotes TEXT
+);
+
+getLibraryGames:
+SELECT * FROM LibraryGame;
+
+getLibraryGameForSlug:
+SELECT * FROM LibraryGame
+WHERE gameSlug = ?;
+
+addGameToLibrary:
+INSERT INTO LibraryGame(gameSlug, gameName, coverId, releaseDate, status, platform)
+VALUES(?,?,?,?,?,?);
+
+getGamesForStatus:
+SELECT * FROM LibraryGame
+WHERE status = ?;
+
+setGameAsNowPlaying:
+UPDATE LibraryGame
+SET status = ?, startedOn = ?
+WHERE gameSlug = ?;
+
+setGameAsFinished:
+UPDATE LibraryGame
+SET status = ?, finishedOn =?, userRating = ?, userNotes = ?
+WHERE gameSlug = ?;

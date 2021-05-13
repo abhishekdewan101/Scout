@@ -7,6 +7,7 @@ class DatabaseHelper(appDb: AppDb) {
     val authenticationQueries = appDb.authenticationQueries
     val platformQueries = appDb.platformQueries
     val genreQueries = appDb.genreQueries
+    val libraryGameQueries = appDb.libraryQueries
 
     val accessToken by lazy {
         val timeNow = Clock.System.now().epochSeconds

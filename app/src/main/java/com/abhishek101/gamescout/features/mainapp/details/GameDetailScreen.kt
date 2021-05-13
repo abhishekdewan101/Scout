@@ -15,12 +15,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.DownloadDone
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -69,7 +75,42 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
 
     if (gameDetails != null) {
         CompositionLocalProvider(LocalGameDetailViewModel provides viewModel) {
-            RenderGameDetails(gameDetails)
+            Scaffold(
+                floatingActionButton = {
+                    val icon = if (viewModel.gameInLibrary.value) {
+                        Icons.Outlined.DownloadDone
+                    } else {
+                        Icons.Outlined.Download
+                    }
+                    OutlinedButton(
+                        onClick = {
+                            if (!viewModel.gameInLibrary.value) {
+                                gameDetails.platform?.get(0)?.slug?.let {
+                                    viewModel.addGameToLibrary(
+                                        gameDetails,
+                                        it
+                                    )
+                                }
+                            }
+                        },
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            backgroundColor = Color(27, 127, 254)
+                        ),
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(CircleShape)
+                    ) {
+
+                        Icon(
+                            icon,
+                            tint = Color.White,
+                            contentDescription = ""
+                        )
+                    }
+                }
+            ) {
+                RenderGameDetails(gameDetails)
+            }
         }
     } else {
         LoadingIndicator(Color(203, 112, 209), backgroundColor = Color.Black)

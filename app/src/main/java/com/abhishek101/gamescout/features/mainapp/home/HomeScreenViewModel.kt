@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.abhishek101.core.models.EmptyList
 import com.abhishek101.core.models.ListData
 import com.abhishek101.core.repositories.GameRepository
+import com.abhishek101.core.repositories.LibraryRepository
 import com.abhishek101.core.repositories.ListType
 import com.abhishek101.core.repositories.ListType.COMING_SOON
 import com.abhishek101.core.repositories.ListType.MOST_HYPED
@@ -18,7 +19,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-class HomeScreenViewModel(private val gameRepository: GameRepository) : ViewModel() {
+class HomeScreenViewModel(
+    private val gameRepository: GameRepository,
+    private val libraryRepository: LibraryRepository
+) : ViewModel() {
     val showcaseList = mutableStateOf<ListData>(EmptyList)
     val topRatedList = mutableStateOf<ListData>(EmptyList)
     val comingSoonList = mutableStateOf<ListData>(EmptyList)

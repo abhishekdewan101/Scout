@@ -35,43 +35,43 @@ fun buildQuery(queryType: ListType, genreFilter: String, platformFilter: String)
 }
 
 fun buildSearchQuery(searchTerm: String): String {
-    return "f slug, name,cover.image_id, screenshots.image_id; search \"$searchTerm\"; l 50;"
+    return "f slug, name,cover.image_id, screenshots.image_id, first_release_date, platforms.id, platforms.name, platforms.slug ; search \"$searchTerm\"; l 50;"
 }
 
 // FIXME: Perhaps use a builder pattern that can be tested easily.
 private fun buildShowcaseQuery(genreAndPreferenceFilter: String): String {
-    return "f slug, name,cover.image_id,platforms.id, platforms.name, platforms.slug, screenshots.image_id;" +
+    return "f slug, name,cover.image_id,first_release_date,platforms.id, platforms.name, platforms.slug, screenshots.image_id;" +
         "w rating >= 75 & hypes > 0 & first_release_date < ${Clock.System.now().epochSeconds} " +
         "& first_release_date > ${
-            Clock.System.now().minus(6, DateTimeUnit.MONTH, currentSystemDefault()).epochSeconds
+        Clock.System.now().minus(6, DateTimeUnit.MONTH, currentSystemDefault()).epochSeconds
         } & $genreAndPreferenceFilter; s hypes desc; l 50;"
 }
 
 private fun buildTopRatedQuery(genreAndPreferenceFilter: String): String {
-    return "f slug, name, cover.image_id, platforms.id, platforms.name, platforms.slug, screenshots.image_id;" +
+    return "f slug, name, cover.image_id,first_release_date, platforms.id, platforms.name, platforms.slug, screenshots.image_id;" +
         "w total_rating >= 80 & first_release_date >= ${
-            Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
+        Clock.System.now().minus(1, DateTimeUnit.YEAR, currentSystemDefault()).epochSeconds
         } & $genreAndPreferenceFilter;" +
         "s rating desc;" +
         "l 50;"
 }
 
 fun buildComingSoonQuery(genreAndPreferenceFilter: String): String {
-    return "f slug, name, cover.image_id,platforms.id, platforms.name, platforms.slug, screenshots.image_id;" +
+    return "f slug, name, cover.image_id,first_release_date,platforms.id, platforms.name, platforms.slug, screenshots.image_id;" +
         "w hypes > 0 & first_release_date >= ${Clock.System.now().epochSeconds} & $genreAndPreferenceFilter;" +
         "s first_release_date asc;" +
         "l 50;"
 }
 
 fun buildMostHypedQuery(genreAndPreferenceFilter: String): String {
-    return "f slug, name, cover.image_id,platforms.id, platforms.name, platforms.slug, screenshots.image_id;" +
+    return "f slug, name, cover.image_id,platforms.id,first_release_date, platforms.name, platforms.slug, screenshots.image_id;" +
         "w hypes > 0 & first_release_date >= ${Clock.System.now().epochSeconds} & $genreAndPreferenceFilter;" +
         "s hypes desc;" +
         "l 50;"
 }
 
 fun buildRecentGamesQuery(genreAndPreferenceFilter: String): String {
-    return "f slug, name, cover.image_id,platforms.id, platforms.name, platforms.slug, screenshots.image_id;" +
+    return "f slug, name, cover.image_id,platforms.id,first_release_date, platforms.name, platforms.slug, screenshots.image_id;" +
         "w total_rating >= 60 & first_release_date <= ${Clock.System.now().epochSeconds}" +
         " & $genreAndPreferenceFilter;" +
         "s first_release_date desc;" +

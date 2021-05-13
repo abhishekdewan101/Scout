@@ -8,10 +8,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.navigate
+import com.abhishek101.core.utils.buildImageString
+import com.abhishek101.gamescout.design.GridImageList
 import com.abhishek101.gamescout.design.SafeArea
+import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
+import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
+import org.koin.androidx.compose.get
 
 @Composable
-fun LibraryScreen() {
+fun LibraryScreen(viewModel: LibraryViewModel = get()) {
+    val mainNavigator = LocalMainNavigator.current
+
     SafeArea(padding = 15.dp, bottomOverride = 56.dp) {
         LazyColumn(
             modifier = Modifier
@@ -25,6 +33,20 @@ fun LibraryScreen() {
                         fontWeight = FontWeight.Bold
                     )
                 )
+            }
+            item {
+                val libraryGames = viewModel.libraryGames.value
+                if (libraryGames != null) {
+                    val listData = libraryGames.map { buildImageString(it.coverId) }
+                    GridImageList(
+                        data = listData,
+                        columns = 3,
+                        imageWidth = 125.dp,
+                        imageHeight = 175.dp
+                    ) {
+                        mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${libraryGames[it].gameSlug}")
+                    }
+                }
             }
         }
     }
