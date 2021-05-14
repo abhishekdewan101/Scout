@@ -37,17 +37,24 @@ class GameDetailViewModel(
         }
     }
 
-    fun updatePlatformAsOwned(slug: String, platform: String) {
-        if (libraryGameDetails.value != null) {
-            libraryRepository.togglePlatformForGame(platform, slug)
+    fun isPlatformOwned(platform: String): Boolean {
+        return if (libraryGameDetails.value != null) {
+            Timber.d(libraryGameDetails.value!!.platform.toString())
+            libraryGameDetails.value!!.platform.contains(platform).also {
+                Timber.d("Platform $platform is owned by user $it")
+            }
         } else {
-            libraryRepository.insertGameIntoLibrary(
-                gameDetails.value!!.slug,
-                gameDetails.value!!.name,
-                buildImageString(gameDetails.value!!.cover!!.imageId),
-                gameDetails.value!!.firstReleaseDate,
-                listOf(platform)
-            )
+            false
         }
+    }
+
+    fun updatePlatformAsOwned(slug: String, platform: String) {
+        libraryRepository.insertGameIntoLibrary(
+            slug,
+            gameDetails.value!!.name,
+            buildImageString(gameDetails.value!!.cover!!.imageId),
+            gameDetails.value!!.firstReleaseDate,
+            platform
+        )
     }
 }

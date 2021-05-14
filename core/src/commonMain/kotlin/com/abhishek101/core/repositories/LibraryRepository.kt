@@ -21,10 +21,8 @@ interface LibraryRepository {
         name: String,
         coverUrl: String,
         releaseDate: Long,
-        platform: List<String>
+        platform: String
     )
-
-    fun togglePlatformForGame(platform: String, slug: String)
 
     fun getGamesFromStatus(status: LibraryGameStatus): Flow<List<LibraryGame>>
 
@@ -54,19 +52,25 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper) : LibraryRepository 
         name: String,
         coverUrl: String,
         releaseDate: Long,
-        platform: List<String>
+        platform: String
     ) {
-        libraryQueries.insertGameIntoLibrary(
-            slug,
-            name,
-            coverUrl,
-            releaseDate,
-            getGameStatus(releaseDate),
-            platform
-        )
+        val isOwned = libraryQueries.getGameForSlug(slug).executeAsOneOrNull() != null
+
+        if (isOwned) {
+            togglePlatformForGame(platform, slug)
+        } else {
+            libraryQueries.insertGameIntoLibrary(
+                slug,
+                name,
+                coverUrl,
+                releaseDate,
+                getGameStatus(releaseDate),
+                listOf(platform)
+            )
+        }
     }
 
-    override fun togglePlatformForGame(platform: String, slug: String) {
+    private fun togglePlatformForGame(platform: String, slug: String) {
         val ownedPlatforms = libraryQueries.getGameForSlug(slug).executeAsOne().platform
         val updatedPlatforms = ownedPlatforms.toMutableList().apply {
             if (contains(platform)) {

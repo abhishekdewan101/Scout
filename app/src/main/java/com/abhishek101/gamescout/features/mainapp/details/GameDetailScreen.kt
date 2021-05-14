@@ -2,6 +2,7 @@ package com.abhishek101.gamescout.features.mainapp.details
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -15,7 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -121,17 +122,19 @@ private fun RenderPlatforms(gameDetails: IgdbGameDetail) {
                 titleColor = Color.White.copy(alpha = 0.5f),
                 hasViewMore = false
             ) {
-                LazyRow(modifier = Modifier.fillMaxWidth()) {
-                    items(platforms.size) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState())
+                ) {
+                    platforms.forEach {
                         SelectableChoice(
-                            isSelected = viewModel.libraryGameDetails.value?.platform?.contains(
-                                platforms[it].slug
-                            ) ?: false,
-                            text = platforms[it].name,
+                            isSelected = viewModel.isPlatformOwned(platform = it.slug),
+                            text = it.name,
                             selectionColor = Color(203, 112, 209),
                             backgroundColor = Color.Black
                         ) {
-                            viewModel.updatePlatformAsOwned(gameDetails.slug, platforms[it].slug)
+                            viewModel.updatePlatformAsOwned(gameDetails.slug, it.slug)
                         }
                     }
                 }

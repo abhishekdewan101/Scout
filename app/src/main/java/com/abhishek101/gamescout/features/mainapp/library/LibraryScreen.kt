@@ -48,8 +48,8 @@ fun LibraryScreen(viewModel: LibraryViewModel = get()) {
             item {
                 val libraryGames = viewModel.libraryGames.value
                 if (libraryGames != null) {
-                    val listData = libraryGames.filter { it.status == LibraryGameStatus.WISHLISTED }
-                        .map { it.coverUrl }
+                    val wishList = libraryGames.filter { it.status == LibraryGameStatus.WISHLISTED }
+                    val listData = wishList.map { it.coverUrl }
                     SafeArea(padding = 0.dp, topOverride = 10.dp) {
                         TitleContainer(title = "WishList", hasViewMore = false) {
                             GridImageList(
@@ -58,7 +58,7 @@ fun LibraryScreen(viewModel: LibraryViewModel = get()) {
                                 imageWidth = 125.dp,
                                 imageHeight = 175.dp
                             ) {
-                                mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${libraryGames[it].slug}")
+                                mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${wishList[it].slug}")
                             }
                         }
                     }
