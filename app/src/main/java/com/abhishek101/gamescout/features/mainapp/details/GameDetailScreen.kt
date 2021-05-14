@@ -84,14 +84,14 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
                     }
                     OutlinedButton(
                         onClick = {
-                            if (!viewModel.gameInLibrary.value) {
-                                gameDetails.platform?.get(0)?.slug?.let {
-                                    viewModel.addGameToLibrary(
-                                        gameDetails,
-                                        it
-                                    )
-                                }
-                            }
+                            // if (!viewModel.gameInLibrary.value) {
+                            //     gameDetails.platform?.get(0)?.slug?.let {
+                            //         viewModel.addGameToLibrary(
+                            //             gameDetails,
+                            //             it
+                            //         )
+                            //     }
+                            // }
                         },
                         colors = ButtonDefaults.outlinedButtonColors(
                             backgroundColor = Color(27, 127, 254)

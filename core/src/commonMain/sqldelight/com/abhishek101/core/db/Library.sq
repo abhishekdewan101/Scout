@@ -1,39 +1,50 @@
 import com.abhishek101.core.models.LibraryGameStatus;
+import kotlin.collections.List;
 
 CREATE TABLE LibraryGame(
-gameSlug TEXT NOT NULL UNIQUE,
-gameName TEXT NOT NULL,
-coverId TEXT NOT NULL,
+slug TEXT NOT NULL,
+name TEXT NOT NULL,
+coverUrl TEXT NOT NULL,
 releaseDate INTEGER NOT NULL,
 status TEXT AS LibraryGameStatus NOT NULL,
-platform TEXT NOT NULL,
+platform TEXT AS List<String> NOT NULL,
 startedOn INTEGER,
 finishedOn INTEGER,
-userRating INTEGER,
-userNotes TEXT
+rating INTEGER,
+notes TEXT
 );
 
-getLibraryGames:
+selectAllGames:
 SELECT * FROM LibraryGame;
 
-getLibraryGameForSlug:
+getGameForSlug:
 SELECT * FROM LibraryGame
-WHERE gameSlug = ?;
+WHERE slug = ?;
 
-addGameToLibrary:
-INSERT INTO LibraryGame(gameSlug, gameName, coverId, releaseDate, status, platform)
+insertGameIntoLibrary:
+INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, status, platform)
 VALUES(?,?,?,?,?,?);
 
-getGamesForStatus:
+updateOwnedPlatform:
+UPDATE LibraryGame
+SET platform = ?
+WHERE slug = ?;
+
+selectGamesForStatus:
 SELECT * FROM LibraryGame
 WHERE status = ?;
 
-setGameAsNowPlaying:
+updateGameStatus:
 UPDATE LibraryGame
-SET status = ?, startedOn = ?
-WHERE gameSlug = ?;
+SET status = ?
+WHERE slug = ?;
 
-setGameAsFinished:
+updateGameToNowPlaying:
 UPDATE LibraryGame
-SET status = ?, finishedOn =?, userRating = ?, userNotes = ?
-WHERE gameSlug = ?;
+SET status = "PLAYING", startedOn = ?
+WHERE slug = ?;
+
+updateGameAsFinished:
+UPDATE LibraryGame
+SET status = ?, finishedOn =?, rating = ?, notes=?
+WHERE slug = ?;

@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
-import com.abhishek101.core.utils.buildImageString
 import com.abhishek101.gamescout.design.GridImageList
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
@@ -37,14 +36,14 @@ fun LibraryScreen(viewModel: LibraryViewModel = get()) {
             item {
                 val libraryGames = viewModel.libraryGames.value
                 if (libraryGames != null) {
-                    val listData = libraryGames.map { buildImageString(it.coverId) }
+                    val listData = libraryGames.map { it.coverUrl }
                     GridImageList(
                         data = listData,
                         columns = 3,
                         imageWidth = 125.dp,
                         imageHeight = 175.dp
                     ) {
-                        mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${libraryGames[it].gameSlug}")
+                        mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${libraryGames[it].slug}")
                     }
                 }
             }

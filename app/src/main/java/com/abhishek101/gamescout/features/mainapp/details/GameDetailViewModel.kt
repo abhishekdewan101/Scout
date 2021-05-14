@@ -20,23 +20,18 @@ class GameDetailViewModel(
 
     fun getGameDetails(slug: String) {
         viewModelScope.launch {
-            gameRepository.getGameDetailForSlug(slug).collect {
-                Timber.d("Game Detail Came Back")
-                gameDetails.value = it
+            launch {
+                libraryRepository.getGameForSlug(slug).collect {
+                    Timber.d((it != null).toString())
+                }
             }
-            libraryRepository.getLibraryGameForSlug(slug).collect {
-                gameInLibrary.value = it.isNotEmpty()
+
+            launch {
+                gameRepository.getGameDetailForSlug(slug).collect {
+                    Timber.d("Game Detail Came Back")
+                    gameDetails.value = it
+                }
             }
         }
-    }
-
-    fun addGameToLibrary(igdbGameDetail: IgdbGameDetail, platform: String) {
-        libraryRepository.addGameToLibrary(
-            igdbGameDetail.slug,
-            igdbGameDetail.name,
-            igdbGameDetail.cover!!.imageId,
-            igdbGameDetail.firstReleaseDate,
-            platform
-        )
     }
 }
