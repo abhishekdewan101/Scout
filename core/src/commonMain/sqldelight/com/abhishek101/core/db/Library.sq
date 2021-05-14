@@ -30,6 +30,13 @@ UPDATE LibraryGame
 SET platform = ?
 WHERE slug = ?;
 
+removeGameFromLibrary:
+DELETE FROM LibraryGame
+WHERE slug = ?;
+
+removeAllGamesFromLibrary:
+DELETE FROM LibraryGame;
+
 selectGamesForStatus:
 SELECT * FROM LibraryGame
 WHERE status = ?;

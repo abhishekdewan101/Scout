@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.navigate
 import com.abhishek101.core.models.IgdbGameDetail
+import com.abhishek101.gamescout.components.SelectableChoice
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.HorizontalVideoList
@@ -96,6 +98,7 @@ fun RenderMainContent(gameDetails: IgdbGameDetail) {
                 RenderCoverImage(gameDetails)
                 RenderGameInformation(gameDetails)
             }
+            RenderPlatforms(gameDetails)
             RenderGameSummary(gameDetails)
             RenderGameStoryline(gameDetails)
             RenderScreenShots(gameDetails)
@@ -104,6 +107,35 @@ fun RenderMainContent(gameDetails: IgdbGameDetail) {
             RenderSimilarGames(gameDetails)
             RenderDlcs(gameDetails)
             Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
+
+@Composable
+private fun RenderPlatforms(gameDetails: IgdbGameDetail) {
+    gameDetails.platform?.let { platforms ->
+        val viewModel = LocalGameDetailViewModel.current
+        SafeArea(padding = 0.dp, topOverride = 10.dp) {
+            TitleContainer(
+                title = "Platforms",
+                titleColor = Color.White.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                LazyRow(modifier = Modifier.fillMaxWidth()) {
+                    items(platforms.size) {
+                        SelectableChoice(
+                            isSelected = viewModel.libraryGameDetails.value?.platform?.contains(
+                                platforms[it].slug
+                            ) ?: false,
+                            text = platforms[it].name,
+                            selectionColor = Color(203, 112, 209),
+                            backgroundColor = Color.Black
+                        ) {
+                            viewModel.updatePlatformAsOwned(gameDetails.slug, platforms[it].slug)
+                        }
+                    }
+                }
+            }
         }
     }
 }

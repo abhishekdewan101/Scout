@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abhishek101.core.db.LibraryGame
 import com.abhishek101.core.repositories.LibraryRepository
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class LibraryViewModel(private val libraryRepository: LibraryRepository) : ViewModel() {
@@ -13,9 +14,13 @@ class LibraryViewModel(private val libraryRepository: LibraryRepository) : ViewM
 
     init {
         viewModelScope.launch {
-            // libraryRepository.getLibraryGames().collect {
-            //     libraryGames.value = it
-            // }
+            libraryRepository.getGamesInLibrary().collect {
+                libraryGames.value = it
+            }
         }
+    }
+
+    fun deleteAllGames() {
+        libraryRepository.clearTables()
     }
 }

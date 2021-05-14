@@ -24,7 +24,7 @@ interface LibraryRepository {
         platform: List<String>
     )
 
-    fun updateOwnedPlatform(platform: String, slug: String)
+    fun togglePlatformForGame(platform: String, slug: String)
 
     fun getGamesFromStatus(status: LibraryGameStatus): Flow<List<LibraryGame>>
 
@@ -33,6 +33,7 @@ interface LibraryRepository {
     fun markGameAsNowPlaying(slug: String)
 
     fun markGameAsFinished(status: LibraryGameStatus, rating: Long, notes: String, slug: String)
+    fun clearTables()
 }
 
 class LibraryRepositoryImpl(databaseHelper: DatabaseHelper) : LibraryRepository {
@@ -65,10 +66,20 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper) : LibraryRepository 
         )
     }
 
-    override fun updateOwnedPlatform(platform: String, slug: String) {
+    override fun togglePlatformForGame(platform: String, slug: String) {
         val ownedPlatforms = libraryQueries.getGameForSlug(slug).executeAsOne().platform
-        val updatedPlatforms = ownedPlatforms.toMutableList().apply { add(platform) }
-        libraryQueries.updateOwnedPlatform(updatedPlatforms, slug)
+        val updatedPlatforms = ownedPlatforms.toMutableList().apply {
+            if (contains(platform)) {
+                remove(platform)
+            } else {
+                add(platform)
+            }
+        }
+        if (updatedPlatforms.isEmpty()) {
+            libraryQueries.removeGameFromLibrary(slug)
+        } else {
+            libraryQueries.updateOwnedPlatform(updatedPlatforms, slug)
+        }
     }
 
     override fun getGamesFromStatus(status: LibraryGameStatus): Flow<List<LibraryGame>> {
@@ -93,6 +104,10 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper) : LibraryRepository 
     ) {
         val now = Clock.System.now().epochSeconds
         libraryQueries.updateGameAsFinished(status, now, rating, notes, slug)
+    }
+
+    override fun clearTables() {
+        libraryQueries.removeAllGamesFromLibrary()
     }
 
     private fun getGameStatus(releaseDate: Long): LibraryGameStatus {
