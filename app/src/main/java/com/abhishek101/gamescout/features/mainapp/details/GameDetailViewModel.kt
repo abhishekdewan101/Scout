@@ -8,6 +8,7 @@ import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.core.repositories.GameRepository
 import com.abhishek101.core.repositories.LibraryRepository
 import com.abhishek101.core.utils.buildImageString
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -18,11 +19,13 @@ class GameDetailViewModel(
 ) : ViewModel() {
 
     val gameDetails = mutableStateOf<IgdbGameDetail?>(null)
-    val libraryGameDetails = mutableStateOf<LibraryGame?>(null)
+    private val libraryGameDetails = mutableStateOf<LibraryGame?>(null)
+
+    private lateinit var libraryJob: Job
 
     fun getGameDetails(slug: String) {
         viewModelScope.launch {
-            launch {
+            libraryJob = launch {
                 libraryRepository.getGameForSlug(slug).collect {
                     libraryGameDetails.value = it
                 }
@@ -46,6 +49,10 @@ class GameDetailViewModel(
         } else {
             false
         }
+    }
+
+    fun onDestroy() {
+        libraryJob.cancel()
     }
 
     fun updatePlatformAsOwned(slug: String, platform: String) {

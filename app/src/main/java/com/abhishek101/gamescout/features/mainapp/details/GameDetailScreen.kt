@@ -63,6 +63,7 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
 
     BackHandler(true) {
         viewModel.gameDetails.value = null
+        viewModel.onDestroy()
         mainNavigator.popBackStack()
     }
 
