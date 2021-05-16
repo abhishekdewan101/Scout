@@ -1,0 +1,57 @@
+import com.abhishek101.core.models.LibraryGameStatus;
+import kotlin.collections.List;
+
+CREATE TABLE LibraryGame(
+slug TEXT NOT NULL,
+name TEXT NOT NULL,
+coverUrl TEXT NOT NULL,
+releaseDate INTEGER NOT NULL,
+status TEXT AS LibraryGameStatus NOT NULL,
+platform TEXT AS List<String> NOT NULL,
+startedOn INTEGER,
+finishedOn INTEGER,
+rating INTEGER,
+notes TEXT
+);
+
+selectAllGames:
+SELECT * FROM LibraryGame;
+
+getGameForSlug:
+SELECT * FROM LibraryGame
+WHERE slug = ?;
+
+insertGameIntoLibrary:
+INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, status, platform)
+VALUES(?,?,?,?,?,?);
+
+updateOwnedPlatform:
+UPDATE LibraryGame
+SET platform = ?
+WHERE slug = ?;
+
+removeGameFromLibrary:
+DELETE FROM LibraryGame
+WHERE slug = ?;
+
+removeAllGamesFromLibrary:
+DELETE FROM LibraryGame;
+
+selectGamesForStatus:
+SELECT * FROM LibraryGame
+WHERE status = ?;
+
+updateGameStatus:
+UPDATE LibraryGame
+SET status = ?
+WHERE slug = ?;
+
+updateGameToNowPlaying:
+UPDATE LibraryGame
+SET status = "PLAYING", startedOn = ?
+WHERE slug = ?;
+
+updateGameAsFinished:
+UPDATE LibraryGame
+SET status = ?, finishedOn =?, rating = ?, notes=?
+WHERE slug = ?;

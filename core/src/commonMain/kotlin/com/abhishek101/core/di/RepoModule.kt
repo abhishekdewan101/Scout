@@ -7,6 +7,8 @@ import com.abhishek101.core.repositories.GameRepository
 import com.abhishek101.core.repositories.GameRepositoryImpl
 import com.abhishek101.core.repositories.GenreRepository
 import com.abhishek101.core.repositories.GenreRepositoryImpl
+import com.abhishek101.core.repositories.LibraryRepository
+import com.abhishek101.core.repositories.LibraryRepositoryImpl
 import com.abhishek101.core.repositories.PlatformRepository
 import com.abhishek101.core.repositories.PlatformRepositoryImpl
 import org.koin.dsl.module
@@ -25,5 +27,8 @@ val repoModule = module {
     }
     single<GameRepository> {
         GameRepositoryImpl(get(), get())
+    }
+    single<LibraryRepository> {
+        LibraryRepositoryImpl(get())
     }
 }

@@ -105,7 +105,7 @@ buildkonfig {
             "UseTwitchAuthentication",
             properties.getProperty("useTwitchAuthentication")
         )
-        buildConfigField(BOOLEAN, "EnableHttpLogging", "false")
+        buildConfigField(BOOLEAN, "EnableHttpLogging", "true")
         buildConfigField(
             STRING,
             "ClientAuthenticationUrl",
