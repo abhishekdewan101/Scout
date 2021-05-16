@@ -147,8 +147,9 @@ private fun RenderPlatforms(gameDetails: IgdbGameDetail) {
 @Composable
 private fun RenderDlcs(gameDetails: IgdbGameDetail) {
     gameDetails.dlc?.let { similarGames ->
-        val imageIdList =
-            similarGames.filter { it.cover != null }.map { it.cover!!.qualifiedUrl }.toList()
+        val dlcsWithCovers =
+            similarGames.filter { it.cover != null }
+        val imageIdList = dlcsWithCovers.map { it.cover!!.qualifiedUrl }.toList()
         val mainNavigator = LocalMainNavigator.current
         val viewModel = LocalGameDetailViewModel.current
         SafeArea(padding = 0.dp, topOverride = 10.dp) {
@@ -159,7 +160,7 @@ private fun RenderDlcs(gameDetails: IgdbGameDetail) {
             ) {
                 HorizontalImageList(data = imageIdList, itemWidth = 150.dp, itemHeight = 200.dp) {
                     viewModel.gameDetails.value = null
-                    mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${similarGames[it].slug}")
+                    mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${dlcsWithCovers[it].slug}")
                 }
             }
         }
@@ -169,8 +170,9 @@ private fun RenderDlcs(gameDetails: IgdbGameDetail) {
 @Composable
 private fun RenderSimilarGames(gameDetails: IgdbGameDetail) {
     gameDetails.similarGames?.let { similarGames ->
-        val imageIdList =
-            similarGames.filter { it.cover != null }.map { it.cover!!.qualifiedUrl }.toList()
+        val similarGamesWithCovers =
+            similarGames.filter { it.cover != null }
+        val imageIdList = similarGamesWithCovers.map { it.cover!!.qualifiedUrl }.toList()
         val mainNavigator = LocalMainNavigator.current
         val viewModel = LocalGameDetailViewModel.current
         SafeArea(padding = 0.dp, topOverride = 10.dp) {
@@ -181,7 +183,7 @@ private fun RenderSimilarGames(gameDetails: IgdbGameDetail) {
             ) {
                 HorizontalImageList(data = imageIdList, itemWidth = 150.dp, itemHeight = 200.dp) {
                     viewModel.gameDetails.value = null
-                    mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${similarGames[it].slug}")
+                    mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${similarGamesWithCovers[it].slug}")
                 }
             }
         }
