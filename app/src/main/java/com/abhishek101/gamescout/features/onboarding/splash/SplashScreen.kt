@@ -13,6 +13,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,13 +41,12 @@ fun SplashScreen(viewModel: SplashScreenVM = get()) {
     val isAuthenticationValid = viewModel.isAuthenticationValid
     val navController = LocalOnBoardingNavigator.current
     val splashScreenDestination = LocalSplashScreenDestination.current
-    val coroutineScope = rememberCoroutineScope()
 
     viewModel.checkAuthentication()
 
     SplashScreenContent()
     if (isAuthenticationValid.value) {
-        coroutineScope.launch {
+        LaunchedEffect(splashScreenDestination) {
             delay(2000)
             navController.popBackStack()
             navController.navigate(splashScreenDestination)
