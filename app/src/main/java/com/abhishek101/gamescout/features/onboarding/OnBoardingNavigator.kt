@@ -2,10 +2,13 @@ package com.abhishek101.gamescout.features.onboarding
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.gamescout.features.genreselection.GenreSelection
 import com.abhishek101.gamescout.features.mainapp.navigator.MainNavigator
@@ -15,7 +18,8 @@ import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.Plat
 import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.SplashScreen
 import com.abhishek101.gamescout.features.onboarding.splash.SplashScreen
 import com.abhishek101.gamescout.features.platformselection.PlatformSelection
-import org.koin.androidx.compose.get
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.koin.androidx.compose.getViewModel
 
 enum class OnBoardingDestinations {
     SplashScreen,
@@ -34,32 +38,32 @@ val LocalUpdateOnBoardingCompleted = compositionLocalOf<UpdateOnBoardingComplete
     error("No shared preferences provided")
 }
 
-val LocalSplashScreenDestination = compositionLocalOf<String> {
-    error("No splash screen destination provided")
-}
-
 @Composable
-fun OnBoardingNavigator() {
+fun OnBoardingNavigator(viewModel: OnBoardingNavigatorViewModel = getViewModel()) {
     val onBoardingNavigator = rememberNavController()
-    val viewModel: OnBoardingNavigatorViewModel = get()
     val splashScreenDestination = if (viewModel.isOnBoardingComplete()) {
         MainAppScreen.name
     } else {
         PlatformSelectionScreen.name
     }
 
-    NavHost(
-        navController = onBoardingNavigator,
-        startDestination = SplashScreen.name
-    ) {
+    val systemUiController = rememberSystemUiController()
 
+    SideEffect {
+        systemUiController.setNavigationBarColor(color = Color.Black, darkIcons = false)
+    }
+
+    NavHost(navController = onBoardingNavigator, startDestination = SplashScreen.name) {
         composable(SplashScreen.name) {
-            CompositionLocalProvider(
-                LocalOnBoardingNavigator provides onBoardingNavigator,
-                LocalSplashScreenDestination provides splashScreenDestination
-            ) {
-                SplashScreen()
-            }
+            SplashScreen(
+                setStatusBarColor = { color: Color, useDarkIcons: Boolean ->
+                    systemUiController.setStatusBarColor(color, useDarkIcons)
+                },
+                onAuthenticationValidated = {
+                    onBoardingNavigator.popBackStack()
+                    onBoardingNavigator.navigate(splashScreenDestination.toString())
+                }
+            )
         }
 
         composable(PlatformSelectionScreen.name) {
@@ -79,7 +83,9 @@ fun OnBoardingNavigator() {
 
         composable(MainAppScreen.name) {
             CompositionLocalProvider(LocalOnBoardingNavigator provides onBoardingNavigator) {
-                MainNavigator()
+                MainNavigator { color: Color, useDarkIcons: Boolean ->
+                    systemUiController.setStatusBarColor(color, useDarkIcons)
+                }
             }
         }
     }

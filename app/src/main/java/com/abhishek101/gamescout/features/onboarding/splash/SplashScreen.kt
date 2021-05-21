@@ -10,36 +10,36 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.navigate
 import com.abhishek101.gamescout.R
-import com.abhishek101.gamescout.features.onboarding.LocalOnBoardingNavigator
-import com.abhishek101.gamescout.features.onboarding.LocalSplashScreenDestination
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import kotlinx.coroutines.delay
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun SplashScreen(viewModel: SplashScreenViewModel = getViewModel()) {
-
+fun SplashScreen(
+    viewModel: SplashScreenViewModel = getViewModel(),
+    setStatusBarColor: (Color, Boolean) -> Unit,
+    onAuthenticationValidated: () -> Unit
+) {
     val isAuthenticationValid = viewModel.isAuthenticationValid
-    val navController = LocalOnBoardingNavigator.current
-    val splashScreenDestination = LocalSplashScreenDestination.current
+    val statusBarColor = MaterialTheme.colors.primary
 
-    viewModel.checkAuthentication()
+    SideEffect {
+        setStatusBarColor(statusBarColor, false)
+    }
 
     SplashScreenContent()
-    if (isAuthenticationValid.value) {
-        LaunchedEffect(splashScreenDestination) {
-            delay(2000)
-            navController.popBackStack()
-            navController.navigate(splashScreenDestination)
+
+    LaunchedEffect(isAuthenticationValid.value) {
+        if (isAuthenticationValid.value) {
+            onAuthenticationValidated()
         }
     }
 }

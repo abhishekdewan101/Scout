@@ -12,7 +12,11 @@ class SplashScreenViewModel constructor(private val authenticationRepository: Au
 
     val isAuthenticationValid = mutableStateOf(false)
 
-    fun checkAuthentication() {
+    init {
+        checkAuthentication()
+    }
+
+    private fun checkAuthentication() {
         viewModelScope.launch {
             authenticationRepository.getAuthenticationData()
                 .collect {
