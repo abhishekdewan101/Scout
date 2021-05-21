@@ -116,6 +116,12 @@ dependencies {
     //Coil
     implementation Libs.coil
 
+    //SystemUiController
+    implementation Libs.systemUiController
+
+    //Pager
+    implementation Libs.composePager
+
     // testing
     testImplementation Libs.mockk
     testImplementation Libs.googleTruth

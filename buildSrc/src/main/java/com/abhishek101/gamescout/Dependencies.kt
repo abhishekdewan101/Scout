@@ -37,6 +37,9 @@ object Libs {
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
     const val coil = "com.google.accompanist:accompanist-coil:0.6.2"
+    const val composePager = "com.google.accompanist:accompanist-pager:0.9.1"
+
+    const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:0.9.1"
 
     const val mockk = "io.mockk:mockk:1.10.0"
     const val androidMockk = "io.mockk:mockk-android:1.10.0"
