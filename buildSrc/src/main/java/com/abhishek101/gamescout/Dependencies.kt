@@ -40,7 +40,7 @@ object Libs {
 
     const val mockk = "io.mockk:mockk:1.10.0"
     const val androidMockk = "io.mockk:mockk-android:1.10.0"
-    const val kotlinxDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
+    const val kotlinxDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.0"
 
     const val googleTruth = "com.google.truth:truth:1.0.1"
 
@@ -109,6 +109,7 @@ object Libs {
 
     object AndroidX {
         const val material = "com.google.android.material:material:1.3.0"
+
         object Navigation {
             private const val version = "2.3.3"
             const val composeNavigation = "androidx.navigation:navigation-compose:1.0.0-alpha10"
