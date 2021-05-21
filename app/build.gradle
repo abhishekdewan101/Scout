@@ -86,8 +86,6 @@ android {
 dependencies {
     implementation project(":core")
 
-    implementation Libs.AndroidX.coreKtx
-    implementation Libs.AndroidX.appcompat
     implementation Libs.Kotlin.stdlib
     implementation Libs.AndroidX.material
 
@@ -95,19 +93,12 @@ dependencies {
     implementation Libs.AndroidX.Compose.ui
     implementation Libs.AndroidX.Compose.material
     implementation Libs.AndroidX.Compose.tooling
-    implementation Libs.AndroidX.Activity.activityCompose
-    implementation Libs.AndroidX.Lifecycle.lifecyleRuntime
-    implementation Libs.AndroidX.Lifecycle.viewModelCompose
-    implementation Libs.AndroidX.Lifecycle.viewmodel
     implementation Libs.AndroidX.Compose.foundation
     implementation Libs.AndroidX.Compose.materialIconsExtended
     androidTestImplementation Libs.AndroidX.Compose.testing
-    implementation Libs.coil
 
 
     //Navigation
-    implementation Libs.AndroidX.Navigation.fragmentNavigation
-    implementation Libs.AndroidX.Navigation.uiNavigation
     implementation Libs.AndroidX.Navigation.composeNavigation
 
     // Coroutines
@@ -125,10 +116,11 @@ dependencies {
     //Coil
     implementation Libs.coil
 
-    //Room
-    implementation Libs.AndroidX.Room.runtime
-    kapt Libs.AndroidX.Room.compiler
-    implementation Libs.AndroidX.Room.ktx
+    //SystemUiController
+    implementation Libs.systemUiController
+
+    //Pager
+    implementation Libs.composePager
 
     // testing
     testImplementation Libs.mockk
