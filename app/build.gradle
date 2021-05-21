@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.abhishek101.gametracker"
+        applicationId "com.abhishek101.gamescout"
         minSdkVersion AppVersions.minSdkVersion
         targetSdkVersion AppVersions.targetSdkVersion
         versionCode AppVersions.generatedVersionCode
