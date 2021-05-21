@@ -33,12 +33,12 @@ fun BottomNavigationPager(
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
 
-            BottomNavigation(backgroundColor = Color(27, 127, 254)) {
+            BottomNavigation(backgroundColor = MaterialTheme.colors.primaryVariant) {
                 bottomTabs.forEach { (key, tab) ->
                     val color = if (currentRoute == key.name) {
-                        MaterialTheme.colors.onBackground
+                        Color.White
                     } else {
-                        MaterialTheme.colors.background
+                        Color.White.copy(alpha = 0.5f)
                     }
                     BottomNavigationItem(
                         icon = {
