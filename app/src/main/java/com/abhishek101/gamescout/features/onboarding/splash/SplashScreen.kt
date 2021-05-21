@@ -23,9 +23,10 @@ import com.abhishek101.gamescout.features.onboarding.LocalSplashScreenDestinatio
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.get
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun SplashScreen(viewModel: SplashScreenVM = get()) {
+fun SplashScreen(viewModel: SplashScreenViewModel = getViewModel()) {
 
     val isAuthenticationValid = viewModel.isAuthenticationValid
     val navController = LocalOnBoardingNavigator.current

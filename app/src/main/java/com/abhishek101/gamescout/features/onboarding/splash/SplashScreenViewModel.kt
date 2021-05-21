@@ -8,8 +8,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class SplashScreenVM constructor(private val authenticationRepository: AuthenticationRepository) :
-    ViewModel() {
+class SplashScreenViewModel constructor(private val authenticationRepository: AuthenticationRepository) : ViewModel() {
 
     val isAuthenticationValid = mutableStateOf(false)
 
