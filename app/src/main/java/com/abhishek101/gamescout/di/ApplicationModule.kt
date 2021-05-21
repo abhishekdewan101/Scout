@@ -18,9 +18,9 @@ import org.koin.dsl.module
 val appModule = module {
     // ViewModels
     viewModel { SplashScreenViewModel(get()) }
+    viewModel { OnBoardingNavigatorViewModel(get()) }
     single { PlatformSelectionViewModel(get()) }
     single { GenreSelectionViewModel(get()) }
-    single { OnBoardingNavigatorViewModel(get()) }
     single { HomeScreenViewModel(get(), get()) }
     single { ViewMoreViewModel(get()) }
     single { GameDetailViewModel(get(), get()) }

@@ -2,9 +2,12 @@ package com.abhishek101.gamescout.features.mainapp.navigator
 
 import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavType
@@ -29,8 +32,13 @@ val LocalMainNavigator = compositionLocalOf<NavController> {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainNavigator() {
+fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
     val mainNavController = rememberNavController()
+    val backgroundColor = MaterialTheme.colors.background
+    val useDarkIcon = MaterialTheme.colors.isLight
+    SideEffect {
+        setStatusBarColor(backgroundColor, useDarkIcon)
+    }
     NavHost(
         navController = mainNavController,
         startDestination = MainAppDestinations.MainApp.name
