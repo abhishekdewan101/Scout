@@ -7,7 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-// TODO: Add documentation
+@Composable
+fun Padding(all: Dp = 0.dp, content: @Composable () -> Unit) {
+    Padding(start = all, end = all, top = all, bottom = all, content = content)
+}
+
 @Composable
 fun Padding(
     start: Dp = 0.dp,
