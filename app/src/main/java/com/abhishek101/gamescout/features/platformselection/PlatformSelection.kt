@@ -20,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,17 +40,27 @@ import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PlatformSelection(viewModel: PlatformSelectionViewModel = get()) {
+fun PlatformSelection(
+    viewModel: PlatformSelectionViewModel = get(),
+    setStatusBarColor: (Color, Boolean) -> Unit,
+    onPlatformSelectionComplete: () -> Unit
+) {
 
     val isLoading = viewModel.isLoading.value
     val platformList = viewModel.platforms.value
-    val navController = LocalOnBoardingNavigator.current
+
+    val backgroundColor = MaterialTheme.colors.background
+    val useDarkIcon = MaterialTheme.colors.isLight
+
+    SideEffect {
+        setStatusBarColor(backgroundColor, useDarkIcon)
+    }
 
     PlatformSelectionList(
         isLoading = isLoading,
         platformList = platformList,
         onPlatformSelected = viewModel::updateOwnedPlatform,
-        navController = navController,
+        onPlatformSelectionComplete = onPlatformSelectionComplete,
         ownedCount = viewModel.getOwnedPlatformCount()
     )
 }
@@ -59,11 +70,11 @@ fun PlatformSelectionList(
     isLoading: Boolean,
     platformList: List<Platform>,
     onPlatformSelected: (String, Boolean) -> Unit,
-    navController: NavController,
+    onPlatformSelectionComplete: () -> Unit,
     ownedCount: Int
 ) {
-    SafeArea(padding = 15.dp, backgroundColor = Color.Black) {
-        Box() {
+    SafeArea(padding = 15.dp) {
+        Box {
             Column(modifier = Modifier.fillMaxSize()) {
                 PlatformSelectionHeader()
                 if (isLoading) {
@@ -78,7 +89,7 @@ fun PlatformSelectionList(
                     }
                 }
             }
-            RenderDoneButton(ownedCount, navController)
+            RenderDoneButton(ownedCount, onPlatformSelectionComplete)
         }
     }
 }
@@ -87,7 +98,7 @@ fun PlatformSelectionList(
 @Composable
 private fun RenderDoneButton(
     ownedCount: Int,
-    navController: NavController
+    onPlatformSelectionComplete: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -103,7 +114,7 @@ private fun RenderDoneButton(
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color(203, 112, 209))
                         .clickable {
-                            navController.navigate(GenreSelectionScreen.toString())
+                            onPlatformSelectionComplete()
                         }
                 ) {
                     Row(
@@ -130,7 +141,7 @@ private fun PlatformSelectionHeader() {
         Text(
             "Platforms",
             style = MaterialTheme.typography.h4,
-            color = Color(203, 112, 209),
+            color = MaterialTheme.colors.onBackground,
             fontWeight = FontWeight.Bold
         )
         Text(
