@@ -45,9 +45,9 @@ fun CircularSelectableImage(
         modifier = Modifier
             .size(175.dp)
             .border(borderStroke, RoundedCornerShape(50))
-            .clickable { onSelected() }
             .padding(10.dp)
             .clip(RoundedCornerShape(50))
+            .clickable { onSelected() }
             .background(Color.White)
     ) {
         Column(

@@ -27,15 +27,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Platform
 import com.abhishek101.gamescout.components.SelectablePlatformGrid
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
-import com.abhishek101.gamescout.features.onboarding.LocalOnBoardingNavigator
-import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations.GenreSelectionScreen
 import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -78,7 +74,7 @@ fun PlatformSelectionList(
             Column(modifier = Modifier.fillMaxSize()) {
                 PlatformSelectionHeader()
                 if (isLoading) {
-                    LoadingIndicator(Color(203, 112, 209))
+                    LoadingIndicator()
                 } else {
                     Padding(top = 15.dp) {
                         SelectablePlatformGrid(
@@ -112,7 +108,7 @@ private fun RenderDoneButton(
                         .fillMaxWidth()
                         .height(50.dp)
                         .clip(RoundedCornerShape(20.dp))
-                        .background(Color(203, 112, 209))
+                        .background(MaterialTheme.colors.primary)
                         .clickable {
                             onPlatformSelectionComplete()
                         }
