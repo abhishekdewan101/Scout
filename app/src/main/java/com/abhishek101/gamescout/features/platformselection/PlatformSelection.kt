@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -28,7 +29,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.db.Platform
-import com.abhishek101.gamescout.components.SelectablePlatformGrid
+import com.abhishek101.core.utils.buildImageString
+import com.abhishek101.gamescout.design.CircularSelectableImage
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
@@ -71,17 +73,32 @@ fun PlatformSelectionList(
 ) {
     SafeArea(padding = 15.dp) {
         Box {
-            Column(modifier = Modifier.fillMaxSize()) {
-                PlatformSelectionHeader()
-                if (isLoading) {
-                    LoadingIndicator()
-                } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                item {
+                    if (isLoading) {
+                        LoadingIndicator()
+                    }
+                }
+                item {
+                    if (!isLoading) {
+                        PlatformSelectionHeader()
+                    }
+                }
+                val chunked = platformList.chunked(2)
+                items(chunked.size) { index ->
                     Padding(top = 15.dp) {
-                        SelectablePlatformGrid(
-                            data = platformList,
-                            columns = 2,
-                            onSelected = onPlatformSelected
-                        )
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            for (item in chunked[index]) {
+                                CircularSelectableImage(
+                                    imageId = buildImageString(item.imageId),
+                                    label = item.name,
+                                    isSelected = item.isOwned!!,
+                                    selectedBorderColor = MaterialTheme.colors.onBackground
+                                ) {
+                                    onPlatformSelected(item.slug, item.isOwned!!.not())
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -141,7 +158,7 @@ private fun PlatformSelectionHeader() {
             fontWeight = FontWeight.Bold
         )
         Text(
-            "Select the platforms your currently own",
+            "Select the platforms you own",
             style = MaterialTheme.typography.subtitle1,
             color = MaterialTheme.colors.onBackground
         )
