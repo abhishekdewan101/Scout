@@ -2,8 +2,9 @@ package com.abhishek101.gamescout.features.platformselection
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,9 +14,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -25,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -48,16 +48,16 @@ fun PlatformSelection(
 
     val isLoading = viewModel.isLoading.value
     val platformList = viewModel.platforms.value
-    val ownedCount = viewModel.getOwnedPlatformCount()
+    val ownedCount = viewModel.ownedPlatformCount.value
 
-    val backgroundColor = MaterialTheme.colors.primaryVariant.copy(alpha = 0.5f)
+    val backgroundColor = if (MaterialTheme.colors.isLight) MaterialTheme.colors.primary.copy(alpha = 0.5f) else MaterialTheme.colors.primary
     val useDarkIcon = MaterialTheme.colors.isLight
 
     SideEffect {
         setStatusBarColor(backgroundColor, useDarkIcon)
     }
 
-    PlatformSelectionList(
+    PlatformListContent(
         isLoading = isLoading,
         platformList = platformList,
         ownedCount = ownedCount,
@@ -68,7 +68,7 @@ fun PlatformSelection(
 }
 
 @Composable
-fun PlatformSelectionList(
+fun PlatformListContent(
     isLoading: Boolean,
     platformList: List<Platform>,
     ownedCount: Int,
@@ -76,40 +76,54 @@ fun PlatformSelectionList(
     onPlatformSelected: (String, Boolean) -> Unit,
     onPlatformSelectionComplete: () -> Unit,
 ) {
-    SafeArea(padding = 15.dp, backgroundColor = backgroundColor) {
+    if (isLoading) {
+        LoadingIndicator(color = White)
+    } else {
+        RenderPlatformList(backgroundColor, ownedCount, platformList, onPlatformSelected, onPlatformSelectionComplete)
+    }
+}
 
-        if (isLoading) {
-            LoadingIndicator(color = White)
-        } else {
-            Box {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    item {
-                        PlatformSelectionHeader()
-                    }
-                    val chunked = platformList.chunked(2)
-                    items(chunked.size) { index ->
-                        Padding(top = 15.dp) {
-                            BoxWithConstraints {
-                                val itemWidth = maxWidth / 2 - 10.dp
-                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                    for (item in chunked[index]) {
-                                        CircularSelectableImage(
-                                            imageUri = buildImageString(item.imageId),
-                                            width = itemWidth,
-                                            isSelected = item.isOwned!!,
-                                            selectedBorderColor = White
-                                        ) {
-                                            onPlatformSelected(item.slug, item.isOwned!!.not())
-                                        }
+@Composable
+private fun RenderPlatformList(
+    backgroundColor: Color,
+    ownedCount: Int,
+    platformList: List<Platform>,
+    onPlatformSelected: (String, Boolean) -> Unit,
+    onPlatformSelectionComplete: () -> Unit
+) {
+    Box {
+        SafeArea(padding = 15.dp, backgroundColor = backgroundColor) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = if (ownedCount > 0) 50.dp else 0.dp)
+            ) {
+                item {
+                    Header()
+                }
+                val chunked = platformList.chunked(2)
+                items(chunked.size) { index ->
+                    Padding(top = 15.dp) {
+                        BoxWithConstraints {
+                            val itemWidth = maxWidth / 2 - 10.dp
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                for (item in chunked[index]) {
+                                    CircularSelectableImage(
+                                        imageUri = buildImageString(item.imageId),
+                                        width = itemWidth,
+                                        isSelected = item.isOwned!!,
+                                        selectedBorderColor = White
+                                    ) {
+                                        onPlatformSelected(item.slug, item.isOwned!!.not())
                                     }
                                 }
                             }
                         }
                     }
                 }
-                RenderDoneButton(ownedCount, onPlatformSelectionComplete)
             }
         }
+        RenderDoneButton(ownedCount, onPlatformSelectionComplete)
     }
 }
 
@@ -125,29 +139,25 @@ private fun RenderDoneButton(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AnimatedVisibility(visible = ownedCount > 0) {
-            Padding(bottom = 15.dp) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(MaterialTheme.colors.primary)
-                        .clickable {
-                            onPlatformSelectionComplete()
-                        }
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            Icons.Outlined.Done,
-                            "",
-                            tint = Color.White,
-                            modifier = Modifier.size(30.dp)
-                        )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(55.dp)
+                    .clickable {
+                        onPlatformSelectionComplete()
                     }
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.Done,
+                        "",
+                        tint = White,
+                        modifier = Modifier.size(30.dp)
+                    )
                 }
             }
         }
@@ -155,7 +165,7 @@ private fun RenderDoneButton(
 }
 
 @Composable
-private fun PlatformSelectionHeader() {
+private fun Header() {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         Text(
             "PLATFORMS",

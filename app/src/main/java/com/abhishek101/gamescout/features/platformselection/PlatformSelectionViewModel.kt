@@ -15,6 +15,8 @@ class PlatformSelectionViewModel(private val platformRepository: PlatformReposit
 
     val isLoading = mutableStateOf(true)
 
+    val ownedPlatformCount = mutableStateOf(0)
+
     init {
         viewModelScope.launch {
             platformRepository.getCachedPlatforms().collect {
@@ -24,20 +26,18 @@ class PlatformSelectionViewModel(private val platformRepository: PlatformReposit
                 } else {
                     platforms.value = it
                     isLoading.value = false
+                    ownedPlatformCount.value = it.filter { platform -> platform.isOwned == true }.size
                 }
             }
         }
     }
 
-    fun getOwnedPlatformCount(): Int {
-        var totalOwned = 0
-        platforms.value.forEach {
-            if (it.isOwned == true) totalOwned++
-        }
-        return totalOwned
-    }
-
     fun updateOwnedPlatform(slug: String, isOwned: Boolean) {
         platformRepository.setPlatformAsOwned(slug, isOwned)
+        if (isOwned) {
+            ownedPlatformCount.value++
+        } else {
+            ownedPlatformCount.value--
+        }
     }
 }
