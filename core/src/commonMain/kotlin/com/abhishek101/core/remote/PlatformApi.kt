@@ -26,7 +26,7 @@ class PlatformApiImpl(
                 takeFrom("https://api.igdb.com/v4/platforms")
             }
             body =
-                "f name,slug,platform_logo.*, generation; where generation >=3 & category = 1; sort generation desc; l 17;"
+                "f name,slug,platform_logo.*, generation; where category = (1,3,4,5,6); sort generation desc; l 100;"
         }
     }
 }

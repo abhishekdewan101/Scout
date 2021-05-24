@@ -27,8 +27,9 @@ fun SelectableGenreGrid(data: List<Genre>, columns: Int, onSelected: (String, Bo
                 ) {
                     for (item in row) {
                         CircularSelectableImage(
-                            imageId = genreImageMap[item.slug]!!,
+                            imageUri = genreImageMap[item.slug]!!,
                             label = item.name,
+                            width = 175.dp,
                             isSelected = item.isFavorite!!,
                             selectedBorderColor = Color(240, 115, 101)
                         ) {

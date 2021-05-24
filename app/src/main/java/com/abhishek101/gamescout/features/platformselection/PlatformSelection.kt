@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,7 @@ import com.abhishek101.gamescout.design.CircularSelectableImage
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
+import com.abhishek101.gamescout.theme.White
 import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -46,8 +48,9 @@ fun PlatformSelection(
 
     val isLoading = viewModel.isLoading.value
     val platformList = viewModel.platforms.value
+    val ownedCount = viewModel.getOwnedPlatformCount()
 
-    val backgroundColor = MaterialTheme.colors.background
+    val backgroundColor = MaterialTheme.colors.primaryVariant.copy(alpha = 0.5f)
     val useDarkIcon = MaterialTheme.colors.isLight
 
     SideEffect {
@@ -57,9 +60,10 @@ fun PlatformSelection(
     PlatformSelectionList(
         isLoading = isLoading,
         platformList = platformList,
+        ownedCount = ownedCount,
+        backgroundColor = backgroundColor,
         onPlatformSelected = viewModel::updateOwnedPlatform,
         onPlatformSelectionComplete = onPlatformSelectionComplete,
-        ownedCount = viewModel.getOwnedPlatformCount()
     )
 }
 
@@ -67,42 +71,44 @@ fun PlatformSelection(
 fun PlatformSelectionList(
     isLoading: Boolean,
     platformList: List<Platform>,
+    ownedCount: Int,
+    backgroundColor: Color,
     onPlatformSelected: (String, Boolean) -> Unit,
     onPlatformSelectionComplete: () -> Unit,
-    ownedCount: Int
 ) {
-    SafeArea(padding = 15.dp) {
-        Box {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                item {
-                    if (isLoading) {
-                        LoadingIndicator()
-                    }
-                }
-                item {
-                    if (!isLoading) {
+    SafeArea(padding = 15.dp, backgroundColor = backgroundColor) {
+
+        if (isLoading) {
+            LoadingIndicator(color = White)
+        } else {
+            Box {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    item {
                         PlatformSelectionHeader()
                     }
-                }
-                val chunked = platformList.chunked(2)
-                items(chunked.size) { index ->
-                    Padding(top = 15.dp) {
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            for (item in chunked[index]) {
-                                CircularSelectableImage(
-                                    imageId = buildImageString(item.imageId),
-                                    label = item.name,
-                                    isSelected = item.isOwned!!,
-                                    selectedBorderColor = MaterialTheme.colors.onBackground
-                                ) {
-                                    onPlatformSelected(item.slug, item.isOwned!!.not())
+                    val chunked = platformList.chunked(2)
+                    items(chunked.size) { index ->
+                        Padding(top = 15.dp) {
+                            BoxWithConstraints {
+                                val itemWidth = maxWidth / 2 - 10.dp
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    for (item in chunked[index]) {
+                                        CircularSelectableImage(
+                                            imageUri = buildImageString(item.imageId),
+                                            width = itemWidth,
+                                            isSelected = item.isOwned!!,
+                                            selectedBorderColor = White
+                                        ) {
+                                            onPlatformSelected(item.slug, item.isOwned!!.not())
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                RenderDoneButton(ownedCount, onPlatformSelectionComplete)
             }
-            RenderDoneButton(ownedCount, onPlatformSelectionComplete)
         }
     }
 }
@@ -150,17 +156,17 @@ private fun RenderDoneButton(
 
 @Composable
 private fun PlatformSelectionHeader() {
-    Column(horizontalAlignment = Alignment.Start) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         Text(
-            "Platforms",
+            "PLATFORMS",
             style = MaterialTheme.typography.h4,
-            color = MaterialTheme.colors.onBackground,
+            color = White,
             fontWeight = FontWeight.Bold
         )
         Text(
             "Select the platforms you own",
             style = MaterialTheme.typography.subtitle1,
-            color = MaterialTheme.colors.onBackground
+            color = White
         )
     }
 }
