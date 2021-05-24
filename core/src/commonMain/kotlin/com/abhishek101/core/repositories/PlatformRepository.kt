@@ -29,15 +29,16 @@ class PlatformRepositoryImpl(
     }
 
     override suspend fun updateCachedPlatforms() {
-        platformApi.getPlatforms(dbHelper.accessToken).forEach {
-            platformQueries.savePlatform(
-                it.id,
-                it.slug,
-                it.name,
-                it.generation,
-                it.logo.imageId
-            )
-        }
+        platformApi.getPlatforms(dbHelper.accessToken)
+            .filter { it.logo != null }.forEach {
+                platformQueries.savePlatform(
+                    it.id,
+                    it.slug,
+                    it.name,
+                    it.generation,
+                    it.logo!!.imageId
+                )
+            }
     }
 
     override fun setPlatformAsOwned(slug: String, isOwned: Boolean) {

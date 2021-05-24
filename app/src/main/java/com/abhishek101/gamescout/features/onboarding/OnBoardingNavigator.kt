@@ -61,15 +61,20 @@ fun OnBoardingNavigator(viewModel: OnBoardingNavigatorViewModel = getViewModel()
                 },
                 onAuthenticationValidated = {
                     onBoardingNavigator.popBackStack()
-                    onBoardingNavigator.navigate(splashScreenDestination.toString())
+                    onBoardingNavigator.navigate(splashScreenDestination)
                 }
             )
         }
 
         composable(PlatformSelectionScreen.name) {
-            CompositionLocalProvider(LocalOnBoardingNavigator provides onBoardingNavigator) {
-                PlatformSelection()
-            }
+            PlatformSelection(
+                setStatusBarColor = { color: Color, useDarkIcons: Boolean ->
+                    systemUiController.setStatusBarColor(color, useDarkIcons)
+                },
+                onPlatformSelectionComplete = {
+                    onBoardingNavigator.navigate(GenreSelectionScreen.name)
+                }
+            )
         }
 
         composable(GenreSelectionScreen.name) {

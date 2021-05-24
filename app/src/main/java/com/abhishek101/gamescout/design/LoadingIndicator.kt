@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun LoadingIndicator(
     color: Color = MaterialTheme.colors.primary,
-    backgroundColor: Color = MaterialTheme.colors.background
+    backgroundColor: Color = Color.Transparent
 ) {
     Column(
         modifier = Modifier

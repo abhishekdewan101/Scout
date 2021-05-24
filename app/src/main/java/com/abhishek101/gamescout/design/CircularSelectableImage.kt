@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -24,13 +26,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.abhishek101.gamescout.R
 import com.google.accompanist.coil.CoilImage
 
 @Composable
 fun CircularSelectableImage(
-    imageId: Any,
+    imageUri: Any,
+    width: Dp,
     label: String? = null,
     isSelected: Boolean = false,
     selectedBorderColor: Color,
@@ -43,11 +47,12 @@ fun CircularSelectableImage(
 
     Box(
         modifier = Modifier
-            .size(175.dp)
+            .width(width)
+            .height(width)
             .border(borderStroke, RoundedCornerShape(50))
-            .clickable { onSelected() }
             .padding(10.dp)
             .clip(RoundedCornerShape(50))
+            .clickable { onSelected() }
             .background(Color.White)
     ) {
         Column(
@@ -56,10 +61,11 @@ fun CircularSelectableImage(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            val imageSize = width.times(0.6f)
             CoilImage(
-                data = imageId,
+                data = imageUri,
                 contentDescription = "",
-                modifier = Modifier.size(50.dp, 50.dp),
+                modifier = Modifier.size(imageSize),
                 fadeIn = true,
                 loading = {
                     Icon(
@@ -94,6 +100,7 @@ fun CircularSelectableImage(
 fun PreviewCircularSelectableImage() {
     CircularSelectableImage(
         R.drawable.hack_slash,
+        width = 100.dp,
         "Hack and Slash/Adventure",
         true,
         Color(240, 115, 101)
