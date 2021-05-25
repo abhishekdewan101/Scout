@@ -82,7 +82,11 @@ fun OnBoardingNavigator(viewModel: OnBoardingNavigatorViewModel = getViewModel()
                 LocalOnBoardingNavigator provides onBoardingNavigator,
                 LocalUpdateOnBoardingCompleted provides viewModel::updateOnBoardingComplete
             ) {
-                GenreSelection()
+                GenreSelection(
+                    setStatusBarColor = { color: Color, useDarkIcons: Boolean ->
+                        systemUiController.setStatusBarColor(color, useDarkIcons)
+                    }
+                )
             }
         }
 
