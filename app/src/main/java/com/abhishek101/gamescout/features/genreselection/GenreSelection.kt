@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.db.Genre
@@ -46,7 +47,7 @@ fun GenreSelection(
     val genreList = viewModel.genres.value
     val favoriteCount = viewModel.favoriteGenreCount.value
 
-    val backgroundColor = if (MaterialTheme.colors.isLight) MaterialTheme.colors.primary.copy(alpha = 0.5f) else MaterialTheme.colors.primary
+    val backgroundColor = if (MaterialTheme.colors.isLight) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.primary
     val useDarkIcon = MaterialTheme.colors.isLight
 
     SideEffect {
@@ -104,13 +105,21 @@ private fun RenderListContent(
                             val itemWidth = maxWidth / 2 - 10.dp
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                 for (item in chunked[index]) {
-                                    CircularSelectableImage(
-                                        imageUri = genreImageMap[item.slug]!!,
-                                        width = itemWidth,
-                                        isSelected = item.isFavorite!!,
-                                        selectedBorderColor = White
-                                    ) {
-                                        onGenreSelected(item.slug, item.isFavorite!!.not())
+                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        CircularSelectableImage(
+                                            imageUri = genreImageMap[item.slug]!!,
+                                            width = itemWidth,
+                                            isSelected = item.isFavorite!!,
+                                            selectedBorderColor = White
+                                        ) {
+                                            onGenreSelected(item.slug, item.isFavorite!!.not())
+                                        }
+                                        Text(
+                                            text = item.name,
+                                            style = MaterialTheme.typography.body1.copy(color = White, fontWeight = FontWeight.Bold),
+                                            textAlign = TextAlign.Center
+                                        )
+
                                     }
                                 }
                             }
