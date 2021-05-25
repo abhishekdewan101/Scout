@@ -78,16 +78,15 @@ fun OnBoardingNavigator(viewModel: OnBoardingNavigatorViewModel = getViewModel()
         }
 
         composable(GenreSelectionScreen.name) {
-            CompositionLocalProvider(
-                LocalOnBoardingNavigator provides onBoardingNavigator,
-                LocalUpdateOnBoardingCompleted provides viewModel::updateOnBoardingComplete
-            ) {
-                GenreSelection(
-                    setStatusBarColor = { color: Color, useDarkIcons: Boolean ->
-                        systemUiController.setStatusBarColor(color, useDarkIcons)
-                    }
-                )
-            }
+            GenreSelection(
+                setStatusBarColor = { color: Color, useDarkIcons: Boolean ->
+                    systemUiController.setStatusBarColor(color, useDarkIcons)
+                },
+                onGenreSelectionComplete = {
+                    viewModel.updateOnBoardingComplete()
+                    onBoardingNavigator.navigate(MainAppScreen.name)
+                }
+            )
         }
 
         composable(MainAppScreen.name) {

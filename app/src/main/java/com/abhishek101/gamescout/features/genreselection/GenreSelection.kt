@@ -27,17 +27,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.abhishek101.core.db.Genre
 import com.abhishek101.gamescout.design.CircularSelectableImage
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
-import com.abhishek101.gamescout.features.onboarding.LocalOnBoardingNavigator
-import com.abhishek101.gamescout.features.onboarding.LocalUpdateOnBoardingCompleted
-import com.abhishek101.gamescout.features.onboarding.OnBoardingDestinations
-import com.abhishek101.gamescout.features.onboarding.UpdateOnBoardingComplete
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import com.abhishek101.gamescout.theme.White
 import org.koin.androidx.compose.get
@@ -45,12 +39,12 @@ import org.koin.androidx.compose.get
 @Composable
 fun GenreSelection(
     viewModel: GenreSelectionViewModel = get(),
-    setStatusBarColor: (Color, Boolean) -> Unit
+    setStatusBarColor: (Color, Boolean) -> Unit,
+    onGenreSelectionComplete: () -> Unit
 ) {
     val isLoading = viewModel.isLoading.value
     val genreList = viewModel.genres.value
-    val navController = LocalOnBoardingNavigator.current
-    val onBoardingCompleted = LocalUpdateOnBoardingCompleted.current
+    val favoriteCount = viewModel.favoriteGenreCount.value
 
     val backgroundColor = if (MaterialTheme.colors.isLight) MaterialTheme.colors.primary.copy(alpha = 0.5f) else MaterialTheme.colors.primary
     val useDarkIcon = MaterialTheme.colors.isLight
@@ -64,9 +58,8 @@ fun GenreSelection(
         genreList = genreList,
         backgroundColor = backgroundColor,
         onGenreSelected = viewModel::updateGenreAsFavorite,
-        navController = navController,
-        onBoardingCompleted = onBoardingCompleted,
-        favoriteCount = viewModel.getFavoriteGenreCount()
+        onGenreSelectionComplete = onGenreSelectionComplete,
+        favoriteCount = favoriteCount
     )
 }
 
@@ -76,14 +69,13 @@ fun GenreSelectionList(
     genreList: List<Genre>,
     backgroundColor: Color,
     onGenreSelected: (String, Boolean) -> Unit,
-    navController: NavController,
-    onBoardingCompleted: UpdateOnBoardingComplete,
+    onGenreSelectionComplete: () -> Unit,
     favoriteCount: Int
 ) {
     if (isLoading) {
-        LoadingIndicator(color = White)
+        LoadingIndicator(color = White, backgroundColor = backgroundColor)
     } else {
-        RenderListContent(backgroundColor, genreList, onGenreSelected, favoriteCount, onBoardingCompleted, navController)
+        RenderListContent(backgroundColor, genreList, onGenreSelected, favoriteCount, onGenreSelectionComplete)
     }
 }
 
@@ -93,8 +85,7 @@ private fun RenderListContent(
     genreList: List<Genre>,
     onGenreSelected: (String, Boolean) -> Unit,
     favoriteCount: Int,
-    onBoardingCompleted: UpdateOnBoardingComplete,
-    navController: NavController
+    onGenreSelectionComplete: () -> Unit
 ) {
     Box {
         SafeArea(padding = 15.dp, backgroundColor = backgroundColor) {
@@ -128,7 +119,7 @@ private fun RenderListContent(
                 }
             }
         }
-        RenderDoneButton(favoriteCount, onBoardingCompleted, navController)
+        RenderDoneButton(favoriteCount, onGenreSelectionComplete)
     }
 }
 
@@ -136,8 +127,7 @@ private fun RenderListContent(
 @Composable
 private fun RenderDoneButton(
     favoriteCount: Int,
-    onBoardingCompleted: UpdateOnBoardingComplete,
-    navController: NavController
+    onGenreSelectionComplete: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -150,8 +140,7 @@ private fun RenderDoneButton(
                     .fillMaxWidth()
                     .height(55.dp)
                     .clickable {
-                        onBoardingCompleted()
-                        navController.navigate(OnBoardingDestinations.MainAppScreen.name)
+                        onGenreSelectionComplete()
                     }
             ) {
                 Row(
@@ -197,8 +186,7 @@ fun GenreSelectionWithData() {
             genreList = genreTestData,
             backgroundColor = MaterialTheme.colors.primary,
             onGenreSelected = { _, _ -> },
-            navController = LocalOnBoardingNavigator.current,
-            onBoardingCompleted = LocalUpdateOnBoardingCompleted.current,
+            onGenreSelectionComplete = {},
             favoriteCount = 1
         )
     }
