@@ -50,7 +50,7 @@ fun PlatformSelection(
     val platformList = viewModel.platforms.value
     val ownedCount = viewModel.ownedPlatformCount.value
 
-    val backgroundColor = if (MaterialTheme.colors.isLight) MaterialTheme.colors.primary.copy(alpha = 0.5f) else MaterialTheme.colors.primary
+    val backgroundColor = if (MaterialTheme.colors.isLight) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.primary
     val useDarkIcon = MaterialTheme.colors.isLight
 
     SideEffect {

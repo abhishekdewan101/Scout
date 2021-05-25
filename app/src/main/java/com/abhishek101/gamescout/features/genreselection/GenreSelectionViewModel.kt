@@ -38,6 +38,7 @@ val genreImageMap = mapOf(
 class GenreSelectionViewModel(private val genreRepository: GenreRepository) : ViewModel() {
     val genres = mutableStateOf(listOf<Genre>())
     val isLoading = mutableStateOf(true)
+    val favoriteGenreCount = mutableStateOf(0)
 
     init {
         viewModelScope.launch {
@@ -48,6 +49,7 @@ class GenreSelectionViewModel(private val genreRepository: GenreRepository) : Vi
                 } else {
                     genres.value = it
                     isLoading.value = false
+                    favoriteGenreCount.value = it.filter { genre -> genre.isFavorite == true }.size
                 }
             }
         }
@@ -55,13 +57,10 @@ class GenreSelectionViewModel(private val genreRepository: GenreRepository) : Vi
 
     fun updateGenreAsFavorite(slug: String, isFavorite: Boolean) {
         genreRepository.setGenreAsFavorite(slug = slug, isFavorite = isFavorite)
-    }
-
-    fun getFavoriteGenreCount(): Int {
-        var favoriteGenreCount = 0
-        genres.value.forEach {
-            if (it.isFavorite == true) favoriteGenreCount++
+        if (isFavorite) {
+            favoriteGenreCount.value++
+        } else {
+            favoriteGenreCount.value--
         }
-        return favoriteGenreCount
     }
 }
