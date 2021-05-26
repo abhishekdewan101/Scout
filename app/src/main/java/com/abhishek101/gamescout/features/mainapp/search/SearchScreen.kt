@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.navigate
 import com.abhishek101.core.models.GameListData
 import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.models.ListData
@@ -25,13 +24,12 @@ import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.SearchTextInput
-import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 
 @Composable
-fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get()) {
+fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get(), navigate: (String) -> Unit) {
 
     SafeArea(padding = 15.dp, bottomOverride = 56.dp) {
         Column {
@@ -61,7 +59,10 @@ fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get()) {
                 !searchScreenViewModel.isSearching.value
             ) {
                 Padding(top = 15.dp) {
-                    RenderSearchResults(searchResults = searchScreenViewModel.searchResults.value)
+                    RenderSearchResults(
+                        searchResults = searchScreenViewModel.searchResults.value,
+                        navigate
+                    )
                 }
             }
         }
@@ -69,12 +70,12 @@ fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get()) {
 }
 
 @Composable
-private fun RenderSearchResults(searchResults: ListData) {
+private fun RenderSearchResults(searchResults: ListData, navigate: (String) -> Unit) {
     val results = (searchResults as GameListData).games
     if (results.isEmpty()) {
         RenderNoResults()
     } else {
-        RenderSearchGrid(results)
+        RenderSearchGrid(results, navigate)
     }
 }
 
@@ -102,10 +103,9 @@ fun RenderNoResults() {
 }
 
 @Composable
-private fun RenderSearchGrid(results: List<IgdbGame>) {
+private fun RenderSearchGrid(results: List<IgdbGame>, navigate: (String) -> Unit) {
     val games = results.filter { it.cover != null }
     val covers = games.map { it.cover!!.qualifiedUrl }.toList()
-    val mainNavigator = LocalMainNavigator.current
     LazyColumn {
         item {
             GridImageList(
@@ -114,7 +114,7 @@ private fun RenderSearchGrid(results: List<IgdbGame>) {
                 imageWidth = 125.dp,
                 imageHeight = 175.dp
             ) {
-                mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
+                navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
             }
         }
     }

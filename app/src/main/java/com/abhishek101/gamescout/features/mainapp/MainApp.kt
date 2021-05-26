@@ -43,17 +43,8 @@ fun MainApp(navigate: (String) -> Unit) {
     ) {
         NavHost(navController = it, startDestination = MainAppBottomItems.HOME.name) {
             composable(MainAppBottomItems.HOME.name) { HomeScreen(navigate = navigate) }
-            composable(MainAppBottomItems.LISTS.name) { LibraryScreen() }
-            composable(MainAppBottomItems.SEARCH.name) { SearchScreen() }
+            composable(MainAppBottomItems.LISTS.name) { LibraryScreen(navigate = navigate) }
+            composable(MainAppBottomItems.SEARCH.name) { SearchScreen(navigate = navigate) }
         }
-    }
-}
-
-@Composable
-fun CreateMainPagerContent(index: Int) {
-    when (index) {
-        0 -> HomeScreen { _ -> }
-        1 -> SearchScreen()
-        2 -> LibraryScreen()
     }
 }

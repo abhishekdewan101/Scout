@@ -10,18 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.navigate
 import com.abhishek101.core.models.LibraryGameStatus
 import com.abhishek101.gamescout.design.GridImageList
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
-import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 
 @Composable
-fun LibraryScreen(viewModel: LibraryViewModel = get()) {
-    val mainNavigator = LocalMainNavigator.current
+fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Unit) {
 
     SafeArea(padding = 15.dp, bottomOverride = 56.dp) {
         LazyColumn(
@@ -58,7 +55,7 @@ fun LibraryScreen(viewModel: LibraryViewModel = get()) {
                                 imageWidth = 125.dp,
                                 imageHeight = 175.dp
                             ) {
-                                mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${wishList[it].slug}")
+                                navigate("${MainAppDestinations.GameDetail.name}/${wishList[it].slug}")
                             }
                         }
                     }
@@ -77,7 +74,7 @@ fun LibraryScreen(viewModel: LibraryViewModel = get()) {
                                 imageWidth = 125.dp,
                                 imageHeight = 175.dp
                             ) {
-                                mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${libraryGames[it].slug}")
+                                navigate("${MainAppDestinations.GameDetail.name}/${libraryGames[it].slug}")
                             }
                         }
                     }
