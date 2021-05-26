@@ -14,6 +14,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.core.repositories.ListType
 import com.abhishek101.gamescout.features.mainapp.MainApp
@@ -65,17 +66,21 @@ fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
                 navArgument("gameSlug") { type = NavType.StringType }
             )
         ) {
-            CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
-                val gameSlug = it.arguments?.getString("gameSlug")
-                if (gameSlug != null) {
-                    GameDetailScreen(gameSlug = gameSlug)
-                } else {
-                    Toast.makeText(
-                        LocalContext.current,
-                        "Something went wrong",
-                        Toast.LENGTH_SHORT
-                    ).show()
+            val gameSlug = it.arguments?.getString("gameSlug")
+            if (gameSlug != null) {
+                GameDetailScreen(gameSlug = gameSlug) { destination ->
+                    if (destination.isEmpty()) {
+                        mainNavController.popBackStack()
+                    } else {
+                        mainNavController.navigate(destination)
+                    }
                 }
+            } else {
+                Toast.makeText(
+                    LocalContext.current,
+                    "Something went wrong",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

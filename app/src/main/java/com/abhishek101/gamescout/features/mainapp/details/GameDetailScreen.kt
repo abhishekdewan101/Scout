@@ -25,8 +25,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,7 +33,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.navigate
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.gamescout.components.SelectableChoice
 import com.abhishek101.gamescout.design.CollapsableText
@@ -44,27 +41,25 @@ import com.abhishek101.gamescout.design.HorizontalVideoList
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
-import com.abhishek101.gamescout.features.mainapp.navigator.LocalMainNavigator
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 import kotlin.math.roundToInt
 
-val LocalGameDetailViewModel = compositionLocalOf<GameDetailViewModel> {
-    error("No GameDetailViewModel provided")
-}
-
 @Composable
-fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
+fun GameDetailScreen(
+    viewModel: GameDetailViewModel = get(),
+    gameSlug: String,
+    navigate: (String) -> Unit
+) {
     val gameDetails = viewModel.gameDetails.value
 
-    val mainNavigator = LocalMainNavigator.current
+    val context = LocalContext.current
 
     BackHandler(true) {
         viewModel.gameDetails.value = null
-        viewModel.onDestroy()
-        mainNavigator.popBackStack()
+        navigate("")
     }
 
     if (gameDetails == null) {
@@ -72,51 +67,81 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = get(), gameSlug: String) {
     }
 
     if (gameDetails != null) {
-        CompositionLocalProvider(LocalGameDetailViewModel provides viewModel) {
-            RenderGameDetails(gameDetails)
-        }
+        RenderGameDetails(
+            gameDetails,
+            viewModel::isPlatformOwned,
+            viewModel::updatePlatformAsOwned,
+            { destination ->
+                viewModel.onDestroy()
+                navigate(destination)
+            },
+            { videoUrl -> context.startActivity(buildYoutubeIntent(videoUrl)) }
+        )
     } else {
         LoadingIndicator(Color(203, 112, 209), backgroundColor = Color.Black)
     }
 }
 
 @Composable
-fun RenderGameDetails(gameDetails: IgdbGameDetail) {
+fun RenderGameDetails(
+    gameDetails: IgdbGameDetail,
+    isPlatformOwned: (String) -> Boolean,
+    updatePlatformAsOwned: (String, String) -> Unit,
+    navigate: (String) -> Unit,
+    launchVideoDeeplink: (String) -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
         item { RenderHeaderImage(gameDetails) }
-        item { RenderMainContent(gameDetails) }
+        item {
+            RenderMainContent(
+                gameDetails,
+                isPlatformOwned,
+                updatePlatformAsOwned,
+                navigate,
+                launchVideoDeeplink
+            )
+        }
     }
 }
 
 @Composable
-fun RenderMainContent(gameDetails: IgdbGameDetail) {
+fun RenderMainContent(
+    gameDetails: IgdbGameDetail,
+    isPlatformOwned: (String) -> Boolean,
+    updatePlatformAsOwned: (String, String) -> Unit,
+    navigate: (String) -> Unit,
+    launchVideoDeeplink: (String) -> Unit
+) {
     SafeArea(padding = 15.dp, topOverride = 10.dp) {
         Column {
             Row {
                 RenderCoverImage(gameDetails)
                 RenderGameInformation(gameDetails)
             }
-            RenderPlatforms(gameDetails)
+            RenderPlatforms(gameDetails, isPlatformOwned, updatePlatformAsOwned)
             RenderGameSummary(gameDetails)
             RenderGameStoryline(gameDetails)
             RenderScreenShots(gameDetails)
             RenderArtwork(gameDetails)
-            RenderVideos(gameDetails)
-            RenderSimilarGames(gameDetails)
-            RenderDlcs(gameDetails)
+            RenderVideos(gameDetails, launchVideoDeeplink)
+            RenderSimilarGames(gameDetails, navigate)
+            RenderDlcs(gameDetails, navigate)
             Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
 
 @Composable
-private fun RenderPlatforms(gameDetails: IgdbGameDetail) {
+private fun RenderPlatforms(
+    gameDetails: IgdbGameDetail,
+    isPlatformOwned: (String) -> Boolean,
+    updatePlatformAsOwned: (String, String) -> Unit
+) {
     gameDetails.platform?.let { platforms ->
-        val viewModel = LocalGameDetailViewModel.current
         SafeArea(padding = 0.dp, topOverride = 10.dp) {
             TitleContainer(
                 title = "Platforms",
@@ -130,12 +155,12 @@ private fun RenderPlatforms(gameDetails: IgdbGameDetail) {
                 ) {
                     platforms.forEach {
                         SelectableChoice(
-                            isSelected = viewModel.isPlatformOwned(platform = it.slug),
+                            isSelected = isPlatformOwned(it.slug),
                             text = it.name,
                             selectionColor = Color(203, 112, 209),
                             backgroundColor = Color.Black
                         ) {
-                            viewModel.updatePlatformAsOwned(gameDetails.slug, it.slug)
+                            updatePlatformAsOwned(gameDetails.slug, it.slug)
                         }
                     }
                 }
@@ -145,13 +170,11 @@ private fun RenderPlatforms(gameDetails: IgdbGameDetail) {
 }
 
 @Composable
-private fun RenderDlcs(gameDetails: IgdbGameDetail) {
+private fun RenderDlcs(gameDetails: IgdbGameDetail, navigate: (String) -> Unit) {
     gameDetails.dlc?.let { similarGames ->
         val dlcsWithCovers =
             similarGames.filter { it.cover != null }
         val imageIdList = dlcsWithCovers.map { it.cover!!.qualifiedUrl }.toList()
-        val mainNavigator = LocalMainNavigator.current
-        val viewModel = LocalGameDetailViewModel.current
         SafeArea(padding = 0.dp, topOverride = 10.dp) {
             TitleContainer(
                 title = "Downloadable Content",
@@ -159,8 +182,7 @@ private fun RenderDlcs(gameDetails: IgdbGameDetail) {
                 hasViewMore = false
             ) {
                 HorizontalImageList(data = imageIdList, itemWidth = 150.dp, itemHeight = 200.dp) {
-                    viewModel.gameDetails.value = null
-                    mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${dlcsWithCovers[it].slug}")
+                    navigate("${MainAppDestinations.GameDetail.name}/${dlcsWithCovers[it].slug}")
                 }
             }
         }
@@ -168,13 +190,11 @@ private fun RenderDlcs(gameDetails: IgdbGameDetail) {
 }
 
 @Composable
-private fun RenderSimilarGames(gameDetails: IgdbGameDetail) {
+private fun RenderSimilarGames(gameDetails: IgdbGameDetail, navigate: (String) -> Unit) {
     gameDetails.similarGames?.let { similarGames ->
         val similarGamesWithCovers =
             similarGames.filter { it.cover != null }
         val imageIdList = similarGamesWithCovers.map { it.cover!!.qualifiedUrl }.toList()
-        val mainNavigator = LocalMainNavigator.current
-        val viewModel = LocalGameDetailViewModel.current
         SafeArea(padding = 0.dp, topOverride = 10.dp) {
             TitleContainer(
                 title = "Similar Games",
@@ -182,8 +202,7 @@ private fun RenderSimilarGames(gameDetails: IgdbGameDetail) {
                 hasViewMore = false
             ) {
                 HorizontalImageList(data = imageIdList, itemWidth = 150.dp, itemHeight = 200.dp) {
-                    viewModel.gameDetails.value = null
-                    mainNavigator.navigate("${MainAppDestinations.GameDetail.name}/${similarGamesWithCovers[it].slug}")
+                    navigate("${MainAppDestinations.GameDetail.name}/${similarGamesWithCovers[it].slug}")
                 }
             }
         }
@@ -191,11 +210,10 @@ private fun RenderSimilarGames(gameDetails: IgdbGameDetail) {
 }
 
 @Composable
-fun RenderVideos(gameDetails: IgdbGameDetail) {
+fun RenderVideos(gameDetails: IgdbGameDetail, launchVideoDeeplink: (String) -> Unit) {
     gameDetails.videos?.let { list ->
         val imageIdList = list.map { video -> video.screenShotUrl }.toList()
         val titles = list.map { video -> video.name }.toList()
-        val context = LocalContext.current
         SafeArea(padding = 0.dp, topOverride = 10.dp) {
             TitleContainer(
                 title = "Videos",
@@ -209,7 +227,7 @@ fun RenderVideos(gameDetails: IgdbGameDetail) {
                         itemWidth = maxWidth,
                         itemHeight = 200.dp
                     ) {
-                        context.startActivity(buildYoutubeIntent(list[it].youtubeUrl))
+                        launchVideoDeeplink(list[it].youtubeUrl)
                     }
                 }
             }
