@@ -20,7 +20,7 @@ enum class MainAppBottomItems {
 }
 
 @Composable
-fun MainApp() {
+fun MainApp(navigate: (String) -> Unit) {
     val bottomTabs = mapOf(
         MainAppBottomItems.HOME to BottomNavigationTabData(
             Icons.Outlined.Home,
@@ -42,18 +42,9 @@ fun MainApp() {
         bottomTabs = bottomTabs
     ) {
         NavHost(navController = it, startDestination = MainAppBottomItems.HOME.name) {
-            composable(MainAppBottomItems.HOME.name) { HomeScreen() }
-            composable(MainAppBottomItems.LISTS.name) { LibraryScreen() }
-            composable(MainAppBottomItems.SEARCH.name) { SearchScreen() }
+            composable(MainAppBottomItems.HOME.name) { HomeScreen(navigate = navigate) }
+            composable(MainAppBottomItems.LISTS.name) { LibraryScreen(navigate = navigate) }
+            composable(MainAppBottomItems.SEARCH.name) { SearchScreen(navigate = navigate) }
         }
-    }
-}
-
-@Composable
-fun CreateMainPagerContent(index: Int) {
-    when (index) {
-        0 -> HomeScreen()
-        1 -> SearchScreen()
-        2 -> LibraryScreen()
     }
 }

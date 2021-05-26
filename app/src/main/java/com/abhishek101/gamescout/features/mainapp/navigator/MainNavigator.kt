@@ -14,6 +14,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.core.repositories.ListType
 import com.abhishek101.gamescout.features.mainapp.MainApp
@@ -45,17 +46,23 @@ fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
     ) {
         composable(MainAppDestinations.MainApp.name) {
             CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
-                MainApp()
+                MainApp {
+                    mainNavController.navigate(it)
+                }
             }
         }
 
         composable(
             "${MainAppDestinations.ViewMore.name}/{listType}",
             arguments = listOf(navArgument("listType") { type = NavType.StringType })
-        ) {
-            CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
-                val listType = it.arguments?.getString("listType")
-                ViewMoreScreen(listType = listType?.let { ListType.valueOf(it) })
+        ) { backStackEntry ->
+            val listType = backStackEntry.arguments?.getString("listType")
+            ViewMoreScreen(listType = listType?.let { ListType.valueOf(it) }) {
+                if (it.isEmpty()) {
+                    mainNavController.popBackStack()
+                } else {
+                    mainNavController.navigate(it)
+                }
             }
         }
 
@@ -65,17 +72,21 @@ fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
                 navArgument("gameSlug") { type = NavType.StringType }
             )
         ) {
-            CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
-                val gameSlug = it.arguments?.getString("gameSlug")
-                if (gameSlug != null) {
-                    GameDetailScreen(gameSlug = gameSlug)
-                } else {
-                    Toast.makeText(
-                        LocalContext.current,
-                        "Something went wrong",
-                        Toast.LENGTH_SHORT
-                    ).show()
+            val gameSlug = it.arguments?.getString("gameSlug")
+            if (gameSlug != null) {
+                GameDetailScreen(gameSlug = gameSlug) { destination ->
+                    if (destination.isEmpty()) {
+                        mainNavController.popBackStack()
+                    } else {
+                        mainNavController.navigate(destination)
+                    }
                 }
+            } else {
+                Toast.makeText(
+                    LocalContext.current,
+                    "Something went wrong",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
