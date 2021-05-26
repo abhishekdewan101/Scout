@@ -53,10 +53,14 @@ fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
         composable(
             "${MainAppDestinations.ViewMore.name}/{listType}",
             arguments = listOf(navArgument("listType") { type = NavType.StringType })
-        ) {
-            CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
-                val listType = it.arguments?.getString("listType")
-                ViewMoreScreen(listType = listType?.let { ListType.valueOf(it) })
+        ) { backStackEntry ->
+            val listType = backStackEntry.arguments?.getString("listType")
+            ViewMoreScreen(listType = listType?.let { ListType.valueOf(it) }) {
+                if (it.isEmpty()) {
+                    mainNavController.popBackStack()
+                } else {
+                    mainNavController.navigate(it)
+                }
             }
         }
 
