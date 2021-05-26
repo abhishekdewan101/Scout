@@ -2,9 +2,7 @@ package com.abhishek101.gamescout.features.platformselection
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,7 +48,8 @@ fun PlatformSelection(
     val platformList = viewModel.platforms.value
     val ownedCount = viewModel.ownedPlatformCount.value
 
-    val backgroundColor = if (MaterialTheme.colors.isLight) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.primary
+    val backgroundColor =
+        if (MaterialTheme.colors.isLight) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.primary
     val useDarkIcon = MaterialTheme.colors.isLight
 
     SideEffect {
@@ -77,9 +76,15 @@ fun PlatformListContent(
     onPlatformSelectionComplete: () -> Unit,
 ) {
     if (isLoading) {
-        LoadingIndicator(color = White)
+        LoadingIndicator(color = White, backgroundColor = backgroundColor)
     } else {
-        RenderPlatformList(backgroundColor, ownedCount, platformList, onPlatformSelected, onPlatformSelectionComplete)
+        RenderPlatformList(
+            backgroundColor,
+            ownedCount,
+            platformList,
+            onPlatformSelected,
+            onPlatformSelectionComplete
+        )
     }
 }
 
@@ -106,7 +111,10 @@ private fun RenderPlatformList(
                     Padding(top = 15.dp) {
                         BoxWithConstraints {
                             val itemWidth = maxWidth / 2 - 10.dp
-                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
                                 for (item in chunked[index]) {
                                     CircularSelectableImage(
                                         imageUri = buildImageString(item.imageId),
