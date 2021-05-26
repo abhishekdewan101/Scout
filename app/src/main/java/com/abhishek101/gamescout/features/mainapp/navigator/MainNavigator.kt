@@ -46,7 +46,9 @@ fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
     ) {
         composable(MainAppDestinations.MainApp.name) {
             CompositionLocalProvider(LocalMainNavigator provides mainNavController) {
-                MainApp()
+                MainApp {
+                    mainNavController.navigate(it)
+                }
             }
         }
 
