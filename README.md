@@ -1,3 +1,5 @@
+<img src="https://user-images.githubusercontent.com/2817833/119845185-e8471100-bebd-11eb-85f9-d5c7d3a7aa78.png" widht="400"/>
+
 # Scout 
 
 ![Build Status](https://github.com/abhishekdewan101/GameTracker/actions/workflows/android.yml/badge.svg)
