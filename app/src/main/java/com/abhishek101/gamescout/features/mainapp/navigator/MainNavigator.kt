@@ -11,20 +11,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
-import androidx.navigation.compose.navigate
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.*
 import com.abhishek101.core.repositories.ListType
 import com.abhishek101.gamescout.features.mainapp.MainApp
 import com.abhishek101.gamescout.features.mainapp.details.GameDetailScreen
+import com.abhishek101.gamescout.features.mainapp.search.SearchScreen
 import com.abhishek101.gamescout.features.mainapp.viewmore.ViewMoreScreen
 
 enum class MainAppDestinations {
     ViewMore,
     GameDetail,
-    MainApp
+    MainApp,
+    Search,
 }
 
 val LocalMainNavigator = compositionLocalOf<NavController> {
@@ -65,6 +63,25 @@ fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
                 }
             }
         }
+
+        composable(
+            "${MainAppDestinations.Search.name}/{searchTerm}",
+            arguments = listOf(navArgument("searchTerm") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val searchTerm = backStackEntry.arguments?.getString("searchTerm")
+            if (searchTerm != null) {
+                SearchScreen(searchTerm = searchTerm) {
+                    if (it.isEmpty()) {
+                        mainNavController.popBackStack()
+                    } else {
+                        mainNavController.navigate(it) 
+                    }
+                }
+            } else {
+                throw AssertionError("Search Cannot be Reached Without Search Term")
+            }
+        }
+
 
         composable(
             "${MainAppDestinations.GameDetail.name}/{gameSlug}",
