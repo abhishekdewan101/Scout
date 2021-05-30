@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class SearchScreenViewModel(private val gameRepository: GameRepository) : ViewModel() {
-    val searchResults = mutableStateOf<ListData>(GameListData("", emptyList()))
+    val searchResults = mutableStateOf<ListData?>(null)
     val isSearching = mutableStateOf(false)
-    val searchTerm = mutableStateOf("")
+    private val searchTerm = mutableStateOf("")
 
     fun searchForGames(searchString: String) {
         searchTerm.value = searchString

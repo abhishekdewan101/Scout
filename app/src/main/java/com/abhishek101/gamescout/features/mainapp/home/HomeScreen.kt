@@ -1,18 +1,16 @@
 package com.abhishek101.gamescout.features.mainapp.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.EmptyList
 import com.abhishek101.core.models.GameListData
@@ -20,12 +18,14 @@ import com.abhishek101.core.models.ListData
 import com.abhishek101.core.repositories.ListType
 import com.abhishek101.gamescout.components.GamePosterGrid
 import com.abhishek101.gamescout.components.GamePosterHorizontalList
+import com.abhishek101.gamescout.design.SearchAppBar
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel = get(), navigate: (String) -> Unit) {
 
@@ -37,14 +37,10 @@ fun HomeScreen(viewModel: HomeScreenViewModel = get(), navigate: (String) -> Uni
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                item {
-                    Text(
-                        "Home",
-                        style = MaterialTheme.typography.h4.copy(
-                            color = MaterialTheme.colors.onBackground,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
+                stickyHeader {
+                    SearchAppBar(title = "Home", placeholderText = "Search games") {
+                        navigate("${MainAppDestinations.Search}/$it")
+                    }
                 }
                 item {
                     Padding(top = 15.dp) {

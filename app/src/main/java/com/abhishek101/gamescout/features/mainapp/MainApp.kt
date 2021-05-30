@@ -2,7 +2,6 @@ package com.abhishek101.gamescout.features.mainapp
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -11,11 +10,9 @@ import com.abhishek101.gamescout.components.bottomnavigation.BottomNavigationPag
 import com.abhishek101.gamescout.components.bottomnavigation.BottomNavigationTabData
 import com.abhishek101.gamescout.features.mainapp.home.HomeScreen
 import com.abhishek101.gamescout.features.mainapp.library.LibraryScreen
-import com.abhishek101.gamescout.features.mainapp.search.SearchScreen
 
 enum class MainAppBottomItems {
     HOME,
-    SEARCH,
     LISTS
 }
 
@@ -26,11 +23,6 @@ fun MainApp(navigate: (String) -> Unit) {
             Icons.Outlined.Home,
             "Home",
             "Home"
-        ),
-        MainAppBottomItems.SEARCH to BottomNavigationTabData(
-            Icons.Outlined.Search,
-            "Search",
-            "Search"
         ),
         MainAppBottomItems.LISTS to BottomNavigationTabData(
             Icons.Outlined.SportsEsports,
@@ -44,7 +36,6 @@ fun MainApp(navigate: (String) -> Unit) {
         NavHost(navController = it, startDestination = MainAppBottomItems.HOME.name) {
             composable(MainAppBottomItems.HOME.name) { HomeScreen(navigate = navigate) }
             composable(MainAppBottomItems.LISTS.name) { LibraryScreen(navigate = navigate) }
-            composable(MainAppBottomItems.SEARCH.name) { SearchScreen(navigate = navigate) }
         }
     }
 }

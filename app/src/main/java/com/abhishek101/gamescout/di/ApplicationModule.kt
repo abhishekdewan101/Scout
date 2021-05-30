@@ -24,7 +24,7 @@ val appModule = module {
     single { HomeScreenViewModel(get(), get()) }
     single { ViewMoreViewModel(get()) }
     viewModel(override = true) { GameDetailViewModel(get(), get()) }
-    single { SearchScreenViewModel(get()) }
+    viewModel(override = true) { SearchScreenViewModel(get()) }
     single { LibraryViewModel(get()) }
 
     // SharedPreferences

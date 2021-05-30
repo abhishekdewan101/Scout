@@ -1,10 +1,8 @@
 package com.abhishek101.gamescout.features.mainapp.search
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -13,69 +11,52 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.GameListData
 import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.models.ListData
 import com.abhishek101.gamescout.R
-import com.abhishek101.gamescout.design.GridImageList
-import com.abhishek101.gamescout.design.LoadingIndicator
-import com.abhishek101.gamescout.design.Padding
-import com.abhishek101.gamescout.design.SafeArea
-import com.abhishek101.gamescout.design.SearchTextInput
+import com.abhishek101.gamescout.design.*
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 
 @Composable
-fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get(), navigate: (String) -> Unit) {
+fun SearchScreen(
+    searchScreenViewModel: SearchScreenViewModel = get(),
+    searchTerm: String,
+    navigate: (String) -> Unit
+) {
 
-    SafeArea(padding = 15.dp, bottomOverride = 56.dp) {
-        Column {
-            Text(
-                "Search",
-                style = MaterialTheme.typography.h4.copy(
-                    color = MaterialTheme.colors.onBackground,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            SearchTextInput(
-                color = Color(203, 112, 209),
-                prefillSearchTerm = searchScreenViewModel.searchTerm.value,
-                onTextFieldClearing = {
-                    searchScreenViewModel.searchTerm.value = ""
-                    searchScreenViewModel.searchResults.value = GameListData("", emptyList())
-                }
-            ) {
-                searchScreenViewModel.searchForGames(it)
-            }
-
+    if (searchScreenViewModel.searchResults.value != null) {
+        //Render search results
+        SafeArea(padding = 15.dp) {
             if (searchScreenViewModel.isSearching.value) {
-                LoadingIndicator(color = Color(203, 112, 209))
-            }
-
-            if (searchScreenViewModel.searchTerm.value.isNotBlank() &&
-                !searchScreenViewModel.isSearching.value
-            ) {
-                Padding(top = 15.dp) {
-                    RenderSearchResults(
-                        searchResults = searchScreenViewModel.searchResults.value,
-                        navigate
-                    )
-                }
+                LoadingIndicator()
+            } else {
+                RenderSearchResults(
+                    searchResults = searchScreenViewModel.searchResults.value as ListData,
+                    searchTerm = searchTerm,
+                    navigate = navigate
+                )
             }
         }
+    } else {
+        searchScreenViewModel.searchForGames(searchTerm)
     }
 }
 
 @Composable
-private fun RenderSearchResults(searchResults: ListData, navigate: (String) -> Unit) {
+private fun RenderSearchResults(
+    searchResults: ListData,
+    searchTerm: String,
+    navigate: (String) -> Unit
+) {
     val results = (searchResults as GameListData).games
     if (results.isEmpty()) {
         RenderNoResults()
     } else {
-        RenderSearchGrid(results, navigate)
+        RenderSearchGrid(results, searchTerm, navigate)
     }
 }
 
@@ -96,17 +77,39 @@ fun RenderNoResults() {
         )
         Text(
             "Oops.. Couldn't find any results",
-            color = Color.White,
+            color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.body1
         )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun RenderSearchGrid(results: List<IgdbGame>, navigate: (String) -> Unit) {
+private fun RenderSearchGrid(
+    results: List<IgdbGame>,
+    searchTerm: String,
+    navigate: (String) -> Unit,
+) {
     val games = results.filter { it.cover != null }
     val covers = games.map { it.cover!!.qualifiedUrl }.toList()
     LazyColumn {
+        stickyHeader {
+            Column(modifier = Modifier.background(MaterialTheme.colors.background)) {
+                Text(
+                    "Search", style = MaterialTheme.typography.h4.copy(
+                        color = MaterialTheme.colors.onBackground
+                    )
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                SearchTextInput(
+                    color = MaterialTheme.colors.onBackground,
+                    prefillSearchTerm = searchTerm,
+                    onTextFieldClearing = { }) {
+                    navigate("${MainAppDestinations.Search.name}/$it")
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+        }
         item {
             GridImageList(
                 data = covers,
