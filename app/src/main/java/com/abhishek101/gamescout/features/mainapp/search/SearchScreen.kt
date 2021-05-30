@@ -13,17 +13,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.GameListData
 import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.models.ListData
 import com.abhishek101.gamescout.R
+import com.abhishek101.gamescout.design.AnimatedSearchBar
 import com.abhishek101.gamescout.design.GridImageList
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
-import com.abhishek101.gamescout.design.SearchTextInput
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
@@ -33,23 +32,24 @@ fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get(), navigate:
 
     SafeArea(padding = 15.dp, bottomOverride = 56.dp) {
         Column {
-            Text(
-                "Search",
-                style = MaterialTheme.typography.h4.copy(
-                    color = MaterialTheme.colors.onBackground,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            SearchTextInput(
-                color = Color(203, 112, 209),
-                prefillSearchTerm = searchScreenViewModel.searchTerm.value,
-                onTextFieldClearing = {
-                    searchScreenViewModel.searchTerm.value = ""
-                    searchScreenViewModel.searchResults.value = GameListData("", emptyList())
-                }
-            ) {
-                searchScreenViewModel.searchForGames(it)
-            }
+            AnimatedSearchBar(title = "Search")
+            // Text(
+            //     "Search",
+            //     style = MaterialTheme.typography.h4.copy(
+            //         color = MaterialTheme.colors.onBackground,
+            //         fontWeight = FontWeight.Bold
+            //     )
+            // )
+            // SearchTextInput(
+            //     color = Color(203, 112, 209),
+            //     prefillSearchTerm = searchScreenViewModel.searchTerm.value,
+            //     onTextFieldClearing = {
+            //         searchScreenViewModel.searchTerm.value = ""
+            //         searchScreenViewModel.searchResults.value = GameListData("", emptyList())
+            //     }
+            // ) {
+            //     searchScreenViewModel.searchForGames(it)
+            // }
 
             if (searchScreenViewModel.isSearching.value) {
                 LoadingIndicator(color = Color(203, 112, 209))
