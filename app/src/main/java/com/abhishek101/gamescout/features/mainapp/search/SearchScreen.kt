@@ -22,7 +22,11 @@ import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 
 @Composable
-fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get(), searchTerm: String, navigate: (String) -> Unit) {
+fun SearchScreen(
+    searchScreenViewModel: SearchScreenViewModel = get(),
+    searchTerm: String,
+    navigate: (String) -> Unit
+) {
 
     if (searchScreenViewModel.searchResults.value != null) {
         //Render search results
@@ -30,12 +34,11 @@ fun SearchScreen(searchScreenViewModel: SearchScreenViewModel = get(), searchTer
             if (searchScreenViewModel.isSearching.value) {
                 LoadingIndicator()
             } else {
-                Padding(top = 10.dp) {
-                    RenderSearchResults(
-                        searchResults = searchScreenViewModel.searchResults.value as ListData,
-                        searchTerm = searchTerm,
-                        navigate = navigate)
-                }
+                RenderSearchResults(
+                    searchResults = searchScreenViewModel.searchResults.value as ListData,
+                    searchTerm = searchTerm,
+                    navigate = navigate
+                )
             }
         }
     } else {
@@ -74,7 +77,7 @@ fun RenderNoResults() {
         )
         Text(
             "Oops.. Couldn't find any results",
-            color = Color.White,
+            color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.body1
         )
     }
@@ -98,7 +101,10 @@ private fun RenderSearchGrid(
                     )
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                SearchTextInput(color = MaterialTheme.colors.onBackground, prefillSearchTerm = searchTerm, onTextFieldClearing = { }) {
+                SearchTextInput(
+                    color = MaterialTheme.colors.onBackground,
+                    prefillSearchTerm = searchTerm,
+                    onTextFieldClearing = { }) {
                     navigate("${MainAppDestinations.Search.name}/$it")
                 }
                 Spacer(modifier = Modifier.height(10.dp))

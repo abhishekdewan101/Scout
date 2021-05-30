@@ -74,7 +74,7 @@ fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
                     if (it.isEmpty()) {
                         mainNavController.popBackStack()
                     } else {
-                        mainNavController.navigate(it) 
+                        mainNavController.navigate(it)
                     }
                 }
             } else {
