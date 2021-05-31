@@ -32,7 +32,7 @@ fun generatedVersionName(): String {
 }
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta02"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta03"
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
