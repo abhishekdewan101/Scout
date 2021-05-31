@@ -1,6 +1,6 @@
 package com.abhishek101.gamescout.features.mainapp.details
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -25,12 +25,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.models.IgdbGameDetail
@@ -39,97 +41,210 @@ import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.HorizontalVideoList
 import com.abhishek101.gamescout.design.LoadingIndicator
+import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
-import kotlin.math.roundToInt
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GameDetailScreen(
     viewModel: GameDetailViewModel = get(),
     gameSlug: String,
     navigate: (String) -> Unit
 ) {
-    val gameDetails = viewModel.gameDetails.value
+    val currentViewState = viewModel.viewState
 
     val context = LocalContext.current
 
-    BackHandler(true) {
-        viewModel.gameDetails.value = null
-        navigate("")
-    }
-
-    if (gameDetails == null) {
+    LaunchedEffect(key1 = gameSlug) {
         viewModel.getGameDetails(gameSlug)
     }
 
-    if (gameDetails != null) {
-        RenderGameDetails(
-            gameDetails,
-            viewModel::isPlatformOwned,
-            { s: String, s1: String -> },
-            { destination ->
-                navigate(destination)
-            },
-            { videoUrl -> context.startActivity(buildYoutubeIntent(videoUrl)) }
-        )
-    } else {
-        LoadingIndicator(Color(203, 112, 209), backgroundColor = Color.Black)
-    }
-}
-
-@Composable
-fun RenderGameDetails(
-    gameDetails: IgdbGameDetail,
-    isPlatformOwned: (String) -> Boolean,
-    updatePlatformAsOwned: (String, String) -> Unit,
-    navigate: (String) -> Unit,
-    launchVideoDeeplink: (String) -> Unit
-) {
-    LazyColumn(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(MaterialTheme.colors.background)
     ) {
-        item { RenderHeaderImage(gameDetails) }
-        item {
-            RenderMainContent(
-                gameDetails,
-                isPlatformOwned,
-                updatePlatformAsOwned,
-                navigate,
-                launchVideoDeeplink
-            )
+        if (currentViewState == null) {
+            LoadingIndicator()
+        } else {
+            SafeArea(padding = 10.dp) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            RenderCoverImage(image = currentViewState.cover)
+                            RenderGameInformation(
+                                name = currentViewState.name,
+                                developer = currentViewState.developer,
+                                rating = currentViewState.rating,
+                                releaseDate = currentViewState.releaseDate
+                            )
+                        }
+                    }
+                    item {
+                        RenderGameSummary(gameDetails = currentViewState.excerpt)
+                    }
+                    item {
+                        RenderVideos(videos = currentViewState.videos) {
+                            context.startActivity(buildYoutubeIntent(it))
+                        }
+                    }
+                    item {
+                        RenderRelatedGames(
+                            title = "Similar Games",
+                            games = currentViewState.similarGames
+                        ) {
+                            navigate(it)
+                        }
+                    }
+
+                    item {
+                        RenderRelatedGames(
+                            title = "Downloadable Content",
+                            games = currentViewState.dlcs
+                        ) {
+                            navigate(it)
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-fun RenderMainContent(
-    gameDetails: IgdbGameDetail,
-    isPlatformOwned: (String) -> Boolean,
-    updatePlatformAsOwned: (String, String) -> Unit,
-    navigate: (String) -> Unit,
+private fun RenderCoverImage(image: String) {
+    CoilImage(
+        data = image,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(175.dp, 225.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        error = {
+            Text("Error")
+        },
+        loading = {
+            CircularProgressIndicator()
+        }
+    )
+}
+
+@Composable
+private fun RenderGameInformation(
+    name: String,
+    developer: Map<String, String>?,
+    rating: Float?,
+    releaseDate: String
+) {
+    Column(
+        modifier = Modifier
+            .padding(start = 10.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Top
+    ) {
+        Text(
+            name,
+            color = MaterialTheme.colors.onBackground,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 3
+        )
+
+        developer?.let {
+            Text(
+                it.getValue(it.keys.first()),
+                color = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                fontSize = 16.sp,
+                modifier = Modifier.padding(top = 10.dp)
+            )
+        }
+
+        Text(
+            releaseDate,
+            color = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+            fontSize = 16.sp,
+            modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
+        )
+
+        rating?.let { RenderGameRating(it.toInt()) }
+
+    }
+}
+
+@Composable
+private fun RenderGameSummary(gameDetails: String?) {
+    gameDetails?.let {
+        Padding(top = 10.dp) {
+            TitleContainer(
+                title = "About",
+                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                CollapsableText(data = gameDetails, maxLines = 7, fontSize = 16)
+            }
+        }
+    }
+}
+
+@Composable
+private fun RenderVideos(
+    videos: List<Triple<String, String, String>>?,
     launchVideoDeeplink: (String) -> Unit
 ) {
-    SafeArea(padding = 15.dp, topOverride = 10.dp) {
-        Column {
-            Row {
-                RenderCoverImage(gameDetails)
-                RenderGameInformation(gameDetails)
+    videos?.let {
+        Padding(top = 10.dp) {
+            TitleContainer(
+                title = "Videos",
+                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                val titles = videos.map { it.first }.toList()
+                val screenshots = videos.map { it.second }.toList()
+                val youtubeUrls = videos.map { it.third }.toList()
+                BoxWithConstraints {
+                    HorizontalVideoList(
+                        screenshots = screenshots,
+                        titles = titles,
+                        itemWidth = maxWidth,
+                        itemHeight = 200.dp
+                    ) {
+                        launchVideoDeeplink(youtubeUrls[it])
+                    }
+                }
             }
-            RenderPlatforms(gameDetails, isPlatformOwned, updatePlatformAsOwned)
-            RenderGameSummary(gameDetails)
-            RenderGameStoryline(gameDetails)
-            RenderScreenShots(gameDetails)
-            RenderArtwork(gameDetails)
-            RenderVideos(gameDetails, launchVideoDeeplink)
-            RenderSimilarGames(gameDetails, navigate)
-            RenderDlcs(gameDetails, navigate)
-            Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
+
+@Composable
+private fun RenderRelatedGames(
+    title: String,
+    games: List<Pair<String, String>>?,
+    navigate: (String) -> Unit
+) {
+    games?.let { relatedGames ->
+        Padding(top = 10.dp) {
+            TitleContainer(
+                title = title,
+                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                val imageList = relatedGames.map { it.second }.toList()
+                val slugs = relatedGames.map { it.first }.toList()
+                HorizontalImageList(data = imageList, itemWidth = 150.dp, itemHeight = 200.dp) {
+                    navigate("${MainAppDestinations.GameDetail.name}/${slugs[it]}")
+                }
+            }
         }
     }
 }
@@ -169,240 +284,33 @@ private fun RenderPlatforms(
 }
 
 @Composable
-private fun RenderDlcs(gameDetails: IgdbGameDetail, navigate: (String) -> Unit) {
-    gameDetails.dlc?.let { similarGames ->
-        val dlcsWithCovers =
-            similarGames.filter { it.cover != null }
-        val imageIdList = dlcsWithCovers.map { it.cover!!.qualifiedUrl }.toList()
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            TitleContainer(
-                title = "Downloadable Content",
-                titleColor = Color.White.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                HorizontalImageList(data = imageIdList, itemWidth = 150.dp, itemHeight = 200.dp) {
-                    navigate("${MainAppDestinations.GameDetail.name}/${dlcsWithCovers[it].slug}")
-                }
-            }
-        }
+private fun RenderGameRating(rating: Int) {
+    val backgroundColor = when {
+        rating >= 75 -> Color.Green.copy(alpha = 0.5f)
+        rating in 55..74 -> Color.Yellow.copy(alpha = 0.5f)
+        else -> Color.Red.copy(alpha = 0.5f)
     }
-}
-
-@Composable
-private fun RenderSimilarGames(gameDetails: IgdbGameDetail, navigate: (String) -> Unit) {
-    gameDetails.similarGames?.let { similarGames ->
-        val similarGamesWithCovers =
-            similarGames.filter { it.cover != null }
-        val imageIdList = similarGamesWithCovers.map { it.cover!!.qualifiedUrl }.toList()
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            TitleContainer(
-                title = "Similar Games",
-                titleColor = Color.White.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                HorizontalImageList(data = imageIdList, itemWidth = 150.dp, itemHeight = 200.dp) {
-                    navigate("${MainAppDestinations.GameDetail.name}/${similarGamesWithCovers[it].slug}")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun RenderVideos(gameDetails: IgdbGameDetail, launchVideoDeeplink: (String) -> Unit) {
-    gameDetails.videos?.let { list ->
-        val imageIdList = list.map { video -> video.screenShotUrl }.toList()
-        val titles = list.map { video -> video.name }.toList()
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            TitleContainer(
-                title = "Videos",
-                titleColor = Color.White.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                BoxWithConstraints {
-                    HorizontalVideoList(
-                        screenshots = imageIdList,
-                        titles = titles,
-                        itemWidth = maxWidth,
-                        itemHeight = 200.dp
-                    ) {
-                        launchVideoDeeplink(list[it].youtubeUrl)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun RenderArtwork(gameDetails: IgdbGameDetail) {
-    gameDetails.artworks?.map { it.qualifiedUrl }?.let {
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            TitleContainer(
-                title = "Artwork",
-                titleColor = Color.White.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                BoxWithConstraints {
-                    HorizontalImageList(data = it, itemWidth = maxWidth, itemHeight = 200.dp) {}
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun RenderScreenShots(gameDetails: IgdbGameDetail) {
-    gameDetails.screenShots?.map { it.qualifiedUrl }?.let {
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            TitleContainer(
-                title = "Screenshots",
-                titleColor = Color.White.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                BoxWithConstraints {
-                    HorizontalImageList(data = it, itemWidth = maxWidth, itemHeight = 200.dp) {}
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun RenderGameStoryline(gameDetails: IgdbGameDetail) {
-    gameDetails.storyline?.let {
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            TitleContainer(
-                title = "Storyline",
-                titleColor = Color.White.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                CollapsableText(data = it, maxLines = 7, fontSize = 16)
-            }
-        }
-    }
-}
-
-@Composable
-private fun RenderGameSummary(gameDetails: IgdbGameDetail) {
-    gameDetails.summary?.let {
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            TitleContainer(
-                title = "Summary",
-                titleColor = Color.White.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                CollapsableText(data = it, maxLines = 7, fontSize = 16)
-            }
-        }
-    }
-}
-
-@Composable
-private fun RenderGameInformation(gameDetails: IgdbGameDetail) {
-    Column(modifier = Modifier.padding(start = 10.dp)) {
-        Text(
-            gameDetails.name,
-            color = Color.White,
-            fontSize = 24.sp,
-            maxLines = 3
-        )
-        gameDetails.involvedCompanies?.find { it.developer }?.let {
-            Text(
-                it.company.name,
-                color = Color.White.copy(alpha = 0.5f),
-                fontSize = 16.sp,
-                modifier = Modifier.padding(top = 10.dp)
-            )
-        }
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                RenderGameRating(gameDetails)
-                Text(
-                    gameDetails.humanReadableFirstReleaseDate,
-                    color = Color.White.copy(alpha = 0.5f),
-                    fontSize = 16.sp,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun RenderGameRating(gameDetails: IgdbGameDetail) {
-    gameDetails.totalRating?.roundToInt()?.let {
-        val backgroundColor = when {
-            it >= 75 -> Color.Green.copy(alpha = 0.5f)
-            it in 55..74 -> Color.Yellow.copy(alpha = 0.5f)
-            else -> Color.Red.copy(alpha = 0.5f)
-        }
-        Box(
+    Box(
+        modifier = Modifier
+            .size(36.dp)
+            .clip(RoundedCornerShape(50))
+            .background(backgroundColor)
+    ) {
+        Column(
             modifier = Modifier
                 .size(36.dp)
-                .clip(RoundedCornerShape(50))
-                .background(backgroundColor)
+                .clip(RoundedCornerShape(50)),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(RoundedCornerShape(50)),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    it.toString(),
-                    color = Color.White,
-                    fontSize = 16.sp
-                )
-            }
+            Text(
+                rating.toString(),
+                color = Color.White,
+                fontSize = 16.sp
+            )
         }
-        Spacer(modifier = Modifier.width(10.dp))
     }
+    Spacer(modifier = Modifier.width(10.dp))
 }
 
-@Composable
-private fun RenderCoverImage(gameDetails: IgdbGameDetail) {
-    gameDetails.cover?.let {
-        CoilImage(
-            data = it.qualifiedUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(125.dp, 175.dp)
-                .clip(RoundedCornerShape(10.dp)),
-            error = {
-                Text("Error")
-            },
-            loading = {
-                CircularProgressIndicator()
-            }
-        )
-    }
-}
 
-@Composable
-private fun RenderHeaderImage(gameDetails: IgdbGameDetail) {
-    val image =
-        gameDetails.artworks?.get(0)?.qualifiedUrl ?: gameDetails.screenShots?.get(0)?.qualifiedUrl
-    image?.let {
-        CoilImage(
-            data = it,
-            contentDescription = "",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp),
-            fadeIn = true,
-            contentScale = ContentScale.Crop,
-            loading = {
-                LoadingIndicator(Color(203, 112, 209))
-            },
-            error = {
-                Icon(
-                    Icons.Outlined.Error,
-                    "error loading image",
-                    tint = MaterialTheme.colors.onBackground
-                )
-            }
-        )
-    }
-}

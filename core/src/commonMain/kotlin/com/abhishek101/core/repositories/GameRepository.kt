@@ -8,6 +8,8 @@ import com.abhishek101.core.utils.DatabaseHelper
 import com.abhishek101.core.utils.buildGameDetailQuery
 import com.abhishek101.core.utils.buildQuery
 import com.abhishek101.core.utils.buildSearchQuery
+import com.abhishek101.core.viewstates.GameDetailViewState
+import com.abhishek101.core.viewstates.toViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,7 +26,7 @@ enum class ListType(val title: String) {
 interface GameRepository {
     suspend fun getListDataForType(type: ListType): Flow<ListData>
 
-    suspend fun getGameDetailForSlug(slug: String): Flow<IgdbGameDetail>
+    suspend fun getGameDetailForSlug(slug: String): Flow<GameDetailViewState>
 
     suspend fun searchForGames(searchTerm: String): Flow<ListData>
 }
@@ -47,9 +49,11 @@ class GameRepositoryImpl(
         }.flowOn(Dispatchers.Default)
     }
 
-    override suspend fun getGameDetailForSlug(slug: String): Flow<IgdbGameDetail> {
+    override suspend fun getGameDetailForSlug(slug: String): Flow<GameDetailViewState> {
         return flow {
-            emit(gameApi.getGameDetailsForQuery(buildGameDetailQuery(slug), dbHelper.accessToken))
+            val gameDetail =
+                gameApi.getGameDetailsForQuery(buildGameDetailQuery(slug), dbHelper.accessToken)
+            emit(gameDetail.toViewState())
         }.flowOn(Dispatchers.Default)
     }
 
