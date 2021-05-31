@@ -13,24 +13,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class GameDetailViewModel(
-    private val gameRepository: GameRepository,
-    private val libraryRepository: LibraryRepository
-) : ViewModel() {
+class GameDetailViewModel(private val gameRepository: GameRepository) : ViewModel() {
 
     val gameDetails = mutableStateOf<IgdbGameDetail?>(null)
     private val libraryGameDetails = mutableStateOf<LibraryGame?>(null)
 
-    // private lateinit var libraryJob: Job
-
     fun getGameDetails(slug: String) {
         viewModelScope.launch {
-            // libraryJob = launch {
-            //     libraryRepository.getGameForSlug(slug).collect {
-            //         libraryGameDetails.value = it
-            //     }
-            // }
-
             launch {
                 gameRepository.getGameDetailForSlug(slug).collect {
                     Timber.d("Game Detail Came Back")
@@ -49,19 +38,5 @@ class GameDetailViewModel(
         } else {
             false
         }
-    }
-
-    fun onDestroy() {
-        // libraryJob.cancel()
-    }
-
-    fun updatePlatformAsOwned(slug: String, platform: String) {
-        // libraryRepository.insertGameIntoLibrary(
-        //     slug,
-        //     gameDetails.value!!.name,
-        //     buildImageString(gameDetails.value!!.cover!!.imageId),
-        //     gameDetails.value!!.firstReleaseDate,
-        //     platform
-        // )
     }
 }

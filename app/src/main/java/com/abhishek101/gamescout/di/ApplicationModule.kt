@@ -23,7 +23,7 @@ val appModule = module {
     single { GenreSelectionViewModel(get()) }
     single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }
-    viewModel(override = true) { GameDetailViewModel(get(), get()) }
+    viewModel(override = true) { GameDetailViewModel(get()) }
     viewModel(override = true) { SearchScreenViewModel(get()) }
     single { LibraryViewModel(get()) }
 

@@ -70,9 +70,8 @@ fun GameDetailScreen(
         RenderGameDetails(
             gameDetails,
             viewModel::isPlatformOwned,
-            viewModel::updatePlatformAsOwned,
+            { s: String, s1: String -> },
             { destination ->
-                viewModel.onDestroy()
                 navigate(destination)
             },
             { videoUrl -> context.startActivity(buildYoutubeIntent(videoUrl)) }
