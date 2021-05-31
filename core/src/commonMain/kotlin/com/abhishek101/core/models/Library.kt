@@ -1,7 +1,12 @@
 package com.abhishek101.core.models
 
-enum class LibraryGameStatus {
-    WISHLISTED,
+enum class LibraryListType {
+    WISHLIST,
+    BACKLOG,
+}
+
+
+enum class GameStatus {
     OWNED,
     QUEUED,
     PLAYING,

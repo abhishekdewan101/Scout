@@ -21,7 +21,7 @@ val appModule = module {
     viewModel { OnBoardingNavigatorViewModel(get()) }
     single { PlatformSelectionViewModel(get()) }
     single { GenreSelectionViewModel(get()) }
-    single { HomeScreenViewModel(get(), get()) }
+    single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }
     viewModel(override = true) { GameDetailViewModel(get(), get()) }
     viewModel(override = true) { SearchScreenViewModel(get()) }

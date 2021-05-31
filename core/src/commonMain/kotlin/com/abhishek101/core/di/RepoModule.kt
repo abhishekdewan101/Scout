@@ -29,6 +29,6 @@ val repoModule = module {
         GameRepositoryImpl(get(), get())
     }
     single<LibraryRepository> {
-        LibraryRepositoryImpl(get())
+        LibraryRepositoryImpl(get(), get())
     }
 }

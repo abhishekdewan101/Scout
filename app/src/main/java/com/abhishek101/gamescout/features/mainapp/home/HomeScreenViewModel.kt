@@ -20,8 +20,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
-    private val gameRepository: GameRepository,
-    private val libraryRepository: LibraryRepository
+    private val gameRepository: GameRepository
 ) : ViewModel() {
     val showcaseList = mutableStateOf<ListData>(EmptyList)
     val topRatedList = mutableStateOf<ListData>(EmptyList)

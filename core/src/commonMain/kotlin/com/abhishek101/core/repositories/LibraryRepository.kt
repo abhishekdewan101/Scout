@@ -1,50 +1,46 @@
 package com.abhishek101.core.repositories
 
 import com.abhishek101.core.db.LibraryGame
-import com.abhishek101.core.models.LibraryGameStatus
-import com.abhishek101.core.models.LibraryGameStatus.OWNED
-import com.abhishek101.core.models.LibraryGameStatus.WISHLISTED
+import com.abhishek101.core.models.GameStatus
+import com.abhishek101.core.models.LibraryListType
 import com.abhishek101.core.utils.DatabaseHelper
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.Clock
 
 interface LibraryRepository {
-    fun getGamesInLibrary(): Flow<List<LibraryGame>>
+    fun getAllGames(): Flow<List<LibraryGame>>
     fun getGameForSlug(slug: String): Flow<LibraryGame?>
     fun insertGameIntoLibrary(
         slug: String,
         name: String,
         coverUrl: String,
         releaseDate: Long,
-        platform: String
+        platform: List<String>,
+        listType: LibraryListType,
+        gameStatus: GameStatus
     )
 
-    fun getGamesFromStatus(status: LibraryGameStatus): Flow<List<LibraryGame>>
-
-    fun updateGameStatus(status: LibraryGameStatus, slug: String)
-
-    fun markGameAsNowPlaying(slug: String)
-
-    fun markGameAsFinished(status: LibraryGameStatus, rating: Long, notes: String, slug: String)
+    fun getGamesWithStatus(status: GameStatus): List<LibraryGame>
+    fun updateGameStatus(status: GameStatus, slug: String)
+    fun updateGameAsNowPlaying(slug: String)
+    fun updateGameAsFinished(status: GameStatus, rating: Long, notes: String?, slug: String)
     fun clearTables()
 }
 
-class LibraryRepositoryImpl(databaseHelper: DatabaseHelper) : LibraryRepository {
+class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: Clock) :
+    LibraryRepository {
 
     private val libraryQueries = databaseHelper.libraryGameQueries
 
-    override fun getGamesInLibrary(): Flow<List<LibraryGame>> {
-        return libraryQueries.selectAllGames().asFlow().mapToList().flowOn(Dispatchers.Default)
+    override fun getAllGames(): Flow<List<LibraryGame>> {
+        return libraryQueries.selectAllGames().asFlow().mapToList()
     }
 
     override fun getGameForSlug(slug: String): Flow<LibraryGame?> {
         return libraryQueries.getGameForSlug(slug).asFlow().mapToOneOrNull()
-            .flowOn(Dispatchers.Default)
     }
 
     override fun insertGameIntoLibrary(
@@ -52,74 +48,43 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper) : LibraryRepository 
         name: String,
         coverUrl: String,
         releaseDate: Long,
-        platform: String
+        platform: List<String>,
+        listType: LibraryListType,
+        gameStatus: GameStatus
     ) {
-        val isOwned = libraryQueries.getGameForSlug(slug).executeAsOneOrNull() != null
-
-        if (isOwned) {
-            togglePlatformForGame(platform, slug)
-        } else {
-            libraryQueries.insertGameIntoLibrary(
-                slug,
-                name,
-                coverUrl,
-                releaseDate,
-                getGameStatus(releaseDate),
-                listOf(platform)
-            )
-        }
+        libraryQueries.insertGameIntoLibrary(
+            slug,
+            name,
+            coverUrl,
+            releaseDate,
+            listType,
+            gameStatus,
+            platform
+        )
     }
 
-    private fun togglePlatformForGame(platform: String, slug: String) {
-        val ownedPlatforms = libraryQueries.getGameForSlug(slug).executeAsOne().platform
-        val updatedPlatforms = ownedPlatforms.toMutableList().apply {
-            if (contains(platform)) {
-                remove(platform)
-            } else {
-                add(platform)
-            }
-        }
-        if (updatedPlatforms.isEmpty()) {
-            libraryQueries.removeGameFromLibrary(slug)
-        } else {
-            libraryQueries.updateOwnedPlatform(updatedPlatforms, slug)
-        }
+    override fun getGamesWithStatus(status: GameStatus): List<LibraryGame> {
+        return libraryQueries.getGameWithStatus(status).executeAsList()
     }
 
-    override fun getGamesFromStatus(status: LibraryGameStatus): Flow<List<LibraryGame>> {
-        return libraryQueries.selectGamesForStatus(status).asFlow().mapToList()
-            .flowOn(Dispatchers.Default)
-    }
-
-    override fun updateGameStatus(status: LibraryGameStatus, slug: String) {
+    override fun updateGameStatus(status: GameStatus, slug: String) {
         libraryQueries.updateGameStatus(status, slug)
     }
 
-    override fun markGameAsNowPlaying(slug: String) {
-        val now = Clock.System.now().epochSeconds
-        libraryQueries.updateGameToNowPlaying(now, slug)
+    override fun updateGameAsNowPlaying(slug: String) {
+        updateGameStatus(GameStatus.PLAYING, slug)
     }
 
-    override fun markGameAsFinished(
-        status: LibraryGameStatus,
+    override fun updateGameAsFinished(
+        status: GameStatus,
         rating: Long,
-        notes: String,
+        notes: String?,
         slug: String
     ) {
-        val now = Clock.System.now().epochSeconds
-        libraryQueries.updateGameAsFinished(status, now, rating, notes, slug)
+        libraryQueries.updateGameAsFinished(status, clock.now().epochSeconds, rating, notes, slug)
     }
 
     override fun clearTables() {
         libraryQueries.removeAllGamesFromLibrary()
-    }
-
-    private fun getGameStatus(releaseDate: Long): LibraryGameStatus {
-        val now = Clock.System.now().epochSeconds
-        return if (releaseDate > now) {
-            WISHLISTED
-        } else {
-            OWNED
-        }
     }
 }
