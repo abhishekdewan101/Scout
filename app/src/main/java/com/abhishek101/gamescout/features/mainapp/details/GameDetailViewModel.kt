@@ -21,15 +21,15 @@ class GameDetailViewModel(
     val gameDetails = mutableStateOf<IgdbGameDetail?>(null)
     private val libraryGameDetails = mutableStateOf<LibraryGame?>(null)
 
-    private lateinit var libraryJob: Job
+    // private lateinit var libraryJob: Job
 
     fun getGameDetails(slug: String) {
         viewModelScope.launch {
-            libraryJob = launch {
-                libraryRepository.getGameForSlug(slug).collect {
-                    libraryGameDetails.value = it
-                }
-            }
+            // libraryJob = launch {
+            //     libraryRepository.getGameForSlug(slug).collect {
+            //         libraryGameDetails.value = it
+            //     }
+            // }
 
             launch {
                 gameRepository.getGameDetailForSlug(slug).collect {
@@ -52,16 +52,16 @@ class GameDetailViewModel(
     }
 
     fun onDestroy() {
-        libraryJob.cancel()
+        // libraryJob.cancel()
     }
 
     fun updatePlatformAsOwned(slug: String, platform: String) {
-        libraryRepository.insertGameIntoLibrary(
-            slug,
-            gameDetails.value!!.name,
-            buildImageString(gameDetails.value!!.cover!!.imageId),
-            gameDetails.value!!.firstReleaseDate,
-            platform
-        )
+        // libraryRepository.insertGameIntoLibrary(
+        //     slug,
+        //     gameDetails.value!!.name,
+        //     buildImageString(gameDetails.value!!.cover!!.imageId),
+        //     gameDetails.value!!.firstReleaseDate,
+        //     platform
+        // )
     }
 }
