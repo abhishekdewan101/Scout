@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,11 +18,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Error
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -40,6 +36,7 @@ import com.abhishek101.gamescout.components.SelectableChoice
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.HorizontalVideoList
+import com.abhishek101.gamescout.design.ImageViewer
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
@@ -94,6 +91,9 @@ fun GameDetailScreen(
                         RenderGameSummary(gameDetails = currentViewState.excerpt)
                     }
                     item {
+                        RenderImages(images = currentViewState.images)
+                    }
+                    item {
                         RenderVideos(videos = currentViewState.videos) {
                             context.startActivity(buildYoutubeIntent(it))
                         }
@@ -118,6 +118,22 @@ fun GameDetailScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun RenderImages(images: List<String>) {
+    Padding(top = 10.dp) {
+        TitleContainer(
+            title = "Media",
+            titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+            hasViewMore = false
+        ) {
+            BoxWithConstraints {
+                ImageViewer(images = images, maxWidth = maxWidth)
+            }
+        }
+
     }
 }
 

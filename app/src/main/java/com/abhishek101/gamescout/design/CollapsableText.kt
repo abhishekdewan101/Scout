@@ -2,6 +2,7 @@ package com.abhishek101.gamescout.design
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +20,7 @@ fun CollapsableText(data: String, maxLines: Int = 5, fontSize: Int) {
     Row {
         Text(
             data,
-            color = Color.White,
+            color = MaterialTheme.colors.onBackground,
             fontSize = fontSize.sp,
             maxLines = if (collapsedState.value) maxLines else 100,
             modifier = Modifier
