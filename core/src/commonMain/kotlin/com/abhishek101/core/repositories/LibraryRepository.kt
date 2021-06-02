@@ -28,6 +28,7 @@ interface LibraryRepository {
     fun updateGameAsNowPlaying(slug: String)
     fun updateGameAsFinished(status: GameStatus, rating: Long, notes: String?, slug: String)
     fun clearTables()
+    fun removeGameFromLibrary(slug: String)
 }
 
 class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: Clock) :
@@ -86,5 +87,9 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
 
     override fun clearTables() {
         libraryQueries.removeAllGamesFromLibrary()
+    }
+
+    override fun removeGameFromLibrary(slug: String) {
+        libraryQueries.removeGameFromLibrary(slug)
     }
 }

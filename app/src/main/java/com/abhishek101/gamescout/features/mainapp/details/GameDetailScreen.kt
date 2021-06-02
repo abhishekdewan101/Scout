@@ -2,6 +2,7 @@ package com.abhishek101.gamescout.features.mainapp.details
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,8 +19,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BookmarkAdded
+import androidx.compose.material.icons.outlined.ArrowBackIos
+import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -29,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.models.IgdbGameDetail
@@ -55,6 +63,41 @@ fun GameDetailScreen(
 ) {
     val currentViewState = viewModel.viewState
 
+    val inLibrary = viewModel.inLibrary
+
+    var developer: Map<String, String>? = null
+    currentViewState?.involvedCompanies?.find { it.developer }?.company?.let {
+        developer = mapOf(it.slug to it.name)
+    }
+
+    val excerpt = if (currentViewState?.summary != null && currentViewState.storyline != null) {
+        currentViewState.summary + "\n" + currentViewState.storyline
+    } else {
+        currentViewState?.summary ?: currentViewState?.storyline ?: ""
+    }
+
+    val imageList = mutableListOf<String>()
+    currentViewState?.screenShots?.let { list -> imageList.addAll(list.map { it.qualifiedUrl }) }
+    currentViewState?.artworks?.let { list -> imageList.addAll(list.map { it.qualifiedUrl }) }
+
+    val videoList = mutableListOf<Triple<String, String, String>>()
+    currentViewState?.videos?.let { list ->
+        videoList.addAll(list.map {
+            Triple(
+                it.name,
+                it.screenShotUrl,
+                it.youtubeUrl
+            )
+        })
+    }
+
+    val similarGamesList =
+        currentViewState?.similarGames?.filter { it.cover != null }
+            ?.map { Pair(it.slug, it.cover!!.qualifiedUrl) }
+
+    val dlcsList = currentViewState?.dlc?.filter { it.cover != null }
+        ?.map { Pair(it.slug, it.cover!!.qualifiedUrl) }
+
     val context = LocalContext.current
 
     LaunchedEffect(key1 = gameSlug) {
@@ -71,6 +114,14 @@ fun GameDetailScreen(
         } else {
             SafeArea(padding = 10.dp) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    stickyHeader {
+                        Header(
+                            currentViewState.name,
+                            inLibrary,
+                            { viewModel.toggleGameInLibrary() },
+                            navigate = navigate
+                        )
+                    }
                     item {
                         Row(
                             modifier = Modifier
@@ -78,30 +129,30 @@ fun GameDetailScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Start
                         ) {
-                            RenderCoverImage(image = currentViewState.cover)
+                            RenderCoverImage(image = currentViewState.cover!!.qualifiedUrl)
                             RenderGameInformation(
                                 name = currentViewState.name,
-                                developer = currentViewState.developer,
-                                rating = currentViewState.rating,
-                                releaseDate = currentViewState.releaseDate
+                                developer = developer,
+                                rating = currentViewState.totalRating,
+                                releaseDate = currentViewState.humanReadableFirstReleaseDate
                             )
                         }
                     }
                     item {
-                        RenderGameSummary(gameDetails = currentViewState.excerpt)
+                        RenderGameSummary(gameDetails = excerpt)
                     }
                     item {
-                        RenderImages(images = currentViewState.images)
+                        RenderImages(images = imageList)
                     }
                     item {
-                        RenderVideos(videos = currentViewState.videos) {
+                        RenderVideos(videos = videoList) {
                             context.startActivity(buildYoutubeIntent(it))
                         }
                     }
                     item {
                         RenderRelatedGames(
                             title = "Similar Games",
-                            games = currentViewState.similarGames
+                            games = similarGamesList
                         ) {
                             navigate(it)
                         }
@@ -110,13 +161,60 @@ fun GameDetailScreen(
                     item {
                         RenderRelatedGames(
                             title = "Downloadable Content",
-                            games = currentViewState.dlcs
+                            games = dlcsList
                         ) {
                             navigate(it)
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun Header(
+    title: String,
+    inLibrary: Boolean,
+    saveGame: () -> Unit,
+    navigate: (String) -> Unit
+) {
+    TopAppBar(backgroundColor = MaterialTheme.colors.background, elevation = 0.dp) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.weight(9f)
+            ) {
+                Icon(
+                    Icons.Outlined.ArrowBackIos,
+                    "",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.clickable { navigate("") })
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    title,
+                    color = MaterialTheme.colors.onBackground,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Icon(
+                if (inLibrary) Icons.Filled.BookmarkAdded else Icons.Outlined.BookmarkAdd,
+                "",
+                tint = MaterialTheme.colors.onBackground,
+                modifier = Modifier
+                    .weight(2f)
+                    .clickable {
+                        saveGame()
+                    }
+            )
         }
     }
 }
