@@ -29,7 +29,7 @@ fun ImageGrid(
 
     for (row in chunkedData) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Start,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)

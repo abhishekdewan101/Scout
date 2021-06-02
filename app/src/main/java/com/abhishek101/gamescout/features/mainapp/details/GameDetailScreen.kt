@@ -25,7 +25,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkAdded
-import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -117,10 +116,8 @@ fun GameDetailScreen(
                     stickyHeader {
                         Header(
                             currentViewState.name,
-                            inLibrary,
-                            { viewModel.toggleGameInLibrary() },
-                            navigate = navigate
-                        )
+                            inLibrary
+                        ) { viewModel.toggleGameInLibrary() }
                     }
                     item {
                         Row(
@@ -176,8 +173,7 @@ fun GameDetailScreen(
 private fun Header(
     title: String,
     inLibrary: Boolean,
-    saveGame: () -> Unit,
-    navigate: (String) -> Unit
+    saveGame: () -> Unit
 ) {
     TopAppBar(backgroundColor = MaterialTheme.colors.background, elevation = 0.dp) {
         Row(
@@ -185,26 +181,15 @@ private fun Header(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.weight(9f)
-            ) {
-                Icon(
-                    Icons.Outlined.ArrowBackIos,
-                    "",
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.clickable { navigate("") })
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    title,
-                    color = MaterialTheme.colors.onBackground,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+            Text(
+                title,
+                modifier = Modifier.weight(9f),
+                color = MaterialTheme.colors.onBackground,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
             Icon(
                 if (inLibrary) Icons.Filled.BookmarkAdded else Icons.Outlined.BookmarkAdd,
                 "",
