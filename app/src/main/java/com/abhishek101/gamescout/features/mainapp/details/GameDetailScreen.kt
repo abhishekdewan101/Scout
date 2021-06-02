@@ -36,8 +36,8 @@ import com.abhishek101.gamescout.components.SelectableChoice
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.HorizontalVideoList
-import com.abhishek101.gamescout.design.ImageViewer
 import com.abhishek101.gamescout.design.LoadingIndicator
+import com.abhishek101.gamescout.design.MediaGallery
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
@@ -130,7 +130,7 @@ private fun RenderImages(images: List<String>) {
             hasViewMore = false
         ) {
             BoxWithConstraints {
-                ImageViewer(images = images, maxWidth = maxWidth)
+                MediaGallery(images = images, maxWidth = maxWidth)
             }
         }
 
