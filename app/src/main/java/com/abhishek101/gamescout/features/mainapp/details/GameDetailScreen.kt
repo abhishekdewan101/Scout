@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.models.IgdbGameDetail
+import com.abhishek101.gamescout.components.PlatformSelectionRow
 import com.abhishek101.gamescout.components.SelectableChoice
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
@@ -128,7 +129,11 @@ fun GameDetailScreen(
             BottomSheetScaffold(
                 scaffoldState = scaffoldState,
                 sheetPeekHeight = 0.dp,
-                sheetContent = { AddGameBottomSheet(platforms) }) {
+                sheetContent = {
+                    AddGameBottomSheet(viewModel.ownedPlatforms) {
+                        viewModel.updatePlatformAsOwned(it)
+                    }
+                }) {
                 SafeArea(padding = 10.dp) {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         stickyHeader {
@@ -197,86 +202,23 @@ fun GameDetailScreen(
 }
 
 @Composable
-private fun AddGameBottomSheet(platforms: List<String>?) {
-    Column(modifier = Modifier.background(MaterialTheme.colors.background)) {
+private fun AddGameBottomSheet(
+    platforms: Map<String, Boolean>,
+    updatePlatformAsOwned: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colors.background)
+    ) {
         Padding(all = 10.dp) {
-            platforms?.let {
+            if (platforms.isNotEmpty()) {
                 TitleContainer(
                     title = "Select the platforms you own",
                     titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
                     hasViewMore = false
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState())
-                    ) {
-                        it.forEach {
-                            SelectableChoice(
-                                isSelected = false,
-                                text = it,
-                                selectionColor = Color(203, 112, 209),
-                                backgroundColor = Color.Black
-                            ) {
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        Padding(all = 10.dp) {
-            TitleContainer(
-                title = "Add to which list",
-                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-                    SelectableChoice(
-                        isSelected = false,
-                        text = "Wishlist",
-                        selectionColor = Color(203, 112, 209),
-                        backgroundColor = Color.Black
-                    ) {
-
-                    }
-
-                    SelectableChoice(
-                        isSelected = false,
-                        text = "Backlog",
-                        selectionColor = Color(203, 112, 209),
-                        backgroundColor = Color.Black
-                    ) {
-
-                    }
-                }
-            }
-        }
-
-        Padding(all = 10.dp) {
-            TitleContainer(
-                title = "Are you going to play this game now?",
-                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-                    SelectableChoice(
-                        isSelected = false,
-                        text = "Yes",
-                        selectionColor = Color(203, 112, 209),
-                        backgroundColor = Color.Black
-                    ) {
-
-                    }
-
-                    SelectableChoice(
-                        isSelected = false,
-                        text = "No",
-                        selectionColor = Color(203, 112, 209),
-                        backgroundColor = Color.Black
-                    ) {
-
+                    PlatformSelectionRow(platforms = platforms) {
+                        updatePlatformAsOwned(it)
                     }
                 }
             }
