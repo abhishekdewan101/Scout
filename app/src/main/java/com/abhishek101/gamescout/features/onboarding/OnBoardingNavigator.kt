@@ -1,5 +1,6 @@
 package com.abhishek101.gamescout.features.onboarding
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -38,6 +39,7 @@ val LocalUpdateOnBoardingCompleted = compositionLocalOf<UpdateOnBoardingComplete
     error("No shared preferences provided")
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun OnBoardingNavigator(viewModel: OnBoardingNavigatorViewModel = getViewModel()) {
     val onBoardingNavigator = rememberNavController()

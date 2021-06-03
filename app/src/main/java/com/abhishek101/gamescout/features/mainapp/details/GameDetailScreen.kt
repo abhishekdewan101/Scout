@@ -18,7 +18,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetState
+import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -26,8 +30,10 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkAdded
 import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,8 +57,10 @@ import com.abhishek101.gamescout.design.TitleContainer
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import com.google.accompanist.coil.CoilImage
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
+@ExperimentalMaterialApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GameDetailScreen(
@@ -74,6 +82,11 @@ fun GameDetailScreen(
     } else {
         currentViewState?.summary ?: currentViewState?.storyline ?: ""
     }
+
+    val platforms = currentViewState?.platform?.map { it.name }
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+    )
 
     val imageList = mutableListOf<String>()
     currentViewState?.screenShots?.let { list -> imageList.addAll(list.map { it.qualifiedUrl }) }
@@ -98,6 +111,7 @@ fun GameDetailScreen(
         ?.map { Pair(it.slug, it.cover!!.qualifiedUrl) }
 
     val context = LocalContext.current
+    val coroutine = rememberCoroutineScope()
 
     LaunchedEffect(key1 = gameSlug) {
         viewModel.getGameDetails(gameSlug)
@@ -111,57 +125,158 @@ fun GameDetailScreen(
         if (currentViewState == null) {
             LoadingIndicator()
         } else {
-            SafeArea(padding = 10.dp) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    stickyHeader {
-                        Header(
-                            currentViewState.name,
-                            inLibrary
-                        ) { viewModel.toggleGameInLibrary() }
-                    }
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            RenderCoverImage(image = currentViewState.cover!!.qualifiedUrl)
-                            RenderGameInformation(
-                                name = currentViewState.name,
-                                developer = developer,
-                                rating = currentViewState.totalRating,
-                                releaseDate = currentViewState.humanReadableFirstReleaseDate
-                            )
+            BottomSheetScaffold(
+                scaffoldState = scaffoldState,
+                sheetPeekHeight = 0.dp,
+                sheetContent = { AddGameBottomSheet(platforms) }) {
+                SafeArea(padding = 10.dp) {
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        stickyHeader {
+                            Header(
+                                currentViewState.name,
+                                inLibrary
+                            ) {
+                                coroutine.launch {
+                                    if (!inLibrary) {
+                                        scaffoldState.bottomSheetState.expand()
+                                    } else {
+                                        viewModel.toggleGameInLibrary()
+                                    }
+                                }
+                            }
+                        }
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                RenderCoverImage(image = currentViewState.cover!!.qualifiedUrl)
+                                RenderGameInformation(
+                                    name = currentViewState.name,
+                                    developer = developer,
+                                    rating = currentViewState.totalRating,
+                                    releaseDate = currentViewState.humanReadableFirstReleaseDate
+                                )
+                            }
+                        }
+                        item {
+                            RenderGameSummary(gameDetails = excerpt)
+                        }
+                        item {
+                            RenderImages(images = imageList)
+                        }
+                        item {
+                            RenderVideos(videos = videoList) {
+                                context.startActivity(buildYoutubeIntent(it))
+                            }
+                        }
+                        item {
+                            RenderRelatedGames(
+                                title = "Similar Games",
+                                games = similarGamesList
+                            ) {
+                                navigate(it)
+                            }
+                        }
+
+                        item {
+                            RenderRelatedGames(
+                                title = "Downloadable Content",
+                                games = dlcsList
+                            ) {
+                                navigate(it)
+                            }
                         }
                     }
-                    item {
-                        RenderGameSummary(gameDetails = excerpt)
-                    }
-                    item {
-                        RenderImages(images = imageList)
-                    }
-                    item {
-                        RenderVideos(videos = videoList) {
-                            context.startActivity(buildYoutubeIntent(it))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AddGameBottomSheet(platforms: List<String>?) {
+    Column(modifier = Modifier.background(MaterialTheme.colors.background)) {
+        Padding(all = 10.dp) {
+            platforms?.let {
+                TitleContainer(
+                    title = "Select the platforms you own",
+                    titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                    hasViewMore = false
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState())
+                    ) {
+                        it.forEach {
+                            SelectableChoice(
+                                isSelected = false,
+                                text = it,
+                                selectionColor = Color(203, 112, 209),
+                                backgroundColor = Color.Black
+                            ) {
+
+                            }
                         }
                     }
-                    item {
-                        RenderRelatedGames(
-                            title = "Similar Games",
-                            games = similarGamesList
-                        ) {
-                            navigate(it)
-                        }
+                }
+            }
+        }
+
+        Padding(all = 10.dp) {
+            TitleContainer(
+                title = "Add to which list",
+                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                    SelectableChoice(
+                        isSelected = false,
+                        text = "Wishlist",
+                        selectionColor = Color(203, 112, 209),
+                        backgroundColor = Color.Black
+                    ) {
+
                     }
 
-                    item {
-                        RenderRelatedGames(
-                            title = "Downloadable Content",
-                            games = dlcsList
-                        ) {
-                            navigate(it)
-                        }
+                    SelectableChoice(
+                        isSelected = false,
+                        text = "Backlog",
+                        selectionColor = Color(203, 112, 209),
+                        backgroundColor = Color.Black
+                    ) {
+
+                    }
+                }
+            }
+        }
+
+        Padding(all = 10.dp) {
+            TitleContainer(
+                title = "Are you going to play this game now?",
+                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                    SelectableChoice(
+                        isSelected = false,
+                        text = "Yes",
+                        selectionColor = Color(203, 112, 209),
+                        backgroundColor = Color.Black
+                    ) {
+
+                    }
+
+                    SelectableChoice(
+                        isSelected = false,
+                        text = "No",
+                        selectionColor = Color(203, 112, 209),
+                        backgroundColor = Color.Black
+                    ) {
+
                     }
                 }
             }
@@ -340,7 +455,11 @@ private fun RenderRelatedGames(
             ) {
                 val imageList = relatedGames.map { it.second }.toList()
                 val slugs = relatedGames.map { it.first }.toList()
-                HorizontalImageList(data = imageList, itemWidth = 150.dp, itemHeight = 200.dp) {
+                HorizontalImageList(
+                    data = imageList,
+                    itemWidth = 150.dp,
+                    itemHeight = 200.dp
+                ) {
                     navigate("${MainAppDestinations.GameDetail.name}/${slugs[it]}")
                 }
             }
