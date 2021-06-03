@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.gamescout.design.ImageGrid
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.SearchAppBar
+import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -40,7 +41,13 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                             imageWidth = maxWidth / 3,
                             imageHeight = 175.dp
                         ) {
-
+                            navigate(
+                                "${MainAppDestinations.GameDetail}/${
+                                    viewModel.libraryGames?.get(
+                                        it
+                                    )?.slug
+                                }"
+                            )
                         }
                     }
                 }
