@@ -2,6 +2,7 @@ package com.abhishek101.gamescout.features.mainapp.details
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -17,20 +18,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkAdded
 import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,6 +50,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.abhishek101.core.models.GameStatus
+import com.abhishek101.core.models.GameStatus.OWNED
+import com.abhishek101.core.models.GameStatus.PLAYING
+import com.abhishek101.core.models.GameStatus.QUEUED
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.gamescout.components.PlatformSelectionRow
 import com.abhishek101.gamescout.components.SelectableChoice
@@ -58,6 +68,7 @@ import com.abhishek101.gamescout.design.TitleContainer
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
@@ -84,9 +95,8 @@ fun GameDetailScreen(
         currentViewState?.summary ?: currentViewState?.storyline ?: ""
     }
 
-    val platforms = currentViewState?.platform?.map { it.name }
     val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+        bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
     )
 
     val imageList = mutableListOf<String>()
@@ -130,10 +140,20 @@ fun GameDetailScreen(
                 scaffoldState = scaffoldState,
                 sheetPeekHeight = 0.dp,
                 sheetContent = {
-                    AddGameBottomSheet(viewModel.ownedPlatforms) {
+                    AddGameBottomSheet(viewModel.ownedPlatforms, viewModel.gameStatus, {
                         viewModel.updatePlatformAsOwned(it)
+                    }, {
+                        viewModel.updateGameStatus(it)
+                    }) {
+                        coroutine.launch {
+                            if (scaffoldState.bottomSheetState.isExpanded) {
+                                scaffoldState.bottomSheetState.collapse()
+                            }
+                        }
+                        viewModel.toggleGameInLibrary()
                     }
-                }) {
+                }
+            ) {
                 SafeArea(padding = 10.dp) {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         stickyHeader {
@@ -141,12 +161,10 @@ fun GameDetailScreen(
                                 currentViewState.name,
                                 inLibrary
                             ) {
-                                coroutine.launch {
-                                    if (!inLibrary) {
-                                        scaffoldState.bottomSheetState.expand()
-                                    } else {
-                                        viewModel.toggleGameInLibrary()
-                                    }
+                                if (inLibrary) {
+                                    viewModel.toggleGameInLibrary()
+                                } else {
+                                    coroutine.launch { scaffoldState.bottomSheetState.expand() }
                                 }
                             }
                         }
@@ -204,7 +222,10 @@ fun GameDetailScreen(
 @Composable
 private fun AddGameBottomSheet(
     platforms: Map<String, Boolean>,
-    updatePlatformAsOwned: (String) -> Unit
+    gameStatus: GameStatus,
+    updatePlatformAsOwned: (String) -> Unit,
+    updateGameStatus: (GameStatus) -> Unit,
+    saveGame: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -223,6 +244,107 @@ private fun AddGameBottomSheet(
                 }
             }
         }
+
+        Padding(all = 10.dp) {
+            TitleContainer(
+                title = "Select a game status",
+                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+                hasViewMore = false
+            ) {
+                FlowRow(crossAxisSpacing = 10.dp) {
+                    Surface(
+                        color = when (gameStatus) {
+                            OWNED -> MaterialTheme.colors.primary
+                            else -> MaterialTheme.colors.background.copy(alpha = 0.5f)
+                        },
+                        contentColor = MaterialTheme.colors.onBackground,
+                        shape = MaterialTheme.shapes.small,
+                        modifier = Modifier
+                            .padding(horizontal = 6.dp)
+                            .border(
+                                1.dp,
+                                MaterialTheme.colors.onBackground,
+                                shape = CircleShape.copy(
+                                    CornerSize(5.dp)
+                                )
+                            )
+                            .clickable { updateGameStatus(OWNED) }
+                    ) {
+                        Text(
+                            text = "Owned",
+                            color = if (gameStatus == OWNED) Color.White else MaterialTheme.colors.onBackground,
+                            style = MaterialTheme.typography.body1,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
+
+                    Surface(
+                        color = when (gameStatus) {
+                            QUEUED -> MaterialTheme.colors.primary
+                            else -> MaterialTheme.colors.background.copy(alpha = 0.5f)
+                        },
+                        contentColor = MaterialTheme.colors.onBackground,
+                        shape = MaterialTheme.shapes.small,
+                        modifier = Modifier
+                            .padding(horizontal = 6.dp)
+                            .border(
+                                1.dp,
+                                MaterialTheme.colors.onBackground,
+                                shape = CircleShape.copy(
+                                    CornerSize(5.dp)
+                                )
+                            )
+                            .clickable { updateGameStatus(QUEUED) }
+                    ) {
+                        Text(
+                            text = "Playing Next",
+                            color = if (gameStatus == QUEUED) Color.White else MaterialTheme.colors.onBackground,
+                            style = MaterialTheme.typography.body1,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
+
+
+                    Surface(
+                        color = when (gameStatus) {
+                            PLAYING -> MaterialTheme.colors.primary
+                            else -> MaterialTheme.colors.background.copy(alpha = 0.5f)
+                        },
+                        contentColor = MaterialTheme.colors.onBackground,
+                        shape = MaterialTheme.shapes.small,
+                        modifier = Modifier
+                            .padding(horizontal = 6.dp)
+                            .border(
+                                1.dp,
+                                MaterialTheme.colors.onBackground,
+                                shape = CircleShape.copy(
+                                    CornerSize(5.dp)
+                                )
+                            )
+                            .clickable { updateGameStatus(PLAYING) }
+                    ) {
+                        Text(
+                            text = "Playing Now",
+                            color = if (gameStatus == PLAYING) Color.White else MaterialTheme.colors.onBackground,
+                            style = MaterialTheme.typography.body1,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
+                }
+            }
+        }
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            IconButton(
+                onClick = saveGame,
+                modifier = Modifier
+                    .weight(1f)
+                    .background(MaterialTheme.colors.primary)
+            ) {
+                Icon(Icons.Outlined.Done, "", tint = Color.White)
+            }
+        }
+
     }
 }
 

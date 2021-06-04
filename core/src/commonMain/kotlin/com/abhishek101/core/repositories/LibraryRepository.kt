@@ -19,7 +19,6 @@ interface LibraryRepository {
         coverUrl: String,
         releaseDate: Long,
         platform: List<String>,
-        listType: LibraryListType,
         gameStatus: GameStatus
     )
 
@@ -50,9 +49,13 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
         coverUrl: String,
         releaseDate: Long,
         platform: List<String>,
-        listType: LibraryListType,
         gameStatus: GameStatus
     ) {
+        val listType = if (clock.now().epochSeconds < releaseDate) {
+            LibraryListType.WISHLIST
+        } else {
+            LibraryListType.BACKLOG
+        }
         libraryQueries.insertGameIntoLibrary(
             slug,
             name,

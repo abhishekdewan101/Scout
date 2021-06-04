@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abhishek101.core.models.GameStatus
 import com.abhishek101.core.models.IgdbGameDetail
-import com.abhishek101.core.models.LibraryListType
 import com.abhishek101.core.repositories.GameRepository
 import com.abhishek101.core.repositories.LibraryRepository
 import kotlinx.coroutines.Job
@@ -17,13 +16,15 @@ import kotlinx.coroutines.launch
 
 class GameDetailViewModel(
     private val gameRepository: GameRepository,
-    private val libraryRepository: LibraryRepository
+    private val libraryRepository: LibraryRepository,
 ) : ViewModel() {
     private lateinit var job: Job
 
     var viewState by mutableStateOf<IgdbGameDetail?>(null)
 
     var ownedPlatforms by mutableStateOf(mutableMapOf<String, Boolean>())
+
+    var gameStatus by mutableStateOf(GameStatus.OWNED)
 
     var inLibrary by mutableStateOf(false)
 
@@ -46,6 +47,10 @@ class GameDetailViewModel(
         }
     }
 
+    fun updateGameStatus(gameStatus: GameStatus) {
+        this.gameStatus = gameStatus
+    }
+
     fun updatePlatformAsOwned(platform: String) {
         val owned = ownedPlatforms[platform]!!
         ownedPlatforms[platform] = !owned
@@ -57,15 +62,15 @@ class GameDetailViewModel(
                 libraryRepository.removeGameFromLibrary(it.slug)
             }
         } else {
+
             viewState?.let {
                 libraryRepository.insertGameIntoLibrary(
                     it.slug,
                     it.name,
                     it.cover!!.qualifiedUrl,
                     it.firstReleaseDate,
-                    listOf(it.platform?.get(0)?.slug ?: ""),
-                    LibraryListType.BACKLOG,
-                    GameStatus.OWNED
+                    ownedPlatforms.filter { it.value }.map { it.key }.toList(),
+                    gameStatus
                 )
             }
         }
