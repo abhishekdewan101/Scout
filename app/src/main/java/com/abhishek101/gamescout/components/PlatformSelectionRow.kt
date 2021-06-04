@@ -4,7 +4,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.MaterialTheme
@@ -13,13 +12,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
 fun PlatformSelectionRow(platforms: Map<String, Boolean>, updatePlatformAsOwned: (String) -> Unit) {
-    val platformList = platforms.keys.toList()
-    LazyRow(modifier = Modifier.fillMaxWidth()) {
-        items(platformList.size) {
-            val isSelected = platforms[platformList[it]]!!
+    FlowRow(modifier = Modifier.fillMaxWidth(), crossAxisSpacing = 10.dp) {
+        for (platform in platforms) {
+            val isSelected = platform.value
             Surface(
                 color = when {
                     isSelected -> MaterialTheme.colors.primary
@@ -36,14 +35,15 @@ fun PlatformSelectionRow(platforms: Map<String, Boolean>, updatePlatformAsOwned:
                             CornerSize(5.dp)
                         )
                     )
-                    .clickable { updatePlatformAsOwned(platformList[it]) }
+                    .clickable { updatePlatformAsOwned(platform.key) }
             ) {
                 Text(
-                    text = platformList[it],
+                    text = platform.key,
                     style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
         }
+
     }
 }

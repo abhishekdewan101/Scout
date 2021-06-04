@@ -1,7 +1,7 @@
 import com.abhishek101.gamescout.AppVersions
-import org.jetbrains.kotlin.konan.properties.Properties
 import com.abhishek101.gamescout.Libs
 import com.abhishek101.gamescout.generatedVersionName
+import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     id("com.android.application")
@@ -30,7 +30,8 @@ android {
         getByName("debug") {
             keyAlias = properties.getProperty("debugKeyAlias")
             keyPassword = properties.getProperty("debugKeyPassword")
-            storeFile = file(rootDir.canonicalPath + "/" + properties.getProperty("debugStoreFileName"))
+            storeFile =
+                file(rootDir.canonicalPath + "/" + properties.getProperty("debugStoreFileName"))
             storePassword = properties.getProperty("debugStorePassword")
         }
     }
@@ -50,12 +51,15 @@ android {
         }
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility =  JavaVersion.VERSION_1_8
-        targetCompatibility =  JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     buildFeatures {
@@ -63,7 +67,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion =  Libs.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -74,7 +78,8 @@ android {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-        freeCompilerArgs = listOf("-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check",
+        freeCompilerArgs = listOf(
+            "-Xskip-prerelease-check",
             "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"
         )
         useIR = true
@@ -88,46 +93,46 @@ dependencies {
     implementation(Libs.AndroidX.material)
 
     // compose
-    implementation (Libs.AndroidX.Compose.ui)
-    implementation (Libs.AndroidX.Compose.material)
-    implementation (Libs.AndroidX.Compose.tooling)
-    implementation (Libs.AndroidX.Compose.foundation)
-    implementation (Libs.AndroidX.Compose.materialIconsExtended)
-    androidTestImplementation (Libs.AndroidX.Compose.testing)
-
+    implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.AndroidX.Compose.material)
+    implementation(Libs.flowLayout)
+    implementation(Libs.AndroidX.Compose.tooling)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.materialIconsExtended)
+    androidTestImplementation(Libs.AndroidX.Compose.testing)
 
     //Navigation
-    implementation (Libs.AndroidX.Navigation.composeNavigation)
+    implementation(Libs.AndroidX.Navigation.composeNavigation)
 
     // Coroutines
-    implementation (Libs.Coroutines.android)
-    implementation (Libs.Coroutines.core)
+    implementation(Libs.Coroutines.android)
+    implementation(Libs.Coroutines.core)
 
     //Timber
-    implementation (Libs.timber)
+    implementation(Libs.timber)
 
     //Koin
-    implementation (Libs.Koin.koinCore)
-    implementation (Libs.Koin.koinAndroid)
-    implementation (Libs.Koin.koinCompose)
+    implementation(Libs.Koin.koinCore)
+    implementation(Libs.Koin.koinAndroid)
+    implementation(Libs.Koin.koinCompose)
 
     //Coil
-    implementation (Libs.coil)
+    implementation(Libs.coil)
 
     //SystemUiController
-    implementation (Libs.systemUiController)
+    implementation(Libs.systemUiController)
 
     //Pager
-    implementation (Libs.composePager)
+    implementation(Libs.composePager)
 
     // testing
-    testImplementation (Libs.mockk)
-    testImplementation (Libs.googleTruth)
-    testImplementation (Libs.JUnit.junit)
-    testImplementation (Libs.Coroutines.test)
-    androidTestImplementation (Libs.AndroidX.Test.Ext.junit)
-    androidTestImplementation (Libs.AndroidX.Test.espressoCore)
-    androidTestImplementation (Libs.androidMockk)
-    androidTestImplementation (Libs.googleTruth)
+    testImplementation(Libs.mockk)
+    testImplementation(Libs.googleTruth)
+    testImplementation(Libs.JUnit.junit)
+    testImplementation(Libs.Coroutines.test)
+    androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
+    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+    androidTestImplementation(Libs.androidMockk)
+    androidTestImplementation(Libs.googleTruth)
 
 }
