@@ -465,40 +465,6 @@ private fun RenderRelatedGames(
 }
 
 @Composable
-private fun RenderPlatforms(
-    gameDetails: IgdbGameDetail,
-    isPlatformOwned: (String) -> Boolean,
-    updatePlatformAsOwned: (String, String) -> Unit
-) {
-    gameDetails.platform?.let { platforms ->
-        SafeArea(padding = 0.dp, topOverride = 10.dp) {
-            TitleContainer(
-                title = "Platforms",
-                titleColor = Color.White.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())
-                ) {
-                    platforms.forEach {
-                        SelectableChoice(
-                            isSelected = isPlatformOwned(it.slug),
-                            text = it.name,
-                            selectionColor = Color(203, 112, 209),
-                            backgroundColor = Color.Black
-                        ) {
-                            updatePlatformAsOwned(gameDetails.slug, it.slug)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun RenderGameRating(rating: Int) {
     val backgroundColor = when {
         rating >= 75 -> Color.Green.copy(alpha = 0.5f)
