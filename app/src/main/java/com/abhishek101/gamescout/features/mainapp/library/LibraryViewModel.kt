@@ -13,6 +13,7 @@ import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ABANDON
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ALL
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.COMPLETED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.OWNED
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.PLAYING
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.WANTED
 import kotlinx.coroutines.flow.collect
@@ -22,6 +23,7 @@ enum class LibraryFilters {
     ALL,
     OWNED,
     QUEUED,
+    PLAYING,
     WANTED,
     COMPLETED,
     ABANDONED
@@ -46,6 +48,7 @@ class LibraryViewModel(private val libraryRepository: LibraryRepository) : ViewM
         libraryGames = when (filter) {
             OWNED -> allGames.filter { it.gameStatus != WANT }
             ALL -> allGames
+            PLAYING -> allGames.filter { it.gameStatus == GameStatus.PLAYING }
             QUEUED -> allGames.filter { it.gameStatus == GameStatus.QUEUED }
             WANTED -> allGames.filter { it.gameStatus == WANT }
             COMPLETED -> allGames.filter { it.gameStatus == GameStatus.COMPLETED }

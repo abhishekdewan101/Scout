@@ -33,6 +33,7 @@ import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ABANDON
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ALL
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.COMPLETED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.OWNED
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.PLAYING
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.WANTED
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
@@ -72,6 +73,7 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                                 OWNED to "Owned",
                                 QUEUED to "Queued",
                                 WANTED to "Wishlist",
+                                PLAYING to "Playing",
                                 COMPLETED to "Completed",
                                 ABANDONED to "Abandoned"
                             ),
