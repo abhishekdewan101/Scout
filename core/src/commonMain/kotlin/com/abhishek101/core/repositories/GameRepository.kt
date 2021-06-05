@@ -49,7 +49,9 @@ class GameRepositoryImpl(
 
     override suspend fun getGameDetailForSlug(slug: String): Flow<IgdbGameDetail> {
         return flow {
-            emit(gameApi.getGameDetailsForQuery(buildGameDetailQuery(slug), dbHelper.accessToken))
+            val gameDetail =
+                gameApi.getGameDetailsForQuery(buildGameDetailQuery(slug), dbHelper.accessToken)
+            emit(gameDetail)
         }.flowOn(Dispatchers.Default)
     }
 

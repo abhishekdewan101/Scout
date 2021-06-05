@@ -4,7 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.abhishek101.gamescout.design.GridImageList
+import com.abhishek101.gamescout.design.ImageGrid
 import com.abhishek101.gamescout.design.TitleContainer
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -18,7 +18,7 @@ fun GamePosterGrid(
 ) {
     Column {
         TitleContainer(title = title, hasViewMore = true, onViewMoreClicked = onViewMoreClicked) {
-            GridImageList(
+            ImageGrid(
                 data = data,
                 columns = columns,
                 imageWidth = 125.dp,

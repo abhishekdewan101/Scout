@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.IntOffset
@@ -70,10 +71,19 @@ fun SearchAppBar(
             enter = slideIn({ fullSize -> IntOffset(fullSize.width + 100, 0) }),
             exit = slideOut({ fullSize -> IntOffset(fullSize.width + 100, 0) })
         ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 TextField(
                     value = searchInput,
-                    placeholder = { Text(placeholderText, style = TextStyle(color = MaterialTheme.colors.background.copy(alpha = 0.5f))) },
+                    placeholder = {
+                        Text(
+                            placeholderText,
+                            style = TextStyle(color = MaterialTheme.colors.background.copy(alpha = 0.5f))
+                        )
+                    },
                     onValueChange = { searchInput = it },
                     modifier = Modifier.weight(9f),
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
@@ -105,7 +115,8 @@ fun SearchAppBar(
             ) {
                 Text(
                     title, style = MaterialTheme.typography.h4.copy(
-                        color = MaterialTheme.colors.onBackground
+                        color = MaterialTheme.colors.onBackground,
+                        fontWeight = FontWeight.Bold
                     )
                 )
                 IconButton(onClick = { expanded = true }) {

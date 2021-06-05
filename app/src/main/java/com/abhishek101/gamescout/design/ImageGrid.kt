@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.CoilImage
 
 @Composable
-fun GridImageList(
+fun ImageGrid(
     data: List<String>,
     columns: Int,
     imageWidth: Dp,
@@ -29,7 +29,7 @@ fun GridImageList(
 
     for (row in chunkedData) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Start,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
@@ -41,8 +41,8 @@ fun GridImageList(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(imageWidth, imageHeight)
-                        .clip(RoundedCornerShape(10.dp))
                         .then(getItemPadding(index = index, columns = columns))
+                        .clip(RoundedCornerShape(10.dp))
                         .clickable {
                             onIndexSelected(data.indexOf(item))
                         },

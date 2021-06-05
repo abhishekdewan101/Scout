@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.GameListData
@@ -111,7 +110,7 @@ private fun RenderSearchGrid(
             }
         }
         item {
-            GridImageList(
+            ImageGrid(
                 data = covers,
                 columns = 3,
                 imageWidth = 125.dp,

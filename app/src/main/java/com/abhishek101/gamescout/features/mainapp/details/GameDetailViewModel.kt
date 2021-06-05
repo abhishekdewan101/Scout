@@ -1,67 +1,77 @@
 package com.abhishek101.gamescout.features.mainapp.details
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.abhishek101.core.db.LibraryGame
+import com.abhishek101.core.models.GameStatus
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.core.repositories.GameRepository
 import com.abhishek101.core.repositories.LibraryRepository
-import com.abhishek101.core.utils.buildImageString
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class GameDetailViewModel(
     private val gameRepository: GameRepository,
-    private val libraryRepository: LibraryRepository
+    private val libraryRepository: LibraryRepository,
 ) : ViewModel() {
+    private lateinit var job: Job
 
-    val gameDetails = mutableStateOf<IgdbGameDetail?>(null)
-    private val libraryGameDetails = mutableStateOf<LibraryGame?>(null)
+    var viewState by mutableStateOf<IgdbGameDetail?>(null)
 
-    // private lateinit var libraryJob: Job
+    var ownedPlatforms by mutableStateOf(mutableMapOf<String, Boolean>())
 
-    fun getGameDetails(slug: String) {
+    var gameStatus by mutableStateOf(GameStatus.OWNED)
+
+    var inLibrary by mutableStateOf(false)
+
+    fun getGameDetails(gameSlug: String) {
         viewModelScope.launch {
-            // libraryJob = launch {
-            //     libraryRepository.getGameForSlug(slug).collect {
-            //         libraryGameDetails.value = it
-            //     }
-            // }
-
-            launch {
-                gameRepository.getGameDetailForSlug(slug).collect {
-                    Timber.d("Game Detail Came Back")
-                    gameDetails.value = it
+            gameRepository.getGameDetailForSlug(gameSlug).collect {
+                viewState = it
+                job = launch {
+                    libraryRepository.getGameForSlug(gameSlug).collect { game ->
+                        inLibrary = game != null
+                        it.platform?.let { platforms ->
+                            if (game == null) {
+                                ownedPlatforms =
+                                    platforms.map { it.name to false }.toMutableStateMap()
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
-    fun isPlatformOwned(platform: String): Boolean {
-        return if (libraryGameDetails.value != null) {
-            Timber.d(libraryGameDetails.value!!.platform.toString())
-            libraryGameDetails.value!!.platform.contains(platform).also {
-                Timber.d("Platform $platform is owned by user $it")
+    fun updateGameStatus(gameStatus: GameStatus) {
+        this.gameStatus = gameStatus
+    }
+
+    fun updatePlatformAsOwned(platform: String) {
+        val owned = ownedPlatforms[platform]!!
+        ownedPlatforms[platform] = !owned
+    }
+
+    fun toggleGameInLibrary() {
+        if (inLibrary) {
+            viewState?.let {
+                libraryRepository.removeGameFromLibrary(it.slug)
             }
         } else {
-            false
+            viewState?.let {
+                libraryRepository.insertGameIntoLibrary(
+                    it.slug,
+                    it.name,
+                    it.cover!!.qualifiedUrl,
+                    it.firstReleaseDate,
+                    ownedPlatforms.filter { it.value }.map { it.key }.toList(),
+                    gameStatus
+                )
+            }
         }
-    }
-
-    fun onDestroy() {
-        // libraryJob.cancel()
-    }
-
-    fun updatePlatformAsOwned(slug: String, platform: String) {
-        // libraryRepository.insertGameIntoLibrary(
-        //     slug,
-        //     gameDetails.value!!.name,
-        //     buildImageString(gameDetails.value!!.cover!!.imageId),
-        //     gameDetails.value!!.firstReleaseDate,
-        //     platform
-        // )
     }
 }

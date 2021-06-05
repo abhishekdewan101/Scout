@@ -1,4 +1,3 @@
-import com.abhishek101.core.models.LibraryListType;
 import com.abhishek101.core.models.GameStatus;
 import kotlin.collections.List;
 
@@ -7,7 +6,6 @@ slug TEXT NOT NULL,
 name TEXT NOT NULL,
 coverUrl TEXT NOT NULL,
 releaseDate INTEGER NOT NULL,
-listType TEXT AS LibraryListType NOT NULL,
 gameStatus TEXT AS GameStatus NOT NULL,
 platform TEXT AS List<String> NOT NULL,
 startedOn INTEGER,
@@ -28,8 +26,8 @@ SELECT * FROM LibraryGame
 WHERE gameStatus = ?;
 
 insertGameIntoLibrary:
-INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, listType, gameStatus, platform)
-VALUES(?,?,?,?,?,?,?);
+INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, gameStatus, platform)
+VALUES(?,?,?,?,?,?);
 
 updateOwnedPlatform:
 UPDATE LibraryGame

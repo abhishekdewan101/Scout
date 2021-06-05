@@ -8,7 +8,6 @@ import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
@@ -49,6 +48,7 @@ fun BottomSheetContainer(sheetContent: @Composable () -> Unit, content: @Composa
 @Composable
 fun PreviewBottomSheetContainer() {
     val coroutine = rememberCoroutineScope()
+
     GameTrackerTheme {
         BottomSheetContainer(
             sheetContent = {
@@ -57,10 +57,20 @@ fun PreviewBottomSheetContainer() {
                         .fillMaxSize()
                         .background(Color.Red)
                 ) {
-                    Text(
-                        "Something is happening",
-                        style = MaterialTheme.typography.h1.copy(color = Color.White)
-                    )
+                    val bottomSheetState = LocalBottomSheetState.current
+                    Button(
+                        onClick = {
+                            coroutine.launch {
+                                if (bottomSheetState.isExpanded) {
+                                    bottomSheetState.collapse()
+                                } else {
+                                    bottomSheetState.expand()
+                                }
+                            }
+                        }
+                    ) {
+                        Text(text = "Expand/Collapse Bottom Sheet")
+                    }
                 }
             }
         ) {
