@@ -2,7 +2,6 @@ package com.abhishek101.core.repositories
 
 import com.abhishek101.core.db.LibraryGame
 import com.abhishek101.core.models.GameStatus
-import com.abhishek101.core.models.LibraryListType
 import com.abhishek101.core.utils.DatabaseHelper
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
@@ -27,6 +26,7 @@ interface LibraryRepository {
     fun updateGameAsNowPlaying(slug: String)
     fun updateGameAsFinished(status: GameStatus, rating: Long, notes: String?, slug: String)
     fun clearTables()
+    fun getWantedGames(): Flow<List<LibraryGame>>
     fun removeGameFromLibrary(slug: String)
 }
 
@@ -51,17 +51,11 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
         platform: List<String>,
         gameStatus: GameStatus
     ) {
-        val listType = if (clock.now().epochSeconds < releaseDate) {
-            LibraryListType.WISHLIST
-        } else {
-            LibraryListType.BACKLOG
-        }
         libraryQueries.insertGameIntoLibrary(
             slug,
             name,
             coverUrl,
             releaseDate,
-            listType,
             gameStatus,
             platform
         )
@@ -90,6 +84,10 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
 
     override fun clearTables() {
         libraryQueries.removeAllGamesFromLibrary()
+    }
+
+    override fun getWantedGames(): Flow<List<LibraryGame>> {
+        return libraryQueries.getGameWithStatus(GameStatus.WANT).asFlow().mapToList()
     }
 
     override fun removeGameFromLibrary(slug: String) {

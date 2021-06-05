@@ -25,7 +25,6 @@ val dbModule = module {
                 get(),
                 LibraryGameAdapter = LibraryGame.Adapter(
                     gameStatusAdapter = EnumColumnAdapter(),
-                    listTypeAdapter = EnumColumnAdapter(),
                     platformAdapter = platformAdapter
                 )
             )

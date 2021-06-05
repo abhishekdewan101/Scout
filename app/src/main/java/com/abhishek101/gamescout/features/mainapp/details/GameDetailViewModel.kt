@@ -62,7 +62,6 @@ class GameDetailViewModel(
                 libraryRepository.removeGameFromLibrary(it.slug)
             }
         } else {
-
             viewState?.let {
                 libraryRepository.insertGameIntoLibrary(
                     it.slug,
