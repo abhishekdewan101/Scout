@@ -56,7 +56,7 @@ import com.abhishek101.core.models.GameStatus.PLAYING
 import com.abhishek101.core.models.GameStatus.QUEUED
 import com.abhishek101.core.models.GameStatus.WANT
 import com.abhishek101.core.models.IgdbGameDetail
-import com.abhishek101.gamescout.components.PlatformSelectionRow
+import com.abhishek101.gamescout.components.ChipSelectionRow
 import com.abhishek101.gamescout.components.SelectableChoice
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
@@ -239,7 +239,7 @@ private fun AddGameBottomSheet(
                     titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
                     hasViewMore = false
                 ) {
-                    PlatformSelectionRow(platforms = platforms) {
+                    ChipSelectionRow(chipData = platforms) {
                         updatePlatformAsOwned(it)
                     }
                 }
@@ -252,110 +252,16 @@ private fun AddGameBottomSheet(
                 titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
                 hasViewMore = false
             ) {
+                val chipData = mapOf(
+                    OWNED.name to (gameStatus == OWNED),
+                    WANT.name to (gameStatus == WANT),
+                    PLAYING.name to (gameStatus == PLAYING),
+                    QUEUED.name to (gameStatus == QUEUED),
+                )
+
                 FlowRow(crossAxisSpacing = 10.dp) {
-                    Surface(
-                        color = when (gameStatus) {
-                            OWNED -> MaterialTheme.colors.primary
-                            else -> MaterialTheme.colors.background.copy(alpha = 0.5f)
-                        },
-                        contentColor = MaterialTheme.colors.onBackground,
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .border(
-                                1.dp,
-                                MaterialTheme.colors.onBackground,
-                                shape = CircleShape.copy(
-                                    CornerSize(5.dp)
-                                )
-                            )
-                            .clickable { updateGameStatus(OWNED) }
-                    ) {
-                        Text(
-                            text = "Owned",
-                            color = if (gameStatus == OWNED) Color.White else MaterialTheme.colors.onBackground,
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                        )
-                    }
-
-                    Surface(
-                        color = when (gameStatus) {
-                            WANT -> MaterialTheme.colors.primary
-                            else -> MaterialTheme.colors.background.copy(alpha = 0.5f)
-                        },
-                        contentColor = MaterialTheme.colors.onBackground,
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .border(
-                                1.dp,
-                                MaterialTheme.colors.onBackground,
-                                shape = CircleShape.copy(
-                                    CornerSize(5.dp)
-                                )
-                            )
-                            .clickable { updateGameStatus(WANT) }
-                    ) {
-                        Text(
-                            text = "Want",
-                            color = if (gameStatus == WANT) Color.White else MaterialTheme.colors.onBackground,
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                        )
-                    }
-
-                    Surface(
-                        color = when (gameStatus) {
-                            QUEUED -> MaterialTheme.colors.primary
-                            else -> MaterialTheme.colors.background.copy(alpha = 0.5f)
-                        },
-                        contentColor = MaterialTheme.colors.onBackground,
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .border(
-                                1.dp,
-                                MaterialTheme.colors.onBackground,
-                                shape = CircleShape.copy(
-                                    CornerSize(5.dp)
-                                )
-                            )
-                            .clickable { updateGameStatus(QUEUED) }
-                    ) {
-                        Text(
-                            text = "Playing Next",
-                            color = if (gameStatus == QUEUED) Color.White else MaterialTheme.colors.onBackground,
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                        )
-                    }
-
-
-                    Surface(
-                        color = when (gameStatus) {
-                            PLAYING -> MaterialTheme.colors.primary
-                            else -> MaterialTheme.colors.background.copy(alpha = 0.5f)
-                        },
-                        contentColor = MaterialTheme.colors.onBackground,
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .border(
-                                1.dp,
-                                MaterialTheme.colors.onBackground,
-                                shape = CircleShape.copy(
-                                    CornerSize(5.dp)
-                                )
-                            )
-                            .clickable { updateGameStatus(PLAYING) }
-                    ) {
-                        Text(
-                            text = "Playing Now",
-                            color = if (gameStatus == PLAYING) Color.White else MaterialTheme.colors.onBackground,
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                        )
+                    ChipSelectionRow(chipData = chipData) {
+                        updateGameStatus(GameStatus.valueOf(it))
                     }
                 }
             }
