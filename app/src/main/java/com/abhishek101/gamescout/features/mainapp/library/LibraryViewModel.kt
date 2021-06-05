@@ -6,21 +6,50 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abhishek101.core.db.LibraryGame
+import com.abhishek101.core.models.GameStatus
+import com.abhishek101.core.models.GameStatus.WANT
 import com.abhishek101.core.repositories.LibraryRepository
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ABANDONED
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ALL
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.COMPLETED
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.OWNED
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUED
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.WANTED
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
+
+enum class LibraryFilters {
+    ALL,
+    OWNED,
+    QUEUED,
+    WANTED,
+    COMPLETED,
+    ABANDONED
+}
 
 class LibraryViewModel(private val libraryRepository: LibraryRepository) : ViewModel() {
 
-    var libraryGames by mutableStateOf<List<LibraryGame>?>(null)
+    var libraryGames by mutableStateOf(listOf<LibraryGame>())
+
+    private var allGames = listOf<LibraryGame>()
 
     init {
         viewModelScope.launch {
             libraryRepository.getAllGames().collect {
-                Timber.d(it.toString())
-                libraryGames = it
+                allGames = it
+                libraryGames = allGames
             }
+        }
+    }
+
+    fun updateGamesForFilter(filter: LibraryFilters) {
+        libraryGames = when (filter) {
+            OWNED -> allGames.filter { it.gameStatus != WANT }
+            ALL -> allGames
+            QUEUED -> allGames.filter { it.gameStatus == GameStatus.QUEUED }
+            WANTED -> allGames.filter { it.gameStatus == WANT }
+            COMPLETED -> allGames.filter { it.gameStatus == GameStatus.COMPLETED }
+            ABANDONED -> allGames.filter { it.gameStatus == GameStatus.ABANDONED }
         }
     }
 

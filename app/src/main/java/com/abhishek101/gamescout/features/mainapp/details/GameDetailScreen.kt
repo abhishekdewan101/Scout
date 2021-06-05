@@ -51,6 +51,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.models.GameStatus
+import com.abhishek101.core.models.GameStatus.ABANDONED
+import com.abhishek101.core.models.GameStatus.COMPLETED
 import com.abhishek101.core.models.GameStatus.OWNED
 import com.abhishek101.core.models.GameStatus.PLAYING
 import com.abhishek101.core.models.GameStatus.QUEUED
@@ -257,6 +259,9 @@ private fun AddGameBottomSheet(
                     WANT.name to (gameStatus == WANT),
                     PLAYING.name to (gameStatus == PLAYING),
                     QUEUED.name to (gameStatus == QUEUED),
+                    PLAYING.name to (gameStatus == PLAYING),
+                    COMPLETED.name to (gameStatus == COMPLETED),
+                    ABANDONED.name to (gameStatus == ABANDONED)
                 )
 
                 FlowRow(crossAxisSpacing = 10.dp) {
