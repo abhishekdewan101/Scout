@@ -39,12 +39,12 @@ class GameDetailViewModel(
                 job = launch {
                     libraryRepository.getGameForSlug(gameSlug).collect { game ->
                         inLibrary = game != null
+                        gameDetail.platform?.let { platforms ->
+                            ownedPlatforms =
+                                platforms.map { it.name to false }.toMutableStateMap()
+                        }
                         if (game != null) {
                             setInitialData(game.gameStatus)
-                            gameDetail.platform?.let { platforms ->
-                                ownedPlatforms =
-                                    platforms.map { it.name to false }.toMutableStateMap()
-                            }
                             ownedPlatforms.forEach { (key, value) ->
                                 ownedPlatforms[key] = game.platform.contains(key)
                             }
