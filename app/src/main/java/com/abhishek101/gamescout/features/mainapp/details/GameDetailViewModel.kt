@@ -10,6 +10,7 @@ import com.abhishek101.core.models.GameStatus
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.core.repositories.GameRepository
 import com.abhishek101.core.repositories.LibraryRepository
+import com.abhishek101.gamescout.components.AddGameFormData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -24,54 +25,98 @@ class GameDetailViewModel(
 
     var ownedPlatforms by mutableStateOf(mutableMapOf<String, Boolean>())
 
-    var gameStatus by mutableStateOf(GameStatus.OWNED)
-
     var inLibrary by mutableStateOf(false)
+
+    var initialSaveLocation by mutableStateOf("")
+
+    var initialOwnedStatus by mutableStateOf("")
+
+    var initialQueueStatus by mutableStateOf("")
 
     fun getGameDetails(gameSlug: String) {
         viewModelScope.launch {
-            gameRepository.getGameDetailForSlug(gameSlug).collect {
-                viewState = it
+            gameRepository.getGameDetailForSlug(gameSlug).collect { gameDetail ->
                 job = launch {
                     libraryRepository.getGameForSlug(gameSlug).collect { game ->
                         inLibrary = game != null
-                        it.platform?.let { platforms ->
-                            if (game == null) {
-                                ownedPlatforms =
-                                    platforms.map { it.name to false }.toMutableStateMap()
+                        gameDetail.platform?.let { platforms ->
+                            ownedPlatforms =
+                                platforms.map { it.name to false }.toMutableStateMap()
+                        }
+                        if (game != null) {
+                            setInitialData(game.gameStatus)
+                            ownedPlatforms.forEach { (key, value) ->
+                                ownedPlatforms[key] = game.platform.contains(key)
                             }
                         }
+                        viewState = gameDetail
                     }
                 }
             }
         }
     }
 
-    fun updateGameStatus(gameStatus: GameStatus) {
-        this.gameStatus = gameStatus
-    }
-
-    fun updatePlatformAsOwned(platform: String) {
-        val owned = ownedPlatforms[platform]!!
-        ownedPlatforms[platform] = !owned
-    }
-
-    fun toggleGameInLibrary() {
-        if (inLibrary) {
+    fun toggleGameInLibrary(addGameFormData: AddGameFormData?) {
+        if (inLibrary && addGameFormData == null) {
             viewState?.let {
                 libraryRepository.removeGameFromLibrary(it.slug)
             }
-        } else {
-            viewState?.let {
-                libraryRepository.insertGameIntoLibrary(
-                    it.slug,
-                    it.name,
-                    it.cover!!.qualifiedUrl,
-                    it.firstReleaseDate,
-                    ownedPlatforms.filter { it.value }.map { it.key }.toList(),
-                    gameStatus
-                )
+        } else if (addGameFormData != null) {
+            setInitialData(addGameFormData.status)
+            if (inLibrary) {
+                viewState?.let {
+                    libraryRepository.updatePlatforms(addGameFormData.platforms, it.slug)
+                    when (addGameFormData.status) {
+                        GameStatus.WISHLIST -> libraryRepository.updateGameStatus(
+                            GameStatus.WISHLIST,
+                            it.slug
+                        )
+                        GameStatus.QUEUED -> libraryRepository.updateGameStatus(
+                            GameStatus.QUEUED,
+                            it.slug
+                        )
+                        GameStatus.PLAYING -> libraryRepository.updateGameAsNowPlaying(it.slug)
+                        GameStatus.COMPLETED, GameStatus.ABANDONED -> libraryRepository.updateGameAsFinished(
+                            addGameFormData.status,
+                            0,
+                            addGameFormData.comments,
+                            it.slug
+                        )
+                    }
+                }
+            } else {
+                addGameFormData.let { formData ->
+                    viewState?.let {
+                        libraryRepository.insertGameIntoLibrary(
+                            it.slug,
+                            it.name,
+                            it.cover!!.qualifiedUrl,
+                            it.firstReleaseDate,
+                            formData.platforms,
+                            formData.status,
+                            formData.comments
+                        )
+                    }
+                }
             }
+        }
+    }
+
+    private fun setInitialData(addGameFormDataStatus: GameStatus) {
+        initialSaveLocation = when {
+            addGameFormDataStatus == GameStatus.WISHLIST -> "WishList"
+            else -> "Library"
+        }
+
+        initialOwnedStatus = when {
+            addGameFormDataStatus == GameStatus.COMPLETED -> "Game Completed"
+            addGameFormDataStatus == GameStatus.ABANDONED -> "Didn't Finish"
+            else -> "Queue Game"
+        }
+
+        initialQueueStatus = when {
+            addGameFormDataStatus == GameStatus.PLAYING -> "Now"
+            else -> "Next"
         }
     }
 }

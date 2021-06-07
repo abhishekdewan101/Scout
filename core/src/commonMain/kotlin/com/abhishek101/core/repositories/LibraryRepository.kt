@@ -18,9 +18,11 @@ interface LibraryRepository {
         coverUrl: String,
         releaseDate: Long,
         platform: List<String>,
-        gameStatus: GameStatus
+        gameStatus: GameStatus,
+        notes: String?
     )
 
+    fun updatePlatforms(platform: List<String>, slug: String)
     fun getGamesWithStatus(status: GameStatus): List<LibraryGame>
     fun updateGameStatus(status: GameStatus, slug: String)
     fun updateGameAsNowPlaying(slug: String)
@@ -49,7 +51,8 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
         coverUrl: String,
         releaseDate: Long,
         platform: List<String>,
-        gameStatus: GameStatus
+        gameStatus: GameStatus,
+        notes: String?
     ) {
         libraryQueries.insertGameIntoLibrary(
             slug,
@@ -57,8 +60,13 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
             coverUrl,
             releaseDate,
             gameStatus,
-            platform
+            platform,
+            notes
         )
+    }
+
+    override fun updatePlatforms(platform: List<String>, slug: String) {
+        libraryQueries.updateOwnedPlatform(platform, slug)
     }
 
     override fun getGamesWithStatus(status: GameStatus): List<LibraryGame> {
@@ -87,7 +95,7 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
     }
 
     override fun getWantedGames(): Flow<List<LibraryGame>> {
-        return libraryQueries.getGameWithStatus(GameStatus.WANT).asFlow().mapToList()
+        return libraryQueries.getGameWithStatus(GameStatus.WISHLIST).asFlow().mapToList()
     }
 
     override fun removeGameFromLibrary(slug: String) {

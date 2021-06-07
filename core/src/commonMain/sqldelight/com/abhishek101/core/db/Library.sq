@@ -26,8 +26,8 @@ SELECT * FROM LibraryGame
 WHERE gameStatus = ?;
 
 insertGameIntoLibrary:
-INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, gameStatus, platform)
-VALUES(?,?,?,?,?,?);
+INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, gameStatus, platform, notes)
+VALUES(?,?,?,?,?,?,?);
 
 updateOwnedPlatform:
 UPDATE LibraryGame
