@@ -63,7 +63,7 @@ fun AddGameForm(platforms: Map<String, Boolean>) {
         LazyColumn {
             item {
                 Text(
-                    "Where would you like add this game?",
+                    "Add game to",
                     style = MaterialTheme.typography.h5,
                     color = MaterialTheme.colors.onBackground
                 )
@@ -182,7 +182,7 @@ fun QueuedGameSelectionContainer(queuedStatus: String, updateQueueStatus: (Strin
     Padding(top = 15.dp) {
         Column {
             Text(
-                "When would you like to play the game?",
+                "Queued this game for",
                 style = MaterialTheme.typography.h5,
                 color = MaterialTheme.colors.onBackground
             )
@@ -218,7 +218,7 @@ fun LibrarySelectionContainer(
             }
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                "Select the platforms you would like?",
+                "Game Status",
                 style = MaterialTheme.typography.h5,
                 color = MaterialTheme.colors.onBackground
             )
@@ -262,7 +262,7 @@ private fun PlatformSelectionContainer(
     Padding(top = 15.dp) {
         Column {
             Text(
-                "Select the platforms for this game",
+                "Platforms",
                 style = MaterialTheme.typography.h5,
                 color = MaterialTheme.colors.onBackground
             )
