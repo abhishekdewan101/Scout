@@ -32,7 +32,6 @@ import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ABANDONED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ALL
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.COMPLETED
-import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.OWNED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.PLAYING
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.WANTED
@@ -70,7 +69,6 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                         DropdownChip(
                             data = mapOf(
                                 ALL to "All",
-                                OWNED to "Owned",
                                 QUEUED to "Queued",
                                 WANTED to "Wishlist",
                                 PLAYING to "Playing",

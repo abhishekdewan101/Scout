@@ -12,7 +12,6 @@ import com.abhishek101.core.repositories.LibraryRepository
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ABANDONED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ALL
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.COMPLETED
-import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.OWNED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.PLAYING
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.WANTED
@@ -22,7 +21,6 @@ import timber.log.Timber
 
 enum class LibraryFilters {
     ALL,
-    OWNED,
     QUEUED,
     PLAYING,
     WANTED,
@@ -48,7 +46,6 @@ class LibraryViewModel(private val libraryRepository: LibraryRepository) : ViewM
 
     fun updateGamesForFilter(filter: LibraryFilters) {
         libraryGames = when (filter) {
-            OWNED -> allGames.filter { it.gameStatus != WISHLIST }
             ALL -> allGames
             PLAYING -> allGames.filter { it.gameStatus == GameStatus.PLAYING }
             QUEUED -> allGames.filter { it.gameStatus == GameStatus.QUEUED }
