@@ -58,6 +58,7 @@ import com.abhishek101.core.models.GameStatus.PLAYING
 import com.abhishek101.core.models.GameStatus.QUEUED
 import com.abhishek101.core.models.GameStatus.WANT
 import com.abhishek101.core.models.IgdbGameDetail
+import com.abhishek101.gamescout.components.AddGameForm
 import com.abhishek101.gamescout.components.ChipSelectionRow
 import com.abhishek101.gamescout.components.SelectableChoice
 import com.abhishek101.gamescout.design.CollapsableText
@@ -143,18 +144,19 @@ fun GameDetailScreen(
                 scaffoldState = scaffoldState,
                 sheetPeekHeight = 0.dp,
                 sheetContent = {
-                    AddGameBottomSheet(viewModel.ownedPlatforms, viewModel.gameStatus, {
-                        viewModel.updatePlatformAsOwned(it)
-                    }, {
-                        viewModel.updateGameStatus(it)
-                    }) {
-                        coroutine.launch {
-                            if (scaffoldState.bottomSheetState.isExpanded) {
-                                scaffoldState.bottomSheetState.collapse()
-                            }
-                        }
-                        viewModel.toggleGameInLibrary()
-                    }
+                    AddGameForm(viewModel.ownedPlatforms)
+                    // AddGameBottomSheet(viewModel.ownedPlatforms, viewModel.gameStatus, {
+                    //     viewModel.updatePlatformAsOwned(it)
+                    // }, {
+                    //     viewModel.updateGameStatus(it)
+                    // }) {
+                    //     coroutine.launch {
+                    //         if (scaffoldState.bottomSheetState.isExpanded) {
+                    //             scaffoldState.bottomSheetState.collapse()
+                    //         }
+                    //     }
+                    //     viewModel.toggleGameInLibrary()
+                    // }
                 }
             ) {
                 SafeArea(padding = 10.dp) {
