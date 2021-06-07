@@ -2,9 +2,7 @@ package com.abhishek101.gamescout.features.mainapp.details
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -17,24 +15,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BookmarkAdded
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.BookmarkAdd
-import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
@@ -50,17 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.abhishek101.core.models.GameStatus
-import com.abhishek101.core.models.GameStatus.ABANDONED
-import com.abhishek101.core.models.GameStatus.COMPLETED
-import com.abhishek101.core.models.GameStatus.OWNED
-import com.abhishek101.core.models.GameStatus.PLAYING
-import com.abhishek101.core.models.GameStatus.QUEUED
-import com.abhishek101.core.models.GameStatus.WANT
-import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.gamescout.components.AddGameForm
-import com.abhishek101.gamescout.components.ChipSelectionRow
-import com.abhishek101.gamescout.components.SelectableChoice
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.HorizontalVideoList
@@ -72,7 +55,6 @@ import com.abhishek101.gamescout.design.TitleContainer
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import com.google.accompanist.coil.CoilImage
-import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
@@ -144,19 +126,19 @@ fun GameDetailScreen(
                 scaffoldState = scaffoldState,
                 sheetPeekHeight = 0.dp,
                 sheetContent = {
-                    AddGameForm(viewModel.ownedPlatforms)
-                    // AddGameBottomSheet(viewModel.ownedPlatforms, viewModel.gameStatus, {
-                    //     viewModel.updatePlatformAsOwned(it)
-                    // }, {
-                    //     viewModel.updateGameStatus(it)
-                    // }) {
-                    //     coroutine.launch {
-                    //         if (scaffoldState.bottomSheetState.isExpanded) {
-                    //             scaffoldState.bottomSheetState.collapse()
-                    //         }
-                    //     }
-                    //     viewModel.toggleGameInLibrary()
-                    // }
+                    AddGameForm(
+                        viewModel.ownedPlatforms,
+                        viewModel.initialSaveLocation,
+                        viewModel.initialOwnedStatus,
+                        viewModel.initialQueueStatus
+                    ) {
+                        coroutine.launch {
+                            if (scaffoldState.bottomSheetState.isExpanded) {
+                                scaffoldState.bottomSheetState.collapse()
+                            }
+                        }
+                        viewModel.toggleGameInLibrary(it)
+                    }
                 }
             ) {
                 SafeArea(padding = 10.dp) {
@@ -164,13 +146,10 @@ fun GameDetailScreen(
                         stickyHeader {
                             Header(
                                 currentViewState.name,
-                                inLibrary
+                                inLibrary,
+                                { viewModel.toggleGameInLibrary(null) }
                             ) {
-                                if (inLibrary) {
-                                    viewModel.toggleGameInLibrary()
-                                } else {
-                                    coroutine.launch { scaffoldState.bottomSheetState.expand() }
-                                }
+                                coroutine.launch { scaffoldState.bottomSheetState.expand() }
                             }
                         }
                         item {
@@ -225,73 +204,10 @@ fun GameDetailScreen(
 }
 
 @Composable
-private fun AddGameBottomSheet(
-    platforms: Map<String, Boolean>,
-    gameStatus: GameStatus,
-    updatePlatformAsOwned: (String) -> Unit,
-    updateGameStatus: (GameStatus) -> Unit,
-    saveGame: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-    ) {
-        Padding(all = 10.dp) {
-            if (platforms.isNotEmpty()) {
-                TitleContainer(
-                    title = "Select the platforms you own",
-                    titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
-                    hasViewMore = false
-                ) {
-                    ChipSelectionRow(chipData = platforms) {
-                        updatePlatformAsOwned(it)
-                    }
-                }
-            }
-        }
-
-        Padding(all = 10.dp) {
-            TitleContainer(
-                title = "Select a game status",
-                titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
-                hasViewMore = false
-            ) {
-                val chipData = mapOf(
-                    OWNED.name to (gameStatus == OWNED),
-                    WANT.name to (gameStatus == WANT),
-                    PLAYING.name to (gameStatus == PLAYING),
-                    QUEUED.name to (gameStatus == QUEUED),
-                    PLAYING.name to (gameStatus == PLAYING),
-                    COMPLETED.name to (gameStatus == COMPLETED),
-                    ABANDONED.name to (gameStatus == ABANDONED)
-                )
-
-                FlowRow(crossAxisSpacing = 10.dp) {
-                    ChipSelectionRow(chipData = chipData) {
-                        updateGameStatus(GameStatus.valueOf(it))
-                    }
-                }
-            }
-        }
-
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            IconButton(
-                onClick = saveGame,
-                modifier = Modifier
-                    .weight(1f)
-                    .background(MaterialTheme.colors.primary)
-            ) {
-                Icon(Icons.Outlined.Done, "", tint = Color.White)
-            }
-        }
-
-    }
-}
-
-@Composable
 private fun Header(
     title: String,
     inLibrary: Boolean,
+    removeGame: () -> Unit,
     saveGame: () -> Unit
 ) {
     TopAppBar(backgroundColor = MaterialTheme.colors.background, elevation = 0.dp) {
@@ -310,15 +226,27 @@ private fun Header(
                 overflow = TextOverflow.Ellipsis
             )
             Icon(
-                if (inLibrary) Icons.Filled.BookmarkAdded else Icons.Outlined.BookmarkAdd,
+                if (inLibrary) Icons.Filled.Edit else Icons.Outlined.BookmarkAdd,
                 "",
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
-                    .weight(2f)
+                    .weight(1f)
                     .clickable {
                         saveGame()
                     }
             )
+            if (inLibrary) {
+                Icon(
+                    Icons.Filled.Delete,
+                    "",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
+                            removeGame()
+                        }
+                )
+            }
         }
     }
 }

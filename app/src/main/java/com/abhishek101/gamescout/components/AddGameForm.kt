@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +27,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -35,31 +35,42 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.abhishek101.core.models.GameStatus
 import com.abhishek101.gamescout.design.Padding
-import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.theme.White
-import timber.log.Timber
+
+data class AddGameFormData(
+    val status: GameStatus,
+    val platforms: List<String>,
+    val comments: String?,
+)
 
 @Composable
-fun AddGameForm(platforms: Map<String, Boolean>) {
+fun AddGameForm(
+    platforms: Map<String, Boolean>,
+    initialSaveLocation: String,
+    initialOwnedStatus: String,
+    initialQueuedStatus: String,
+    saveFormData: (AddGameFormData) -> Unit
+) {
     var saveLocation by remember {
-        mutableStateOf("WishList")
+        mutableStateOf(initialSaveLocation)
     }
-    val selectedPlatforms = remember {
+    var selectedPlatforms = remember {
         mutableStateMapOf<String, Boolean>().also { it.putAll(platforms) }
     }
 
     var ownedStatus by remember {
-        mutableStateOf("COMPLETED")
+        mutableStateOf(initialOwnedStatus)
     }
 
     var comments by remember { mutableStateOf(TextFieldValue("")) }
 
     var queuedStatus by remember {
-        mutableStateOf("NOW")
+        mutableStateOf(initialQueuedStatus)
     }
 
-    SafeArea(padding = 10.dp, topOverride = 10.dp) {
+    Padding(all = 10.dp) {
         LazyColumn {
             item {
                 Text(
@@ -109,12 +120,14 @@ fun AddGameForm(platforms: Map<String, Boolean>) {
                             .height(55.dp)
                             .background(MaterialTheme.colors.primary)
                             .clickable {
-                                Timber.d(
-                                    "SaveLocation - $saveLocation\n" +
-                                        "List - $ownedStatus \n" +
-                                        "Platforms - ${selectedPlatforms.toList()}\n" +
-                                        "Queue Status - $queuedStatus\n" +
-                                        "Comments - $comments"
+                                saveFormData(
+                                    calculateFormData(
+                                        saveLocation,
+                                        ownedStatus,
+                                        selectedPlatforms,
+                                        comments,
+                                        queuedStatus
+                                    )
                                 )
                             }
                     ) {
@@ -135,6 +148,27 @@ fun AddGameForm(platforms: Map<String, Boolean>) {
             }
         }
     }
+}
+
+fun calculateFormData(
+    saveLocation: String,
+    ownedStatus: String,
+    selectedPlatforms: SnapshotStateMap<String, Boolean>,
+    comments: TextFieldValue,
+    queuedStatus: String
+): AddGameFormData {
+    val gameStatus = when (saveLocation) {
+        "WishList" -> GameStatus.WISHLIST
+        else -> when {
+            ownedStatus == "Game Completed" -> GameStatus.COMPLETED
+            ownedStatus == "Didn't Finish" -> GameStatus.ABANDONED
+            queuedStatus == "Now" -> GameStatus.PLAYING
+            ownedStatus == "Queue Game" -> GameStatus.QUEUED
+            else -> GameStatus.QUEUED
+        }
+    }
+    val platforms = selectedPlatforms.filter { it.value }.keys.toList()
+    return AddGameFormData(gameStatus, platforms, comments.text)
 }
 
 @Composable
@@ -189,9 +223,9 @@ fun QueuedGameSelectionContainer(queuedStatus: String, updateQueueStatus: (Strin
             Spacer(modifier = Modifier.height(10.dp))
             ChipSelectionRow(
                 chipData = mapOf(
-                    "NOW" to (queuedStatus == "NOW"),
-                    "NEXT" to (queuedStatus == "NEXT"),
-                    "LATER" to (queuedStatus == "LATER"),
+                    "Now" to (queuedStatus == "Now"),
+                    "Next" to (queuedStatus == "Next"),
+                    "Later" to (queuedStatus == "Later"),
                 )
             ) {
                 updateQueueStatus(it)
@@ -225,20 +259,19 @@ fun LibrarySelectionContainer(
             Spacer(modifier = Modifier.height(10.dp))
             ChipSelectionRow(
                 chipData = mapOf(
-                    "QUEUED" to (ownedStatus == "QUEUED"),
-                    "COMPLETED" to (ownedStatus == "COMPLETED"),
-                    "ABANDONED" to (ownedStatus == "ABANDONED"),
+                    "Queue Game" to (ownedStatus == "Queue Game"),
+                    "Game Completed" to (ownedStatus == "Game Completed"),
+                    "Didn't Finish" to (ownedStatus == "Didn't Finish"),
                 )
             ) {
                 updateOwnedStatus(it)
             }
             Spacer(modifier = Modifier.height(10.dp))
             when (ownedStatus) {
-                "QUEUED" -> QueuedGameSelectionContainer(queuedStatus) {
+                "Queue Game" -> QueuedGameSelectionContainer(queuedStatus) {
                     updateQueueStatus(it)
                 }
-                "COMPLETED",
-                "ABANDONED" -> GameCompletedSelectionContainer(comments) {
+                else -> GameCompletedSelectionContainer(comments) {
                     updateComments(it)
                 }
             }
