@@ -37,6 +37,10 @@ class GameDetailViewModel(
         }
     }
 
+    fun updateFormState(newState: GameIntakeFormState) {
+        _formState.value = newState
+    }
+
     private fun buildFormState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameIntakeFormState {
         val platforms = buildOwnedPlatformList(remoteDetails, libraryDetails)
         val saveLocation = getSaveLocation(libraryDetails)

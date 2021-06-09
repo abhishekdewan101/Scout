@@ -83,14 +83,24 @@ fun GameDetailScreen(
 
     when (currentViewState) {
         EmptyViewState -> LoadingIndicator()
-        is NonEmptyViewState -> GameDetailContent(viewState = currentViewState as NonEmptyViewState, formState = formState, navigate = navigate)
+        is NonEmptyViewState -> GameDetailContent(
+            viewState = currentViewState as NonEmptyViewState,
+            formState = formState,
+            updateFormState = viewModel::updateFormState,
+            navigate = navigate
+        )
     }
 }
 
 @ExperimentalFoundationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun GameDetailContent(viewState: NonEmptyViewState, formState: GameIntakeFormState, navigate: (String) -> Unit) {
+private fun GameDetailContent(
+    viewState: NonEmptyViewState,
+    formState: GameIntakeFormState,
+    updateFormState: (GameIntakeFormState) -> Unit,
+    navigate: (String) -> Unit
+) {
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -105,11 +115,8 @@ private fun GameDetailContent(viewState: NonEmptyViewState, formState: GameIntak
             sheetState = modalBottomSheetState,
             sheetContent = {
                 AddGameForm(
-                    formState.platforms,
-                    formState.saveLocation,
-                    formState.completionStatus,
-                    formState.queuedStatus,
-                    formState.notes
+                    formState = formState,
+                    updateFormData = { updateFormState(it) }
                 ) {
                     scope.launch {
                         if (modalBottomSheetState.isVisible) {

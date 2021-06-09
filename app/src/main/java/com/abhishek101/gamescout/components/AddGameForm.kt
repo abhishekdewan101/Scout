@@ -41,15 +41,17 @@ import com.abhishek101.core.viewmodels.gamedetails.SaveLocation
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.theme.White
 
+//TODO:This class needs to be refactored to a better UX
 @Composable
 fun AddGameForm(
-    platforms: List<PlatformViewItem>,
-    saveLocation: SaveLocation,
-    completionStatus: CompletionStatus,
-    queuedStatus: QueuedStatus,
-    notes: String,
-    updateFormData: (GameIntakeFormState) -> Unit
+    formState: GameIntakeFormState,
+    updateFormData: (GameIntakeFormState) -> Unit,
+    saveGame: () -> Unit,
 ) {
+
+    val platforms = formState.platforms
+    val saveLocation = formState.saveLocation
+    val notes = formState.notes
     var comments by remember { mutableStateOf(TextFieldValue(notes)) }
     Padding(all = 10.dp) {
         LazyColumn {
@@ -68,25 +70,37 @@ fun AddGameForm(
                             "Library" to (saveLocation == SaveLocation.LIBRARY)
                         )
                     ) {
-
+                        val updatedSaveLocation = when (it) {
+                            "WishList" -> SaveLocation.WISHLIST
+                            else -> SaveLocation.LIBRARY
+                        }
+                        updateFormData(formState.copy(saveLocation = updatedSaveLocation))
                     }
                 }
             }
 
             if (saveLocation == SaveLocation.WISHLIST) {
                 item {
-                    WishlistSelectionContainer(platforms) {
-
+                    PlatformSelectionContainer(platforms) { platform ->
+                        val newPlatformList = platforms.toMutableList().map {
+                            if (it.name == platform) {
+                                it.copy(owned = it.owned.not())
+                            } else {
+                                it
+                            }
+                        }
+                        updateFormData(formState.copy(platforms = newPlatformList))
                     }
                 }
             } else {
                 item {
                     LibrarySelectionContainer(
-                        platforms,
-                        completionStatus,
-                        queuedStatus,
-                        comments
-                    ) { comments = it }
+                        formState = formState,
+                        comments = comments,
+                        updateComments = { comments = it }
+                    ) {
+                        updateFormData(it)
+                    }
                 }
             }
 
@@ -98,7 +112,7 @@ fun AddGameForm(
                             .height(55.dp)
                             .background(MaterialTheme.colors.primary)
                             .clickable {
-
+                                saveGame()
                             }
                     ) {
                         Row(
@@ -161,7 +175,7 @@ fun GameCompletedSelectionContainer(
 }
 
 @Composable
-fun QueuedGameSelectionContainer(queuedStatus: QueuedStatus, updateQueueStatus: (String) -> Unit) {
+fun QueuedGameSelectionContainer(queuedStatus: QueuedStatus, updateQueueStatus: (QueuedStatus) -> Unit) {
     Padding(top = 15.dp) {
         Column {
             Text(
@@ -177,7 +191,12 @@ fun QueuedGameSelectionContainer(queuedStatus: QueuedStatus, updateQueueStatus: 
                     "Later" to (queuedStatus == QueuedStatus.LATER),
                 )
             ) {
-                updateQueueStatus(it)
+                val newQueuedStatus = when (it) {
+                    "Now" -> QueuedStatus.NOW
+                    "Next" -> QueuedStatus.NEXT
+                    else -> QueuedStatus.LATER
+                }
+                updateQueueStatus(newQueuedStatus)
             }
         }
     }
@@ -185,12 +204,14 @@ fun QueuedGameSelectionContainer(queuedStatus: QueuedStatus, updateQueueStatus: 
 
 @Composable
 fun LibrarySelectionContainer(
-    platforms: List<PlatformViewItem>,
-    completionStatus: CompletionStatus,
-    queuedStatus: QueuedStatus,
+    formState: GameIntakeFormState,
     comments: TextFieldValue,
     updateComments: (TextFieldValue) -> Unit,
+    updateFormData: (GameIntakeFormState) -> Unit
 ) {
+    val platforms = formState.platforms
+    val completionStatus = formState.completionStatus
+    val queuedStatus = formState.queuedStatus
     Padding(top = 15.dp) {
         Column {
             PlatformSelectionContainer(platforms) {
@@ -211,12 +232,18 @@ fun LibrarySelectionContainer(
                     "Backlog " to (completionStatus == CompletionStatus.BACKLOG)
                 )
             ) {
-
+                val newCompletionStatus = when (it) {
+                    "Queue Game" -> CompletionStatus.QUEUED
+                    "Game Completed" -> CompletionStatus.COMPLETED
+                    "Didn't Finish" -> CompletionStatus.ABANDONED
+                    else -> CompletionStatus.BACKLOG
+                }
+                updateFormData(formState.copy(completionStatus = newCompletionStatus))
             }
             Spacer(modifier = Modifier.height(10.dp))
             when (completionStatus) {
                 CompletionStatus.QUEUED -> QueuedGameSelectionContainer(queuedStatus = queuedStatus) {
-
+                    updateFormData(formState.copy(queuedStatus = it))
                 }
                 else -> GameCompletedSelectionContainer(comments) {
                     updateComments(it)
@@ -224,14 +251,6 @@ fun LibrarySelectionContainer(
             }
         }
     }
-}
-
-@Composable
-fun WishlistSelectionContainer(
-    selectedPlatforms: List<PlatformViewItem>,
-    updatePlatform: (String) -> Unit
-) {
-    PlatformSelectionContainer(selectedPlatforms, updatePlatform)
 }
 
 @Composable
