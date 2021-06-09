@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.GameStatus
+import com.abhishek101.core.viewmodels.gamedetails.PlatformViewItem
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.theme.White
 
@@ -47,7 +48,7 @@ data class AddGameFormData(
 
 @Composable
 fun AddGameForm(
-    platforms: Map<String, Boolean>,
+    platforms: List<PlatformViewItem>,
     initialSaveLocation: String,
     initialOwnedStatus: String,
     initialQueuedStatus: String,
@@ -57,7 +58,9 @@ fun AddGameForm(
         mutableStateOf(initialSaveLocation)
     }
     var selectedPlatforms = remember {
-        mutableStateMapOf<String, Boolean>().also { it.putAll(platforms) }
+        mutableStateMapOf<String, Boolean>().also {
+            platforms.forEach { platformViewItem -> it[platformViewItem.name] = platformViewItem.owned }
+        }
     }
 
     var ownedStatus by remember {

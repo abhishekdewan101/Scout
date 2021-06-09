@@ -24,7 +24,7 @@ enum class ListType(val title: String) {
 interface GameRepository {
     suspend fun getListDataForType(type: ListType): Flow<ListData>
 
-    suspend fun getGameDetailForSlug(slug: String): Flow<IgdbGameDetail>
+    suspend fun getGameDetailForSlug(slug: String): IgdbGameDetail
 
     suspend fun searchForGames(searchTerm: String): Flow<ListData>
 }
@@ -47,12 +47,8 @@ class GameRepositoryImpl(
         }.flowOn(Dispatchers.Default)
     }
 
-    override suspend fun getGameDetailForSlug(slug: String): Flow<IgdbGameDetail> {
-        return flow {
-            val gameDetail =
-                gameApi.getGameDetailsForQuery(buildGameDetailQuery(slug), dbHelper.accessToken)
-            emit(gameDetail)
-        }.flowOn(Dispatchers.Default)
+    override suspend fun getGameDetailForSlug(slug: String): IgdbGameDetail {
+        return gameApi.getGameDetailsForQuery(buildGameDetailQuery(slug), dbHelper.accessToken)
     }
 
     override suspend fun searchForGames(searchTerm: String): Flow<ListData> {

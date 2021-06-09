@@ -20,33 +20,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.abhishek101.core.viewmodels.gamedetails.VideoViewItem
 
 @Composable
 fun HorizontalVideoList(
-    screenshots: List<String>,
-    titles: List<String>,
+    videos: List<VideoViewItem>,
     itemWidth: Dp,
     itemHeight: Dp,
-    onIndexSelected: (Int) -> Unit
+    launchVideo: (String) -> Unit
 ) {
     LazyRow {
-        items(screenshots.size) { index ->
-            val url = screenshots[index]
+        items(videos.size) { index ->
+            val video = videos[index]
             Padding(end = 20.dp) {
                 Box(modifier = Modifier.width(width = itemWidth)) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         TouchableImage(
-                            url = url,
+                            url = video.screenshotUrl,
                             width = itemWidth,
                             height = itemHeight,
                             cornerRadius = 10.dp,
                             rippleColor = MaterialTheme.colors.primary
                         ) {
-                            onIndexSelected(index)
+                            launchVideo(video.youtubeUrl)
                         }
                         Spacer(Modifier.height(10.dp))
                         Text(
-                            titles[index],
+                            video.name,
                             style = MaterialTheme.typography.body1.copy(color = Color.White)
                         )
                     }
