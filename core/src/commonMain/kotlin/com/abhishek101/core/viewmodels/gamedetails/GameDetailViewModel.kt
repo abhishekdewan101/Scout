@@ -1,6 +1,7 @@
 package com.abhishek101.core.viewmodels.gamedetails
 
 import com.abhishek101.core.db.LibraryGame
+import com.abhishek101.core.models.GameStatus
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.core.repositories.GameRepository
 import com.abhishek101.core.repositories.LibraryRepository
@@ -22,12 +23,56 @@ class GameDetailViewModel(
 
     val viewState: StateFlow<GameDetailViewState> = _viewState
 
+    private val _formState = MutableStateFlow(defaultFormState)
+
+    val formState: StateFlow<GameIntakeFormState> = _formState
+
     fun constructGameDetails(slug: String) {
         defaultScope.launch {
             val remoteDetails = gameRepository.getGameDetailForSlug(slug)
             libraryRepository.getGameForSlug(slug).collect {
                 _viewState.value = buildGameViewState(remoteDetails = remoteDetails, libraryDetails = it)
+                _formState.value = buildFormState(remoteDetails = remoteDetails, libraryDetails = it)
             }
+        }
+    }
+
+    private fun buildFormState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameIntakeFormState {
+        val platforms = buildOwnedPlatformList(remoteDetails, libraryDetails)
+        val saveLocation = getSaveLocation(libraryDetails)
+        val completionStatus = getCompletionStatus(libraryDetails)
+        val queuedStatus = getQueuedStatus(libraryDetails)
+        return GameIntakeFormState(
+            saveLocation = saveLocation,
+            platforms = platforms,
+            completionStatus = completionStatus,
+            queuedStatus = queuedStatus,
+            notes = ""
+        )
+    }
+
+    private fun getQueuedStatus(libraryDetails: LibraryGame?): QueuedStatus {
+        return when {
+            libraryDetails == null -> QueuedStatus.LATER
+            libraryDetails.gameStatus == GameStatus.PLAYING -> QueuedStatus.NOW
+            else -> QueuedStatus.NEXT
+        }
+    }
+
+    private fun getCompletionStatus(libraryDetails: LibraryGame?): CompletionStatus {
+        return when {
+            libraryDetails == null -> CompletionStatus.BACKLOG
+            libraryDetails.gameStatus == GameStatus.COMPLETED -> CompletionStatus.COMPLETED
+            libraryDetails.gameStatus == GameStatus.ABANDONED -> CompletionStatus.ABANDONED
+            else -> CompletionStatus.QUEUED
+        }
+    }
+
+    private fun getSaveLocation(libraryDetails: LibraryGame?): SaveLocation {
+        return when {
+            libraryDetails == null -> SaveLocation.WISHLIST
+            libraryDetails.gameStatus == GameStatus.WISHLIST -> SaveLocation.WISHLIST
+            else -> SaveLocation.LIBRARY
         }
     }
 

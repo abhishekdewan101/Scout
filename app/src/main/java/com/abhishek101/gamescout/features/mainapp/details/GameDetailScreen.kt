@@ -48,6 +48,7 @@ import com.abhishek101.core.viewmodels.gamedetails.DeveloperViewItem
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.EmptyViewState
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.NonEmptyViewState
+import com.abhishek101.core.viewmodels.gamedetails.GameIntakeFormState
 import com.abhishek101.core.viewmodels.gamedetails.GamePosterViewItem
 import com.abhishek101.core.viewmodels.gamedetails.VideoViewItem
 import com.abhishek101.gamescout.components.AddGameForm
@@ -74,6 +75,7 @@ fun GameDetailScreen(
     navigate: (String) -> Unit
 ) {
     val currentViewState by viewModel.viewState.collectAsState()
+    val formState by viewModel.formState.collectAsState()
 
     LaunchedEffect(key1 = gameSlug) {
         viewModel.constructGameDetails(gameSlug)
@@ -81,14 +83,14 @@ fun GameDetailScreen(
 
     when (currentViewState) {
         EmptyViewState -> LoadingIndicator()
-        is NonEmptyViewState -> GameDetailContent(viewState = currentViewState as NonEmptyViewState, navigate = navigate)
+        is NonEmptyViewState -> GameDetailContent(viewState = currentViewState as NonEmptyViewState, formState = formState, navigate = navigate)
     }
 }
 
 @ExperimentalFoundationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun GameDetailContent(viewState: NonEmptyViewState, navigate: (String) -> Unit) {
+private fun GameDetailContent(viewState: NonEmptyViewState, formState: GameIntakeFormState, navigate: (String) -> Unit) {
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -103,10 +105,11 @@ private fun GameDetailContent(viewState: NonEmptyViewState, navigate: (String) -
             sheetState = modalBottomSheetState,
             sheetContent = {
                 AddGameForm(
-                    viewState.platforms,
-                    "",
-                    "",
-                    ""
+                    formState.platforms,
+                    formState.saveLocation,
+                    formState.completionStatus,
+                    formState.queuedStatus,
+                    formState.notes
                 ) {
                     scope.launch {
                         if (modalBottomSheetState.isVisible) {
