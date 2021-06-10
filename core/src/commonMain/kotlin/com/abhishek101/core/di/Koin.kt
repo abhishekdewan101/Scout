@@ -11,7 +11,7 @@ import kotlin.time.ExperimentalTime
 fun initKoin(appModules: List<Module>): KoinApplication {
     val combined = appModules.toMutableList().apply {
         add(platformModule)
-        addAll(listOf(utilModule, dbModule, apiModule, repoModule))
+        addAll(listOf(utilModule, dbModule, apiModule, repoModule, viewModelModule))
     }
     return startKoin {
         modules(combined)

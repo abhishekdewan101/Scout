@@ -32,6 +32,8 @@ import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +45,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.abhishek101.core.viewmodels.gamedetails.DeveloperViewItem
+import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
+import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.EmptyViewState
+import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.NonEmptyViewState
+import com.abhishek101.core.viewmodels.gamedetails.GameIntakeFormState
+import com.abhishek101.core.viewmodels.gamedetails.GamePosterViewItem
+import com.abhishek101.core.viewmodels.gamedetails.VideoViewItem
 import com.abhishek101.gamescout.components.AddGameForm
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
@@ -66,135 +75,118 @@ fun GameDetailScreen(
     gameSlug: String,
     navigate: (String) -> Unit
 ) {
-    val currentViewState = viewModel.viewState
-
-    val inLibrary = viewModel.inLibrary
-
-    var developer: Map<String, String>? = null
-    currentViewState?.involvedCompanies?.find { it.developer }?.company?.let {
-        developer = mapOf(it.slug to it.name)
-    }
-
-    val excerpt = if (currentViewState?.summary != null && currentViewState.storyline != null) {
-        currentViewState.summary + "\n" + currentViewState.storyline
-    } else {
-        currentViewState?.summary ?: currentViewState?.storyline ?: ""
-    }
-
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
-    )
-
-    val imageList = mutableListOf<String>()
-    currentViewState?.screenShots?.let { list -> imageList.addAll(list.map { it.qualifiedUrl }) }
-    currentViewState?.artworks?.let { list -> imageList.addAll(list.map { it.qualifiedUrl }) }
-
-    val videoList = mutableListOf<Triple<String, String, String>>()
-    currentViewState?.videos?.let { list ->
-        videoList.addAll(list.map {
-            Triple(
-                it.name,
-                it.screenShotUrl,
-                it.youtubeUrl
-            )
-        })
-    }
-
-    val similarGamesList =
-        currentViewState?.similarGames?.filter { it.cover != null }
-            ?.map { Pair(it.slug, it.cover!!.qualifiedUrl) }
-
-    val dlcsList = currentViewState?.dlc?.filter { it.cover != null }
-        ?.map { Pair(it.slug, it.cover!!.qualifiedUrl) }
-
-    val context = LocalContext.current
-    val coroutine = rememberCoroutineScope()
+    val currentViewState by viewModel.viewState.collectAsState()
+    val formState by viewModel.formState.collectAsState()
 
     LaunchedEffect(key1 = gameSlug) {
-        viewModel.getGameDetails(gameSlug)
+        viewModel.constructGameDetails(gameSlug)
     }
+
+    when (currentViewState) {
+        EmptyViewState -> LoadingIndicator()
+        is NonEmptyViewState -> GameDetailContent(
+            viewState = currentViewState as NonEmptyViewState,
+            formState = formState,
+            updateFormState = viewModel::updateFormState,
+            saveGame = viewModel::saveGame,
+            removeGame = viewModel::removeGame,
+            navigate = navigate
+        )
+    }
+}
+
+@ExperimentalFoundationApi
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun GameDetailContent(
+    viewState: NonEmptyViewState,
+    formState: GameIntakeFormState,
+    updateFormState: (GameIntakeFormState) -> Unit,
+    saveGame: () -> Unit,
+    removeGame: () -> Unit,
+    navigate: (String) -> Unit
+) {
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+    )
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
     ) {
-        if (currentViewState == null) {
-            LoadingIndicator()
-        } else {
-            BottomSheetScaffold(
-                scaffoldState = scaffoldState,
-                sheetPeekHeight = 0.dp,
-                sheetContent = {
-                    AddGameForm(
-                        viewModel.ownedPlatforms,
-                        viewModel.initialSaveLocation,
-                        viewModel.initialOwnedStatus,
-                        viewModel.initialQueueStatus
-                    ) {
-                        coroutine.launch {
-                            if (scaffoldState.bottomSheetState.isExpanded) {
-                                scaffoldState.bottomSheetState.collapse()
-                            }
+        BottomSheetScaffold(
+            scaffoldState = bottomSheetScaffoldState,
+            sheetPeekHeight = 0.dp,
+            sheetContent = {
+                AddGameForm(
+                    formState = formState,
+                    updateFormData = { updateFormState(it) }
+                ) {
+                    scope.launch {
+                        if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                            bottomSheetScaffoldState.bottomSheetState.collapse()
                         }
-                        viewModel.toggleGameInLibrary(it)
+                        saveGame()
                     }
                 }
-            ) {
-                SafeArea(padding = 10.dp) {
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        stickyHeader {
-                            Header(
-                                currentViewState.name,
-                                inLibrary,
-                                { viewModel.toggleGameInLibrary(null) }
-                            ) {
-                                coroutine.launch { scaffoldState.bottomSheetState.expand() }
-                            }
+            }
+        ) {
+            SafeArea(padding = 10.dp) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    stickyHeader {
+                        Header(
+                            viewState.name,
+                            viewState.inLibrary,
+                            removeGame
+                        ) {
+                            scope.launch { bottomSheetScaffoldState.bottomSheetState.expand() }
                         }
-                        item {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                RenderCoverImage(image = currentViewState.cover!!.qualifiedUrl)
-                                RenderGameInformation(
-                                    name = currentViewState.name,
-                                    developer = developer,
-                                    rating = currentViewState.totalRating,
-                                    releaseDate = currentViewState.humanReadableFirstReleaseDate
-                                )
-                            }
+                    }
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            RenderCoverImage(image = viewState.coverUrl)
+                            RenderGameInformation(
+                                name = viewState.name,
+                                developer = viewState.developer,
+                                rating = viewState.rating,
+                                releaseDate = viewState.releaseDate.dateString
+                            )
                         }
-                        item {
-                            RenderGameSummary(gameDetails = excerpt)
+                    }
+                    item {
+                        RenderGameSummary(gameDetails = viewState.summary)
+                    }
+                    item {
+                        RenderImages(images = viewState.mediaList)
+                    }
+                    item {
+                        RenderVideos(videos = viewState.videoList) {
+                            context.startActivity(buildYoutubeIntent(it))
                         }
-                        item {
-                            RenderImages(images = imageList)
+                    }
+                    item {
+                        RenderRelatedGames(
+                            title = "Similar Games",
+                            games = viewState.similarGames
+                        ) {
+                            navigate(it)
                         }
-                        item {
-                            RenderVideos(videos = videoList) {
-                                context.startActivity(buildYoutubeIntent(it))
-                            }
-                        }
-                        item {
-                            RenderRelatedGames(
-                                title = "Similar Games",
-                                games = similarGamesList
-                            ) {
-                                navigate(it)
-                            }
-                        }
+                    }
 
-                        item {
-                            RenderRelatedGames(
-                                title = "Downloadable Content",
-                                games = dlcsList
-                            ) {
-                                navigate(it)
-                            }
+                    item {
+                        RenderRelatedGames(
+                            title = "Downloadable Content",
+                            games = viewState.dlcs
+                        ) {
+                            navigate(it)
                         }
                     }
                 }
@@ -288,8 +280,8 @@ private fun RenderCoverImage(image: String) {
 @Composable
 private fun RenderGameInformation(
     name: String,
-    developer: Map<String, String>?,
-    rating: Float?,
+    developer: DeveloperViewItem?,
+    rating: Int?,
     releaseDate: String
 ) {
     Column(
@@ -308,7 +300,7 @@ private fun RenderGameInformation(
 
         developer?.let {
             Text(
-                it.getValue(it.keys.first()),
+                it.name,
                 color = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 10.dp)
@@ -322,7 +314,7 @@ private fun RenderGameInformation(
             modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
         )
 
-        rating?.let { RenderGameRating(it.toInt()) }
+        rating?.let { RenderGameRating(it) }
 
     }
 }
@@ -344,27 +336,23 @@ private fun RenderGameSummary(gameDetails: String?) {
 
 @Composable
 private fun RenderVideos(
-    videos: List<Triple<String, String, String>>?,
+    videos: List<VideoViewItem>,
     launchVideoDeeplink: (String) -> Unit
 ) {
-    videos?.let {
+    if (videos.isNotEmpty()) {
         Padding(top = 10.dp) {
             TitleContainer(
                 title = "Videos",
                 titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
                 hasViewMore = false
             ) {
-                val titles = videos.map { it.first }.toList()
-                val screenshots = videos.map { it.second }.toList()
-                val youtubeUrls = videos.map { it.third }.toList()
                 BoxWithConstraints {
                     HorizontalVideoList(
-                        screenshots = screenshots,
-                        titles = titles,
+                        videos = videos,
                         itemWidth = maxWidth,
                         itemHeight = 200.dp
                     ) {
-                        launchVideoDeeplink(youtubeUrls[it])
+                        launchVideoDeeplink(it)
                     }
                 }
             }
@@ -375,18 +363,19 @@ private fun RenderVideos(
 @Composable
 private fun RenderRelatedGames(
     title: String,
-    games: List<Pair<String, String>>?,
+    games: List<GamePosterViewItem>,
     navigate: (String) -> Unit
 ) {
-    games?.let { relatedGames ->
+    if (games.isNotEmpty()) {
         Padding(top = 10.dp) {
             TitleContainer(
                 title = title,
                 titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
                 hasViewMore = false
             ) {
-                val imageList = relatedGames.map { it.second }.toList()
-                val slugs = relatedGames.map { it.first }.toList()
+                //TODO: Fix HorizontalImagelist to use a GamePosterViewItem
+                val imageList = games.map { it.url }.toList()
+                val slugs = games.map { it.slug }.toList()
                 HorizontalImageList(
                     data = imageList,
                     itemWidth = 150.dp,
