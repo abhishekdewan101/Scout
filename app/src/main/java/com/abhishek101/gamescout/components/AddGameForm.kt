@@ -188,13 +188,11 @@ fun QueuedGameSelectionContainer(queuedStatus: QueuedStatus, updateQueueStatus: 
                 chipData = mapOf(
                     "Now" to (queuedStatus == QueuedStatus.NOW),
                     "Next" to (queuedStatus == QueuedStatus.NEXT),
-                    "Later" to (queuedStatus == QueuedStatus.LATER),
                 )
             ) {
                 val newQueuedStatus = when (it) {
                     "Now" -> QueuedStatus.NOW
-                    "Next" -> QueuedStatus.NEXT
-                    else -> QueuedStatus.LATER
+                    else -> QueuedStatus.NEXT
                 }
                 updateQueueStatus(newQueuedStatus)
             }
@@ -235,15 +233,13 @@ fun LibrarySelectionContainer(
                 chipData = mapOf(
                     "Queue Game" to (completionStatus == CompletionStatus.QUEUED),
                     "Game Completed" to (completionStatus == CompletionStatus.COMPLETED),
-                    "Didn't Finish" to (completionStatus == CompletionStatus.ABANDONED),
-                    "Backlog " to (completionStatus == CompletionStatus.BACKLOG)
+                    "Didn't Finish" to (completionStatus == CompletionStatus.ABANDONED)
                 )
             ) {
                 val newCompletionStatus = when (it) {
                     "Queue Game" -> CompletionStatus.QUEUED
                     "Game Completed" -> CompletionStatus.COMPLETED
-                    "Didn't Finish" -> CompletionStatus.ABANDONED
-                    else -> CompletionStatus.BACKLOG
+                    else -> CompletionStatus.ABANDONED
                 }
                 updateFormData(formState.copy(completionStatus = newCompletionStatus))
             }

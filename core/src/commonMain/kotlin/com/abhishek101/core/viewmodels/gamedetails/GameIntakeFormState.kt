@@ -8,14 +8,12 @@ enum class SaveLocation {
 enum class CompletionStatus {
     COMPLETED,
     ABANDONED,
-    QUEUED,
-    BACKLOG
+    QUEUED
 }
 
 enum class QueuedStatus {
     NOW,
-    NEXT,
-    LATER
+    NEXT
 }
 
 data class GameIntakeFormState(
@@ -29,8 +27,8 @@ data class GameIntakeFormState(
 val defaultFormState = GameIntakeFormState(
     saveLocation = SaveLocation.WISHLIST,
     platforms = listOf(),
-    completionStatus = CompletionStatus.BACKLOG,
-    queuedStatus = QueuedStatus.LATER,
+    completionStatus = CompletionStatus.QUEUED,
+    queuedStatus = QueuedStatus.NEXT,
     ""
 )
 

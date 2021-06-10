@@ -16,19 +16,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.BookmarkAdd
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -105,7 +106,9 @@ private fun GameDetailContent(
     removeGame: () -> Unit,
     navigate: (String) -> Unit
 ) {
-    val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+    )
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -114,17 +117,17 @@ private fun GameDetailContent(
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
     ) {
-        ModalBottomSheetLayout(
-            scrimColor = Color.Transparent,
-            sheetState = modalBottomSheetState,
+        BottomSheetScaffold(
+            scaffoldState = bottomSheetScaffoldState,
+            sheetPeekHeight = 0.dp,
             sheetContent = {
                 AddGameForm(
                     formState = formState,
                     updateFormData = { updateFormState(it) }
                 ) {
                     scope.launch {
-                        if (modalBottomSheetState.isVisible) {
-                            modalBottomSheetState.hide()
+                        if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                            bottomSheetScaffoldState.bottomSheetState.collapse()
                         }
                         saveGame()
                     }
@@ -139,7 +142,7 @@ private fun GameDetailContent(
                             viewState.inLibrary,
                             removeGame
                         ) {
-                            scope.launch { modalBottomSheetState.show() }
+                            scope.launch { bottomSheetScaffoldState.bottomSheetState.expand() }
                         }
                     }
                     item {

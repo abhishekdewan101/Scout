@@ -86,9 +86,8 @@ class GameDetailViewModel(
             CompletionStatus.QUEUED -> GameStatus.QUEUED
             CompletionStatus.ABANDONED -> GameStatus.ABANDONED
             CompletionStatus.COMPLETED -> GameStatus.COMPLETED
-            else -> GameStatus.WISHLIST
         }
-        if (value.queuedStatus == QueuedStatus.NOW) {
+        if (value.completionStatus == CompletionStatus.QUEUED && value.queuedStatus == QueuedStatus.NOW) {
             gameStatus = GameStatus.PLAYING
         }
         return gameStatus
@@ -110,7 +109,7 @@ class GameDetailViewModel(
 
     private fun getQueuedStatus(libraryDetails: LibraryGame?): QueuedStatus {
         return when {
-            libraryDetails == null -> QueuedStatus.LATER
+            libraryDetails == null -> QueuedStatus.NEXT
             libraryDetails.gameStatus == GameStatus.PLAYING -> QueuedStatus.NOW
             else -> QueuedStatus.NEXT
         }
@@ -118,7 +117,7 @@ class GameDetailViewModel(
 
     private fun getCompletionStatus(libraryDetails: LibraryGame?): CompletionStatus {
         return when {
-            libraryDetails == null -> CompletionStatus.BACKLOG
+            libraryDetails == null -> CompletionStatus.QUEUED
             libraryDetails.gameStatus == GameStatus.COMPLETED -> CompletionStatus.COMPLETED
             libraryDetails.gameStatus == GameStatus.ABANDONED -> CompletionStatus.ABANDONED
             else -> CompletionStatus.QUEUED
