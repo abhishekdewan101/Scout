@@ -87,6 +87,8 @@ fun GameDetailScreen(
             viewState = currentViewState as NonEmptyViewState,
             formState = formState,
             updateFormState = viewModel::updateFormState,
+            saveGame = viewModel::saveGame,
+            removeGame = viewModel::removeGame,
             navigate = navigate
         )
     }
@@ -99,6 +101,8 @@ private fun GameDetailContent(
     viewState: NonEmptyViewState,
     formState: GameIntakeFormState,
     updateFormState: (GameIntakeFormState) -> Unit,
+    saveGame: () -> Unit,
+    removeGame: () -> Unit,
     navigate: (String) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -122,6 +126,7 @@ private fun GameDetailContent(
                         if (modalBottomSheetState.isVisible) {
                             modalBottomSheetState.hide()
                         }
+                        saveGame()
                     }
                 }
             }
@@ -132,7 +137,7 @@ private fun GameDetailContent(
                         Header(
                             viewState.name,
                             viewState.inLibrary,
-                            { }
+                            removeGame
                         ) {
                             scope.launch { modalBottomSheetState.show() }
                         }

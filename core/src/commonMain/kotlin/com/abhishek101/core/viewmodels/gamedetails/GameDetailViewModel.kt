@@ -41,6 +41,59 @@ class GameDetailViewModel(
         _formState.value = newState
     }
 
+    fun saveGame() {
+        (_viewState.value as? NonEmptyViewState)?.let {
+            val inLibrary = it.inLibrary
+            val slug = it.slug
+
+            if (inLibrary) {
+                libraryRepository.updateGame(
+                    gameStatus = getGameStatus(_formState.value),
+                    platform = getPlatformList(_formState.value),
+                    notes = _formState.value.notes,
+                    slug = slug
+                )
+            } else {
+                val name = it.name
+                val coverUrl = it.coverUrl
+                val releaseDate = it.releaseDate
+                libraryRepository.insertGameIntoLibrary(
+                    slug = slug,
+                    name = name,
+                    coverUrl = coverUrl,
+                    releaseDate = releaseDate.epoch,
+                    gameStatus = getGameStatus(_formState.value),
+                    platform = getPlatformList(_formState.value),
+                    notes = _formState.value.notes,
+                )
+            }
+        }
+    }
+
+    fun removeGame() {
+        (_viewState.value as? NonEmptyViewState)?.let {
+            libraryRepository.removeGameFromLibrary(it.slug)
+        }
+    }
+
+    private fun getPlatformList(value: GameIntakeFormState): List<String> {
+        return value.platforms.filter { it.owned }.map { it.name }
+    }
+
+    private fun getGameStatus(value: GameIntakeFormState): GameStatus {
+        var gameStatus: GameStatus
+        gameStatus = when (value.completionStatus) {
+            CompletionStatus.QUEUED -> GameStatus.QUEUED
+            CompletionStatus.ABANDONED -> GameStatus.ABANDONED
+            CompletionStatus.COMPLETED -> GameStatus.COMPLETED
+            else -> GameStatus.WISHLIST
+        }
+        if (value.queuedStatus == QueuedStatus.NOW) {
+            gameStatus = GameStatus.PLAYING
+        }
+        return gameStatus
+    }
+
     private fun buildFormState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameIntakeFormState {
         val platforms = buildOwnedPlatformList(remoteDetails, libraryDetails)
         val saveLocation = getSaveLocation(libraryDetails)
@@ -136,7 +189,8 @@ class GameDetailViewModel(
     private fun buildSimilarGames(remoteDetails: IgdbGameDetail): List<GamePosterViewItem> {
         val similarGames = mutableListOf<GamePosterViewItem>()
         remoteDetails.similarGames?.let {
-            val gameList = it.map { game -> GamePosterViewItem(slug = game.slug, url = game.cover!!.qualifiedUrl) }
+            val gameList =
+                it.filter { game -> game.cover != null }.map { game -> GamePosterViewItem(slug = game.slug, url = game.cover!!.qualifiedUrl) }
             similarGames.addAll(gameList)
         }
         return similarGames

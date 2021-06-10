@@ -214,8 +214,15 @@ fun LibrarySelectionContainer(
     val queuedStatus = formState.queuedStatus
     Padding(top = 15.dp) {
         Column {
-            PlatformSelectionContainer(platforms) {
-
+            PlatformSelectionContainer(platforms) { platform ->
+                val newPlatformList = platforms.toMutableList().map {
+                    if (it.name == platform) {
+                        it.copy(owned = it.owned.not())
+                    } else {
+                        it
+                    }
+                }
+                updateFormData(formState.copy(platforms = newPlatformList))
             }
             Spacer(modifier = Modifier.height(10.dp))
             Text(

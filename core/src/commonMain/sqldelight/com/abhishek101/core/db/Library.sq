@@ -29,6 +29,11 @@ insertGameIntoLibrary:
 INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, gameStatus, platform, notes)
 VALUES(?,?,?,?,?,?,?);
 
+updateGameInLibrary:
+UPDATE LibraryGame
+SET platform = ?, gameStatus =?, notes = ?
+WHERE slug = ?;
+
 updateOwnedPlatform:
 UPDATE LibraryGame
 SET platform = ?
