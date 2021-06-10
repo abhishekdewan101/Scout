@@ -82,13 +82,17 @@ class GameDetailViewModel(
 
     private fun getGameStatus(value: GameIntakeFormState): GameStatus {
         var gameStatus: GameStatus
-        gameStatus = when (value.completionStatus) {
-            CompletionStatus.QUEUED -> GameStatus.QUEUED
-            CompletionStatus.ABANDONED -> GameStatus.ABANDONED
-            CompletionStatus.COMPLETED -> GameStatus.COMPLETED
-        }
-        if (value.completionStatus == CompletionStatus.QUEUED && value.queuedStatus == QueuedStatus.NOW) {
-            gameStatus = GameStatus.PLAYING
+        if (value.saveLocation == SaveLocation.WISHLIST) {
+            gameStatus = GameStatus.WISHLIST
+        } else {
+            gameStatus = when (value.completionStatus) {
+                CompletionStatus.QUEUED -> GameStatus.QUEUED
+                CompletionStatus.ABANDONED -> GameStatus.ABANDONED
+                CompletionStatus.COMPLETED -> GameStatus.COMPLETED
+            }
+            if (value.completionStatus == CompletionStatus.QUEUED && value.queuedStatus == QueuedStatus.NOW) {
+                gameStatus = GameStatus.PLAYING
+            }
         }
         return gameStatus
     }
