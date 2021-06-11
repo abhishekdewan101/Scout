@@ -1,9 +1,5 @@
 package com.abhishek101.gamescout
 
-object Versions {
-    const val ktlint = "0.40.0"
-}
-
 object AppVersions {
     const val compileSdkVersion = 30
     const val minSdkVersion = 22

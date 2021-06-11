@@ -6,6 +6,7 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.properties.Properties
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     kotlin("multiplatform")
@@ -14,6 +15,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlinx-serialization")
     id("com.codingfeline.buildkonfig")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -121,6 +123,14 @@ android {
         targetSdkVersion(AppVersions.targetSdkVersion)
     }
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+}
+
+ktlint {
+    version.set("0.41.0")
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
+    }
 }
 
 val packForXcode by tasks.creating(Sync::class) {
