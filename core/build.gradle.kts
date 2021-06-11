@@ -128,7 +128,12 @@ ktlint {
     version.set("0.41.0")
     outputColorName.set("RED")
     filter {
-        exclude("build/*")
+        exclude { tree ->
+            val path = tree.file.path
+            listOf(".gradle/", "cache/", "build/generated/", "buildkonfig/").any {
+                path.contains(it)
+            }
+        }
     }
     reporters {
         reporter(ReporterType.PLAIN)
