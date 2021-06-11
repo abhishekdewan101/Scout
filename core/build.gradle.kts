@@ -126,6 +126,10 @@ android {
 
 ktlint {
     version.set("0.41.0")
+    outputColorName.set("RED")
+    filter {
+        exclude("build/*")
+    }
     reporters {
         reporter(ReporterType.PLAIN)
         reporter(ReporterType.CHECKSTYLE)
