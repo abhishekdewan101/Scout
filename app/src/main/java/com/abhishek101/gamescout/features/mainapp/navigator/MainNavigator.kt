@@ -88,7 +88,6 @@ fun MainNavigator(setStatusBarColor: (Color, Boolean) -> Unit) {
             }
         }
 
-
         composable(
             "${MainAppDestinations.GameDetail.name}/{gameSlug}",
             arguments = listOf(

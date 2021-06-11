@@ -31,6 +31,3 @@ val defaultFormState = GameIntakeFormState(
     queuedStatus = QueuedStatus.NEXT,
     ""
 )
-
-
-

@@ -94,10 +94,13 @@ fun SearchAppBar(
                         backgroundColor = MaterialTheme.colors.onBackground
                     )
                 )
-                IconButton(onClick = {
-                    expanded = false
-                    searchInput = TextFieldValue("")
-                }, modifier = Modifier.weight(1f)) {
+                IconButton(
+                    onClick = {
+                        expanded = false
+                        searchInput = TextFieldValue("")
+                    },
+                    modifier = Modifier.weight(1f)
+                ) {
                     Icon(Icons.Outlined.Close, "", tint = MaterialTheme.colors.onBackground)
                 }
             }
@@ -114,7 +117,8 @@ fun SearchAppBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    title, style = MaterialTheme.typography.h4.copy(
+                    title,
+                    style = MaterialTheme.typography.h4.copy(
                         color = MaterialTheme.colors.onBackground,
                         fontWeight = FontWeight.Bold
                     )

@@ -255,7 +255,6 @@ private fun RenderImages(images: List<String>) {
                 MediaGallery(images = images, maxWidth = maxWidth)
             }
         }
-
     }
 }
 
@@ -315,7 +314,6 @@ private fun RenderGameInformation(
         )
 
         rating?.let { RenderGameRating(it) }
-
     }
 }
 
@@ -373,7 +371,7 @@ private fun RenderRelatedGames(
                 titleColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
                 hasViewMore = false
             ) {
-                //TODO: Fix HorizontalImagelist to use a GamePosterViewItem
+                // TODO: Fix HorizontalImagelist to use a GamePosterViewItem
                 val imageList = games.map { it.url }.toList()
                 val slugs = games.map { it.slug }.toList()
                 HorizontalImageList(
@@ -417,5 +415,3 @@ private fun RenderGameRating(rating: Int) {
     }
     Spacer(modifier = Modifier.width(10.dp))
 }
-
-

@@ -2,7 +2,13 @@ package com.abhishek101.gamescout.features.mainapp.search
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -15,7 +21,10 @@ import com.abhishek101.core.models.GameListData
 import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.models.ListData
 import com.abhishek101.gamescout.R
-import com.abhishek101.gamescout.design.*
+import com.abhishek101.gamescout.design.ImageGrid
+import com.abhishek101.gamescout.design.LoadingIndicator
+import com.abhishek101.gamescout.design.SafeArea
+import com.abhishek101.gamescout.design.SearchTextInput
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
@@ -28,7 +37,7 @@ fun SearchScreen(
 ) {
 
     if (searchScreenViewModel.searchResults.value != null) {
-        //Render search results
+        // Render search results
         SafeArea(padding = 15.dp) {
             if (searchScreenViewModel.isSearching.value) {
                 LoadingIndicator()
@@ -95,7 +104,8 @@ private fun RenderSearchGrid(
         stickyHeader {
             Column(modifier = Modifier.background(MaterialTheme.colors.background)) {
                 Text(
-                    "Search", style = MaterialTheme.typography.h4.copy(
+                    "Search",
+                    style = MaterialTheme.typography.h4.copy(
                         color = MaterialTheme.colors.onBackground
                     )
                 )
@@ -103,7 +113,8 @@ private fun RenderSearchGrid(
                 SearchTextInput(
                     color = MaterialTheme.colors.onBackground,
                     prefillSearchTerm = searchTerm,
-                    onTextFieldClearing = { }) {
+                    onTextFieldClearing = { }
+                ) {
                     navigate("${MainAppDestinations.Search.name}/$it")
                 }
                 Spacer(modifier = Modifier.height(10.dp))

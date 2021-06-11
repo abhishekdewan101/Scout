@@ -18,10 +18,10 @@ import com.abhishek101.core.models.ListData
 import com.abhishek101.core.repositories.ListType
 import com.abhishek101.gamescout.components.GamePosterGrid
 import com.abhishek101.gamescout.components.GamePosterHorizontalList
-import com.abhishek101.gamescout.design.SearchAppBar
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
+import com.abhishek101.gamescout.design.SearchAppBar
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 

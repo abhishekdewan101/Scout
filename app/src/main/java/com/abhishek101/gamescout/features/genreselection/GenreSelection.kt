@@ -119,7 +119,6 @@ private fun RenderListContent(
                                             style = MaterialTheme.typography.body1.copy(color = White, fontWeight = FontWeight.Bold),
                                             textAlign = TextAlign.Center
                                         )
-
                                     }
                                 }
                             }

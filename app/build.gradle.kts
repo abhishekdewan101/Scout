@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.konan.properties.Properties
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 repositories {
@@ -87,6 +88,14 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
+ktlint {
+    version.set("0.41.0")
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
+}
+
 dependencies {
     implementation(project(":core"))
 
@@ -102,28 +111,28 @@ dependencies {
     implementation(Libs.AndroidX.Compose.materialIconsExtended)
     androidTestImplementation(Libs.AndroidX.Compose.testing)
 
-    //Navigation
+    // Navigation
     implementation(Libs.AndroidX.Navigation.composeNavigation)
 
     // Coroutines
     implementation(Libs.Coroutines.android)
     implementation(Libs.Coroutines.core)
 
-    //Timber
+    // Timber
     implementation(Libs.timber)
 
-    //Koin
+    // Koin
     implementation(Libs.Koin.koinCore)
     implementation(Libs.Koin.koinAndroid)
     implementation(Libs.Koin.koinCompose)
 
-    //Coil
+    // Coil
     implementation(Libs.coil)
 
-    //SystemUiController
+    // SystemUiController
     implementation(Libs.systemUiController)
 
-    //Pager
+    // Pager
     implementation(Libs.composePager)
 
     // testing
@@ -135,5 +144,4 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
     androidTestImplementation(Libs.androidMockk)
     androidTestImplementation(Libs.googleTruth)
-
 }
