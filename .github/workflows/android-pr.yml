@@ -1,6 +1,7 @@
-name: Android PR Build
+name: Android Master Build
+
 on:
-  push:
+  pull_request:
     branches: [ master ]
 
 jobs:
@@ -29,17 +30,7 @@ jobs:
         run: chmod +x gradlew
       - name: Build the Android App with Gradle
         run: ./gradlew :app:assembleDebug --stacktrace
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
-      - name: Upload to AppCenter
-        uses: wzieba/AppCenter-Github-Action@v1
-        with:
-          appName: abhishek101/Scout-Master-Snapshot
-          token: ${{secrets.APP_CENTER_TOKEN}}
-          group: Testers
-          file: app/build/outputs/apk/debug/app-debug.apk
-          notifyTesters: false
-          debug: true
+      - name: Run Tests
+        run: ./gradlew test
+      - name: Lint Checks
+        run: ./gradlew ktlintCheck lint
