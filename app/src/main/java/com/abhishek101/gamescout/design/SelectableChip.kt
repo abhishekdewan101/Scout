@@ -75,7 +75,6 @@ fun PreviewSelectedChip() {
             selectedTextColor = Color.White,
             unSelectedTextColor = MaterialTheme.colors.onBackground
         ) {
-
         }
     }
 }
@@ -96,7 +95,6 @@ fun PreviewUnSelectedChip() {
             selectedTextColor = Color.White,
             unSelectedTextColor = MaterialTheme.colors.onBackground
         ) {
-
         }
     }
 }

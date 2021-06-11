@@ -61,7 +61,8 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            "Library", style = MaterialTheme.typography.h4.copy(
+                            "Library",
+                            style = MaterialTheme.typography.h4.copy(
                                 color = MaterialTheme.colors.onBackground,
                                 fontWeight = FontWeight.Bold
                             )
@@ -100,7 +101,7 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                         ) {
                             navigate(
                                 "${MainAppDestinations.GameDetail}/${
-                                    viewModel.libraryGames[it].slug
+                                viewModel.libraryGames[it].slug
                                 }"
                             )
                         }

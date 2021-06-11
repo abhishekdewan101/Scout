@@ -75,11 +75,13 @@ fun <T> DropdownChip(
         ) {
             data.keys.forEach {
                 val label = data[it]!!
-                DropdownMenuItem(onClick = {
-                    selectedText = label
-                    expanded = !expanded
-                    dropDownItemSelected(it)
-                }) {
+                DropdownMenuItem(
+                    onClick = {
+                        selectedText = label
+                        expanded = !expanded
+                        dropDownItemSelected(it)
+                    }
+                ) {
                     Text(text = label, color = dropDownTextColor)
                 }
             }

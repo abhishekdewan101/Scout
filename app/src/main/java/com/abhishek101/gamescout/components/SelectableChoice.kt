@@ -64,7 +64,6 @@ fun SelectableChoicePreview() {
                 isSelected = true, text = "PS4", Color(203, 112, 209),
                 Color.Transparent
             ) {
-
             }
         }
         item {
@@ -74,7 +73,6 @@ fun SelectableChoicePreview() {
                 Color(203, 112, 209),
                 Color.Transparent
             ) {
-
             }
         }
     }

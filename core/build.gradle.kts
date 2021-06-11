@@ -57,12 +57,12 @@ kotlin {
                 implementation(Koin.koinCore)
                 implementation(Libs.Coroutines.core)
                 implementation(Libs.kotlinxDateTime)
-                //Ktor
+                // Ktor
                 implementation(Libs.Ktor.ktorCio)
                 implementation(Libs.Ktor.ktorLogging)
                 implementation(Libs.Ktor.ktorJson)
                 implementation(Libs.Ktor.commonSerialization)
-                //Kermit
+                // Kermit
                 api(Libs.Kermit.common)
             }
         }
@@ -98,7 +98,6 @@ buildkonfig {
         properties.setProperty("useTwitchAuthentication", "false")
         properties.setProperty("clientAuthenticationUrl", "")
     }
-
 
     defaultConfigs {
         buildConfigField(STRING, "ClientId", properties.getProperty("clientId"))

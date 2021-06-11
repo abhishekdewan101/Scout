@@ -41,7 +41,7 @@ import com.abhishek101.core.viewmodels.gamedetails.SaveLocation
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.theme.White
 
-//TODO:This class needs to be refactored to a better UX
+// TODO:This class needs to be refactored to a better UX
 @Composable
 fun AddGameForm(
     formState: GameIntakeFormState,
