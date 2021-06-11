@@ -1,4 +1,4 @@
-name: Android Master Build
+name: Android PR Build
 
 on:
   pull_request:

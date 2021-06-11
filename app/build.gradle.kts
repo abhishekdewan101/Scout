@@ -90,6 +90,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 ktlint {
     version.set("0.41.0")
+    outputColorName.set("RED")
+    filter {
+        exclude("build/*")
+    }
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)

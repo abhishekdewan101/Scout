@@ -1,4 +1,4 @@
-name: Android PR Build
+name: Android Master Build
 on:
   push:
     branches: [ master ]
