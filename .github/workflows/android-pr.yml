@@ -38,3 +38,6 @@ jobs:
         run: ./gradlew :app:ktlintCheck
       - name: Detekt
         run: ./gradlew detekt
+      - uses: jwgmeligmeyling/checkstyle-github-action@master
+        with:
+          path: '**/build/reports/ktlint/ktlintMainSourceSetCheck/ktlintMainSourceSetCheck.xml,build/reports/ktlint/ktlintAndroidMainSourceSetCheck/ktlintAndroidMainSourceSetCheck.xml,build/reports/ktlint/ktlintCommonMainSourceSetCheck/ktlintCommonMainSourceSetCheck.xml,build/reports/ktlint/ktlintIosMainSourceSetCheck/ktlintIosMainSourceSetCheck.xml,build/reports/ktlint/ktlintMainSourceSetCheck/ktlintKotlinScriptCheck.xml,build/reports/detekt/detekt.xml'
