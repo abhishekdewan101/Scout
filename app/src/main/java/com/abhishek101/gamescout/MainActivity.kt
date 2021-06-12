@@ -16,5 +16,6 @@ class MainActivity : AppCompatActivity() {
                 OnBoardingNavigator()
             }
         }
+        val time = 123L
     }
 }

@@ -35,7 +35,7 @@ detekt {
     allRules = false // activate all available (even unstable) rules.
     config = files("${rootProject.projectDir}/config/detekt/detekt.yml")
     // point to your custom config defining rules to run, overwriting default behavior
-    baseline = file("${rootProject.projectDir}/config/detekt/baseline.xml")
+    baseline = file("${rootProject.projectDir}/config/detekt/core_baseline.xml")
     // a way of suppressing issues before introducing detekt
 
     input.setFrom("src/commonMain/kotlin", "src/androidMain/kotlin", "src/iosMain/kotlin")

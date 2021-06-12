@@ -36,3 +36,5 @@ jobs:
         run: ./gradlew :core:ktlintCheck
       - name: Android Link Checks
         run: ./gradlew :app:ktlintCheck
+      - name: Detekt
+        run: ./gradlew detekt

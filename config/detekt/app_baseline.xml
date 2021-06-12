@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ForbiddenComment:AddGameForm.kt$// TODO:This class needs to be refactored to a better UX</ID>
+    <ID>ForbiddenComment:CollapsableButton.kt$// TODO: Add documentation</ID>
+    <ID>ForbiddenComment:GSApplication.kt$GSApplication$// TODO: Add a crash reporting tree that reports the error to server</ID>
+    <ID>ForbiddenComment:GameDetailScreen.kt$// TODO: Fix HorizontalImagelist to use a GamePosterViewItem</ID>
+    <ID>ForbiddenComment:SafeArea.kt$// TODO: Add documentation</ID>
+    <ID>ForbiddenComment:TouchableImage.kt$// TODO: Add documentation</ID>
+    <ID>LongMethod:AddGameForm.kt$// TODO:This class needs to be refactored to a better UX @Composable fun AddGameForm( formState: GameIntakeFormState, updateFormData: (GameIntakeFormState) -&gt; Unit, saveGame: () -&gt; Unit, )</ID>
+    <ID>LongMethod:CollapsableButton.kt$// TODO: Add documentation @OptIn(ExperimentalAnimationApi::class) @Composable fun CollapsableButton( initialWidth: Dp, initialColor: Color, initialIcon: ImageVector, initialLabel: String?, initialBorderRadius: Dp, finalWidth: Dp, finalColor: Color, finalIcon: ImageVector, height: Dp, onClick: () -&gt; Unit )</ID>
+    <ID>LongMethod:GameDetailScreen.kt$@ExperimentalFoundationApi @OptIn(ExperimentalMaterialApi::class) @Composable private fun GameDetailContent( viewState: NonEmptyViewState, formState: GameIntakeFormState, updateFormState: (GameIntakeFormState) -&gt; Unit, saveGame: () -&gt; Unit, removeGame: () -&gt; Unit, navigate: (String) -&gt; Unit )</ID>
+    <ID>LongMethod:LibraryScreen.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -&gt; Unit)</ID>
+    <ID>LongMethod:MainNavigator.kt$@ExperimentalMaterialApi @OptIn(ExperimentalAnimationApi::class) @Composable fun MainNavigator(setStatusBarColor: (Color, Boolean) -&gt; Unit)</ID>
+    <ID>LongMethod:SearchAppBar.kt$@OptIn(ExperimentalAnimationApi::class) @Composable fun SearchAppBar( title: String, placeholderText: String, backgroundColor: Color = MaterialTheme.colors.background, executeSearch: (String) -&gt; Unit )</ID>
+    <ID>LongParameterList:CircularSelectableImage.kt$( imageUri: Any, width: Dp, label: String? = null, isSelected: Boolean = false, selectedBorderColor: Color, onSelected: () -&gt; Unit, )</ID>
+    <ID>LongParameterList:CollapsableButton.kt$( initialWidth: Dp, initialColor: Color, initialIcon: ImageVector, initialLabel: String?, initialBorderRadius: Dp, finalWidth: Dp, finalColor: Color, finalIcon: ImageVector, height: Dp, onClick: () -&gt; Unit )</ID>
+    <ID>LongParameterList:DropdownChip.kt$( data: Map&lt;T, String&gt;, chipBackgroundColor: Color, cornerShape: CornerBasedShape, initialValue: T, textColor: Color, iconColor: Color, dropDownIconLess: ImageVector, dropDownIconMore: ImageVector, dropDownBackgroundColor: Color, dropDownTextColor: Color, dropDownItemSelected: (T) -&gt; Unit )</ID>
+    <ID>LongParameterList:GameDetailScreen.kt$( viewState: NonEmptyViewState, formState: GameIntakeFormState, updateFormState: (GameIntakeFormState) -&gt; Unit, saveGame: () -&gt; Unit, removeGame: () -&gt; Unit, navigate: (String) -&gt; Unit )</ID>
+    <ID>LongParameterList:GenreSelection.kt$( isLoading: Boolean, genreList: List&lt;Genre&gt;, backgroundColor: Color, onGenreSelected: (String, Boolean) -&gt; Unit, onGenreSelectionComplete: () -&gt; Unit, favoriteCount: Int )</ID>
+    <ID>LongParameterList:PlatformSelection.kt$( isLoading: Boolean, platformList: List&lt;Platform&gt;, ownedCount: Int, backgroundColor: Color, onPlatformSelected: (String, Boolean) -&gt; Unit, onPlatformSelectionComplete: () -&gt; Unit, )</ID>
+    <ID>LongParameterList:SelectableChip.kt$( selected: Boolean, selectedColor: Color, unSelectedColor: Color, selectedBorderColor: Color, unSelectedBorderColor: Color, borderWidth: Dp, cornerShape: CornerBasedShape, data: String, selectedTextColor: Color, unSelectedTextColor: Color, onClickChip: (String) -&gt; Unit, )</ID>
+    <ID>LongParameterList:TouchableImage.kt$( url: String, width: Dp, height: Dp, cornerRadius: Dp? = null, backgroundColor: Color? = null, rippleColor: Color? = null, loadingColor: Color? = null, onTouch: () -&gt; Unit )</ID>
+    <ID>MagicNumber:CircularSelectableImage.kt$0.6f</ID>
+    <ID>MagicNumber:CircularSelectableImage.kt$101</ID>
+    <ID>MagicNumber:CircularSelectableImage.kt$115</ID>
+    <ID>MagicNumber:CircularSelectableImage.kt$240</ID>
+    <ID>MagicNumber:CircularSelectableImage.kt$50</ID>
+    <ID>MagicNumber:CollapsableButton.kt$50</ID>
+    <ID>MagicNumber:CollapsableText.kt$100</ID>
+    <ID>MagicNumber:CollapsableText.kt$16</ID>
+    <ID>MagicNumber:CollapsableText.kt$5</ID>
+    <ID>MagicNumber:CollapsableText.kt$8f</ID>
+    <ID>MagicNumber:Color.kt$0XFF0d0033</ID>
+    <ID>MagicNumber:Color.kt$0XFF9E8EDE</ID>
+    <ID>MagicNumber:Color.kt$0xFF22201F</ID>
+    <ID>MagicNumber:Color.kt$0xFF33235D</ID>
+    <ID>MagicNumber:Color.kt$0xFF570000</ID>
+    <ID>MagicNumber:Color.kt$0xFF890f0a</ID>
+    <ID>MagicNumber:Color.kt$0xFFFEFEFE</ID>
+    <ID>MagicNumber:Color.kt$0xFFbbb1a9</ID>
+    <ID>MagicNumber:Color.kt$0xFFc04532</ID>
+    <ID>MagicNumber:Color.kt$0xFFede3db</ID>
+    <ID>MagicNumber:Color.kt$0xFFffffff</ID>
+    <ID>MagicNumber:GameDetailScreen.kt$50</ID>
+    <ID>MagicNumber:GameDetailScreen.kt$55</ID>
+    <ID>MagicNumber:GameDetailScreen.kt$74</ID>
+    <ID>MagicNumber:GameDetailScreen.kt$75</ID>
+    <ID>MagicNumber:GameDetailScreen.kt$9f</ID>
+    <ID>MagicNumber:HomeScreen.kt$9</ID>
+    <ID>MagicNumber:HomeScreenViewModel.kt$HomeScreenViewModel$1000</ID>
+    <ID>MagicNumber:HorizontalVideoList.kt$17</ID>
+    <ID>MagicNumber:HorizontalVideoList.kt$27</ID>
+    <ID>MagicNumber:LibraryScreen.kt$3</ID>
+    <ID>MagicNumber:LibraryScreen.kt$50</ID>
+    <ID>MagicNumber:MediaGallery.kt$4</ID>
+    <ID>MagicNumber:MediaGallery.kt$6</ID>
+    <ID>MagicNumber:SearchAppBar.kt$100</ID>
+    <ID>MagicNumber:SearchAppBar.kt$9f</ID>
+    <ID>MagicNumber:SearchTextInput.kt$112</ID>
+    <ID>MagicNumber:SearchTextInput.kt$203</ID>
+    <ID>MagicNumber:SearchTextInput.kt$209</ID>
+    <ID>MagicNumber:SelectableChoice.kt$112</ID>
+    <ID>MagicNumber:SelectableChoice.kt$203</ID>
+    <ID>MagicNumber:SelectableChoice.kt$209</ID>
+    <ID>MagicNumber:SplashScreen.kt$1000</ID>
+    <ID>MatchingDeclarationName:CollapsableButton.kt$AnimatedButtonState</ID>
+    <ID>MatchingDeclarationName:MainApp.kt$MainAppBottomItems</ID>
+    <ID>MatchingDeclarationName:MainNavigator.kt$MainAppDestinations</ID>
+    <ID>MatchingDeclarationName:OnBoardingNavigator.kt$OnBoardingDestinations</ID>
+    <ID>MaxLineLength:CollapsableText.kt$"Aliquam nec libero mattis, interdum metus quis, imperdiet purus. Maecenas mattis a lorem ut suscipit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam consequat dignissim velit, non dictum enim. Sed a purus non libero posuere mollis nec ac risus. Nunc ultricies, ligula vel tempor feugiat, nisl turpis euismod augue, rhoncus hendrerit dui orci eget orci. In hac habitasse platea dictumst. Phasellus quis erat vitae leo laoreet vulputate vel vitae felis. In mattis fermentum nisi, in rutrum tortor dignissim nec. Nullam pellentesque nec lectus non semper. Curabitur condimentum, tellus eu laoreet convallis, lorem ex pulvinar sem, vitae consectetur ligula felis non elit. Phasellus sit amet neque condimentum, pellentesque turpis vel, eleifend tellus. Duis fermentum imperdiet lectus vitae laoreet. Vestibulum pretium ornare massa, vel finibus nisi interdum in.\n"</ID>
+    <ID>MaxLineLength:CollapsableText.kt$"Cras vel ornare orci. Nam est metus, rhoncus in neque vitae, hendrerit suscipit est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla pharetra tellus vel nisi gravida, non condimentum leo interdum. Pellentesque eget nisi elit. Suspendisse mattis neque eu lorem commodo, vitae posuere enim ornare. Nunc gravida vulputate arcu, at lobortis sapien vestibulum eget. Fusce sollicitudin semper viverra. In ut mi tempor purus consequat maximus at eu ex. Fusce eros diam, pretium in dolor ac, porttitor posuere orci. Morbi in justo aliquam, consequat quam ut, vulputate dui.\n"</ID>
+    <ID>MaxLineLength:CollapsableText.kt$"Etiam ornare massa sed turpis ultrices mattis. Nunc aliquet neque nisl, et viverra ante feugiat ornare. Maecenas in lectus mattis elit elementum convallis. Phasellus euismod bibendum nibh, vitae imperdiet lacus pharetra quis. In dui ipsum, hendrerit quis tempus non, sagittis hendrerit massa. Nullam molestie quam ut pharetra vulputate. Nunc laoreet risus arcu, ac sodales sapien hendrerit eu. Sed urna orci, placerat vel efficitur et, interdum at lacus. Integer sodales libero eget felis tempus, vitae imperdiet odio tincidunt. Mauris suscipit accumsan auctor. Ut augue sapien, dapibus vitae congue vitae, facilisis imperdiet elit."</ID>
+    <ID>MaxLineLength:CollapsableText.kt$"Fusce fringilla nisl dui, nec egestas velit semper at. Morbi feugiat risus non laoreet convallis. In nec posuere orci, non porttitor nulla. Pellentesque justo ipsum, porttitor ac leo sed, placerat iaculis metus. In feugiat erat sed ipsum dapibus, id scelerisque libero dapibus. Nulla et auctor mauris. Quisque tempor nisl non urna pharetra faucibus. Fusce sed nisi et nibh mattis luctus ac ac turpis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n"</ID>
+    <ID>MaxLineLength:CollapsableText.kt$data</ID>
+    <ID>MaxLineLength:GenreSelection.kt$style = MaterialTheme.typography.body1.copy(color = White, fontWeight = FontWeight.Bold)</ID>
+    <ID>MaxLineLength:GenreSelection.kt$val backgroundColor = if (MaterialTheme.colors.isLight) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.primary</ID>
+    <ID>TopLevelPropertyNaming:OnBoardingNavigatorViewModel.kt$const val onBoardingCompleteKey = "OnBoardingComplete"</ID>
+  </CurrentIssues>
+</SmellBaseline>
