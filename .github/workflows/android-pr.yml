@@ -28,11 +28,18 @@ jobs:
         run: touch local.properties & echo clientId="$clientId" >> local.properties & echo clientAuthenticationUrl="$clientAuthenticationUrl" >> local.properties & echo useTwitchAuthentication="$useTwitchAuthentication" >> local.properties & echo debugKeyAlias="$debugKeyAlias" >> local.properties & echo debugKeyPassword="$debugKeyPassword" >> local.properties & echo debugStoreFileName="$debugStoreFileName" >> local.properties & echo debugStorePassword="$debugStorePassword" >> local.properties
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build the Android App with Gradle
-        run: ./gradlew :app:assembleDebug --stacktrace
-      - name: Run Tests
-        run: ./gradlew test
       - name: Core Lint Checks
         run: ./gradlew :core:ktlintCheck
       - name: Android Link Checks
         run: ./gradlew :app:ktlintCheck
+      - name: Detekt
+        run: ./gradlew detekt
+      - name: Publishing Errors
+        if: ${{ failure() }}
+        uses: jwgmeligmeyling/checkstyle-github-action@master
+        with:
+          path: '**/build/**/*.xml'
+      - name: Build the Android App with Gradle
+        run: ./gradlew :app:assembleDebug --stacktrace
+      - name: Run Tests
+        run: ./gradlew test

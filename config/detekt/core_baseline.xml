@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EnumNaming:ImageUtils.kt$ImageSize.t_1080p$t_1080p</ID>
+    <ID>EnumNaming:ImageUtils.kt$ImageSize.t_720p$t_720p</ID>
+    <ID>ForbiddenComment:IgdbQueryBuilder.kt$// FIXME: Perhaps use a builder pattern that can be tested easily.</ID>
+    <ID>LongParameterList:LibraryRepository.kt$LibraryRepository$( slug: String, name: String, coverUrl: String, releaseDate: Long, platform: List&lt;String&gt;, gameStatus: GameStatus, notes: String? )</ID>
+    <ID>MagicNumber:DateUtils.kt$9</ID>
+    <ID>MagicNumber:IgdbQueryBuilder.kt$6</ID>
+    <ID>MatchingDeclarationName:KoinIos.kt$Injectable</ID>
+    <ID>MaxLineLength:GameDetailViewModel.kt$GameDetailViewModel$it.filter { game -&gt; game.cover != null }.map { game -&gt; GamePosterViewItem(slug = game.slug, url = game.cover!!.qualifiedUrl) }</ID>
+    <ID>MaxLineLength:GameDetailViewModel.kt$GameDetailViewModel$private</ID>
+    <ID>MaxLineLength:GameDetailViewModel.kt$GameDetailViewModel$remoteDetails.summary != null &amp;&amp; remoteDetails.storyline != null -&gt; remoteDetails.summary + "\n" + remoteDetails.storyline</ID>
+    <ID>MaxLineLength:GameDetailViewModel.kt$GameDetailViewModel$val videos = it.map { video -&gt; VideoViewItem(name = video.name, screenshotUrl = video.screenShotUrl, youtubeUrl = video.youtubeUrl) }</ID>
+    <ID>MaxLineLength:IgdbQueryBuilder.kt$"collection.*, collection.games.*, collection.games.cover.image_id, collection.games.screenshots.image_id, collection.games.platforms.*;"</ID>
+    <ID>MaxLineLength:IgdbQueryBuilder.kt$"similar_games.*, similar_games.screenshots.image_id, similar_games.cover.image_id, similar_games.platforms.*,"</ID>
+    <ID>MaxLineLength:IgdbQueryBuilder.kt$return</ID>
+    <ID>MaxLineLength:IgdbQueryBuilder.kt$return "f slug, name,cover.image_id, screenshots.image_id, first_release_date, platforms.id, platforms.name, platforms.slug ; search \"$searchTerm\"; l 50;"</ID>
+    <ID>TooGenericExceptionThrown:DatabaseHelper.kt$DatabaseHelper$throw RuntimeException("Accessing authentication for unauthenticated user")</ID>
+    <ID>TooManyFunctions:GameDetailViewModel.kt$GameDetailViewModel</ID>
+    <ID>TooManyFunctions:LibraryRepository.kt$LibraryRepository</ID>
+    <ID>TooManyFunctions:LibraryRepository.kt$LibraryRepositoryImpl : LibraryRepository</ID>
+  </CurrentIssues>
+</SmellBaseline>
