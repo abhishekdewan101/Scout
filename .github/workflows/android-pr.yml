@@ -34,7 +34,9 @@ jobs:
         run: ./gradlew :app:ktlintCheck
       - name: Detekt
         run: ./gradlew detekt
-      - uses: jwgmeligmeyling/checkstyle-github-action@master
+      - name: Publishing Errors
+        if: ${{ failure() }}
+        uses: jwgmeligmeyling/checkstyle-github-action@master
         with:
           path: '**/build/**/*.xml'
       - name: Build the Android App with Gradle
