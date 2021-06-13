@@ -36,6 +36,13 @@ android {
                 file(rootDir.canonicalPath + "/" + properties.getProperty("debugStoreFileName"))
             storePassword = properties.getProperty("debugStorePassword")
         }
+        create("release") {
+            keyAlias = properties.getProperty("releaseKeyAlias")
+            keyPassword = properties.getProperty("releaseKeyPassword")
+            storeFile =
+                file(rootDir.canonicalPath + "/" + properties.getProperty("releaseStoreFileName"))
+            storePassword = properties.getProperty("releaseStorePassword")
+        }
     }
 
     defaultConfig {
@@ -53,6 +60,7 @@ android {
         }
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
