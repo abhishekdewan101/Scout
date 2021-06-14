@@ -21,10 +21,10 @@ jobs:
           clientId: ${{secrets.clientId}}
           clientAuthenticationUrl: ${{secrets.clientAuthenticationUrl}}
           useTwitchAuthentication: ${{secrets.useTwitchAuthentication}}
-          debugKeyAlias: ${{secrets.releaseKeyAlias}}
-          debugKeyPassword: ${{secrets.releasePassword}}
-          debugStoreFileName: ${{secrets.releaseStoreFileName}}
-          debugStorePassword: ${{secrets.releaseStorePassword}}
+          releaseKeyAlias: ${{secrets.releaseKeyAlias}}
+          releaseKeyPassword: ${{secrets.releasePassword}}
+          releaseStoreFileName: ${{secrets.releaseStoreFileName}}
+          releaseStorePassword: ${{secrets.releaseStorePassword}}
         run: touch local.properties & echo clientId="$clientId" >> local.properties & echo clientAuthenticationUrl="$clientAuthenticationUrl" >> local.properties & echo useTwitchAuthentication="$useTwitchAuthentication" >> local.properties & echo releaseKeyAlias="$releaseKeyAlias" >> local.properties & echo releaseKeyPassword="$releaseKeyPassword" >> local.properties & echo releaseStoreFileName="$releaseStoreFileName" >> local.properties & echo releaseStorePassword="$releaseStorePassword" >> local.properties
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
