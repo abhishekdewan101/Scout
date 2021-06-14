@@ -36,29 +36,38 @@ android {
                 file(rootDir.canonicalPath + "/" + properties.getProperty("debugStoreFileName"))
             storePassword = properties.getProperty("debugStorePassword")
         }
+        create("release") {
+            keyAlias = properties.getProperty("releaseKeyAlias")
+            keyPassword = properties.getProperty("releaseKeyPassword")
+            storeFile =
+                file(rootDir.canonicalPath + "/" + properties.getProperty("releaseStoreFileName"))
+            storePassword = properties.getProperty("releaseStorePassword")
+        }
     }
 
     defaultConfig {
+        buildTypes {
+            debug {
+                signingConfig = signingConfigs.getByName("debug")
+                versionNameSuffix = "-SNAPSHOT"
+            }
+            release {
+                isMinifyEnabled = false
+                signingConfig = signingConfigs.getByName("release")
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            }
+        }
+        versionName = generatedVersionName()
         applicationId = "com.abhishek101.gamescout"
         minSdk = (AppVersions.minSdkVersion)
         targetSdk = (AppVersions.targetSdkVersion)
         versionCode = AppVersions.generatedVersionCode
-        versionName = generatedVersionName()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
-        }
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

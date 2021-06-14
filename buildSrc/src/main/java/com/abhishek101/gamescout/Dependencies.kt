@@ -7,25 +7,12 @@ object AppVersions {
     const val versionMajor = 0
     const val versionMinor = 1
     const val versionPatch = 0
-    var versionClassifier: String? = null
-    const val isSnapshot = true
     const val generatedVersionCode =
         minSdkVersion * 10000000 + versionMajor * 10000 + versionMinor * 100 + versionPatch
 }
 
-fun generatedVersionName(): String {
-    var versionName =
-        "${AppVersions.versionMajor}.${AppVersions.versionMinor}.${AppVersions.versionPatch}"
-    if (AppVersions.versionClassifier == null && AppVersions.isSnapshot) {
-        AppVersions.versionClassifier = "SNAPSHOT"
-    }
-
-    if (AppVersions.versionClassifier != null) {
-        versionName += "-${AppVersions.versionClassifier}"
-    }
-    println("Generated Version Name - $versionName")
-    return versionName;
-}
+fun generatedVersionName() =
+    "${AppVersions.versionMajor}.${AppVersions.versionMinor}.${AppVersions.versionPatch}"
 
 object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta03"
