@@ -1,7 +1,8 @@
 name: Android Release Build
 on:
-  push:
-    branches: [ release/* ]
+  create:
+    tags:
+      - v*
 
 jobs:
   build:
