@@ -3,6 +3,7 @@
 # Scout 
 
 ![Build Status](https://github.com/abhishekdewan101/GameTracker/actions/workflows/android.yml/badge.svg)
+[![Android Release Build](https://github.com/abhishekdewan101/Scout/actions/workflows/android-release.yml/badge.svg)](https://github.com/abhishekdewan101/Scout/actions/workflows/android-release.yml)
 
 
 Scout is a project aimed at developing an application that helps iOS and Android users keep track of their ever growing game libraries and then help them make decisions on what they should be playing next.
