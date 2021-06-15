@@ -22,7 +22,6 @@ interface LibraryRepository {
         notes: String?
     )
 
-    fun updatePlatforms(platform: List<String>, slug: String)
     fun getGamesWithStatus(status: GameStatus): List<LibraryGame>
     fun updateGameStatus(status: GameStatus, slug: String)
     fun updateGame(gameStatus: GameStatus, platform: List<String>, notes: String, slug: String)
@@ -64,10 +63,6 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
             platform,
             notes
         )
-    }
-
-    override fun updatePlatforms(platform: List<String>, slug: String) {
-        libraryQueries.updateOwnedPlatform(platform, slug)
     }
 
     override fun getGamesWithStatus(status: GameStatus): List<LibraryGame> {

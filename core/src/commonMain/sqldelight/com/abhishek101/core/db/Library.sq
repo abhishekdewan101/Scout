@@ -34,11 +34,6 @@ UPDATE LibraryGame
 SET platform = ?, gameStatus =?, notes = ?
 WHERE slug = ?;
 
-updateOwnedPlatform:
-UPDATE LibraryGame
-SET platform = ?
-WHERE slug = ?;
-
 removeGameFromLibrary:
 DELETE FROM LibraryGame
 WHERE slug = ?;

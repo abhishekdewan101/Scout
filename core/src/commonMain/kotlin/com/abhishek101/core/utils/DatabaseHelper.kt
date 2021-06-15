@@ -4,6 +4,7 @@ import com.abhishek101.core.db.AppDb
 import kotlinx.datetime.Clock
 
 class DatabaseHelper(appDb: AppDb) {
+    val queueQueries = appDb.queueQueries
     val authenticationQueries = appDb.authenticationQueries
     val platformQueries = appDb.platformQueries
     val genreQueries = appDb.genreQueries
