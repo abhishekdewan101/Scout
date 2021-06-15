@@ -83,15 +83,11 @@ class GameDetailViewModel(
     private fun getGameStatus(value: GameIntakeFormState): GameStatus {
         var gameStatus: GameStatus
         if (value.saveLocation == SaveLocation.WISHLIST) {
-            gameStatus = GameStatus.WISHLIST
+            gameStatus = GameStatus.WANT
         } else {
             gameStatus = when (value.completionStatus) {
-                CompletionStatus.QUEUED -> GameStatus.QUEUED
                 CompletionStatus.ABANDONED -> GameStatus.ABANDONED
                 CompletionStatus.COMPLETED -> GameStatus.COMPLETED
-            }
-            if (value.completionStatus == CompletionStatus.QUEUED && value.queuedStatus == QueuedStatus.NOW) {
-                gameStatus = GameStatus.PLAYING
             }
         }
         return gameStatus
@@ -121,17 +117,17 @@ class GameDetailViewModel(
 
     private fun getCompletionStatus(libraryDetails: LibraryGame?): CompletionStatus {
         return when {
-            libraryDetails == null -> CompletionStatus.QUEUED
+            libraryDetails == null -> CompletionStatus.ABANDONED
             libraryDetails.gameStatus == GameStatus.COMPLETED -> CompletionStatus.COMPLETED
             libraryDetails.gameStatus == GameStatus.ABANDONED -> CompletionStatus.ABANDONED
-            else -> CompletionStatus.QUEUED
+            else -> CompletionStatus.COMPLETED
         }
     }
 
     private fun getSaveLocation(libraryDetails: LibraryGame?): SaveLocation {
         return when {
             libraryDetails == null -> SaveLocation.WISHLIST
-            libraryDetails.gameStatus == GameStatus.WISHLIST -> SaveLocation.WISHLIST
+            libraryDetails.gameStatus == GameStatus.WANT -> SaveLocation.WISHLIST
             else -> SaveLocation.LIBRARY
         }
     }

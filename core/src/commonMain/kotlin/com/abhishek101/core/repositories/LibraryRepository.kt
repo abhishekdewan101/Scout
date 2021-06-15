@@ -95,7 +95,7 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
     }
 
     override fun getWantedGames(): Flow<List<LibraryGame>> {
-        return libraryQueries.getGameWithStatus(GameStatus.WISHLIST).asFlow().mapToList()
+        return libraryQueries.getGameWithStatus(GameStatus.WANT).asFlow().mapToList()
     }
 
     override fun removeGameFromLibrary(slug: String) {

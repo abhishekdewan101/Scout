@@ -1,8 +1,8 @@
 package com.abhishek101.core.models
 
 enum class GameStatus {
-    WISHLIST,
-    QUEUED,
+    WANT,
+    OWNED,
     PLAYING,
     COMPLETED,
     ABANDONED

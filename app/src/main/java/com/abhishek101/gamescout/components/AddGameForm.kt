@@ -231,13 +231,11 @@ fun LibrarySelectionContainer(
             Spacer(modifier = Modifier.height(10.dp))
             ChipSelectionRow(
                 chipData = mapOf(
-                    "Queue Game" to (completionStatus == CompletionStatus.QUEUED),
                     "Game Completed" to (completionStatus == CompletionStatus.COMPLETED),
                     "Didn't Finish" to (completionStatus == CompletionStatus.ABANDONED)
                 )
             ) {
                 val newCompletionStatus = when (it) {
-                    "Queue Game" -> CompletionStatus.QUEUED
                     "Game Completed" -> CompletionStatus.COMPLETED
                     else -> CompletionStatus.ABANDONED
                 }
@@ -245,9 +243,6 @@ fun LibrarySelectionContainer(
             }
             Spacer(modifier = Modifier.height(10.dp))
             when (completionStatus) {
-                CompletionStatus.QUEUED -> QueuedGameSelectionContainer(queuedStatus = queuedStatus) {
-                    updateFormData(formState.copy(queuedStatus = it))
-                }
                 else -> GameCompletedSelectionContainer(comments) {
                     updateComments(it)
                 }
