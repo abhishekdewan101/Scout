@@ -26,12 +26,12 @@ SELECT * FROM LibraryGame
 WHERE gameStatus = ?;
 
 insertGameIntoLibrary:
-INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, gameStatus, platform, notes)
-VALUES(?,?,?,?,?,?,?);
+INSERT INTO LibraryGame(slug, name, coverUrl, releaseDate, gameStatus, platform,startedOn, finishedOn, rating, notes)
+VALUES(?,?,?,?,?,?,?,?,?,?);
 
 updateGameInLibrary:
 UPDATE LibraryGame
-SET platform = ?, gameStatus =?, notes = ?
+SET platform = ?, gameStatus =?, notes = ?, rating =?
 WHERE slug = ?;
 
 removeGameFromLibrary:

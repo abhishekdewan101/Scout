@@ -23,34 +23,53 @@ class GameDetailViewModel(
 
     val viewState: StateFlow<GameDetailViewState> = _viewState
 
-    private val _formState = MutableStateFlow(defaultFormState)
+    private val _additionViewState = MutableStateFlow(defaultFormState)
 
-    val formState: StateFlow<GameIntakeFormState> = _formState
+    val additionViewState: StateFlow<GameAdditionViewState> = _additionViewState
 
     fun constructGameDetails(slug: String) {
         defaultScope.launch {
             val remoteDetails = gameRepository.getGameDetailForSlug(slug)
             libraryRepository.getGameForSlug(slug).collect {
                 _viewState.value = buildGameViewState(remoteDetails = remoteDetails, libraryDetails = it)
-                _formState.value = buildFormState(remoteDetails = remoteDetails, libraryDetails = it)
+                _additionViewState.value = setAdditionViewState(remoteDetails = remoteDetails, libraryDetails = it)
             }
         }
     }
 
-    fun updateFormState(newState: GameIntakeFormState) {
-        _formState.value = newState
+    private fun setAdditionViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameAdditionViewState {
+        val platformList = if (libraryDetails != null) {
+            remoteDetails.platform!!.map { it.name to libraryDetails.platform.contains(it.name) }.toMap()
+        } else {
+            remoteDetails.platform!!.map { it.name to false }.toMap()
+        }
+        val currentGameStatus = libraryDetails?.gameStatus ?: additionViewState.value.gameStatus
+        val currentRating = libraryDetails?.rating?.toInt() ?: additionViewState.value.gameRating
+        val currentNotes = libraryDetails?.notes ?: additionViewState.value.gameNotes
+
+        return GameAdditionViewState(
+            platformList = platformList,
+            gameStatus = currentGameStatus,
+            gameRating = currentRating,
+            gameNotes = currentNotes
+        )
     }
 
-    fun saveGame() {
+    fun updateAdditionViewState(newState: GameAdditionViewState) {
+        _additionViewState.value = newState
+    }
+
+    fun updateGameInLibrary() {
         (_viewState.value as? NonEmptyViewState)?.let {
             val inLibrary = it.inLibrary
             val slug = it.slug
 
             if (inLibrary) {
                 libraryRepository.updateGame(
-                    gameStatus = getGameStatus(_formState.value),
-                    platform = getPlatformList(_formState.value),
-                    notes = _formState.value.notes,
+                    gameStatus = additionViewState.value.gameStatus,
+                    platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
+                    notes = additionViewState.value.gameNotes,
+                    rating = additionViewState.value.gameRating.toLong(),
                     slug = slug
                 )
             } else {
@@ -62,9 +81,10 @@ class GameDetailViewModel(
                     name = name,
                     coverUrl = coverUrl,
                     releaseDate = releaseDate.epoch,
-                    gameStatus = getGameStatus(_formState.value),
-                    platform = getPlatformList(_formState.value),
-                    notes = _formState.value.notes,
+                    rating = if (additionViewState.value.gameStatus == GameStatus.COMPLETED || additionViewState.value.gameStatus == GameStatus.ABANDONED) additionViewState.value.gameRating.toLong() else null,
+                    gameStatus = additionViewState.value.gameStatus,
+                    platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
+                    notes = additionViewState.value.gameNotes,
                 )
             }
         }
@@ -73,62 +93,7 @@ class GameDetailViewModel(
     fun removeGame() {
         (_viewState.value as? NonEmptyViewState)?.let {
             libraryRepository.removeGameFromLibrary(it.slug)
-        }
-    }
-
-    private fun getPlatformList(value: GameIntakeFormState): List<String> {
-        return value.platforms.filter { it.owned }.map { it.name }
-    }
-
-    private fun getGameStatus(value: GameIntakeFormState): GameStatus {
-        var gameStatus: GameStatus
-        if (value.saveLocation == SaveLocation.WISHLIST) {
-            gameStatus = GameStatus.WANT
-        } else {
-            gameStatus = when (value.completionStatus) {
-                CompletionStatus.ABANDONED -> GameStatus.ABANDONED
-                CompletionStatus.COMPLETED -> GameStatus.COMPLETED
-            }
-        }
-        return gameStatus
-    }
-
-    private fun buildFormState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameIntakeFormState {
-        val platforms = buildOwnedPlatformList(remoteDetails, libraryDetails)
-        val saveLocation = getSaveLocation(libraryDetails)
-        val completionStatus = getCompletionStatus(libraryDetails)
-        val queuedStatus = getQueuedStatus(libraryDetails)
-        return GameIntakeFormState(
-            saveLocation = saveLocation,
-            platforms = platforms,
-            completionStatus = completionStatus,
-            queuedStatus = queuedStatus,
-            notes = ""
-        )
-    }
-
-    private fun getQueuedStatus(libraryDetails: LibraryGame?): QueuedStatus {
-        return when {
-            libraryDetails == null -> QueuedStatus.NEXT
-            libraryDetails.gameStatus == GameStatus.PLAYING -> QueuedStatus.NOW
-            else -> QueuedStatus.NEXT
-        }
-    }
-
-    private fun getCompletionStatus(libraryDetails: LibraryGame?): CompletionStatus {
-        return when {
-            libraryDetails == null -> CompletionStatus.ABANDONED
-            libraryDetails.gameStatus == GameStatus.COMPLETED -> CompletionStatus.COMPLETED
-            libraryDetails.gameStatus == GameStatus.ABANDONED -> CompletionStatus.ABANDONED
-            else -> CompletionStatus.COMPLETED
-        }
-    }
-
-    private fun getSaveLocation(libraryDetails: LibraryGame?): SaveLocation {
-        return when {
-            libraryDetails == null -> SaveLocation.WISHLIST
-            libraryDetails.gameStatus == GameStatus.WANT -> SaveLocation.WISHLIST
-            else -> SaveLocation.LIBRARY
+            _additionViewState.value = defaultFormState
         }
     }
 
