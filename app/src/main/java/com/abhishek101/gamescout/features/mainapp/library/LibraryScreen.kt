@@ -101,7 +101,7 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                         ) {
                             navigate(
                                 "${MainAppDestinations.GameDetail}/${
-                                    viewModel.libraryGames[it].slug
+                                viewModel.libraryGames[it].slug
                                 }"
                             )
                         }

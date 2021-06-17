@@ -219,9 +219,11 @@ private fun GameDetailContent(
                                 } else {
                                     Color.Transparent
                                 }
-                                Box(modifier = Modifier
-                                    .border(2.dp, borderColor, RoundedCornerShape(50))
-                                    .clickable { updateAdditionViewState(additionViewState.copy(gameRating = rating.key)) }) {
+                                Box(
+                                    modifier = Modifier
+                                        .border(2.dp, borderColor, RoundedCornerShape(50))
+                                        .clickable { updateAdditionViewState(additionViewState.copy(gameRating = rating.key)) }
+                                ) {
                                     Text(
                                         rating.value,
                                         style = MaterialTheme.typography.h5,
@@ -280,7 +282,6 @@ private fun GameDetailContent(
                                                 bottomSheetScaffoldState.bottomSheetState.collapse()
                                                 saveGame()
                                             }
-
                                         }
                                 ) {
                                     Row(
