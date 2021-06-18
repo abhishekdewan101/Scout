@@ -59,7 +59,7 @@ class GameDetailViewModel(
         _additionViewState.value = newState
     }
 
-    fun updateGameInLibrary() {
+    fun updateGameInLibrary(gameNotes: String?) {
         (_viewState.value as? NonEmptyViewState)?.let {
             val inLibrary = it.inLibrary
             val slug = it.slug
@@ -68,7 +68,7 @@ class GameDetailViewModel(
                 libraryRepository.updateGame(
                     gameStatus = additionViewState.value.gameStatus,
                     platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
-                    notes = additionViewState.value.gameNotes,
+                    notes = gameNotes ?: additionViewState.value.gameNotes,
                     rating = additionViewState.value.gameRating.toLong(),
                     slug = slug
                 )
@@ -84,7 +84,7 @@ class GameDetailViewModel(
                     rating = if (additionViewState.value.gameStatus == GameStatus.COMPLETED || additionViewState.value.gameStatus == GameStatus.ABANDONED) additionViewState.value.gameRating.toLong() else null,
                     gameStatus = additionViewState.value.gameStatus,
                     platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
-                    notes = additionViewState.value.gameNotes,
+                    notes = gameNotes ?: additionViewState.value.gameNotes,
                 )
             }
         }

@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.CircularProgressIndicator
@@ -49,8 +51,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -117,7 +121,7 @@ private fun GameDetailContent(
     viewState: NonEmptyViewState,
     additionViewState: GameAdditionViewState,
     updateAdditionViewState: (GameAdditionViewState) -> Unit,
-    saveGame: () -> Unit,
+    saveGame: (String) -> Unit,
     removeGame: () -> Unit,
     navigate: (String) -> Unit
 ) {
@@ -127,6 +131,13 @@ private fun GameDetailContent(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var textFieldValue by remember { mutableStateOf(TextFieldValue(additionViewState.gameNotes)) }
+    val focusManager = LocalFocusManager.current
+
+    val keyboardActions = KeyboardActions(
+        onDone = {
+            focusManager.clearFocus()
+        }
+    )
 
     Box(
         modifier = Modifier
@@ -255,7 +266,11 @@ private fun GameDetailContent(
                                             style = TextStyle(color = MaterialTheme.colors.background.copy(alpha = 0.5f))
                                         )
                                     },
-                                    onValueChange = { value -> textFieldValue = value },
+                                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                                    keyboardActions = keyboardActions,
+                                    onValueChange = { value ->
+                                        textFieldValue = value
+                                    },
                                     modifier = Modifier.fillMaxWidth(),
                                     colors = TextFieldDefaults.textFieldColors(
                                         textColor = MaterialTheme.colors.background,
@@ -278,9 +293,8 @@ private fun GameDetailContent(
                                         .background(MaterialTheme.colors.primary)
                                         .clickable {
                                             scope.launch {
-                                                updateAdditionViewState(additionViewState.copy(gameNotes = textFieldValue.text))
                                                 bottomSheetScaffoldState.bottomSheetState.collapse()
-                                                saveGame()
+                                                saveGame(textFieldValue.text)
                                             }
                                         }
                                 ) {
