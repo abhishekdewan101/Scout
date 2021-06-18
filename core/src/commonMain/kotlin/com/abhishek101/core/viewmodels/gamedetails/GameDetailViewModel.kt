@@ -81,7 +81,13 @@ class GameDetailViewModel(
                     name = name,
                     coverUrl = coverUrl,
                     releaseDate = releaseDate.epoch,
-                    rating = if (additionViewState.value.gameStatus == GameStatus.COMPLETED || additionViewState.value.gameStatus == GameStatus.ABANDONED) additionViewState.value.gameRating.toLong() else null,
+                    rating = if (additionViewState.value.gameStatus == GameStatus.COMPLETED ||
+                        additionViewState.value.gameStatus == GameStatus.ABANDONED
+                    ) {
+                        additionViewState.value.gameRating.toLong()
+                    } else {
+                        null
+                    },
                     gameStatus = additionViewState.value.gameStatus,
                     platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
                     notes = gameNotes ?: additionViewState.value.gameNotes,

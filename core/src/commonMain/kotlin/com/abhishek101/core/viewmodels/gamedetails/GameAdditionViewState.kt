@@ -15,6 +15,7 @@ data class GameAdditionViewState(
     val gameNotes: String
 )
 
+@Suppress("MagicNumber")
 val ratingsMap = mapOf(
     1 to "😩",
     2 to "😒",
