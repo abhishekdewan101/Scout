@@ -6,7 +6,7 @@ object AppVersions {
     const val targetSdkVersion = 30
     const val versionMajor = 0
     const val versionMinor = 1
-    const val versionPatch = 0
+    const val versionPatch = 1
     const val generatedVersionCode =
         minSdkVersion * 10000000 + versionMajor * 10000 + versionMinor * 100 + versionPatch
 }
