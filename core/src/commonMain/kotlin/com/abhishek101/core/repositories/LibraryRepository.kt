@@ -18,14 +18,14 @@ interface LibraryRepository {
         coverUrl: String,
         releaseDate: Long,
         platform: List<String>,
+        rating: Long?,
         gameStatus: GameStatus,
         notes: String?
     )
 
-    fun updatePlatforms(platform: List<String>, slug: String)
     fun getGamesWithStatus(status: GameStatus): List<LibraryGame>
     fun updateGameStatus(status: GameStatus, slug: String)
-    fun updateGame(gameStatus: GameStatus, platform: List<String>, notes: String, slug: String)
+    fun updateGame(gameStatus: GameStatus, platform: List<String>, rating: Long, notes: String, slug: String)
     fun updateGameAsNowPlaying(slug: String)
     fun updateGameAsFinished(status: GameStatus, rating: Long, notes: String?, slug: String)
     fun clearTables()
@@ -52,6 +52,7 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
         coverUrl: String,
         releaseDate: Long,
         platform: List<String>,
+        rating: Long?,
         gameStatus: GameStatus,
         notes: String?
     ) {
@@ -62,12 +63,11 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
             releaseDate,
             gameStatus,
             platform,
+            null,
+            null,
+            rating,
             notes
         )
-    }
-
-    override fun updatePlatforms(platform: List<String>, slug: String) {
-        libraryQueries.updateOwnedPlatform(platform, slug)
     }
 
     override fun getGamesWithStatus(status: GameStatus): List<LibraryGame> {
@@ -78,8 +78,8 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
         libraryQueries.updateGameStatus(status, slug)
     }
 
-    override fun updateGame(gameStatus: GameStatus, platform: List<String>, notes: String, slug: String) {
-        libraryQueries.updateGameInLibrary(platform, gameStatus, notes, slug)
+    override fun updateGame(gameStatus: GameStatus, platform: List<String>, rating: Long, notes: String, slug: String) {
+        libraryQueries.updateGameInLibrary(platform, gameStatus, notes, rating, slug)
     }
 
     override fun updateGameAsNowPlaying(slug: String) {
@@ -100,7 +100,7 @@ class LibraryRepositoryImpl(databaseHelper: DatabaseHelper, private val clock: C
     }
 
     override fun getWantedGames(): Flow<List<LibraryGame>> {
-        return libraryQueries.getGameWithStatus(GameStatus.WISHLIST).asFlow().mapToList()
+        return libraryQueries.getGameWithStatus(GameStatus.WANT).asFlow().mapToList()
     }
 
     override fun removeGameFromLibrary(slug: String) {

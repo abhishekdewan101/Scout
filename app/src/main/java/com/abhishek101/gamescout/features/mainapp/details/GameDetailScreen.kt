@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -46,13 +47,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.viewmodels.gamedetails.DeveloperViewItem
+import com.abhishek101.core.viewmodels.gamedetails.GameAdditionViewState
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.EmptyViewState
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.NonEmptyViewState
-import com.abhishek101.core.viewmodels.gamedetails.GameIntakeFormState
 import com.abhishek101.core.viewmodels.gamedetails.GamePosterViewItem
 import com.abhishek101.core.viewmodels.gamedetails.VideoViewItem
-import com.abhishek101.gamescout.components.AddGameForm
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.HorizontalVideoList
@@ -76,7 +76,7 @@ fun GameDetailScreen(
     navigate: (String) -> Unit
 ) {
     val currentViewState by viewModel.viewState.collectAsState()
-    val formState by viewModel.formState.collectAsState()
+    val additionViewState by viewModel.additionViewState.collectAsState()
 
     LaunchedEffect(key1 = gameSlug) {
         viewModel.constructGameDetails(gameSlug)
@@ -86,9 +86,9 @@ fun GameDetailScreen(
         EmptyViewState -> LoadingIndicator()
         is NonEmptyViewState -> GameDetailContent(
             viewState = currentViewState as NonEmptyViewState,
-            formState = formState,
-            updateFormState = viewModel::updateFormState,
-            saveGame = viewModel::saveGame,
+            additionViewState = additionViewState,
+            updateAdditionViewState = viewModel::updateAdditionViewState,
+            saveGame = viewModel::updateGameInLibrary,
             removeGame = viewModel::removeGame,
             navigate = navigate
         )
@@ -100,9 +100,9 @@ fun GameDetailScreen(
 @Composable
 private fun GameDetailContent(
     viewState: NonEmptyViewState,
-    formState: GameIntakeFormState,
-    updateFormState: (GameIntakeFormState) -> Unit,
-    saveGame: () -> Unit,
+    additionViewState: GameAdditionViewState,
+    updateAdditionViewState: (GameAdditionViewState) -> Unit,
+    saveGame: (String) -> Unit,
     removeGame: () -> Unit,
     navigate: (String) -> Unit
 ) {
@@ -121,17 +121,10 @@ private fun GameDetailContent(
             scaffoldState = bottomSheetScaffoldState,
             sheetPeekHeight = 0.dp,
             sheetContent = {
-                AddGameForm(
-                    formState = formState,
-                    updateFormData = { updateFormState(it) }
-                ) {
-                    scope.launch {
-                        if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
-                            bottomSheetScaffoldState.bottomSheetState.collapse()
-                        }
-                        saveGame()
-                    }
-                }
+                AddGameBottomSheet(
+                    additionViewState, updateAdditionViewState,
+                    scope, bottomSheetScaffoldState, saveGame
+                )
             }
         ) {
             SafeArea(padding = 10.dp) {
@@ -188,6 +181,9 @@ private fun GameDetailContent(
                         ) {
                             navigate(it)
                         }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(82.dp))
                     }
                 }
             }

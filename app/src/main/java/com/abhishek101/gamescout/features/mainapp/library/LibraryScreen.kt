@@ -33,7 +33,7 @@ import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ABANDON
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.ALL
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.COMPLETED
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.PLAYING
-import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUED
+import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUE
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.WANTED
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.google.accompanist.coil.CoilImage
@@ -70,8 +70,8 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                         DropdownChip(
                             data = mapOf(
                                 ALL to "All",
-                                QUEUED to "Queued",
-                                WANTED to "Wishlist",
+                                WANTED to "Wanted",
+                                QUEUE to "Queued",
                                 PLAYING to "Playing",
                                 COMPLETED to "Completed",
                                 ABANDONED to "Abandoned"
