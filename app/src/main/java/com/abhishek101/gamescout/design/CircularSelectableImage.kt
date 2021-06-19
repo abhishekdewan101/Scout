@@ -29,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.abhishek101.gamescout.R
-import com.google.accompanist.coil.CoilImage
 
 @Composable
 fun CircularSelectableImage(

@@ -8,12 +8,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.gamescout.features.mainapp.MainAppBottomItems
 
@@ -30,8 +27,9 @@ fun BottomNavigationPager(
             pagerContent(navController)
         },
         bottomBar = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
+            val currentBackStack = navController.currentBackStackEntryAsState()
+
+            val currentRoute = currentBackStack.value?.destination?.route
 
             BottomNavigation(backgroundColor = MaterialTheme.colors.primaryVariant) {
                 bottomTabs.forEach { (key, tab) ->
@@ -54,7 +52,7 @@ fun BottomNavigationPager(
                         selected = currentRoute == key.name,
                         onClick = {
                             navController.navigate(key.name) {
-                                popUpTo = navController.graph.startDestination
+                                navController.graph.startDestinationRoute?.let { popUpTo(it) }
                                 launchSingleTop = true
                             }
                         }

@@ -53,6 +53,7 @@ import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.EmptyView
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.NonEmptyViewState
 import com.abhishek101.core.viewmodels.gamedetails.GamePosterViewItem
 import com.abhishek101.core.viewmodels.gamedetails.VideoViewItem
+import com.abhishek101.gamescout.design.CoilImage
 import com.abhishek101.gamescout.design.CollapsableText
 import com.abhishek101.gamescout.design.HorizontalImageList
 import com.abhishek101.gamescout.design.HorizontalVideoList
@@ -63,7 +64,6 @@ import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
-import com.google.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 

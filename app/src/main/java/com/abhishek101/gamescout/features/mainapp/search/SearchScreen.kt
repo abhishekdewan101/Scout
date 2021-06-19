@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,12 +22,12 @@ import com.abhishek101.core.models.GameListData
 import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.models.ListData
 import com.abhishek101.gamescout.R
+import com.abhishek101.gamescout.design.CoilImage
 import com.abhishek101.gamescout.design.ImageGrid
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.SearchTextInput
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
-import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 
 @Composable
@@ -81,7 +82,13 @@ fun RenderNoResults() {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(100.dp, 100.dp)
-                .padding(bottom = 10.dp)
+                .padding(bottom = 10.dp),
+            error = {
+                Text("Error")
+            },
+            loading = {
+                CircularProgressIndicator()
+            }
         )
         Text(
             "Oops.. Couldn't find any results",

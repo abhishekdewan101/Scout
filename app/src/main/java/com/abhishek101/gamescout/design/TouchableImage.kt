@@ -23,7 +23,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import com.abhishek101.gamescout.R
-import com.google.accompanist.coil.CoilImage
 
 // TODO: Add documentation
 @Composable
