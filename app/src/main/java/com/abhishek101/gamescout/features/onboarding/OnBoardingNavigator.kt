@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.abhishek101.gamescout.features.genreselection.GenreSelection
 import com.abhishek101.gamescout.features.mainapp.navigator.MainNavigator
@@ -29,14 +28,8 @@ enum class OnBoardingDestinations {
     MainAppScreen
 }
 
-typealias UpdateOnBoardingComplete = () -> Unit
-
 val LocalOnBoardingNavigator = compositionLocalOf<NavController> {
     error("No nav host controller provided")
-}
-
-val LocalUpdateOnBoardingCompleted = compositionLocalOf<UpdateOnBoardingComplete> {
-    error("No shared preferences provided")
 }
 
 @ExperimentalMaterialApi

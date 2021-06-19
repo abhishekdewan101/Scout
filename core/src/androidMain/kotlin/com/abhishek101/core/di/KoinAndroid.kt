@@ -13,5 +13,5 @@ actual val platformModule = module {
     }
 
     val baseKermit = Kermit(LogcatLogger()).withTag("KampKit")
-    factory { (tag: String?) -> if (tag != null) baseKermit.withTag(tag) else baseKermit }
+    factory { params -> baseKermit.withTag(params.get()) }
 }

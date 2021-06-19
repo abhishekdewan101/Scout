@@ -19,11 +19,11 @@ object Libs {
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
-    const val coil = "com.google.accompanist:accompanist-coil:0.6.2"
-    const val composePager = "com.google.accompanist:accompanist-pager:0.9.1"
-    const val flowLayout = "com.google.accompanist:accompanist-flowlayout:0.9.0"
+    const val coil = "com.google.accompanist:accompanist-coil:0.12.0"
+    const val composePager = "com.google.accompanist:accompanist-pager:0.12.0"
+    const val flowLayout = "com.google.accompanist:accompanist-flowlayout:0.12.0"
 
-    const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:0.9.1"
+    const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:0.12.0"
 
     const val mockk = "io.mockk:mockk:1.10.0"
     const val androidMockk = "io.mockk:mockk-android:1.10.0"
@@ -45,7 +45,7 @@ object Libs {
     }
 
     object Ktor {
-        private const val version = "1.5.3"
+        private const val version = "1.6.0"
 
         const val ktorCio = "io.ktor:ktor-client-cio:$version"
         const val ktorJson = "io.ktor:ktor-client-json:$version"
@@ -57,28 +57,28 @@ object Libs {
     }
 
     object Koin {
-        private const val version = "3.0.2"
+        private const val version = "3.1.0"
 
         const val koinCore = "io.insert-koin:koin-core:$version"
         const val koinAndroid = "io.insert-koin:koin-android:$version"
-        const val koinCompose = "io.insert-koin:koin-androidx-compose:3.0.1"
+        const val koinCompose = "io.insert-koin:koin-androidx-compose:3.1.0"
     }
 
     object Accompanist {
-        private const val version = "0.9.0"
+        private const val version = "0.12.0"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
     }
 
     object Kotlin {
-        const val version = "1.4.31"
+        const val version = "1.5.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
     }
 
     object Coroutines {
-        private const val version = "1.4.3-native-mt"
+        private const val version = "1.5.0-native-mt"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -98,13 +98,13 @@ object Libs {
         const val material = "com.google.android.material:material:1.3.0"
 
         object Navigation {
-            private const val version = "2.3.3"
-            const val composeNavigation = "androidx.navigation:navigation-compose:1.0.0-alpha10"
+            private const val version = "2.4.0-alpha03"
+            const val composeNavigation = "androidx.navigation:navigation-compose:$version"
         }
 
         object Compose {
             private const val snapshot = ""
-            const val version = "1.0.0-beta06"
+            const val version = "1.0.0-beta09"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val foundation = "androidx.compose.foundation:foundation:${version}"

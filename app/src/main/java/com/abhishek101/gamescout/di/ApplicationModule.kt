@@ -22,7 +22,7 @@ val appModule = module {
     single { GenreSelectionViewModel(get()) }
     single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }
-    viewModel(override = true) { SearchScreenViewModel(get()) }
+    viewModel { SearchScreenViewModel(get()) }
     single { LibraryViewModel(get()) }
 
     // SharedPreferences

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -26,6 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.gamescout.R
+import com.abhishek101.gamescout.design.CoilImage
 import com.abhishek101.gamescout.design.DropdownChip
 import com.abhishek101.gamescout.design.ImageGrid
 import com.abhishek101.gamescout.design.SafeArea
@@ -36,7 +38,6 @@ import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.PLAYING
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUE
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.WANTED
 import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
-import com.google.accompanist.coil.CoilImage
 import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -119,7 +120,13 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .size(64.dp, 64.dp)
-                                    .padding(bottom = 10.dp)
+                                    .padding(bottom = 10.dp),
+                                error = {
+                                    Text("Error")
+                                },
+                                loading = {
+                                    CircularProgressIndicator()
+                                }
                             )
                             Text(
                                 "Looks like we couldn't find any games!",
