@@ -8,22 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		4D992C3C267EE5EF00EBE926 /* ScoutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D992C3B267EE5EF00EBE926 /* ScoutApp.swift */; };
-		4D992C3E267EE5EF00EBE926 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D992C3D267EE5EF00EBE926 /* ContentView.swift */; };
 		4D992C40267EE5F000EBE926 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D992C3F267EE5F000EBE926 /* Assets.xcassets */; };
 		4D992C43267EE5F000EBE926 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D992C42267EE5F000EBE926 /* Preview Assets.xcassets */; };
-		9CA5EC280215CBFD93238F1B /* libPods-Scout.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1266B22F84ABDE698457CEA /* libPods-Scout.a */; };
+		61659A63267F109500991C05 /* AuthenticatonScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61659A62267F109500991C05 /* AuthenticatonScreen.swift */; };
+		97844A0D48AA676790C4022B /* Pods_Scout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1933327FD8FDADBE67F21929 /* Pods_Scout.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1933327FD8FDADBE67F21929 /* Pods_Scout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Scout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E2A5E30FD34B969B28812F /* Pods-Scout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scout.release.xcconfig"; path = "Target Support Files/Pods-Scout/Pods-Scout.release.xcconfig"; sourceTree = "<group>"; };
 		4D992C38267EE5EF00EBE926 /* Scout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D992C3B267EE5EF00EBE926 /* ScoutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoutApp.swift; sourceTree = "<group>"; };
-		4D992C3D267EE5EF00EBE926 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4D992C3F267EE5F000EBE926 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D992C42267EE5F000EBE926 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4D992C44267EE5F000EBE926 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		61659A62267F109500991C05 /* AuthenticatonScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatonScreen.swift; sourceTree = "<group>"; };
 		7CC648AEDC737C65AE5715B8 /* Pods-Scout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scout.debug.xcconfig"; path = "Target Support Files/Pods-Scout/Pods-Scout.debug.xcconfig"; sourceTree = "<group>"; };
-		C1266B22F84ABDE698457CEA /* libPods-Scout.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Scout.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,7 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CA5EC280215CBFD93238F1B /* libPods-Scout.a in Frameworks */,
+				97844A0D48AA676790C4022B /* Pods_Scout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,8 +59,8 @@
 		4D992C3A267EE5EF00EBE926 /* Scout */ = {
 			isa = PBXGroup;
 			children = (
+				61659A5F267F106600991C05 /* Features */,
 				4D992C3B267EE5EF00EBE926 /* ScoutApp.swift */,
-				4D992C3D267EE5EF00EBE926 /* ContentView.swift */,
 				4D992C3F267EE5F000EBE926 /* Assets.xcassets */,
 				4D992C44267EE5F000EBE926 /* Info.plist */,
 				4D992C41267EE5F000EBE926 /* Preview Content */,
@@ -76,6 +76,22 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		61659A5F267F106600991C05 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				61659A60267F107500991C05 /* Authentication */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		61659A60267F107500991C05 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				61659A62267F109500991C05 /* AuthenticatonScreen.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		9FB594BE0BBA2780F01B3C61 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -88,7 +104,7 @@
 		C7C2B95595189D501ADA477D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C1266B22F84ABDE698457CEA /* libPods-Scout.a */,
+				1933327FD8FDADBE67F21929 /* Pods_Scout.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -104,6 +120,7 @@
 				4D992C34267EE5EF00EBE926 /* Sources */,
 				4D992C35267EE5EF00EBE926 /* Frameworks */,
 				4D992C36267EE5EF00EBE926 /* Resources */,
+				D259AC2E85361C843400E8B3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -181,6 +198,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D259AC2E85361C843400E8B3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Scout/Pods-Scout-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Scout/Pods-Scout-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Scout/Pods-Scout-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -188,8 +222,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D992C3E267EE5EF00EBE926 /* ContentView.swift in Sources */,
 				4D992C3C267EE5EF00EBE926 /* ScoutApp.swift in Sources */,
+				61659A63267F109500991C05 /* AuthenticatonScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

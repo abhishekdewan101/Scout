@@ -65,10 +65,15 @@ kotlin {
         summary = "Shared Logic for Scout"
         homepage = "https://github.com/abhishekdewan101/Scout"
 
-        useLibraries()
-
         frameworkName = "ScoutCommon"
         ios.deploymentTarget = "13.5"
+    }
+
+    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
+        binaries.withType<org.jetbrains.kotlin.gradle.plugin.mpp.Framework> {
+            isStatic = false
+            transitiveExport = true
+        }
     }
 
     sourceSets {

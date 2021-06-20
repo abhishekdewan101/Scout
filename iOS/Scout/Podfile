@@ -1,3 +1,7 @@
+use_frameworks!
+
+platform :ios, '13.5'
+
 target 'Scout' do
   pod 'core', :path => '../../core/'
 end
