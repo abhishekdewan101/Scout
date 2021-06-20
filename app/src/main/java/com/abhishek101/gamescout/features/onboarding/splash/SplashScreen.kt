@@ -11,24 +11,26 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.abhishek101.core.viewmodels.authentication.AuthenticationViewModel
 import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.theme.GameTrackerTheme
 import kotlinx.coroutines.delay
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.get
 
 @Composable
 fun SplashScreen(
-    viewModel: SplashScreenViewModel = getViewModel(),
+    viewModel: AuthenticationViewModel = get(),
     setStatusBarColor: (Color, Boolean) -> Unit,
     onAuthenticationValidated: () -> Unit
 ) {
-    val isAuthenticationValid = viewModel.isAuthenticationValid
+    val isAuthenticationValid = viewModel.viewState.collectAsState()
     val statusBarColor = MaterialTheme.colors.primary
 
     SideEffect {
@@ -41,6 +43,8 @@ fun SplashScreen(
         if (isAuthenticationValid.value) {
             delay(1000)
             onAuthenticationValidated()
+        } else {
+            viewModel.checkAuthentication()
         }
     }
 }
