@@ -2,9 +2,9 @@ import com.abhishek101.gamescout.AppVersions
 import com.abhishek101.gamescout.Libs
 import com.abhishek101.gamescout.Libs.Koin
 import com.abhishek101.gamescout.Libs.SqlDelight
+import com.abhishek101.gamescout.generatedVersionName
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
@@ -17,6 +17,7 @@ plugins {
     id("com.codingfeline.buildkonfig")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
+    kotlin("native.cocoapods")
 }
 
 android {
@@ -47,6 +48,8 @@ detekt {
     }
 }
 
+version = generatedVersionName()
+
 kotlin {
     android()
 
@@ -57,15 +60,17 @@ kotlin {
         iosX64("ios")
     }
 
-    ios {
-        binaries {
-            framework {
-                baseName = "core"
-                export(Libs.Kermit.common)
-                transitiveExport = true
-            }
-        }
+    cocoapods {
+        // Configure fields required by CocoaPods.
+        summary = "Shared Logic for Scout"
+        homepage = "https://github.com/abhishekdewan101/Scout"
+
+        useLibraries()
+
+        frameworkName = "ScoutCommon"
+        ios.deploymentTarget = "13.5"
     }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -158,18 +163,3 @@ ktlint {
         reporter(ReporterType.CHECKSTYLE)
     }
 }
-
-val packForXcode by tasks.creating(Sync::class) {
-    group = "build"
-    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
-    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
-    val framework =
-        kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
-    inputs.property("mode", mode)
-    dependsOn(framework.linkTask)
-    val targetDir = File(buildDir, "xcode-frameworks")
-    from({ framework.outputDirectory })
-    into(targetDir)
-}
-tasks.getByName("build").dependsOn(packForXcode)

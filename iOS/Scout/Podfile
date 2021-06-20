@@ -1,0 +1,3 @@
+target 'Scout' do
+  pod 'core', :path => '../../core/'
+end
