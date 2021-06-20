@@ -65,7 +65,10 @@ kotlin {
         summary = "Shared Logic for Scout"
         homepage = "https://github.com/abhishekdewan101/Scout"
 
-        frameworkName = "Scout"
+        useLibraries()
+
+        frameworkName = "ScoutCommon"
+        ios.deploymentTarget = "13.5"
     }
 
     sourceSets {
