@@ -2,20 +2,34 @@ package com.abhishek101.core.viewmodels.authentication
 
 import co.touchlab.kermit.Kermit
 import com.abhishek101.core.repositories.AuthenticationRepository
+import com.abhishek101.core.utils.KeyValueStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+data class AuthenticationState(
+    val isAuthenticated: Boolean,
+    val isOnboardingCompleted: Boolean
+)
+
+const val ON_BOARDING_COMPLETE_KEY = "OnboardingCompleteKey"
+
 class AuthenticationViewModel constructor(
     private val authenticationRepository: AuthenticationRepository,
     private val mainScope: CoroutineScope,
-    private val kermit: Kermit
+    private val kermit: Kermit,
+    private val keyValueStore: KeyValueStore,
 ) {
-    private val _viewState = MutableStateFlow(false)
+    private val _viewState = MutableStateFlow(
+        AuthenticationState(
+            isAuthenticated = false,
+            isOnboardingCompleted = false
+        )
+    )
 
-    val viewState: StateFlow<Boolean> = _viewState
+    val viewState: StateFlow<AuthenticationState> = _viewState
 
     fun checkAuthentication() {
         mainScope.launch {
@@ -24,7 +38,12 @@ class AuthenticationViewModel constructor(
                 .collect {
                     if (it != null) {
                         kermit.d { "Valid Authentication Found" }
-                        _viewState.value = true
+                        _viewState.value = buildViewState(
+                            hasValidAuthentication = true,
+                            hasCompletedOnboarding = keyValueStore.getBoolean(
+                                ON_BOARDING_COMPLETE_KEY
+                            )
+                        )
                     } else {
                         kermit.d { "Valid Authentication Not Found - Authenticating User" }
                         authenticationRepository.authenticateUser()
@@ -33,14 +52,21 @@ class AuthenticationViewModel constructor(
         }
     }
 
-    fun checkAuthentication(listener: (Boolean) -> Unit) {
+    fun checkAuthentication(listener: (AuthenticationState) -> Unit) {
         mainScope.launch {
             authenticationRepository
                 .getAuthenticationData()
                 .collect {
                     if (it != null) {
                         kermit.d { "Valid Authentication Found" }
-                        listener(true)
+                        listener(
+                            buildViewState(
+                                hasValidAuthentication = true,
+                                hasCompletedOnboarding = keyValueStore.getBoolean(
+                                    ON_BOARDING_COMPLETE_KEY
+                                )
+                            )
+                        )
                     } else {
                         kermit.d { "Valid Authentication Not Found - Authenticating User" }
                         authenticationRepository.authenticateUser()
@@ -48,4 +74,12 @@ class AuthenticationViewModel constructor(
                 }
         }
     }
+
+    private fun buildViewState(
+        hasValidAuthentication: Boolean,
+        hasCompletedOnboarding: Boolean
+    ) = AuthenticationState(
+        isAuthenticated = hasValidAuthentication,
+        isOnboardingCompleted = hasCompletedOnboarding
+    )
 }

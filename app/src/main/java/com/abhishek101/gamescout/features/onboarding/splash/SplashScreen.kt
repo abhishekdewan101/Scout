@@ -40,7 +40,7 @@ fun SplashScreen(
     SplashScreenContent()
 
     LaunchedEffect(isAuthenticationValid.value) {
-        if (isAuthenticationValid.value) {
+        if (isAuthenticationValid.value.isAuthenticated) {
             delay(1000)
             onAuthenticationValidated()
         } else {
