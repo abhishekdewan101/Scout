@@ -10,12 +10,14 @@ import ScoutCommon
 
 struct AuthenticatonScreen: View {
     
-    @State private var isAuthenticated = false
+    @State private var authenicatonState : AuthenticationState = AuthenticationState(isAuthenticated: false, isOnboardingCompleted: false)
     
     let viewModel = koin.get(objCClass: AuthenticationViewModel.self) as! AuthenticationViewModel
     
     var body: some View {
-        if (isAuthenticated) {
+        if (authenicatonState.isAuthenticated && authenicatonState.isOnboardingCompleted) {
+            HomeScreen()
+        } else if (authenicatonState.isAuthenticated && !authenicatonState.isOnboardingCompleted) {
             PlatformSelectionScreen()
         } else {
             ZStack {
@@ -27,8 +29,8 @@ struct AuthenticatonScreen: View {
                         .progressViewStyle(CircularProgressViewStyle(tint: Color("White")))
                 }
             }.onAppear {
-                viewModel.checkAuthentication { authenticationFound in
-                    isAuthenticated = authenticationFound.boolValue
+                viewModel.checkAuthentication { state in
+                    authenicatonState = state
                 }
             }
         }

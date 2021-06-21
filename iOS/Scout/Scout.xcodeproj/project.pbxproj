@@ -13,6 +13,7 @@
 		61659A63267F109500991C05 /* AuthenticatonScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61659A62267F109500991C05 /* AuthenticatonScreen.swift */; };
 		61659A7B267F252A00991C05 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61659A7A267F252A00991C05 /* Koin.swift */; };
 		61659A7F267F2C5100991C05 /* PlatformSelectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61659A7E267F2C5100991C05 /* PlatformSelectionScreen.swift */; };
+		61659A872680140400991C05 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61659A862680140400991C05 /* HomeScreen.swift */; };
 		97844A0D48AA676790C4022B /* Pods_Scout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1933327FD8FDADBE67F21929 /* Pods_Scout.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		61659A62267F109500991C05 /* AuthenticatonScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatonScreen.swift; sourceTree = "<group>"; };
 		61659A7A267F252A00991C05 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
 		61659A7E267F2C5100991C05 /* PlatformSelectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelectionScreen.swift; sourceTree = "<group>"; };
+		61659A862680140400991C05 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		7CC648AEDC737C65AE5715B8 /* Pods-Scout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scout.debug.xcconfig"; path = "Target Support Files/Pods-Scout/Pods-Scout.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,6 +86,7 @@
 		61659A5F267F106600991C05 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				61659A85268013F200991C05 /* Home */,
 				61659A7D267F2C2600991C05 /* PreferenceSelection */,
 				61659A60267F107500991C05 /* Authentication */,
 			);
@@ -104,6 +107,14 @@
 				61659A7E267F2C5100991C05 /* PlatformSelectionScreen.swift */,
 			);
 			path = PreferenceSelection;
+			sourceTree = "<group>";
+		};
+		61659A85268013F200991C05 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				61659A862680140400991C05 /* HomeScreen.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		9FB594BE0BBA2780F01B3C61 /* Pods */ = {
@@ -237,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61659A7B267F252A00991C05 /* Koin.swift in Sources */,
+				61659A872680140400991C05 /* HomeScreen.swift in Sources */,
 				4D992C3C267EE5EF00EBE926 /* ScoutApp.swift in Sources */,
 				61659A63267F109500991C05 /* AuthenticatonScreen.swift in Sources */,
 				61659A7F267F2C5100991C05 /* PlatformSelectionScreen.swift in Sources */,

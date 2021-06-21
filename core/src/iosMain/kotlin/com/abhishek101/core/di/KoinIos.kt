@@ -3,6 +3,7 @@ package com.abhishek101.core.di
 import co.touchlab.kermit.Kermit
 import co.touchlab.kermit.NSLogLogger
 import com.abhishek101.core.db.AppDb
+import com.abhishek101.core.utils.KeyValueStore
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
 import kotlinx.cinterop.ObjCClass
@@ -27,6 +28,8 @@ actual val platformModule = module {
 
     val baseKermit = Kermit(NSLogLogger()).withTag("KampKit")
     factory { (tag: String?) -> if (tag != null) baseKermit.withTag(tag) else baseKermit }
+
+    single { KeyValueStore() }
 }
 
 fun Koin.get(objCClass: ObjCClass, qualifier: Qualifier?, parameter: Any): Any {

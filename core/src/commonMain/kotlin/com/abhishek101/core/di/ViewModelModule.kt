@@ -11,7 +11,8 @@ val viewModelModule = module {
         AuthenticationViewModel(
             get(),
             get(qualifier = named("MainScope")),
-            getWith(AuthenticationViewModel::class.simpleName)
+            getWith(AuthenticationViewModel::class.simpleName),
+            get()
         )
     }
 }
