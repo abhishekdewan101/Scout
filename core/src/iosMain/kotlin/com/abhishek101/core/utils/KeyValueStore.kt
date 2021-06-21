@@ -2,6 +2,7 @@ package com.abhishek101.core.utils
 
 import platform.Foundation.NSUserDefaults
 
+@Suppress("EmptyDefaultConstructor")
 actual class KeyValueStore() {
 
     private val userDefaults = NSUserDefaults.standardUserDefaults

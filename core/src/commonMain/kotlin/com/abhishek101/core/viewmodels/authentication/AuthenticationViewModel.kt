@@ -14,7 +14,7 @@ data class AuthenticationState(
     val isOnboardingCompleted: Boolean
 )
 
-const val OnboardingCompleteKey = "OnboardingCompleteKey"
+const val ON_BOARDING_COMPLETE_KEY = "OnboardingCompleteKey"
 
 class AuthenticationViewModel constructor(
     private val authenticationRepository: AuthenticationRepository,
@@ -40,7 +40,9 @@ class AuthenticationViewModel constructor(
                         kermit.d { "Valid Authentication Found" }
                         _viewState.value = buildViewState(
                             hasValidAuthentication = true,
-                            hasCompletedOnboarding = keyValueStore.getBoolean(OnboardingCompleteKey)
+                            hasCompletedOnboarding = keyValueStore.getBoolean(
+                                ON_BOARDING_COMPLETE_KEY
+                            )
                         )
                     } else {
                         kermit.d { "Valid Authentication Not Found - Authenticating User" }
@@ -61,7 +63,7 @@ class AuthenticationViewModel constructor(
                             buildViewState(
                                 hasValidAuthentication = true,
                                 hasCompletedOnboarding = keyValueStore.getBoolean(
-                                    OnboardingCompleteKey
+                                    ON_BOARDING_COMPLETE_KEY
                                 )
                             )
                         )
