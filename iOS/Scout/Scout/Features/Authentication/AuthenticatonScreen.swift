@@ -21,7 +21,7 @@ struct AuthenticatonScreen: View {
             PlatformSelectionScreen()
         } else {
             ZStack {
-                Color("BackgroundPurple").ignoresSafeArea(.all)
+                Color("BrandBackground").ignoresSafeArea(.all)
                 VStack {
                     Image("Logo")
                     ProgressView()

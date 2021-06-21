@@ -9,12 +9,28 @@ import SwiftUI
 
 struct PlatformSelectionScreen: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Color("Purple").edgesIgnoringSafeArea(.all)
+            VStack(spacing: 5) {
+                Text("Platforms")
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                Text("Select the platforms you own")
+                    .font(.body)
+                    .foregroundColor(.white)
+                Spacer()
+            }
+        }
     }
 }
 
 struct PlatformSelectionScreen_Previews: PreviewProvider {
     static var previews: some View {
-        PlatformSelectionScreen()
+        Group {
+            PlatformSelectionScreen()
+            PlatformSelectionScreen()
+                .preferredColorScheme(.dark)
+        }
     }
 }
