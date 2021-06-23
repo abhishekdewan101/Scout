@@ -9,7 +9,6 @@ import com.abhishek101.gamescout.features.mainapp.library.LibraryViewModel
 import com.abhishek101.gamescout.features.mainapp.search.SearchScreenViewModel
 import com.abhishek101.gamescout.features.mainapp.viewmore.ViewMoreViewModel
 import com.abhishek101.gamescout.features.onboarding.OnBoardingNavigatorViewModel
-import com.abhishek101.gamescout.features.platformselection.PlatformSelectionViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -17,7 +16,6 @@ import org.koin.dsl.module
 val appModule = module {
     // ViewModels
     viewModel { OnBoardingNavigatorViewModel(get()) }
-    single { PlatformSelectionViewModel(get()) }
     single { GenreSelectionViewModel(get()) }
     single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }

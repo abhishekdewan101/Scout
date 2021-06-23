@@ -3,6 +3,7 @@ package com.abhishek101.core.repositories
 import com.abhishek101.core.db.Platform
 import com.abhishek101.core.remote.PlatformApi
 import com.abhishek101.core.utils.DatabaseHelper
+import com.abhishek101.core.utils.buildImageString
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +37,7 @@ class PlatformRepositoryImpl(
                     it.slug,
                     it.name,
                     it.generation,
-                    it.logo!!.imageId
+                    buildImageString(it.logo!!.imageId)
                 )
             }
     }

@@ -2,6 +2,7 @@ package com.abhishek101.core.di
 
 import com.abhishek101.core.viewmodels.authentication.AuthenticationViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
+import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -15,4 +16,5 @@ val viewModelModule = module {
             get()
         )
     }
+    factory { PreferenceSelectionViewModel(get(), get(qualifier = named("DefaultScope"))) }
 }
