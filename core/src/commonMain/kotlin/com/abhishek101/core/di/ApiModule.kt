@@ -33,6 +33,7 @@ val apiModule = module {
                 serializer = KotlinxSerializer(
                     Json {
                         ignoreUnknownKeys = true
+                        useAlternativeNames = false // Workaround for - https://github.com/Kotlin/kotlinx.serialization/pull/1484
                     }
                 )
             }

@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import ScoutCommon
 
 struct PlatfromGridItem: View {
+    var slug: String
+    var imageUrl: String
     var isSelected: Bool = false
-    var onClick: () -> Void
+    var onClick: (String) -> Void
 
     var body: some View {
         ZStack {
@@ -20,18 +23,22 @@ struct PlatfromGridItem: View {
                 .if(isSelected) {
                     $0.overlay(Circle().strokeBorder(Color("White"), lineWidth: 5))
                 }
-            AsyncImage(url: "https://upload.wikimedia.org/wikipedia/commons/7/7a/PS5_logo.png",
+            AsyncImage(url: imageUrl,
                        width: 85,
                        height: 85
             )
         }.onTapGesture {
-            onClick()
+            onClick(slug)
         }
     }
 }
 
 struct PlatformSelectionScreen: View {
-    @State var data = (1...12).map { _ in false }
+    @State private var viewState: PreferenceSelectionViewState = PreferenceSelectionViewState.Loading()
+    @State private var platformSelectionDone: Bool = false
+
+    // swiftlint:disable:next force_cast
+    let viewModel = koin.get(objCClass: PreferenceSelectionViewModel.self) as! PreferenceSelectionViewModel
 
     let columns = [
         GridItem(.flexible()),
@@ -39,28 +46,74 @@ struct PlatformSelectionScreen: View {
     ]
 
     var body: some View {
-        ZStack {
-            Color("Purple").edgesIgnoringSafeArea(.all)
-            ScrollView {
-                VStack(alignment: .center, spacing: 5) {
-                    Text("Platforms")
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
-                        .fontWeight(.bold)
-                    Text("Select the platforms you own")
-                        .font(.body)
-                        .foregroundColor(.white)
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(data.indices, id: \.self) { index in
-                            PlatfromGridItem(isSelected: data[index]) {
-                                data[index] = !data[index]
-                            }
-                        }
-                    }.padding()
+        if platformSelectionDone {
+            GenreSelectionScreen()
+        } else {
+            // swiftlint:disable:next unused_optional_binding
+            if let _ = viewState as? PreferenceSelectionViewState.Loading {
+                VStack {
+                    ProgressView()
+                        .scaleEffect(x: 2, y: 2, anchor: .center)
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color("White")))
+                }.onAppear {
+                    viewModel.getPlatforms { state in
+                        viewState = state
+                    }
                 }
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+            } else {
+                // swiftlint:disable:next force_cast
+                let result = viewState as! PreferenceSelectionViewState.Result
+                ZStack(alignment: .bottom) {
+                    Color("Purple").edgesIgnoringSafeArea(.all)
+                    ScrollView {
+                        VStack(alignment: .center, spacing: 5) {
+                            Text("Platforms")
+                                .font(.largeTitle)
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                            Text("Select the platforms you own")
+                                .font(.body)
+                                .foregroundColor(.white)
+                            LazyVGrid(columns: columns, spacing: 20) {
+                                ForEach(result.platforms.indices, id: \.self) { index in
+                                    let platform = result.platforms[index]
+                                    PlatfromGridItem(slug: platform.slug,
+                                                     imageUrl: platform.imageId,
+                                                     // swiftlint:disable:next force_unwrapping
+                                                     isSelected: platform.isOwned!.boolValue) { slug in
+                                        // swiftlint:disable:next force_unwrapping
+                                        viewModel.togglePlatform(platformSlug: slug, isOwned: !platform.isOwned!.boolValue)
+                                    }
+                                }
+                            }.padding()
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                    }
+                    if result.ownedPlatformCount > 0 {
+                        Button {
+                            platformSelectionDone = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.title2)
+                                Text("Done")
+                                    .fontWeight(.semibold)
+                                    .font(.title2)
+                            }
+                            .padding()
+                            .foregroundColor(.white)
+                            .frame(maxWidth: 300)
+                            .background(Color("Red"))
+                            .cornerRadius(20)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    } else {
+                        EmptyView()
+                    }
+                }
             }
         }
+
     }
 }
 

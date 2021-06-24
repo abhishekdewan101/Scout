@@ -6,11 +6,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class PreferenceSelectionViewModel(
     private val platformRepository: PlatformRepository,
-    private val defaultScope: CoroutineScope
+    private val defaultScope: CoroutineScope,
 ) {
     private val _viewState: MutableStateFlow<PreferenceSelectionViewState> = MutableStateFlow(Loading)
 
@@ -31,11 +32,13 @@ class PreferenceSelectionViewModel(
     }
 
     fun getPlatforms(listener: (PreferenceSelectionViewState) -> Unit) {
+        listener(Loading)
         defaultScope.launch {
-            _viewState.collect {
+            viewState.onEach {
                 listener(it)
-            }
+            }.collect()
         }
+        getPlatforms()
     }
 
     fun togglePlatform(platformSlug: String, isOwned: Boolean) {

@@ -16,5 +16,10 @@ val viewModelModule = module {
             get()
         )
     }
-    factory { PreferenceSelectionViewModel(get(), get(qualifier = named("DefaultScope"))) }
+    factory {
+        PreferenceSelectionViewModel(
+            get(),
+            get(qualifier = named("DefaultScope"))
+        )
+    }
 }
