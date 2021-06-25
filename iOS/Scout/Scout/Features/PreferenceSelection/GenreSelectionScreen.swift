@@ -35,7 +35,6 @@ struct GenreGridItem: View {
             }
             Text(name)
                 .font(.title3)
-                .fontWeight(.semibold)
                 .lineLimit(1)
                 .foregroundColor(Color("White"))
         }.onTapGesture {
