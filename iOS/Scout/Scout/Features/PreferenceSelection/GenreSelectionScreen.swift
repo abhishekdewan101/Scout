@@ -36,8 +36,7 @@ struct GenreGridItem: View {
             Text(name)
                 .font(.title3)
                 .fontWeight(.semibold)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
+                .lineLimit(1)
                 .foregroundColor(Color("White"))
         }.onTapGesture {
             onClick(slug)
