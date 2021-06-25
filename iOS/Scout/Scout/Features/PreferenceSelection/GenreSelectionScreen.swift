@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct GenreSelectionScreen: View {
+    @Binding var preferenceSelectionStage: PreferenceSelectionStage
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Hello, World!").onTapGesture {
+            preferenceSelectionStage = .home
+        }
     }
 }
 
 struct GenreSelectionScreen_Previews: PreviewProvider {
     static var previews: some View {
-        GenreSelectionScreen()
+        GenreSelectionScreen(preferenceSelectionStage: Binding.constant(.genreSelection))
     }
 }

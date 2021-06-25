@@ -19,7 +19,7 @@ struct AuthenticatonScreen: View {
         if authenicatonState.isAuthenticated && authenicatonState.isOnboardingCompleted {
             HomeScreen()
         } else if authenicatonState.isAuthenticated && !authenicatonState.isOnboardingCompleted {
-            PlatformSelectionScreen()
+            PreferenceSelectionScreen()
         } else {
             ZStack {
                 Color("BrandBackground").ignoresSafeArea(.all)
