@@ -19,6 +19,7 @@ val viewModelModule = module {
     factory {
         PreferenceSelectionViewModel(
             get(),
+            get(),
             get(qualifier = named("DefaultScope"))
         )
     }
