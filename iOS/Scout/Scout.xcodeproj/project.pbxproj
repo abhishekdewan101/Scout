@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D852417268063FD00717155 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D852416268063FD00717155 /* ViewExtensions.swift */; };
+		4D85241D2681AE4300717155 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D85241C2681AE4200717155 /* RemoteImage.swift */; };
+		4D8524202681AEE500717155 /* RemoteImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D85241F2681AEE500717155 /* RemoteImageLoader.swift */; };
+		4D8524232681BB9100717155 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8524222681BB9100717155 /* AsyncImage.swift */; };
+		4D85242526830FE100717155 /* GenreSelectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D85242426830FE100717155 /* GenreSelectionScreen.swift */; };
+		4D852427268599A300717155 /* PreferenceSelectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D852426268599A300717155 /* PreferenceSelectionScreen.swift */; };
 		4D992C3C267EE5EF00EBE926 /* ScoutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D992C3B267EE5EF00EBE926 /* ScoutApp.swift */; };
 		4D992C40267EE5F000EBE926 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D992C3F267EE5F000EBE926 /* Assets.xcassets */; };
 		4D992C43267EE5F000EBE926 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D992C42267EE5F000EBE926 /* Preview Assets.xcassets */; };
@@ -20,6 +26,12 @@
 /* Begin PBXFileReference section */
 		1933327FD8FDADBE67F21929 /* Pods_Scout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Scout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E2A5E30FD34B969B28812F /* Pods-Scout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scout.release.xcconfig"; path = "Target Support Files/Pods-Scout/Pods-Scout.release.xcconfig"; sourceTree = "<group>"; };
+		4D852416268063FD00717155 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		4D85241C2681AE4200717155 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
+		4D85241F2681AEE500717155 /* RemoteImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageLoader.swift; sourceTree = "<group>"; };
+		4D8524222681BB9100717155 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
+		4D85242426830FE100717155 /* GenreSelectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelectionScreen.swift; sourceTree = "<group>"; };
+		4D852426268599A300717155 /* PreferenceSelectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceSelectionScreen.swift; sourceTree = "<group>"; };
 		4D992C38267EE5EF00EBE926 /* Scout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D992C3B267EE5EF00EBE926 /* ScoutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoutApp.swift; sourceTree = "<group>"; };
 		4D992C3F267EE5F000EBE926 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -44,6 +56,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D852415268063E900717155 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4D852416268063FD00717155 /* ViewExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4D8524182681A7FE00717155 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				4D8524192681A80700717155 /* Components */,
+				4D852415268063E900717155 /* Extensions */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		4D8524192681A80700717155 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				4D85241E2681AECB00717155 /* AsyncImage */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4D85241E2681AECB00717155 /* AsyncImage */ = {
+			isa = PBXGroup;
+			children = (
+				4D85241C2681AE4200717155 /* RemoteImage.swift */,
+				4D85241F2681AEE500717155 /* RemoteImageLoader.swift */,
+				4D8524222681BB9100717155 /* AsyncImage.swift */,
+			);
+			path = AsyncImage;
+			sourceTree = "<group>";
+		};
 		4D992C2F267EE5EF00EBE926 = {
 			isa = PBXGroup;
 			children = (
@@ -65,12 +112,13 @@
 		4D992C3A267EE5EF00EBE926 /* Scout */ = {
 			isa = PBXGroup;
 			children = (
+				4D8524182681A7FE00717155 /* Utils */,
+				4D992C41267EE5F000EBE926 /* Preview Content */,
 				61659A5F267F106600991C05 /* Features */,
-				4D992C3B267EE5EF00EBE926 /* ScoutApp.swift */,
 				4D992C3F267EE5F000EBE926 /* Assets.xcassets */,
 				4D992C44267EE5F000EBE926 /* Info.plist */,
-				4D992C41267EE5F000EBE926 /* Preview Content */,
 				61659A7A267F252A00991C05 /* Koin.swift */,
+				4D992C3B267EE5EF00EBE926 /* ScoutApp.swift */,
 			);
 			path = Scout;
 			sourceTree = "<group>";
@@ -104,7 +152,9 @@
 		61659A7D267F2C2600991C05 /* PreferenceSelection */ = {
 			isa = PBXGroup;
 			children = (
+				4D852426268599A300717155 /* PreferenceSelectionScreen.swift */,
 				61659A7E267F2C5100991C05 /* PlatformSelectionScreen.swift */,
+				4D85242426830FE100717155 /* GenreSelectionScreen.swift */,
 			);
 			path = PreferenceSelection;
 			sourceTree = "<group>";
@@ -142,6 +192,7 @@
 			buildConfigurationList = 4D992C47267EE5F000EBE926 /* Build configuration list for PBXNativeTarget "Scout" */;
 			buildPhases = (
 				5638F1CAAF4EE471004D9C47 /* [CP] Check Pods Manifest.lock */,
+				4D8524212681B4DA00717155 /* ShellScript */,
 				4D992C34267EE5EF00EBE926 /* Sources */,
 				4D992C35267EE5EF00EBE926 /* Frameworks */,
 				4D992C36267EE5EF00EBE926 /* Resources */,
@@ -201,6 +252,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4D8524212681B4DA00717155 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which \"${PODS_ROOT}/SwiftLint/swiftlint\" >/dev/null; then\n    ${PODS_ROOT}/SwiftLint/swiftlint autocorrect && ${PODS_ROOT}/SwiftLint/swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		5638F1CAAF4EE471004D9C47 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -247,8 +315,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D852427268599A300717155 /* PreferenceSelectionScreen.swift in Sources */,
+				4D8524202681AEE500717155 /* RemoteImageLoader.swift in Sources */,
+				4D8524232681BB9100717155 /* AsyncImage.swift in Sources */,
 				61659A7B267F252A00991C05 /* Koin.swift in Sources */,
+				4D852417268063FD00717155 /* ViewExtensions.swift in Sources */,
+				4D85241D2681AE4300717155 /* RemoteImage.swift in Sources */,
 				61659A872680140400991C05 /* HomeScreen.swift in Sources */,
+				4D85242526830FE100717155 /* GenreSelectionScreen.swift in Sources */,
 				4D992C3C267EE5EF00EBE926 /* ScoutApp.swift in Sources */,
 				61659A63267F109500991C05 /* AuthenticatonScreen.swift in Sources */,
 				61659A7F267F2C5100991C05 /* PlatformSelectionScreen.swift in Sources */,

@@ -21,14 +21,18 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.db.Platform
-import com.abhishek101.core.utils.buildImageString
+import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewModel
+import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewState.Loading
+import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewState.Result
 import com.abhishek101.gamescout.design.CircularSelectableImage
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
@@ -39,14 +43,12 @@ import org.koin.androidx.compose.get
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlatformSelection(
-    viewModel: PlatformSelectionViewModel = get(),
+    viewModel: PreferenceSelectionViewModel = get(),
     setStatusBarColor: (Color, Boolean) -> Unit,
     onPlatformSelectionComplete: () -> Unit
 ) {
 
-    val isLoading = viewModel.isLoading.value
-    val platformList = viewModel.platforms.value
-    val ownedCount = viewModel.ownedPlatformCount.value
+    val viewState = viewModel.viewState.collectAsState()
 
     val backgroundColor =
         if (MaterialTheme.colors.isLight) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.primary
@@ -56,36 +58,39 @@ fun PlatformSelection(
         setStatusBarColor(backgroundColor, useDarkIcon)
     }
 
-    PlatformListContent(
-        isLoading = isLoading,
-        platformList = platformList,
-        ownedCount = ownedCount,
-        backgroundColor = backgroundColor,
-        onPlatformSelected = viewModel::updateOwnedPlatform,
-        onPlatformSelectionComplete = onPlatformSelectionComplete,
-    )
+    LaunchedEffect(key1 = viewModel) {
+        if (viewState.value is Loading) {
+            viewModel.getPlatforms()
+        }
+    }
+
+    when (viewState.value) {
+        Loading -> LoadingIndicator(color = White, backgroundColor = backgroundColor)
+        is Result -> PlatformListContent(
+            platformList = (viewState.value as Result).platforms,
+            ownedCount = (viewState.value as Result).ownedPlatformCount,
+            backgroundColor = backgroundColor,
+            onPlatformSelected = viewModel::togglePlatform,
+            onPlatformSelectionComplete = onPlatformSelectionComplete,
+        )
+    }
 }
 
 @Composable
 fun PlatformListContent(
-    isLoading: Boolean,
     platformList: List<Platform>,
     ownedCount: Int,
     backgroundColor: Color,
     onPlatformSelected: (String, Boolean) -> Unit,
     onPlatformSelectionComplete: () -> Unit,
 ) {
-    if (isLoading) {
-        LoadingIndicator(color = White, backgroundColor = backgroundColor)
-    } else {
-        RenderPlatformList(
-            backgroundColor,
-            ownedCount,
-            platformList,
-            onPlatformSelected,
-            onPlatformSelectionComplete
-        )
-    }
+    RenderPlatformList(
+        backgroundColor,
+        ownedCount,
+        platformList,
+        onPlatformSelected,
+        onPlatformSelectionComplete
+    )
 }
 
 @Composable
@@ -117,7 +122,7 @@ private fun RenderPlatformList(
                             ) {
                                 for (item in chunked[index]) {
                                     CircularSelectableImage(
-                                        imageUri = buildImageString(item.imageId),
+                                        imageUri = item.imageId,
                                         width = itemWidth,
                                         isSelected = item.isOwned!!,
                                         selectedBorderColor = White
