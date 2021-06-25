@@ -46,8 +46,9 @@ struct PlatformSelectionScreen: View {
     ]
 
     var body: some View {
-        if let _ = viewState as? PreferenceSelectionViewState.Loading {
-            VStack {
+        if viewState is PreferenceSelectionViewState.Loading {
+            ZStack {
+                Color("Purple").edgesIgnoringSafeArea(.all)
                 ProgressView()
                     .scaleEffect(x: 2, y: 2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: Color("White")))
@@ -82,6 +83,7 @@ struct PlatformSelectionScreen: View {
                                 }
                             }
                         }.padding()
+                       Spacer(minLength: 50)
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
                 }
