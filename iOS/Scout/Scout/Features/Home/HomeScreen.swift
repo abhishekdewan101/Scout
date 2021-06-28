@@ -23,16 +23,16 @@ struct HomeScreen: View {
         ZStack {
             Color("Black").edgesIgnoringSafeArea(.all)
             TabView {
-                GameListView()
-                    .tabItem {
-                        Label("Home", systemImage: "house")
-                    }
-
+                NavigationView {
+                    GameListView()
+                        .navigationBarTitle("Home")
+                }.tabItem {
+                    Label("Home", systemImage: "house")
+                }
                 SearchView()
                     .tabItem {
                         Label("Search", systemImage: "magnifyingglass")
                     }
-
                 LibraryView()
                     .tabItem {
                         Label("Library", systemImage: "gamecontroller")

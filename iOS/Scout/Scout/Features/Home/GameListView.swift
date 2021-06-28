@@ -57,18 +57,13 @@ struct ShowcaseListView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(result.headerList.games, id: \.self) { game in
-                    Button {
-                        print("Showing game details for \(game.slug)")
-                    } label: {
+                    NavigationLink(destination: GameDetailScreen(slug: game.slug)) {
                         // swiftlint:disable:next force_unwrapping
                         AsyncImage(url: game.screenShots![0].qualifiedUrl,
                                    width: 400,
                                    height: 200,
                                    contentMode: .fill,
                                    cornerRadius: 20)
-                            .onTapGesture {
-                                print("Showing game details for \(game.slug)")
-                            }
                     }
                 }
             }.padding(.top)
@@ -96,12 +91,14 @@ struct GamePosterGridView: View {
                     Button {
                         print("Showing game details for \(poster.slug)")
                     } label: {
-                        // swiftlint:disable:next force_unwrapping
-                        AsyncImage(url: poster.cover!.qualifiedUrl,
-                                   width: Int(idealWidth),
-                                   height: 200,
-                                   contentMode: .fill,
-                                   cornerRadius: 5)
+                        NavigationLink(destination: GameDetailScreen(slug: poster.slug)) {
+                            // swiftlint:disable:next force_unwrapping
+                            AsyncImage(url: poster.cover!.qualifiedUrl,
+                                       width: Int(idealWidth),
+                                       height: 200,
+                                       contentMode: .fill,
+                                       cornerRadius: 5)
+                        }
                     }
                 }
             }
@@ -140,12 +137,14 @@ struct GamePosterHorizontalListView: View {
                         Button {
                             print("Showing game details for \(game.slug)")
                         } label: {
-                            // swiftlint:disable:next force_unwrapping
-                            AsyncImage(url: game.cover!.qualifiedUrl,
-                                       width: 150,
-                                       height: 250,
-                                       contentMode: .fill,
-                                       cornerRadius: 20)
+                            NavigationLink(destination: GameDetailScreen(slug: game.slug)) {
+                                // swiftlint:disable:next force_unwrapping
+                                AsyncImage(url: game.cover!.qualifiedUrl,
+                                           width: 150,
+                                           height: 250,
+                                           contentMode: .fill,
+                                           cornerRadius: 10)
+                            }
                         }
                     }
                 }
