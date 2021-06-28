@@ -20,17 +20,26 @@ class RemoteImageLoader: ObservableObject {
             fatalError("Invalid URL: \(url)")
         }
 
-        URLSession.shared.dataTask(with: parsedURL) { data, _, _ in
-            if let data = data, data.count > 0 {
-                self.data = data
-                self.state = .success
-            } else {
-                self.state = .failure
-            }
+        let cache = URLCache.shared
 
-            DispatchQueue.main.async {
-                self.objectWillChange.send()
-            }
-        }.resume()
+        let request = URLRequest(url: parsedURL, cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: 60.0)
+        if let data = cache.cachedResponse(for: request)?.data {
+            print("Responding with cached image for \(parsedURL)")
+            self.data = data
+            self.state = .success
+        } else {
+            URLSession.shared.dataTask(with: parsedURL) { data, _, _ in
+                if let data = data, data.count > 0 {
+                    self.data = data
+                    self.state = .success
+                } else {
+                    self.state = .failure
+                }
+
+                DispatchQueue.main.async {
+                    self.objectWillChange.send()
+                }
+            }.resume()
+        }
     }
 }
