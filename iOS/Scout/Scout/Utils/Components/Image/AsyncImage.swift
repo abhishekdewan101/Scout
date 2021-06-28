@@ -11,23 +11,28 @@ struct AsyncImage: View {
     var url: String
     var width: Int
     var height: Int
+    var contentMode: ContentMode = .fit
+    var cornerRadius: Float = 0
 
     var body: some View {
         RemoteImage(url: url) {
-            ProgressView()
-                .scaleEffect(x: 2, y: 2, anchor: .center)
-                .progressViewStyle(CircularProgressViewStyle(tint: Color("White")))
+            ZStack {
+                ProgressView()
+                    .scaleEffect(x: 2, y: 2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color("White")))
+            }.frame(width: CGFloat(width), height: CGFloat(height), alignment: .center)
         } failure: {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 64.0))
         } content: { image in
             Image(uiImage: image)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .aspectRatio(contentMode: self.contentMode)
                 .frame(width: CGFloat(self.width),
                        height: CGFloat(self.height),
                        alignment: .center
                 )
+                .cornerRadius(CGFloat(cornerRadius))
         }
     }
 }

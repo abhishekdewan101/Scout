@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 enum class ListType(val title: String) {
@@ -47,6 +48,15 @@ class GameListViewModel(
                 )
             }.collect()
         }
+    }
+
+    fun getGameLists(listener: (GameListViewState) -> Unit) {
+        defaultScope.launch {
+            viewState.onEach {
+                listener(it)
+            }.collect()
+        }
+        getGameLists()
     }
 
     private suspend fun getListData(listType: ListType): Flow<GameListData> {
