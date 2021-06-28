@@ -21,12 +21,3 @@ data class IgdbImage(
     val qualifiedUrl: String
         get() = buildImageString(imageId)
 }
-
-sealed class ListData
-
-data class GameListData(
-    val title: String,
-    val games: List<IgdbGame>
-) : ListData()
-
-object EmptyList : ListData()

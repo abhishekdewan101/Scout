@@ -16,7 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
-import com.abhishek101.core.repositories.ListType
+import com.abhishek101.core.viewmodels.gamelist.ListType
 import com.abhishek101.gamescout.features.mainapp.MainApp
 import com.abhishek101.gamescout.features.mainapp.details.GameDetailScreen
 import com.abhishek101.gamescout.features.mainapp.search.SearchScreen

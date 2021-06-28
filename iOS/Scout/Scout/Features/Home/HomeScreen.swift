@@ -9,16 +9,36 @@ import SwiftUI
 import ScoutCommon
 
 struct HomeScreen: View {
+
     // swiftlint:disable:next force_cast
     let preferenceSelectionViewModel = koin.get(objCClass: PreferenceSelectionViewModel.self) as! PreferenceSelectionViewModel
 
     init() {
         // if you are seeing this that means onboarding was completed.
         preferenceSelectionViewModel.setOnBoardingCompleted()
+        UITabBar.appearance().backgroundColor = UIColor(named: "Purple")
     }
 
     var body: some View {
-        Text("Hello, World! From The Home Screen")
+        ZStack {
+            Color("Black").edgesIgnoringSafeArea(.all)
+            TabView {
+                GameListView()
+                    .tabItem {
+                        Label("Home", systemImage: "house")
+                    }
+
+                SearchView()
+                    .tabItem {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+
+                LibraryView()
+                    .tabItem {
+                        Label("Library", systemImage: "gamecontroller")
+                    }
+            }.accentColor(Color("White"))
+        }
     }
 }
 
