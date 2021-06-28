@@ -1,11 +1,6 @@
 package com.abhishek101.core.utils
 
-import com.abhishek101.core.repositories.ListType
-import com.abhishek101.core.repositories.ListType.COMING_SOON
-import com.abhishek101.core.repositories.ListType.MOST_HYPED
-import com.abhishek101.core.repositories.ListType.RECENT
-import com.abhishek101.core.repositories.ListType.SHOWCASE
-import com.abhishek101.core.repositories.ListType.TOP_RATED
+import com.abhishek101.core.viewmodels.gamelist.ListType
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
@@ -26,11 +21,12 @@ fun buildGameDetailQuery(slug: String): String {
 fun buildQuery(queryType: ListType, genreFilter: String, platformFilter: String): String {
     val genreAndPreferenceFilter = "$genreFilter & $platformFilter"
     return when (queryType) {
-        SHOWCASE -> buildShowcaseQuery(genreAndPreferenceFilter)
-        TOP_RATED -> buildTopRatedQuery(genreAndPreferenceFilter)
-        COMING_SOON -> buildComingSoonQuery(genreAndPreferenceFilter)
-        MOST_HYPED -> buildMostHypedQuery(genreAndPreferenceFilter)
-        RECENT -> buildRecentGamesQuery(genreAndPreferenceFilter)
+        ListType.SHOWCASE -> buildShowcaseQuery(genreAndPreferenceFilter)
+        ListType.TOP_RATED -> buildTopRatedQuery(genreAndPreferenceFilter)
+        ListType.COMING_SOON -> buildComingSoonQuery(genreAndPreferenceFilter)
+        ListType.MOST_HYPED -> buildMostHypedQuery(genreAndPreferenceFilter)
+        ListType.RECENT -> buildRecentGamesQuery(genreAndPreferenceFilter)
+        else -> throw IllegalStateException("You can't get list for search type")
     }
 }
 

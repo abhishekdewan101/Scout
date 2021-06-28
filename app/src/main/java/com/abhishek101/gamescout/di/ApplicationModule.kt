@@ -3,7 +3,6 @@ package com.abhishek101.gamescout.di
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.abhishek101.core.utils.KeyValueStore
-import com.abhishek101.gamescout.features.mainapp.home.HomeScreenViewModel
 import com.abhishek101.gamescout.features.mainapp.library.LibraryViewModel
 import com.abhishek101.gamescout.features.mainapp.search.SearchScreenViewModel
 import com.abhishek101.gamescout.features.mainapp.viewmore.ViewMoreViewModel
@@ -15,7 +14,6 @@ import org.koin.dsl.module
 val appModule = module {
     // ViewModels
     viewModel { OnBoardingNavigatorViewModel(get()) }
-    single { HomeScreenViewModel(get()) }
     single { ViewMoreViewModel(get()) }
     viewModel { SearchScreenViewModel(get()) }
     single { LibraryViewModel(get()) }

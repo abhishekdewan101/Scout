@@ -18,9 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.abhishek101.core.models.GameListData
 import com.abhishek101.core.models.IgdbGame
-import com.abhishek101.core.models.ListData
+import com.abhishek101.core.viewmodels.gamelist.GameListData
 import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.design.CoilImage
 import com.abhishek101.gamescout.design.ImageGrid
@@ -44,7 +43,7 @@ fun SearchScreen(
                 LoadingIndicator()
             } else {
                 RenderSearchResults(
-                    searchResults = searchScreenViewModel.searchResults.value as ListData,
+                    searchResults = searchScreenViewModel.searchResults.value as GameListData,
                     searchTerm = searchTerm,
                     navigate = navigate
                 )
@@ -57,7 +56,7 @@ fun SearchScreen(
 
 @Composable
 private fun RenderSearchResults(
-    searchResults: ListData,
+    searchResults: GameListData,
     searchTerm: String,
     navigate: (String) -> Unit
 ) {
