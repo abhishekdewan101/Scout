@@ -1,5 +1,6 @@
 package com.abhishek101.core.viewmodels.gamelist
 
+import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.repositories.GameRepository
 import com.abhishek101.core.viewmodels.gamelist.ListType.COMING_SOON
 import com.abhishek101.core.viewmodels.gamelist.ListType.MOST_HYPED
@@ -43,8 +44,13 @@ class GameListViewModel(
                 getListData(RECENT)
             ) { showcaseList, topRatedList, comingSoonList, recentList, mostHypedList ->
                 _viewState.value = GameListViewState.NonEmptyViewState(
-                    headerList = showcaseList,
-                    otherLists = listOf(topRatedList, comingSoonList, recentList, mostHypedList)
+                    headerList = showcaseList.filter { it.screenShots != null },
+                    otherLists = listOf(
+                        topRatedList.filter { it.cover != null },
+                        comingSoonList.filter { it.cover != null },
+                        recentList.filter { it.cover != null },
+                        mostHypedList.filter { it.cover != null },
+                    )
                 )
             }.collect()
         }
@@ -57,6 +63,11 @@ class GameListViewModel(
             }.collect()
         }
         getGameLists()
+    }
+
+    private fun GameListData.filter(condition: (IgdbGame) -> Boolean): GameListData {
+        val nonEmpty = games.filter { condition(it) }.toList()
+        return this.copy(games = nonEmpty)
     }
 
     private suspend fun getListData(listType: ListType): Flow<GameListData> {
