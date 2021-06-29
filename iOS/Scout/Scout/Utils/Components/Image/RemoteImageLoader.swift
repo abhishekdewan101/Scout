@@ -24,7 +24,6 @@ class RemoteImageLoader: ObservableObject {
 
         let request = URLRequest(url: parsedURL, cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: 60.0)
         if let data = cache.cachedResponse(for: request)?.data {
-            print("Responding with cached image for \(parsedURL)")
             self.data = data
             self.state = .success
         } else {

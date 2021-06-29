@@ -89,17 +89,13 @@ struct GamePosterGridView: View {
             LazyVGrid(columns: columns, spacing: 5) {
                 let posters = list.games[0...8] // take first 9
                 ForEach(posters, id: \.self) { poster in
-                    Button {
-                        print("Showing game details for \(poster.slug)")
-                    } label: {
-                        NavigationLink(destination: GameDetailScreen(slug: poster.slug)) {
-                            // swiftlint:disable:next force_unwrapping
-                            AsyncImage(url: poster.cover!.qualifiedUrl,
-                                       width: Int(idealWidth),
-                                       height: 200,
-                                       contentMode: .fill,
-                                       cornerRadius: 5)
-                        }
+                    NavigationLink(destination: GameDetailScreen(slug: poster.slug)) {
+                        // swiftlint:disable:next force_unwrapping
+                        AsyncImage(url: poster.cover!.qualifiedUrl,
+                                   width: Int(idealWidth),
+                                   height: 200,
+                                   contentMode: .fill,
+                                   cornerRadius: 5)
                     }
                 }
             }
@@ -133,17 +129,13 @@ struct GamePosterHorizontalListView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(reducedGameList, id: \.self) { game in
-                        Button {
-                            print("Showing game details for \(game.slug)")
-                        } label: {
-                            NavigationLink(destination: GameDetailScreen(slug: game.slug)) {
-                                // swiftlint:disable:next force_unwrapping
-                                AsyncImage(url: game.cover!.qualifiedUrl,
-                                           width: 150,
-                                           height: 250,
-                                           contentMode: .fill,
-                                           cornerRadius: 10)
-                            }
+                        NavigationLink(destination: GameDetailScreen(slug: game.slug)) {
+                            // swiftlint:disable:next force_unwrapping
+                            AsyncImage(url: game.cover!.qualifiedUrl,
+                                       width: 150,
+                                       height: 250,
+                                       contentMode: .fill,
+                                       cornerRadius: 10)
                         }
                     }
                 }

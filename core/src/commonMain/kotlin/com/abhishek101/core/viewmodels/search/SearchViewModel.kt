@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val gameRepository: GameRepository, private val defaultScope: CoroutineScope) {
-    private val _viewState: MutableStateFlow<SearchViewState> = MutableStateFlow(SearchViewState.Loading)
+    private val _viewState: MutableStateFlow<SearchViewState> = MutableStateFlow(SearchViewState.Initial)
 
     val viewState: StateFlow<SearchViewState> = _viewState
 
     fun searchForGame(searchTerm: String) {
+        _viewState.value = SearchViewState.Loading
         defaultScope.launch {
             gameRepository.searchForGames(searchTerm = searchTerm).collect {
                 val filteredList = it.games.filter { game -> game.cover != null }
@@ -26,10 +27,13 @@ class SearchViewModel(private val gameRepository: GameRepository, private val de
     }
 
     fun searchForGame(searchTerm: String, listener: (SearchViewState) -> Unit) {
-        listener(SearchViewState.Loading)
         viewState.onEach {
             listener(it)
         }.launchIn(defaultScope)
         searchForGame(searchTerm = searchTerm)
+    }
+
+    fun resetSearchState() {
+        _viewState.value = SearchViewState.Initial
     }
 }
