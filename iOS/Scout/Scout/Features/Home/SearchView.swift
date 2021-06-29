@@ -17,15 +17,17 @@ struct SearchView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            ScrollView(.vertical, showsIndicators: false) {
+            VStack {
                 SearchBar { searchTerm in
                     viewModel.searchForGame(searchTerm: searchTerm) { state in
                         viewState = state
                     }
                 } resetSearch: {
                     viewModel.resetSearchState()
+                }.padding(.horizontal)
+                ScrollView(.vertical, showsIndicators: false) {
+                    SearchResults(viewState: viewState, screenSize: geometry.size)
                 }
-                SearchResults(viewState: viewState, screenSize: geometry.size)
             }
 
         }
@@ -40,39 +42,52 @@ struct SearchView_Previews: PreviewProvider {
 
 struct SearchBar: View {
     @State private var searchTerm: String = ""
+    @State private var isEditing: Bool = false
 
     var executeSearch: (String) -> Void
     var resetSearch: () -> Void
 
     var body: some View {
         HStack {
-            Image(systemName: "magnifyingglass")
-                .foregroundColor(Color.white)
-                .padding(.vertical)
-                .padding(.leading)
-            TextField("Enter game name",
-                      text: $searchTerm,
-                      onCommit: {
-                        executeSearch(searchTerm)
-                      }
-            )
-            Spacer()
-            if searchTerm.count > 0 {
-                Button {
-                    searchTerm = ""
-                    resetSearch()
-                } label: {
-                    Image(systemName: "multiply")
-                        .foregroundColor(Color.white)
-                        .padding(.vertical)
-                        .padding(.trailing)
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(Color.white)
+                    .padding(.vertical)
+                    .padding(.leading)
+                TextField("Enter game name",
+                          text: $searchTerm,
+                          onCommit: {
+                            executeSearch(searchTerm)
+                          }
+                ).onTapGesture {
+                    isEditing = true
+                }
+                if searchTerm.count > 0 {
+                    Button {
+                        searchTerm = ""
+                    } label: {
+                        Image(systemName: "multiply")
+                            .foregroundColor(Color.white)
+                    }.padding(.horizontal)
+                    .padding(.vertical)
                 }
             }
+            .navigationBarHidden(isEditing)
+            .background(Color("BrandBackground"))
+            .cornerRadius(10)
 
+            if isEditing {
+                Button {
+                    searchTerm = ""
+                    isEditing = false
+                    resetSearch()
+                } label: {
+                    Text("Cancel")
+                        .font(.body)
+                        .fontWeight(.bold)
+                }.padding(.horizontal)
+            }
         }
-        .background(Color("BrandBackground"))
-        .cornerRadius(10)
-        .padding()
     }
 }
 
