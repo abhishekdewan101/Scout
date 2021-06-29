@@ -16,23 +16,25 @@ struct HomeScreen: View {
     init() {
         // if you are seeing this that means onboarding was completed.
         preferenceSelectionViewModel.setOnBoardingCompleted()
-        UITabBar.appearance().backgroundColor = UIColor(named: "Purple")
+        UITabBar.appearance().backgroundColor = UIColor(named: "BrandBackground")
     }
 
     var body: some View {
         ZStack {
             Color("Black").edgesIgnoringSafeArea(.all)
             TabView {
-                GameListView()
-                    .tabItem {
-                        Label("Home", systemImage: "house")
-                    }
-
-                SearchView()
-                    .tabItem {
-                        Label("Search", systemImage: "magnifyingglass")
-                    }
-
+                NavigationView {
+                    GameListView()
+                        .navigationBarTitle("Home")
+                }.tabItem {
+                    Label("Home", systemImage: "house")
+                }
+                NavigationView {
+                    SearchView()
+                        .navigationBarTitle("Search")
+                }.tabItem {
+                    Label("Search", systemImage: "magnifyingglass")
+                }
                 LibraryView()
                     .tabItem {
                         Label("Library", systemImage: "gamecontroller")

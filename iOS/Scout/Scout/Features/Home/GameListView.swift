@@ -10,6 +10,7 @@ import ScoutCommon
 
 struct GameListView: View {
     @State private var viewState: GameListViewState = GameListViewState.Loading()
+    @State private var shouldShowNavigationTitle = true
     // swiftlint:disable:next force_cast
     let viewModel = koin.get(objCClass: GameListViewModel.self) as! GameListViewModel
 
@@ -57,18 +58,13 @@ struct ShowcaseListView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(result.headerList.games, id: \.self) { game in
-                    Button {
-                        print("Showing game details for \(game.slug)")
-                    } label: {
+                    NavigationLink(destination: GameDetailScreen(slug: game.slug)) {
                         // swiftlint:disable:next force_unwrapping
                         AsyncImage(url: game.screenShots![0].qualifiedUrl,
                                    width: 400,
                                    height: 200,
                                    contentMode: .fill,
                                    cornerRadius: 20)
-                            .onTapGesture {
-                                print("Showing game details for \(game.slug)")
-                            }
                     }
                 }
             }.padding(.top)
@@ -93,9 +89,7 @@ struct GamePosterGridView: View {
             LazyVGrid(columns: columns, spacing: 5) {
                 let posters = list.games[0...8] // take first 9
                 ForEach(posters, id: \.self) { poster in
-                    Button {
-                        print("Showing game details for \(poster.slug)")
-                    } label: {
+                    NavigationLink(destination: GameDetailScreen(slug: poster.slug)) {
                         // swiftlint:disable:next force_unwrapping
                         AsyncImage(url: poster.cover!.qualifiedUrl,
                                    width: Int(idealWidth),
@@ -117,9 +111,7 @@ struct Header: View {
                 .font(.title)
                 .fontWeight(.bold)
             Spacer()
-            Button {
-                print("View More for \(list.listType)")
-            } label: {
+            NavigationLink(destination: ViewMoreScreen(listData: list)) {
                 Image(systemName: "ellipsis")
                     .rotationEffect(.degrees(90))
                     .font(.title3)
@@ -137,15 +129,13 @@ struct GamePosterHorizontalListView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(reducedGameList, id: \.self) { game in
-                        Button {
-                            print("Showing game details for \(game.slug)")
-                        } label: {
+                        NavigationLink(destination: GameDetailScreen(slug: game.slug)) {
                             // swiftlint:disable:next force_unwrapping
                             AsyncImage(url: game.cover!.qualifiedUrl,
                                        width: 150,
                                        height: 250,
                                        contentMode: .fill,
-                                       cornerRadius: 20)
+                                       cornerRadius: 10)
                         }
                     }
                 }

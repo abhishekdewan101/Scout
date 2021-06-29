@@ -4,6 +4,7 @@ import com.abhishek101.core.viewmodels.authentication.AuthenticationViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
 import com.abhishek101.core.viewmodels.gamelist.GameListViewModel
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewModel
+import com.abhishek101.core.viewmodels.search.SearchViewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -27,6 +28,13 @@ val viewModelModule = module {
     }
     factory {
         GameListViewModel(
+            get(),
+            get(qualifier = named("DefaultScope"))
+        )
+    }
+
+    factory {
+        SearchViewModel(
             get(),
             get(qualifier = named("DefaultScope"))
         )
