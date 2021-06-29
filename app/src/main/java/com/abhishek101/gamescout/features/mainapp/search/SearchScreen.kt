@@ -14,12 +14,15 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.IgdbGame
-import com.abhishek101.core.viewmodels.gamelist.GameListData
+import com.abhishek101.core.viewmodels.search.SearchViewModel
+import com.abhishek101.core.viewmodels.search.SearchViewState
 import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.design.CoilImage
 import com.abhishek101.gamescout.design.ImageGrid
@@ -31,40 +34,44 @@ import org.koin.androidx.compose.get
 
 @Composable
 fun SearchScreen(
-    searchScreenViewModel: SearchScreenViewModel = get(),
+    viewModel: SearchViewModel = get(),
     searchTerm: String,
     navigate: (String) -> Unit
 ) {
 
-    if (searchScreenViewModel.searchResults.value != null) {
-        // Render search results
-        SafeArea(padding = 15.dp) {
-            if (searchScreenViewModel.isSearching.value) {
-                LoadingIndicator()
-            } else {
+    val viewState = viewModel.viewState.collectAsState()
+
+    LaunchedEffect(key1 = viewModel) {
+        viewModel.searchForGame(searchTerm = searchTerm)
+    }
+
+    when (viewState.value) {
+        SearchViewState.Loading -> SafeArea(padding = 15.dp) {
+            LoadingIndicator()
+        }
+        else -> {
+            val searchResults = viewState.value as SearchViewState.SearchResults
+            SafeArea(padding = 15.dp) {
                 RenderSearchResults(
-                    searchResults = searchScreenViewModel.searchResults.value as GameListData,
+                    searchResults = searchResults.results,
                     searchTerm = searchTerm,
                     navigate = navigate
                 )
             }
         }
-    } else {
-        searchScreenViewModel.searchForGames(searchTerm)
     }
 }
 
 @Composable
 private fun RenderSearchResults(
-    searchResults: GameListData,
+    searchResults: List<IgdbGame>,
     searchTerm: String,
     navigate: (String) -> Unit
 ) {
-    val results = (searchResults as GameListData).games
-    if (results.isEmpty()) {
+    if (searchResults.isEmpty()) {
         RenderNoResults()
     } else {
-        RenderSearchGrid(results, searchTerm, navigate)
+        RenderSearchGrid(searchResults, searchTerm, navigate)
     }
 }
 

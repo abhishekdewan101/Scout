@@ -4,7 +4,6 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.abhishek101.core.utils.KeyValueStore
 import com.abhishek101.gamescout.features.mainapp.library.LibraryViewModel
-import com.abhishek101.gamescout.features.mainapp.search.SearchScreenViewModel
 import com.abhishek101.gamescout.features.mainapp.viewmore.ViewMoreViewModel
 import com.abhishek101.gamescout.features.onboarding.OnBoardingNavigatorViewModel
 import org.koin.android.ext.koin.androidContext
@@ -15,7 +14,6 @@ val appModule = module {
     // ViewModels
     viewModel { OnBoardingNavigatorViewModel(get()) }
     single { ViewMoreViewModel(get()) }
-    viewModel { SearchScreenViewModel(get()) }
     single { LibraryViewModel(get()) }
 
     single<SharedPreferences> {
