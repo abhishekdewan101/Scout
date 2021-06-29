@@ -9,12 +9,12 @@ import SwiftUI
 import ScoutCommon
 
 struct SearchView: View {
-
+    
     // swiftlint:disable:next force_cast
     let viewModel = koin.get(objCClass: SearchViewModel.self) as! SearchViewModel
-
+    
     @State private var viewState: SearchViewState = SearchViewState.Initial()
-
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -29,7 +29,6 @@ struct SearchView: View {
                     SearchResults(viewState: viewState, screenSize: geometry.size)
                 }
             }
-
         }
     }
 }
@@ -43,10 +42,11 @@ struct SearchView_Previews: PreviewProvider {
 struct SearchBar: View {
     @State private var searchTerm: String = ""
     @State private var isEditing: Bool = false
-
+    @State private var hasRenderedOnce = false
+    
     var executeSearch: (String) -> Void
     var resetSearch: () -> Void
-
+    
     var body: some View {
         HStack {
             HStack {
@@ -61,6 +61,7 @@ struct SearchBar: View {
                           }
                 ).onTapGesture {
                     isEditing = true
+                    hasRenderedOnce = true
                 }
                 if searchTerm.count > 0 {
                     Button {
@@ -72,10 +73,9 @@ struct SearchBar: View {
                     .padding(.vertical)
                 }
             }
-            .navigationBarHidden(isEditing)
             .background(Color("BrandBackground"))
             .cornerRadius(10)
-
+            
             if isEditing {
                 Button {
                     searchTerm = ""
@@ -88,6 +88,9 @@ struct SearchBar: View {
                         .fontWeight(.bold)
                 }.padding(.horizontal)
             }
+        }.navigationBarHidden(isEditing)
+        .if(hasRenderedOnce) {
+            $0.animation(.easeIn(duration: 0.25))
         }
     }
 }
@@ -95,7 +98,7 @@ struct SearchBar: View {
 struct SearchResults: View {
     var viewState: SearchViewState
     var screenSize: CGSize
-
+    
     var body: some View {
         VStack {
             if viewState is SearchViewState.Loading {
