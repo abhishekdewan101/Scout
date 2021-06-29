@@ -81,6 +81,7 @@ struct SearchBar: View {
                     searchTerm = ""
                     isEditing = false
                     resetSearch()
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 } label: {
                     Text("Cancel")
                         .font(.body)
