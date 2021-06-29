@@ -10,6 +10,7 @@ import ScoutCommon
 
 struct GameListView: View {
     @State private var viewState: GameListViewState = GameListViewState.Loading()
+    @State private var shouldShowNavigationTitle = true
     // swiftlint:disable:next force_cast
     let viewModel = koin.get(objCClass: GameListViewModel.self) as! GameListViewModel
 
@@ -114,9 +115,7 @@ struct Header: View {
                 .font(.title)
                 .fontWeight(.bold)
             Spacer()
-            Button {
-                print("View More for \(list.listType)")
-            } label: {
+            NavigationLink(destination: ViewMoreScreen(listData: list)) {
                 Image(systemName: "ellipsis")
                     .rotationEffect(.degrees(90))
                     .font(.title3)
