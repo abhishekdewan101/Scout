@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
+const val MAX_RECENT_SEARCHES = 5
+
 class SearchViewModel(
     private val gameRepository: GameRepository,
     private val keyValueStore: KeyValueStore,
@@ -24,8 +26,6 @@ class SearchViewModel(
     val viewState: StateFlow<SearchViewState> = _viewState
 
     val recentSearchState: StateFlow<List<String>> = _recentSearchState
-
-    val maxRecentSearchSize = 5
 
     init {
         _recentSearchState.value = getRecentSearchTerms()
@@ -66,8 +66,8 @@ class SearchViewModel(
             if (!contains(searchTerm.trim())) {
                 val mutatedList = toMutableList()
                 mutatedList.add(0, searchTerm)
-                if (mutatedList.size > maxRecentSearchSize) {
-                    keyValueStore.setString(recentSearchKey, mutatedList.take(maxRecentSearchSize).joinToString(","))
+                if (mutatedList.size > MAX_RECENT_SEARCHES) {
+                    keyValueStore.setString(recentSearchKey, mutatedList.take(MAX_RECENT_SEARCHES).joinToString(","))
                 } else {
                     keyValueStore.setString(recentSearchKey, mutatedList.joinToString(","))
                 }

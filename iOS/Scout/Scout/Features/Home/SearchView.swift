@@ -75,13 +75,16 @@ struct SearchBar: View {
                     .padding(.leading)
                 TextField("Enter game name",
                           text: $searchTerm,
+                          onEditingChanged: {
+                            if $0 {
+                                isEditing = true
+                                hasRenderedOnce = true
+                            }
+                          },
                           onCommit: {
                             executeSearch(searchTerm)
                           }
-                ).onTapGesture {
-                    isEditing = true
-                    hasRenderedOnce = true
-                }
+                )
                 if searchTerm.count > 0 {
                     Button {
                         searchTerm = ""
