@@ -62,6 +62,7 @@ struct SearchBar: View {
     @Binding var searchTerm: String
     @Binding var isEditing: Bool
     @Binding var hasRenderedOnce: Bool
+    @State var showKeyboard: Bool = false
 
     var executeSearch: (String) -> Void
     var resetSearch: () -> Void
@@ -73,18 +74,17 @@ struct SearchBar: View {
                     .foregroundColor(Color.white)
                     .padding(.vertical)
                     .padding(.leading)
-                TextField("Enter game name",
-                          text: $searchTerm,
-                          onEditingChanged: {
-                            if $0 {
-                                isEditing = true
-                                hasRenderedOnce = true
-                            }
-                          },
-                          onCommit: {
-                            executeSearch(searchTerm)
-                          }
-                )
+                CustomTextField(text: $searchTerm,
+                                inEditing: $isEditing,
+                                isFirstResponder: $showKeyboard) {
+                    showKeyboard = false
+                    executeSearch(searchTerm)
+                }.frame(height: 50)
+                .onTapGesture {
+                    showKeyboard = true
+                    isEditing = true
+                    hasRenderedOnce = true
+                }
                 if searchTerm.count > 0 {
                     Button {
                         searchTerm = ""
@@ -102,8 +102,8 @@ struct SearchBar: View {
                 Button {
                     searchTerm = ""
                     isEditing = false
+                    showKeyboard = false
                     resetSearch()
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 } label: {
                     Text("Cancel")
                         .font(.body)
