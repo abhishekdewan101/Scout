@@ -36,6 +36,7 @@ val viewModelModule = module {
     factory {
         SearchViewModel(
             get(),
+            get(),
             get(qualifier = named("DefaultScope"))
         )
     }
