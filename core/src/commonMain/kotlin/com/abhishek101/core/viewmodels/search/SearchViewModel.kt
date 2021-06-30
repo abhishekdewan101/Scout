@@ -25,6 +25,8 @@ class SearchViewModel(
 
     val recentSearchState: StateFlow<List<String>> = _recentSearchState
 
+    val maxRecentSearchSize = 5
+
     init {
         _recentSearchState.value = getRecentSearchTerms()
     }
@@ -64,8 +66,8 @@ class SearchViewModel(
             if (!contains(searchTerm.trim())) {
                 val mutatedList = toMutableList()
                 mutatedList.add(0, searchTerm)
-                if (mutatedList.size > 5) {
-                    keyValueStore.setString(recentSearchKey, mutatedList.take(5).joinToString(","))
+                if (mutatedList.size > maxRecentSearchSize) {
+                    keyValueStore.setString(recentSearchKey, mutatedList.take(maxRecentSearchSize).joinToString(","))
                 } else {
                     keyValueStore.setString(recentSearchKey, mutatedList.joinToString(","))
                 }
