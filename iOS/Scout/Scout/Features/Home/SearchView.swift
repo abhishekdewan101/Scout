@@ -9,25 +9,44 @@ import SwiftUI
 import ScoutCommon
 
 struct SearchView: View {
-    
+
     // swiftlint:disable:next force_cast
     let viewModel = koin.get(objCClass: SearchViewModel.self) as! SearchViewModel
-    
+
     @State private var viewState: SearchViewState = SearchViewState.Initial()
-    
+    @State private var recentSearchList: [String] = []
+    @State private var isEditing: Bool = false
+    @State private var searchTerm: String = ""
+    @State private var hasRenderedOnce = false
+
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                SearchBar { searchTerm in
+                SearchBar(searchTerm: $searchTerm, isEditing: $isEditing, hasRenderedOnce: $hasRenderedOnce) { searchTerm in
                     viewModel.searchForGame(searchTerm: searchTerm) { state in
                         viewState = state
                     }
                 } resetSearch: {
                     viewModel.resetSearchState()
                 }.padding(.horizontal)
-                ScrollView(.vertical, showsIndicators: false) {
-                    SearchResults(viewState: viewState, screenSize: geometry.size)
+                if isEditing {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        SearchResults(viewState: viewState, screenSize: geometry.size)
+                    }
+                } else {
+                    RecentSearchListView(recentSearchList: $recentSearchList) {
+                        searchTerm = $0
+                        isEditing = true
+                        hasRenderedOnce = true
+                        viewModel.searchForGame(searchTerm: $0) {
+                            viewState = $0
+                        }
+                    }
                 }
+            }
+        }.onAppear {
+            viewModel.getRecentSearches {
+                recentSearchList = $0
             }
         }
     }
@@ -40,13 +59,14 @@ struct SearchView_Previews: PreviewProvider {
 }
 
 struct SearchBar: View {
-    @State private var searchTerm: String = ""
-    @State private var isEditing: Bool = false
-    @State private var hasRenderedOnce = false
-    
+    @Binding var searchTerm: String
+    @Binding var isEditing: Bool
+    @Binding var hasRenderedOnce: Bool
+    @State var showKeyboard: Bool = false
+
     var executeSearch: (String) -> Void
     var resetSearch: () -> Void
-    
+
     var body: some View {
         HStack {
             HStack {
@@ -54,12 +74,14 @@ struct SearchBar: View {
                     .foregroundColor(Color.white)
                     .padding(.vertical)
                     .padding(.leading)
-                TextField("Enter game name",
-                          text: $searchTerm,
-                          onCommit: {
-                            executeSearch(searchTerm)
-                          }
-                ).onTapGesture {
+                CustomTextField(text: $searchTerm,
+                                inEditing: $isEditing,
+                                isFirstResponder: $showKeyboard) {
+                    showKeyboard = false
+                    executeSearch(searchTerm)
+                }.frame(height: 50)
+                .onTapGesture {
+                    showKeyboard = true
                     isEditing = true
                     hasRenderedOnce = true
                 }
@@ -75,13 +97,13 @@ struct SearchBar: View {
             }
             .background(Color("BrandBackground"))
             .cornerRadius(10)
-            
+
             if isEditing {
                 Button {
                     searchTerm = ""
                     isEditing = false
+                    showKeyboard = false
                     resetSearch()
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 } label: {
                     Text("Cancel")
                         .font(.body)
@@ -98,7 +120,7 @@ struct SearchBar: View {
 struct SearchResults: View {
     var viewState: SearchViewState
     var screenSize: CGSize
-    
+
     var body: some View {
         VStack {
             if viewState is SearchViewState.Loading {
@@ -149,5 +171,31 @@ struct EmptyResultsView: View {
             Text("No search results found !").font(.title3)
         }.frame(width: screenSize.width)      // Make the scroll view full-width
         .frame(minHeight: screenSize.height)
+    }
+}
+
+struct RecentSearchListView: View {
+    @Binding var recentSearchList: [String]
+    var onListItemSelected: (String) -> Void
+
+    var body: some View {
+        if recentSearchList.count > 0 {
+            List {
+                Section(header: Text("Recent Searches").font(.title2)) {
+                    ForEach(recentSearchList, id: \.self) { search in
+                        Button {
+                            onListItemSelected(search)
+                        } label: {
+                            Text(search)
+                                .font(.body)
+                                .foregroundColor(Color("White"))
+                        }
+
+                    }
+                }.textCase(nil)
+            }.listStyle(InsetGroupedListStyle())
+        } else {
+            EmptyView()
+        }
     }
 }
