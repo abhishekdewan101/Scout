@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4D43EBB2268CD84E00AAD3D3 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D43EBB1268CD84E00AAD3D3 /* CustomTextField.swift */; };
+		4D662F8A268D983400C76EE9 /* ExpandableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D662F89268D983400C76EE9 /* ExpandableTextField.swift */; };
 		4D852417268063FD00717155 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D852416268063FD00717155 /* ViewExtensions.swift */; };
 		4D85241D2681AE4300717155 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D85241C2681AE4200717155 /* RemoteImage.swift */; };
 		4D8524202681AEE500717155 /* RemoteImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D85241F2681AEE500717155 /* RemoteImageLoader.swift */; };
@@ -33,6 +34,7 @@
 		1933327FD8FDADBE67F21929 /* Pods_Scout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Scout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E2A5E30FD34B969B28812F /* Pods-Scout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scout.release.xcconfig"; path = "Target Support Files/Pods-Scout/Pods-Scout.release.xcconfig"; sourceTree = "<group>"; };
 		4D43EBB1268CD84E00AAD3D3 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		4D662F89268D983400C76EE9 /* ExpandableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextField.swift; sourceTree = "<group>"; };
 		4D852416268063FD00717155 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		4D85241C2681AE4200717155 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		4D85241F2681AEE500717155 /* RemoteImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageLoader.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				4D43EBB1268CD84E00AAD3D3 /* CustomTextField.swift */,
+				4D662F89268D983400C76EE9 /* ExpandableTextField.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				4D8524312689A98F00717155 /* SearchView.swift in Sources */,
 				4D992C3C267EE5EF00EBE926 /* ScoutApp.swift in Sources */,
 				61659A63267F109500991C05 /* AuthenticatonScreen.swift in Sources */,
+				4D662F8A268D983400C76EE9 /* ExpandableTextField.swift in Sources */,
 				61659A7F267F2C5100991C05 /* PlatformSelectionScreen.swift in Sources */,
 				4DBA2AC5268ADBBD00A140BF /* ViewMoreScreen.swift in Sources */,
 			);
