@@ -11,6 +11,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class GameDetailViewModel(
@@ -35,6 +37,13 @@ class GameDetailViewModel(
                 _additionViewState.value = setAdditionViewState(remoteDetails = remoteDetails, libraryDetails = it)
             }
         }
+    }
+
+    fun constructGameDetails(slug: String, listener: (GameDetailViewState) -> Unit) {
+        viewState.onEach {
+            listener(it)
+        }.launchIn(defaultScope)
+        constructGameDetails(slug)
     }
 
     private fun setAdditionViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameAdditionViewState {
