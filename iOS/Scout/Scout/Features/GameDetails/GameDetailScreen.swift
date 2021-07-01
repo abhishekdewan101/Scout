@@ -33,16 +33,16 @@ struct GameDetailScreen: View {
         } else {
             // swiftlint:disable:next force_cast
             let result = viewState as! GameDetailViewState.NonEmptyViewState
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack {
-                    GameDetailHeaderView(result: result)
-                    if let summary = result.summary {
-                        GameDetailSummary(summary: summary)
-                            .padding(.top)
-                    }
-                }.frame(maxWidth: .infinity, alignment: .topLeading)
-            }
-            .padding(.all, 4)
+            GeometryReader { geo in
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack {
+                        GameDetailHeaderView(result: result, screenSize: geo.size)
+                        if let summary = result.summary {
+                            GameDetailSummary(summary: summary)
+                        }
+                    }.frame(maxHeight: .infinity)
+                }
+            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
             .navigationBarTitle(result.name, displayMode: .inline)
             .toolbar {
                 // Fix https://stackoverflow.com/questions/64405106/toolbar-is-deleting-my-back-button-in-the-navigationview/64994154#64994154
@@ -59,49 +59,71 @@ struct GameDetailScreen: View {
     }
 }
 
-struct GameDetailScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        GameDetailScreen(slug: "Something")
-    }
-}
-
 struct GameDetailSummary: View {
     var summary: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("About")
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundColor(Color("White").opacity(0.5))
-            ExpandableTextField(text: summary)
+        VStack(alignment: .leading) {
+            ExpandableTextField(text: summary, textColor: Color.white, font: .body)
                 .frame(maxWidth: .infinity, alignment: .leading)
-        }
+
+            Divider().background(Color.red).padding(.top)
+        }.padding(.top)
+        .padding(.horizontal)
     }
 }
 
 struct GameDetailHeaderView: View {
     var result: GameDetailViewState.NonEmptyViewState
+    var screenSize: CGSize
 
     var body: some View {
-        HStack {
-            AsyncImage(url: result.coverUrl,
-                       width: 175,
-                       height: 225,
-                       contentMode: .fill,
-                       cornerRadius: 5)
-            VStack(alignment: .leading, spacing: 10) {
-                Text(result.name).font(.title2).fontWeight(.bold).lineLimit(2)
-                if let developer = result.developer {
-                    Text(developer.name).font(.body).foregroundColor(Color("White").opacity(0.7))
-                }
-                Text(result.releaseDate.dateString).font(.body).foregroundColor(Color("White").opacity(0.7))
-                if let rating = result.rating {
-                    RatingView(rating: rating.intValue)
+        VStack(alignment: .leading, spacing: 0) {
+            if result.mediaList.count > 0 {
+                let randomIndex = Int.random(in: 0...(result.mediaList.count - 1))
+                ZStack {
+                    AsyncImage(url: result.mediaList[randomIndex],
+                               width: Int(screenSize.width),
+                               height: 300,
+                               contentMode: .fill
+                    ).overlay(Color.black.opacity(0.4))
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.leading)
+            HStack(alignment: .top) {
+                AsyncImage(url: result.coverUrl,
+                           width: 125,
+                           height: 125,
+                           contentMode: .fill,
+                           cornerRadius: 15)
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(result.name).font(.system(size: 16)).fontWeight(.bold).lineLimit(2)
+                    if let developer = result.developer {
+                        Text(developer.name).font(.body).foregroundColor(Color.gray)
+                    }
+                    Spacer()
+                    Button {
+                        print("Save Game")
+                    } label: {
+                        Text("Add to library")
+                            .font(.system(size: 14))
+                            .fontWeight(.bold)
+                            .frame(height: 10, alignment: .center)
+                            .foregroundColor(.white)
+                            .padding(.all)
+                            .background(Color("BrandBackground"))
+                            .cornerRadius(15)
+                    }.alignmentGuide(.bottom) {
+                        $0[.bottom]
+                    }
+                }.frame(height: 125, alignment: .topLeading)
+            }
+            .padding(.top)
+            .padding(.horizontal)
+            .frame(width: screenSize.width, alignment: .leading)
+
+            Divider()
+                .padding(.top)
+                .padding(.horizontal)
         }
     }
 }
