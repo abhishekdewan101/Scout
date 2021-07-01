@@ -38,9 +38,12 @@ struct GameDetailScreen: View {
                     GameDetailHeaderView(result: result)
                     if let summary = result.summary {
                         GameDetailSummary(summary: summary)
+                            .padding(.top)
                     }
-                }.frame(maxWidth: .infinity, alignment: .leading)
-            }.navigationBarTitle(result.name, displayMode: .inline)
+                }.frame(maxWidth: .infinity, alignment: .topLeading)
+            }
+            .padding(.all, 4)
+            .navigationBarTitle(result.name, displayMode: .inline)
             .toolbar {
                 // Fix https://stackoverflow.com/questions/64405106/toolbar-is-deleting-my-back-button-in-the-navigationview/64994154#64994154
                 ToolbarItem(placement: .navigationBarLeading) {Text("")}
@@ -72,9 +75,8 @@ struct GameDetailSummary: View {
                 .fontWeight(.bold)
                 .foregroundColor(Color("White").opacity(0.5))
             ExpandableTextField(text: summary)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.top)
     }
 }
 
