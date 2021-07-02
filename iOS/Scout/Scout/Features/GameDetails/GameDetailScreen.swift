@@ -44,8 +44,32 @@ struct GameDetailScreen: View {
                         if let summary = result.summary {
                             GameDetailSummary(summary: summary)
                         }
-                    }.frame(maxHeight: .infinity)
-                }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                        VStack {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                LazyHStack(spacing: 10) {
+                                    ForEach(result.videoList, id: \.self) { video in
+                                        VideoScreenshotView(screenShotUrl: video.screenshotUrl,
+                                                            videoTitle: video.name,
+                                                            screenSize: geo.size) {
+
+                                            let webURL = NSURL(string: video.youtubeUrl)!
+                                            let application = UIApplication.shared
+                                            application.open(webURL as URL)
+                                            print("Showing Video - \(video.youtubeUrl)")
+                                        }
+                                    }
+                                }
+                            }
+                            Divider().padding(.horizontal)
+                        }.frame(height: 175)
+                    }
+                    .frame(maxHeight: .infinity)
+                    .padding(.bottom)
+                }.frame(minWidth: 0,
+                        maxWidth: .infinity,
+                        minHeight: 0,
+                        maxHeight: .infinity,
+                        alignment: .topLeading)
             }
             .navigationBarTitle(result.name, displayMode: .inline)
             .toolbar {
