@@ -38,12 +38,28 @@ struct GameDetailScreen: View {
                     VStack {
                         GameDetailHeaderView(result: result, screenSize: geo.size)
                         GameStatsView(result: result)
+                        if result.mediaList.count > 0 {
+                            VStack {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHStack(spacing: 10) {
+                                        ForEach(result.mediaList, id: \.self) {
+                                            AsyncImage(url: $0,
+                                                       width: Int(geo.size.width - 10),
+                                                       height: 200,
+                                                       contentMode: .fill,
+                                                       cornerRadius: 15)
+                                        }
+                                    }
+                                }
+                                Divider().padding(.horizontal)
+                            }.frame(height: 220)
+                        }
                         if let summary = result.summary {
                             GameDetailSummary(summary: summary)
                         }
                     }.frame(maxHeight: .infinity)
-                }
-            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+            }
             .navigationBarTitle(result.name, displayMode: .inline)
             .toolbar {
                 // Fix https://stackoverflow.com/questions/64405106/toolbar-is-deleting-my-back-button-in-the-navigationview/64994154#64994154
@@ -158,40 +174,43 @@ struct RatingView: View {
 struct GameStatsView: View {
     var result: GameDetailViewState.NonEmptyViewState
     var body: some View {
-        HStack(alignment: .top) {
-            Spacer()
-            VStack {
-                Text("Release Date")
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.gray)
-                Text(result.releaseDate.dateString)
-                    .font(.body)
-                    .foregroundColor(Color.white)
-                    .padding(.top)
-            }
-            Spacer()
-            Divider().frame(maxHeight: 120)
-            if let rating = result.rating {
+        VStack {
+            HStack(alignment: .top) {
                 Spacer()
-                RatingView(rating: rating.intValue)
+                VStack {
+                    Text("Release Date")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.gray)
+                    Text(result.releaseDate.dateString)
+                        .font(.body)
+                        .foregroundColor(Color.white)
+                        .padding(.top)
+                }
                 Spacer()
-                Divider().frame(maxHeight: 120)
+                Divider()
+                if let rating = result.rating {
+                    Spacer()
+                    RatingView(rating: rating.intValue)
+                    Spacer()
+                    Divider()
+                }
+                Spacer()
+                VStack {
+                    Text(result.genres.count > 1 ? "Genres": "Genre")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.gray)
+                    Text(result.genres.joined(separator: "\n"))
+                        .font(.body)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color.white)
+                        .padding(.top)
+                }
+                Spacer()
             }
-            Spacer()
-            VStack {
-                Text(result.genres.count > 1 ? "Genres": "Genre")
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.gray)
-                Text(result.genres.joined(separator: "\n"))
-                    .font(.body)
-                    .lineLimit(3)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color.white)
-                    .padding(.top)
-            }
-            Spacer()
-        }
+            Divider().padding(.horizontal)
+        }.frame(height: 100)
     }
 }

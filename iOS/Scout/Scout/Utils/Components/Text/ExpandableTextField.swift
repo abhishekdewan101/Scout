@@ -18,7 +18,7 @@ struct ExpandableTextField: View {
         Text(text)
             .foregroundColor(textColor)
             .font(font)
-            .frame(maxHeight: isExpanded ? .infinity : 100)
+            .lineLimit(isExpanded ? 100 : 3)
             .onTapGesture {
                 isExpanded = true
             }
