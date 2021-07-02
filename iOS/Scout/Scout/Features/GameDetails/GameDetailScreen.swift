@@ -39,20 +39,7 @@ struct GameDetailScreen: View {
                         GameDetailHeaderView(result: result, screenSize: geo.size)
                         GameStatsView(result: result)
                         if result.mediaList.count > 0 {
-                            VStack {
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    LazyHStack(spacing: 10) {
-                                        ForEach(result.mediaList, id: \.self) {
-                                            AsyncImage(url: $0,
-                                                       width: Int(geo.size.width - 10),
-                                                       height: 200,
-                                                       contentMode: .fill,
-                                                       cornerRadius: 15)
-                                        }
-                                    }
-                                }
-                                Divider().padding(.horizontal)
-                            }.frame(height: 220)
+                            GameScreenshotView(result: result, screenSize: geo.size)
                         }
                         if let summary = result.summary {
                             GameDetailSummary(summary: summary)
@@ -212,5 +199,31 @@ struct GameStatsView: View {
             }
             Divider().padding(.horizontal)
         }.frame(height: 100)
+    }
+}
+
+struct GameScreenshotView: View {
+    var result: GameDetailViewState.NonEmptyViewState
+    var screenSize: CGSize
+
+    var body: some View {
+        VStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 10) {
+                    ForEach(result.mediaList, id: \.self) { image in
+                        NavigationLink(
+                            destination: FullScreenImageViewer(imageList: result.mediaList),
+                            label: {
+                                AsyncImage(url: image,
+                                           width: Int(screenSize.width - 10),
+                                           height: 200,
+                                           contentMode: .fill,
+                                           cornerRadius: 15)
+                            })
+                    }
+                }
+            }
+            Divider().padding(.horizontal)
+        }.frame(height: 220)
     }
 }
