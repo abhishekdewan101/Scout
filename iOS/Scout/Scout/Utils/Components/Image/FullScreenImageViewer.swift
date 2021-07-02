@@ -15,7 +15,7 @@ struct FullScreenImageViewer: View {
                 TabView {
                     ForEach(imageList, id: \.self) { image in
                         AsyncImage(url: image,
-                                   width: Int(geo.size.height - 20),
+                                   width: Int(geo.size.height - 40),
                                    height: Int(geo.size.width - 20),
                                    contentMode: .fill,
                                    cornerRadius: 25)

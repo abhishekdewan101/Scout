@@ -205,21 +205,31 @@ struct GameStatsView: View {
 struct GameScreenshotView: View {
     var result: GameDetailViewState.NonEmptyViewState
     var screenSize: CGSize
+    @State private var showFullScreen = false
 
     var body: some View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 10) {
                     ForEach(result.mediaList, id: \.self) { image in
-                        NavigationLink(
-                            destination: FullScreenImageViewer(imageList: result.mediaList),
-                            label: {
-                                AsyncImage(url: image,
-                                           width: Int(screenSize.width - 10),
-                                           height: 200,
-                                           contentMode: .fill,
-                                           cornerRadius: 15)
-                            })
+                        Button {
+                            showFullScreen = true
+                        } label: {
+                            AsyncImage(url: image,
+                                       width: Int(screenSize.width - 10),
+                                       height: 200,
+                                       contentMode: .fill,
+                                       cornerRadius: 15)
+                        }.sheet(isPresented: $showFullScreen) {
+                            VStack(spacing: 0) {
+                                RoundedRectangle(cornerRadius: 40)
+                                    .fill(Color.white)
+                                    .frame(width: 50, height: 5)
+                                    .padding(.top)
+                                FullScreenImageViewer(imageList: result.mediaList)
+                            }
+
+                        }
                     }
                 }
             }
