@@ -15,7 +15,8 @@ sealed class GameDetailViewState {
         val videoList: List<VideoViewItem>,
         val similarGames: List<GamePosterViewItem>,
         val dlcs: List<GamePosterViewItem>,
-        val inLibrary: Boolean
+        val inLibrary: Boolean,
+        val genres: List<String>,
     ) : GameDetailViewState()
 
     object EmptyViewState : GameDetailViewState()

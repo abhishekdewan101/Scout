@@ -37,6 +37,7 @@ struct GameDetailScreen: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
                         GameDetailHeaderView(result: result, screenSize: geo.size)
+                        GameStatsView(result: result)
                         if let summary = result.summary {
                             GameDetailSummary(summary: summary)
                         }
@@ -67,7 +68,7 @@ struct GameDetailSummary: View {
             ExpandableTextField(text: summary, textColor: Color.white, font: .body)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Divider().background(Color.red).padding(.top)
+            Divider().padding(.top)
         }.padding(.top)
         .padding(.horizontal)
     }
@@ -141,11 +142,56 @@ struct RatingView: View {
     }
 
     var body: some View {
-        ZStack {
-            Circle()
-                .fill(getRatingColor(rating: rating))
-                .frame(width: 45, height: 45)
-            Text(String(rating)).font(.body).fontWeight(.bold)
+        VStack {
+            Text("Avg Rating").font(.body).fontWeight(.bold).foregroundColor(Color.gray)
+            ZStack {
+                Circle()
+                    .fill(getRatingColor(rating: rating))
+                    .frame(width: 45, height: 45)
+                Text(String(rating)).font(.body).fontWeight(.bold)
+            }
+        }
+
+    }
+}
+
+struct GameStatsView: View {
+    var result: GameDetailViewState.NonEmptyViewState
+    var body: some View {
+        HStack(alignment: .top) {
+            Spacer()
+            VStack {
+                Text("Release Date")
+                    .font(.body)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.gray)
+                Text(result.releaseDate.dateString)
+                    .font(.body)
+                    .foregroundColor(Color.white)
+                    .padding(.top)
+            }
+            Spacer()
+            Divider().frame(maxHeight: 120)
+            if let rating = result.rating {
+                Spacer()
+                RatingView(rating: rating.intValue)
+                Spacer()
+                Divider().frame(maxHeight: 120)
+            }
+            Spacer()
+            VStack {
+                Text(result.genres.count > 1 ? "Genres": "Genre")
+                    .font(.body)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.gray)
+                Text(result.genres.joined(separator: "\n"))
+                    .font(.body)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color.white)
+                    .padding(.top)
+            }
+            Spacer()
         }
     }
 }

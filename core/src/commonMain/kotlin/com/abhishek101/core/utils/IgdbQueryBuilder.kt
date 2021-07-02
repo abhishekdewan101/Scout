@@ -7,7 +7,7 @@ import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.minus
 
 fun buildGameDetailQuery(slug: String): String {
-    return "f slug, name, summary, first_release_date, total_rating,storyline, cover.image_id, videos.*," +
+    return "f slug, name, summary, first_release_date,genres, total_rating,storyline, cover.image_id, videos.*," +
         "screenshots.image_id, platforms.id, platforms.name, platforms.slug," +
         "similar_games.*, similar_games.screenshots.image_id, similar_games.cover.image_id, similar_games.platforms.*," +
         "artworks.image_id, involved_companies.*,involved_companies.company.*," +

@@ -1,9 +1,11 @@
 package com.abhishek101.core.viewmodels.gamedetails
 
+import com.abhishek101.core.db.Genre
 import com.abhishek101.core.db.LibraryGame
 import com.abhishek101.core.models.GameStatus
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.core.repositories.GameRepository
+import com.abhishek101.core.repositories.GenreRepository
 import com.abhishek101.core.repositories.LibraryRepository
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.EmptyViewState
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.NonEmptyViewState
@@ -18,6 +20,7 @@ import kotlinx.coroutines.launch
 class GameDetailViewModel(
     private val gameRepository: GameRepository,
     private val libraryRepository: LibraryRepository,
+    private val genreRepository: GenreRepository,
     private val defaultScope: CoroutineScope
 ) {
 
@@ -32,9 +35,11 @@ class GameDetailViewModel(
     fun constructGameDetails(slug: String) {
         defaultScope.launch {
             val remoteDetails = gameRepository.getGameDetailForSlug(slug)
-            libraryRepository.getGameForSlug(slug).collect {
-                _viewState.value = buildGameViewState(remoteDetails = remoteDetails, libraryDetails = it)
-                _additionViewState.value = setAdditionViewState(remoteDetails = remoteDetails, libraryDetails = it)
+            libraryRepository.getGameForSlug(slug).collect { libraryGame ->
+                genreRepository.getCachedGenres().collect { genres ->
+                    _viewState.value = buildGameViewState(remoteDetails = remoteDetails, libraryDetails = libraryGame, genres = genres)
+                    _additionViewState.value = setAdditionViewState(remoteDetails = remoteDetails, libraryDetails = libraryGame)
+                }
             }
         }
     }
@@ -112,7 +117,7 @@ class GameDetailViewModel(
         }
     }
 
-    private fun buildGameViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameDetailViewState {
+    private fun buildGameViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?, genres: List<Genre>): GameDetailViewState {
         val inLibrary = libraryDetails != null
         val coverUrl = getCoverUrl(remoteDetails)
         val rating = getRatingText(remoteDetails)
@@ -124,6 +129,7 @@ class GameDetailViewModel(
         val similarGames = buildSimilarGames(remoteDetails)
         val dlcs = buildDlcList(remoteDetails)
         val releaseDate = getReleaseDate(remoteDetails)
+        val filteredGenres = getGenres(remoteDetails, genres)
         return NonEmptyViewState(
             slug = remoteDetails.slug,
             name = remoteDetails.name,
@@ -137,8 +143,13 @@ class GameDetailViewModel(
             videoList = videoList,
             similarGames = similarGames,
             dlcs = dlcs,
-            inLibrary = inLibrary
+            inLibrary = inLibrary,
+            genres = filteredGenres
         )
+    }
+
+    private fun getGenres(remoteDetails: IgdbGameDetail, genres: List<Genre>): List<String> {
+        return genres.filter { remoteDetails.genres.contains(it.id.toInt()) }.map { it.name }.toList()
     }
 
     private fun getReleaseDate(remoteDetails: IgdbGameDetail) =
