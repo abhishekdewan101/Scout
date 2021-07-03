@@ -47,6 +47,43 @@ struct GameDetailScreen: View {
                         if result.videoList.count > 0 {
                             GameVideoListView(result: result, screenSize: geo.size)
                         }
+                        if result.dlcs.count > 0 {
+                            let idealWidth = geo.size.width
+                            let rows = [
+                                GridItem(.flexible(), spacing: 10),
+                                GridItem(.flexible())
+                            ]
+                            VStack(alignment: .leading) {
+                                Text("More From This Game").font(.title2).fontWeight(.semibold)
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHGrid(rows: rows, spacing: 10) {
+                                        ForEach(result.dlcs, id: \.self) { dlc in
+                                            NavigationLink(destination: GameDetailScreen(slug: dlc.slug)) {
+                                                HStack {
+                                                    AsyncImage(url: dlc.url,
+                                                               width: 125,
+                                                               height: 125,
+                                                               contentMode: .fill,
+                                                               cornerRadius: 15)
+                                                    Text(dlc.name)
+                                                        .font(.system(size: 16))
+                                                        .fontWeight(.semibold)
+                                                        .lineLimit(2)
+                                                }.frame(width: idealWidth,
+                                                        height: 125,
+                                                        alignment: .leading)
+                                            }
+                                        }
+                                    }.frame(height: 250)
+                                }
+
+                                Divider().padding(.horizontal)
+                            }
+                        }
+
+                        if result.similarGames.count > 0 {
+                            SimilarGameListView(result: result)
+                        }
                     }
                     .frame(maxHeight: .infinity)
                     .padding(.bottom)
@@ -269,5 +306,27 @@ struct GameVideoListView: View {
             }
             Divider().padding(.horizontal)
         }.frame(height: 175)
+    }
+}
+
+struct SimilarGameListView: View {
+    var result: GameDetailViewState.NonEmptyViewState
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("You Might Also Like").font(.title2).fontWeight(.semibold)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(result.similarGames, id: \.self) { similarGame in
+                        NavigationLink(destination: GameDetailScreen(slug: similarGame.slug)) {
+                            AsyncImage(url: similarGame.url,
+                                       width: 125,
+                                       height: 225,
+                                       contentMode: .fill,
+                                       cornerRadius: 10)
+                        }
+                    }
+                }
+            }
+        }.padding(.horizontal)
     }
 }

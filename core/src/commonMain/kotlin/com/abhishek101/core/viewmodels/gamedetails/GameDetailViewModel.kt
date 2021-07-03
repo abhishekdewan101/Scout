@@ -170,7 +170,7 @@ class GameDetailViewModel(
     private fun buildDlcList(remoteDetails: IgdbGameDetail): List<GamePosterViewItem> {
         val dlcList = mutableListOf<GamePosterViewItem>()
         remoteDetails.dlc?.let {
-            val dlcs = it.map { dlc -> GamePosterViewItem(slug = dlc.slug, url = dlc.cover!!.qualifiedUrl) }
+            val dlcs = it.map { dlc -> GamePosterViewItem(slug = dlc.slug, url = dlc.cover!!.qualifiedUrl, name = dlc.name) }
             dlcList.addAll(dlcs)
         }
         return dlcList
@@ -180,7 +180,8 @@ class GameDetailViewModel(
         val similarGames = mutableListOf<GamePosterViewItem>()
         remoteDetails.similarGames?.let {
             val gameList =
-                it.filter { game -> game.cover != null }.map { game -> GamePosterViewItem(slug = game.slug, url = game.cover!!.qualifiedUrl) }
+                it.filter { game -> game.cover != null }
+                    .map { game -> GamePosterViewItem(slug = game.slug, url = game.cover!!.qualifiedUrl, name = game.name) }
             similarGames.addAll(gameList)
         }
         return similarGames

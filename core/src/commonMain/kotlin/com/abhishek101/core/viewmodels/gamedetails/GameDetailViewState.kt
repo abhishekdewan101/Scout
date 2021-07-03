@@ -24,7 +24,7 @@ sealed class GameDetailViewState {
 
 data class ReleaseDateViewItem(val epoch: Long, val dateString: String)
 
-data class GamePosterViewItem(val slug: String, val url: String)
+data class GamePosterViewItem(val slug: String, val name: String, val url: String)
 
 data class PlatformViewItem(val name: String, val owned: Boolean)
 
