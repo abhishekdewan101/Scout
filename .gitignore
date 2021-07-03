@@ -97,6 +97,7 @@ lint/tmp/
 
 .DS_Store
 
+iOS/Scout/.idea/
 
 # Xcode
 #

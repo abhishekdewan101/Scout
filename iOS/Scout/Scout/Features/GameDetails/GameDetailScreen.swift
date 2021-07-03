@@ -48,37 +48,7 @@ struct GameDetailScreen: View {
                             GameVideoListView(result: result, screenSize: geo.size)
                         }
                         if result.dlcs.count > 0 {
-                            let idealWidth = geo.size.width
-                            let rows = [
-                                GridItem(.flexible(), spacing: 10),
-                                GridItem(.flexible())
-                            ]
-                            VStack(alignment: .leading) {
-                                Text("More From This Game").font(.title2).fontWeight(.semibold)
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    LazyHGrid(rows: rows, spacing: 10) {
-                                        ForEach(result.dlcs, id: \.self) { dlc in
-                                            NavigationLink(destination: GameDetailScreen(slug: dlc.slug)) {
-                                                HStack {
-                                                    AsyncImage(url: dlc.url,
-                                                               width: 125,
-                                                               height: 125,
-                                                               contentMode: .fill,
-                                                               cornerRadius: 15)
-                                                    Text(dlc.name)
-                                                        .font(.system(size: 16))
-                                                        .fontWeight(.semibold)
-                                                        .lineLimit(2)
-                                                }.frame(width: idealWidth,
-                                                        height: 125,
-                                                        alignment: .leading)
-                                            }
-                                        }
-                                    }.frame(height: 250)
-                                }
-
-                                Divider().padding(.horizontal)
-                            }
+                            DownloadableContentView(result: result, screenSize: geo.size)
                         }
 
                         if result.similarGames.count > 0 {
@@ -106,6 +76,44 @@ struct GameDetailScreen: View {
                 }
             }
         }
+    }
+}
+
+struct DownloadableContentView: View {
+    var result: GameDetailViewState.NonEmptyViewState
+    var screenSize: CGSize
+    var body: some View {
+        let idealWidth = screenSize.width
+        let rows = [
+            GridItem(.flexible(), spacing: 10),
+            GridItem(.flexible())
+        ]
+        VStack(alignment: .leading) {
+            Text("More From This Game").font(.title2).fontWeight(.semibold)
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: rows, spacing: 10) {
+                    ForEach(result.dlcs, id: \.self) { dlc in
+                        NavigationLink(destination: GameDetailScreen(slug: dlc.slug)) {
+                            HStack {
+                                AsyncImage(url: dlc.url,
+                                        width: 125,
+                                        height: 125,
+                                        contentMode: .fill,
+                                        cornerRadius: 15)
+                                Text(dlc.name)
+                                        .font(.system(size: 16))
+                                        .fontWeight(.semibold)
+                                        .lineLimit(2)
+                            }.frame(width: idealWidth,
+                                    height: 125,
+                                    alignment: .leading)
+                        }
+                    }
+                }.frame(height: 250)
+            }
+
+            Divider().padding(.horizontal)
+        }.padding(.horizontal)
     }
 }
 
