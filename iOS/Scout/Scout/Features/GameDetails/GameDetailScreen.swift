@@ -44,24 +44,9 @@ struct GameDetailScreen: View {
                         if let summary = result.summary {
                             GameDetailSummary(summary: summary)
                         }
-                        VStack {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHStack(spacing: 10) {
-                                    ForEach(result.videoList, id: \.self) { video in
-                                        VideoScreenshotView(screenShotUrl: video.screenshotUrl,
-                                                            videoTitle: video.name,
-                                                            screenSize: geo.size) {
-
-                                            let webURL = NSURL(string: video.youtubeUrl)!
-                                            let application = UIApplication.shared
-                                            application.open(webURL as URL)
-                                            print("Showing Video - \(video.youtubeUrl)")
-                                        }
-                                    }
-                                }
-                            }
-                            Divider().padding(.horizontal)
-                        }.frame(height: 175)
+                        if result.videoList.count > 0 {
+                            GameVideoListView(result: result, screenSize: geo.size)
+                        }
                     }
                     .frame(maxHeight: .infinity)
                     .padding(.bottom)
@@ -259,5 +244,30 @@ struct GameScreenshotView: View {
             }
             Divider().padding(.horizontal)
         }.frame(height: 220)
+    }
+}
+
+struct GameVideoListView: View {
+    var result: GameDetailViewState.NonEmptyViewState
+    var screenSize: CGSize
+    var body: some View {
+        VStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 10) {
+                    ForEach(result.videoList, id: \.self) { video in
+                        VideoScreenshotView(screenShotUrl: video.screenshotUrl,
+                                            videoTitle: video.name,
+                                            screenSize: screenSize) {
+                            // swiftlint:disable:next force_unwrapping
+                            let webURL = NSURL(string: video.youtubeUrl)!
+                            let application = UIApplication.shared
+                            application.open(webURL as URL)
+                            print("Showing Video - \(video.youtubeUrl)")
+                        }
+                    }
+                }
+            }
+            Divider().padding(.horizontal)
+        }.frame(height: 175)
     }
 }
