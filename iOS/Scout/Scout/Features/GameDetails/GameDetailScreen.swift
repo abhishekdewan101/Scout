@@ -11,10 +11,11 @@ import ScoutCommon
 struct GameDetailScreen: View {
     var slug: String
 
-    @State private var viewState: GameDetailViewState = GameDetailViewState.EmptyViewState()
-
     // swiftlint:disable:next force_cast
     let viewModel = koin.get(objCClass: GameDetailViewModel.self) as! GameDetailViewModel
+
+    @State private var viewState: GameDetailViewState = GameDetailViewState.EmptyViewState()
+    @State private var toggleAddGameView = false
 
     var body: some View {
         if viewState is GameDetailViewState.EmptyViewState {
@@ -36,7 +37,9 @@ struct GameDetailScreen: View {
             GeometryReader { geo in
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
-                        GameDetailHeaderView(result: result, screenSize: geo.size)
+                        GameDetailHeaderView(result: result,
+                                             screenSize: geo.size,
+                                             toggleAddGameView: $toggleAddGameView)
                         GameStatsView(result: result)
                         if result.mediaList.count > 0 {
                             GameScreenshotView(result: result, screenSize: geo.size)
@@ -68,12 +71,31 @@ struct GameDetailScreen: View {
                 // Fix https://stackoverflow.com/questions/64405106/toolbar-is-deleting-my-back-button-in-the-navigationview/64994154#64994154
                 ToolbarItem(placement: .navigationBarLeading) {Text("")}
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        print("Save Game")
-                    } label: {
-                        Image(systemName: "heart").font(.body)
+                    if result.inLibrary {
+                        HStack {
+                            Button {
+                                toggleAddGameView = true
+                            } label: {
+                                Image(systemName: "pencil").font(.body)
+                            }
+                            Button {
+                                viewModel.removeGame()
+                            } label: {
+                                Image(systemName: "trash").font(.body)
+                            }.padding(.leading, 5)
+                        }
+                    } else {
+                        Button {
+                            toggleAddGameView = true
+                        } label: {
+                            Image(systemName: "heart").font(.body)
+                        }
                     }
                 }
+            }.sheet(isPresented: $toggleAddGameView) {
+                AddGameView(
+                    game: result
+                )
             }
         }
     }
@@ -134,6 +156,7 @@ struct GameDetailSummary: View {
 struct GameDetailHeaderView: View {
     var result: GameDetailViewState.NonEmptyViewState
     var screenSize: CGSize
+    @Binding var toggleAddGameView: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -160,7 +183,7 @@ struct GameDetailHeaderView: View {
                     }
                     Spacer()
                     Button {
-                        print("Save Game")
+                        toggleAddGameView.toggle()
                     } label: {
                         Text("Add to library")
                             .font(.system(size: 14))

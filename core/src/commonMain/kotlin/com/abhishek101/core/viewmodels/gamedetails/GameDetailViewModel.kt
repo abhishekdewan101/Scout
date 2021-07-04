@@ -173,6 +173,10 @@ class GameDetailViewModel(
             val dlcs = it.map { dlc -> GamePosterViewItem(slug = dlc.slug, url = dlc.cover!!.qualifiedUrl, name = dlc.name) }
             dlcList.addAll(dlcs)
         }
+        remoteDetails.expansions?.let {
+            val expansions = it.map { exp -> GamePosterViewItem(slug = exp.slug, url = exp.cover!!.qualifiedUrl, name = exp.name) }
+            dlcList.addAll(expansions)
+        }
         return dlcList
     }
 
