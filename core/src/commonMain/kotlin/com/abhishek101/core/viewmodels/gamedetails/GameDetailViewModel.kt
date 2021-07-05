@@ -32,6 +32,10 @@ class GameDetailViewModel(
 
     val additionViewState: StateFlow<GameAdditionViewState> = _additionViewState
 
+    private val _libraryViewState: MutableStateFlow<LibraryState?> = MutableStateFlow(null)
+
+    val libraryState: StateFlow<LibraryState?> = _libraryViewState
+
     fun constructGameDetails(slug: String) {
         defaultScope.launch {
             val remoteDetails = gameRepository.getGameDetailForSlug(slug)
@@ -44,11 +48,33 @@ class GameDetailViewModel(
         }
     }
 
-    fun constructGameDetails(slug: String, listener: (GameDetailViewState) -> Unit) {
+    fun constructGameDetails(slug: String, gameViewStateListener: (GameDetailViewState) -> Unit, libraryListener: (LibraryState?) -> Unit) {
         viewState.onEach {
-            listener(it)
+            gameViewStateListener(it)
         }.launchIn(defaultScope)
-        constructGameDetails(slug)
+
+        libraryState.onEach {
+            libraryListener(it)
+        }.launchIn(defaultScope)
+
+        defaultScope.launch {
+            val remoteDetails = gameRepository.getGameDetailForSlug(slug)
+            genreRepository.getCachedGenres().onEach { genres ->
+                libraryRepository.getGameForSlug(slug).onEach { libraryGame ->
+                    _viewState.value = buildGameViewState(remoteDetails = remoteDetails, libraryDetails = libraryGame, genres = genres)
+                    if (libraryGame != null) {
+                        _libraryViewState.value = LibraryState(
+                            platformList = libraryGame.platform,
+                            gameStatus = libraryGame.gameStatus,
+                            gameRating = libraryGame.rating?.toInt(),
+                            gameNotes = libraryGame.notes
+                        )
+                    } else {
+                        _libraryViewState.value = null
+                    }
+                }.collect()
+            }.collect()
+        }
     }
 
     private fun setAdditionViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameAdditionViewState {
@@ -105,6 +131,35 @@ class GameDetailViewModel(
                     gameStatus = additionViewState.value.gameStatus,
                     platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
                     notes = gameNotes ?: additionViewState.value.gameNotes,
+                )
+            }
+        }
+    }
+
+    fun saveGameToLibrary(gameStatus: GameStatus, platforms: List<String>, notes: String, rating: Int) {
+        (_viewState.value as? NonEmptyViewState)?.let {
+            val inLibrary = it.inLibrary
+            if (inLibrary) {
+                libraryRepository.updateGame(
+                    gameStatus = gameStatus,
+                    platform = platforms,
+                    notes = notes,
+                    rating = rating.toLong(),
+                    slug = it.slug
+                )
+            } else {
+                val name = it.name
+                val coverUrl = it.coverUrl
+                val releaseDate = it.releaseDate
+                libraryRepository.insertGameIntoLibrary(
+                    slug = it.slug,
+                    name = name,
+                    coverUrl = coverUrl,
+                    releaseDate = releaseDate.epoch,
+                    rating = rating.toLong(),
+                    gameStatus = gameStatus,
+                    platform = platforms,
+                    notes = notes,
                 )
             }
         }

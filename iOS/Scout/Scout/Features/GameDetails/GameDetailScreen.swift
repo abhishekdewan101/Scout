@@ -15,6 +15,7 @@ struct GameDetailScreen: View {
     let viewModel = koin.get(objCClass: GameDetailViewModel.self) as! GameDetailViewModel
 
     @State private var viewState: GameDetailViewState = GameDetailViewState.EmptyViewState()
+    @State private var libraryState: LibraryState?
     @State private var toggleAddGameView = false
 
     var body: some View {
@@ -23,14 +24,14 @@ struct GameDetailScreen: View {
                 ProgressView()
                     .scaleEffect(x: 2, y: 2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: Color("White")))
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            viewModel.constructGameDetails(slug: slug) {
-                                viewState = $0
-                            }
-                        }
-                    }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+            .onAppear {
+                viewModel.constructGameDetails(slug: slug) { state in
+                    viewState = state
+                } libraryListener: { state in
+                    libraryState = state
+                }
+            }
         } else {
             // swiftlint:disable:next force_cast
             let result = viewState as! GameDetailViewState.NonEmptyViewState
@@ -39,7 +40,9 @@ struct GameDetailScreen: View {
                     VStack {
                         GameDetailHeaderView(result: result,
                                              screenSize: geo.size,
-                                             toggleAddGameView: $toggleAddGameView)
+                                             toggleAddGameView: $toggleAddGameView) {
+                            viewModel.removeGame()
+                        }
                         GameStatsView(result: result)
                         if result.mediaList.count > 0 {
                             GameScreenshotView(result: result, screenSize: geo.size)
@@ -93,9 +96,13 @@ struct GameDetailScreen: View {
                     }
                 }
             }.sheet(isPresented: $toggleAddGameView) {
-                AddGameView(
-                    game: result
-                )
+                AddGameView(gameName: result.name,
+                            coverUrl: result.coverUrl,
+                            platformList: result.platforms.map {$0.name},
+                            libraryState: $libraryState) {
+                    toggleAddGameView.toggle()
+                    viewModel.saveGameToLibrary(gameStatus: $0, platforms: $1, notes: $2, rating: Int32($3))
+                }
             }
         }
     }
@@ -118,14 +125,14 @@ struct DownloadableContentView: View {
                         NavigationLink(destination: GameDetailScreen(slug: dlc.slug)) {
                             HStack {
                                 AsyncImage(url: dlc.url,
-                                        width: 125,
-                                        height: 125,
-                                        contentMode: .fill,
-                                        cornerRadius: 15)
+                                           width: 125,
+                                           height: 125,
+                                           contentMode: .fill,
+                                           cornerRadius: 15)
                                 Text(dlc.name)
-                                        .font(.system(size: 16))
-                                        .fontWeight(.semibold)
-                                        .lineLimit(2)
+                                    .font(.system(size: 16))
+                                    .fontWeight(.semibold)
+                                    .lineLimit(2)
                             }.frame(width: idealWidth,
                                     height: 125,
                                     alignment: .leading)
@@ -157,6 +164,7 @@ struct GameDetailHeaderView: View {
     var result: GameDetailViewState.NonEmptyViewState
     var screenSize: CGSize
     @Binding var toggleAddGameView: Bool
+    var removeGame: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -182,19 +190,36 @@ struct GameDetailHeaderView: View {
                         Text(developer.name).font(.body).foregroundColor(Color.gray)
                     }
                     Spacer()
-                    Button {
-                        toggleAddGameView.toggle()
-                    } label: {
-                        Text("Add to library")
-                            .font(.system(size: 14))
-                            .fontWeight(.bold)
-                            .frame(height: 10, alignment: .center)
-                            .foregroundColor(.white)
-                            .padding(.all)
-                            .background(Color("BrandBackground"))
-                            .cornerRadius(15)
-                    }.alignmentGuide(.bottom) {
-                        $0[.bottom]
+                    if result.inLibrary {
+                        Button {
+                            removeGame()
+                        } label: {
+                            Text("Remove game")
+                                .font(.system(size: 14))
+                                .fontWeight(.bold)
+                                .frame(height: 10, alignment: .center)
+                                .foregroundColor(.white)
+                                .padding(.all)
+                                .background(Color.red)
+                                .cornerRadius(15)
+                        }.alignmentGuide(.bottom) {
+                            $0[.bottom]
+                        }
+                    } else {
+                        Button {
+                            toggleAddGameView.toggle()
+                        } label: {
+                            Text("Add to library")
+                                .font(.system(size: 14))
+                                .fontWeight(.bold)
+                                .frame(height: 10, alignment: .center)
+                                .foregroundColor(.white)
+                                .padding(.all)
+                                .background(Color("BrandBackground"))
+                                .cornerRadius(15)
+                        }.alignmentGuide(.bottom) {
+                            $0[.bottom]
+                        }
                     }
                 }.frame(height: 125, alignment: .topLeading)
             }
