@@ -1,9 +1,11 @@
 package com.abhishek101.core.viewmodels.gamedetails
 
+import com.abhishek101.core.db.Genre
 import com.abhishek101.core.db.LibraryGame
 import com.abhishek101.core.models.GameStatus
 import com.abhishek101.core.models.IgdbGameDetail
 import com.abhishek101.core.repositories.GameRepository
+import com.abhishek101.core.repositories.GenreRepository
 import com.abhishek101.core.repositories.LibraryRepository
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.EmptyViewState
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState.NonEmptyViewState
@@ -11,11 +13,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class GameDetailViewModel(
     private val gameRepository: GameRepository,
     private val libraryRepository: LibraryRepository,
+    private val genreRepository: GenreRepository,
     private val defaultScope: CoroutineScope
 ) {
 
@@ -27,13 +32,63 @@ class GameDetailViewModel(
 
     val additionViewState: StateFlow<GameAdditionViewState> = _additionViewState
 
+    private val _libraryViewState: MutableStateFlow<LibraryState?> = MutableStateFlow(null)
+
+    val libraryState: StateFlow<LibraryState?> = _libraryViewState
+
     fun constructGameDetails(slug: String) {
         defaultScope.launch {
             val remoteDetails = gameRepository.getGameDetailForSlug(slug)
-            libraryRepository.getGameForSlug(slug).collect {
-                _viewState.value = buildGameViewState(remoteDetails = remoteDetails, libraryDetails = it)
-                _additionViewState.value = setAdditionViewState(remoteDetails = remoteDetails, libraryDetails = it)
+            libraryRepository.getGameForSlug(slug).collect { libraryGame ->
+                genreRepository.getCachedGenres().collect { genres ->
+                    _viewState.value = buildGameViewState(
+                        remoteDetails = remoteDetails,
+                        libraryDetails = libraryGame,
+                        genres = genres
+                    )
+                    _additionViewState.value = setAdditionViewState(
+                        remoteDetails = remoteDetails,
+                        libraryDetails = libraryGame
+                    )
+                }
             }
+        }
+    }
+
+    fun constructGameDetails(
+        slug: String,
+        gameViewStateListener: (GameDetailViewState) -> Unit,
+        libraryListener: (LibraryState?) -> Unit
+    ) {
+        viewState.onEach {
+            gameViewStateListener(it)
+        }.launchIn(defaultScope)
+
+        libraryState.onEach {
+            libraryListener(it)
+        }.launchIn(defaultScope)
+
+        defaultScope.launch {
+            val remoteDetails = gameRepository.getGameDetailForSlug(slug)
+            genreRepository.getCachedGenres().onEach { genres ->
+                libraryRepository.getGameForSlug(slug).onEach { libraryGame ->
+                    _viewState.value = buildGameViewState(
+                        remoteDetails = remoteDetails,
+                        libraryDetails = libraryGame,
+                        genres = genres
+                    )
+                    if (libraryGame != null) {
+                        _libraryViewState.value = LibraryState(
+                            platformList = libraryGame.platform,
+                            gameStatus = libraryGame.gameStatus,
+                            gameRating = libraryGame.rating?.toInt(),
+                            gameNotes = libraryGame.notes
+                        )
+                    } else {
+                        _libraryViewState.value = null
+                    }
+                }.collect()
+            }.collect()
         }
     }
 
@@ -96,6 +151,35 @@ class GameDetailViewModel(
         }
     }
 
+    fun saveGameToLibrary(gameStatus: GameStatus, platforms: List<String>, notes: String, rating: Int) {
+        (_viewState.value as? NonEmptyViewState)?.let {
+            val inLibrary = it.inLibrary
+            if (inLibrary) {
+                libraryRepository.updateGame(
+                    gameStatus = gameStatus,
+                    platform = platforms,
+                    notes = notes,
+                    rating = rating.toLong(),
+                    slug = it.slug
+                )
+            } else {
+                val name = it.name
+                val coverUrl = it.coverUrl
+                val releaseDate = it.releaseDate
+                libraryRepository.insertGameIntoLibrary(
+                    slug = it.slug,
+                    name = name,
+                    coverUrl = coverUrl,
+                    releaseDate = releaseDate.epoch,
+                    rating = rating.toLong(),
+                    gameStatus = gameStatus,
+                    platform = platforms,
+                    notes = notes,
+                )
+            }
+        }
+    }
+
     fun removeGame() {
         (_viewState.value as? NonEmptyViewState)?.let {
             libraryRepository.removeGameFromLibrary(it.slug)
@@ -103,7 +187,7 @@ class GameDetailViewModel(
         }
     }
 
-    private fun buildGameViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameDetailViewState {
+    private fun buildGameViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?, genres: List<Genre>): GameDetailViewState {
         val inLibrary = libraryDetails != null
         val coverUrl = getCoverUrl(remoteDetails)
         val rating = getRatingText(remoteDetails)
@@ -115,6 +199,7 @@ class GameDetailViewModel(
         val similarGames = buildSimilarGames(remoteDetails)
         val dlcs = buildDlcList(remoteDetails)
         val releaseDate = getReleaseDate(remoteDetails)
+        val filteredGenres = getGenres(remoteDetails, genres)
         return NonEmptyViewState(
             slug = remoteDetails.slug,
             name = remoteDetails.name,
@@ -128,8 +213,13 @@ class GameDetailViewModel(
             videoList = videoList,
             similarGames = similarGames,
             dlcs = dlcs,
-            inLibrary = inLibrary
+            inLibrary = inLibrary,
+            genres = filteredGenres
         )
+    }
+
+    private fun getGenres(remoteDetails: IgdbGameDetail, genres: List<Genre>): List<String> {
+        return genres.filter { remoteDetails.genres.contains(it.id.toInt()) }.map { it.name }.toList()
     }
 
     private fun getReleaseDate(remoteDetails: IgdbGameDetail) =
@@ -150,8 +240,24 @@ class GameDetailViewModel(
     private fun buildDlcList(remoteDetails: IgdbGameDetail): List<GamePosterViewItem> {
         val dlcList = mutableListOf<GamePosterViewItem>()
         remoteDetails.dlc?.let {
-            val dlcs = it.map { dlc -> GamePosterViewItem(slug = dlc.slug, url = dlc.cover!!.qualifiedUrl) }
+            val dlcs = it.map { dlc ->
+                GamePosterViewItem(
+                    slug = dlc.slug,
+                    url = dlc.cover!!.qualifiedUrl,
+                    name = dlc.name
+                )
+            }
             dlcList.addAll(dlcs)
+        }
+        remoteDetails.expansions?.let {
+            val expansions = it.map { exp ->
+                GamePosterViewItem(
+                    slug = exp.slug,
+                    url = exp.cover!!.qualifiedUrl,
+                    name = exp.name
+                )
+            }
+            dlcList.addAll(expansions)
         }
         return dlcList
     }
@@ -160,7 +266,14 @@ class GameDetailViewModel(
         val similarGames = mutableListOf<GamePosterViewItem>()
         remoteDetails.similarGames?.let {
             val gameList =
-                it.filter { game -> game.cover != null }.map { game -> GamePosterViewItem(slug = game.slug, url = game.cover!!.qualifiedUrl) }
+                it.filter { game -> game.cover != null }
+                    .map { game ->
+                        GamePosterViewItem(
+                            slug = game.slug,
+                            url = game.cover!!.qualifiedUrl,
+                            name = game.name
+                        )
+                    }
             similarGames.addAll(gameList)
         }
         return similarGames
@@ -169,7 +282,13 @@ class GameDetailViewModel(
     private fun buildVideoList(remoteDetails: IgdbGameDetail): List<VideoViewItem> {
         val videoList = mutableListOf<VideoViewItem>()
         remoteDetails.videos?.let {
-            val videos = it.map { video -> VideoViewItem(name = video.name, screenshotUrl = video.screenShotUrl, youtubeUrl = video.youtubeUrl) }
+            val videos = it.map { video ->
+                VideoViewItem(
+                    name = video.name,
+                    screenshotUrl = video.screenShotUrl,
+                    youtubeUrl = video.youtubeUrl
+                )
+            }
             videoList.addAll(videos)
         }
         return videoList

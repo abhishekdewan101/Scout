@@ -15,7 +15,8 @@ sealed class GameDetailViewState {
         val videoList: List<VideoViewItem>,
         val similarGames: List<GamePosterViewItem>,
         val dlcs: List<GamePosterViewItem>,
-        val inLibrary: Boolean
+        val inLibrary: Boolean,
+        val genres: List<String>,
     ) : GameDetailViewState()
 
     object EmptyViewState : GameDetailViewState()
@@ -23,7 +24,7 @@ sealed class GameDetailViewState {
 
 data class ReleaseDateViewItem(val epoch: Long, val dateString: String)
 
-data class GamePosterViewItem(val slug: String, val url: String)
+data class GamePosterViewItem(val slug: String, val name: String, val url: String)
 
 data class PlatformViewItem(val name: String, val owned: Boolean)
 

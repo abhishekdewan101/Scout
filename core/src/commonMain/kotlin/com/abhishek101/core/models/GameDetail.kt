@@ -18,6 +18,7 @@ data class IgdbGameDetail(
     @SerialName("platforms") val platform: List<IgdbPlatformAbbreviated>? = null,
     @SerialName("screenshots") val screenShots: List<IgdbImage>? = null,
     @SerialName("similar_games") val similarGames: List<IgdbGame>? = null,
+    @SerialName("genres") val genres: List<Int>,
     @SerialName("artworks") val artworks: List<IgdbImage>? = null,
     @SerialName("dlcs") val dlc: List<IgdbGame>? = null,
     @SerialName("expansions") val expansions: List<IgdbGame>? = null,

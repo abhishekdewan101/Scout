@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4D43EBB2268CD84E00AAD3D3 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D43EBB1268CD84E00AAD3D3 /* CustomTextField.swift */; };
+		4D662F8A268D983400C76EE9 /* ExpandableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D662F89268D983400C76EE9 /* ExpandableTextField.swift */; };
+		4D6D91E2268FB74C004446F5 /* VideoScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6D91E1268FB74C004446F5 /* VideoScreenshotView.swift */; };
 		4D852417268063FD00717155 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D852416268063FD00717155 /* ViewExtensions.swift */; };
 		4D85241D2681AE4300717155 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D85241C2681AE4200717155 /* RemoteImage.swift */; };
 		4D8524202681AEE500717155 /* RemoteImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D85241F2681AEE500717155 /* RemoteImageLoader.swift */; };
@@ -22,6 +24,8 @@
 		4D992C40267EE5F000EBE926 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D992C3F267EE5F000EBE926 /* Assets.xcassets */; };
 		4D992C43267EE5F000EBE926 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D992C42267EE5F000EBE926 /* Preview Assets.xcassets */; };
 		4DBA2AC5268ADBBD00A140BF /* ViewMoreScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBA2AC4268ADBBD00A140BF /* ViewMoreScreen.swift */; };
+		4DC800C4269140E000A52FE3 /* AddGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC800C3269140E000A52FE3 /* AddGameView.swift */; };
+		4DE89768268F777900B936EC /* FullScreenImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE89767268F777900B936EC /* FullScreenImageViewer.swift */; };
 		61659A63267F109500991C05 /* AuthenticatonScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61659A62267F109500991C05 /* AuthenticatonScreen.swift */; };
 		61659A7B267F252A00991C05 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61659A7A267F252A00991C05 /* Koin.swift */; };
 		61659A7F267F2C5100991C05 /* PlatformSelectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61659A7E267F2C5100991C05 /* PlatformSelectionScreen.swift */; };
@@ -33,6 +37,8 @@
 		1933327FD8FDADBE67F21929 /* Pods_Scout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Scout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E2A5E30FD34B969B28812F /* Pods-Scout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scout.release.xcconfig"; path = "Target Support Files/Pods-Scout/Pods-Scout.release.xcconfig"; sourceTree = "<group>"; };
 		4D43EBB1268CD84E00AAD3D3 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		4D662F89268D983400C76EE9 /* ExpandableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextField.swift; sourceTree = "<group>"; };
+		4D6D91E1268FB74C004446F5 /* VideoScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoScreenshotView.swift; sourceTree = "<group>"; };
 		4D852416268063FD00717155 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		4D85241C2681AE4200717155 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		4D85241F2681AEE500717155 /* RemoteImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageLoader.swift; sourceTree = "<group>"; };
@@ -49,6 +55,8 @@
 		4D992C42267EE5F000EBE926 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4D992C44267EE5F000EBE926 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DBA2AC4268ADBBD00A140BF /* ViewMoreScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreScreen.swift; sourceTree = "<group>"; };
+		4DC800C3269140E000A52FE3 /* AddGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameView.swift; sourceTree = "<group>"; };
+		4DE89767268F777900B936EC /* FullScreenImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewer.swift; sourceTree = "<group>"; };
 		61659A62267F109500991C05 /* AuthenticatonScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatonScreen.swift; sourceTree = "<group>"; };
 		61659A7A267F252A00991C05 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
 		61659A7E267F2C5100991C05 /* PlatformSelectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformSelectionScreen.swift; sourceTree = "<group>"; };
@@ -72,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				4D43EBB1268CD84E00AAD3D3 /* CustomTextField.swift */,
+				4D662F89268D983400C76EE9 /* ExpandableTextField.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -108,6 +117,8 @@
 				4D85241C2681AE4200717155 /* RemoteImage.swift */,
 				4D85241F2681AEE500717155 /* RemoteImageLoader.swift */,
 				4D8524222681BB9100717155 /* AsyncImage.swift */,
+				4DE89767268F777900B936EC /* FullScreenImageViewer.swift */,
+				4D6D91E1268FB74C004446F5 /* VideoScreenshotView.swift */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -116,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				4D852435268A8AEC00717155 /* GameDetailScreen.swift */,
+				4DC800C3269140E000A52FE3 /* AddGameView.swift */,
 			);
 			path = GameDetails;
 			sourceTree = "<group>";
@@ -355,6 +367,7 @@
 				4D8524232681BB9100717155 /* AsyncImage.swift in Sources */,
 				61659A7B267F252A00991C05 /* Koin.swift in Sources */,
 				4D85242F2689A98500717155 /* LibraryView.swift in Sources */,
+				4DC800C4269140E000A52FE3 /* AddGameView.swift in Sources */,
 				4D852436268A8AEC00717155 /* GameDetailScreen.swift in Sources */,
 				4D852417268063FD00717155 /* ViewExtensions.swift in Sources */,
 				4D43EBB2268CD84E00AAD3D3 /* CustomTextField.swift in Sources */,
@@ -363,7 +376,10 @@
 				4D85242526830FE100717155 /* GenreSelectionScreen.swift in Sources */,
 				4D8524312689A98F00717155 /* SearchView.swift in Sources */,
 				4D992C3C267EE5EF00EBE926 /* ScoutApp.swift in Sources */,
+				4DE89768268F777900B936EC /* FullScreenImageViewer.swift in Sources */,
 				61659A63267F109500991C05 /* AuthenticatonScreen.swift in Sources */,
+				4D6D91E2268FB74C004446F5 /* VideoScreenshotView.swift in Sources */,
+				4D662F8A268D983400C76EE9 /* ExpandableTextField.swift in Sources */,
 				61659A7F267F2C5100991C05 /* PlatformSelectionScreen.swift in Sources */,
 				4DBA2AC5268ADBBD00A140BF /* ViewMoreScreen.swift in Sources */,
 			);

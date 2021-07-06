@@ -153,7 +153,7 @@ struct SearchResults: View {
                         }
                     }
                 } else {
-                    EmptyResultsView(screenSize: screenSize)
+                    EmptyResultsView(screenSize: screenSize, message: "No search results found !")
                 }
             }
         }
@@ -162,13 +162,14 @@ struct SearchResults: View {
 
 struct EmptyResultsView: View {
     var screenSize: CGSize
+    var message: String
     var body: some View {
         VStack {
             Image("corgi")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 64, height: 64, alignment: .center)
-            Text("No search results found !").font(.title3)
+            Text(message).font(.title3)
         }.frame(width: screenSize.width)      // Make the scroll view full-width
         .frame(minHeight: screenSize.height)
     }
