@@ -35,10 +35,13 @@ struct HomeScreen: View {
                 }.tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
-                LibraryView()
-                    .tabItem {
-                        Label("Library", systemImage: "gamecontroller")
-                    }
+                NavigationView {
+                    LibraryView()
+                        .navigationBarTitle("Library")
+                }.tabItem {
+                    Label("Library", systemImage: "gamecontroller")
+                }
+
             }.accentColor(Color("White"))
         }
     }
