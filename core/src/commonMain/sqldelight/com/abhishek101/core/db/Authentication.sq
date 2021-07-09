@@ -10,3 +10,6 @@ WHERE expiresBy > ?;
 setAuthenticationData:
 INSERT INTO Authentication(accessToken, expiresBy)
 VALUES (?,?);
+
+clearAuthentication:
+DELETE FROM Authentication;

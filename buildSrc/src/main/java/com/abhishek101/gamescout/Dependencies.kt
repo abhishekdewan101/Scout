@@ -15,7 +15,7 @@ fun generatedVersionName() =
     "${AppVersions.versionMajor}.${AppVersions.versionMinor}.${AppVersions.versionPatch}"
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta03"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta05"
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
