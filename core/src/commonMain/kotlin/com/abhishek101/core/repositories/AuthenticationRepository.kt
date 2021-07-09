@@ -1,7 +1,6 @@
 package com.abhishek101.core.repositories
 
 import com.abhishek101.core.db.Authentication
-import com.abhishek101.core.models.toAuthentication
 import com.abhishek101.core.remote.AuthenticationApi
 import com.abhishek101.core.utils.DatabaseHelper
 import com.squareup.sqldelight.runtime.coroutines.asFlow
@@ -26,8 +25,8 @@ class AuthenticationRepositoryImpl(
     private val authenticationQueries = dbHelper.authenticationQueries
 
     override suspend fun authenticateUser() {
-        authenticationApi.authenticateUser().toAuthentication().apply {
-            authenticationQueries.setAuthenticationData(accessToken, expiresBy)
+        authenticationApi.authenticateUser().apply {
+            authenticationQueries.setAuthenticationData(accessToken, expiresIn)
         }
     }
 
