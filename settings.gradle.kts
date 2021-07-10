@@ -1,10 +1,9 @@
-dependencyResolutionManagement {
+pluginManagement {
     repositories {
         google()
+        gradlePluginPortal()
         mavenCentral()
-        jcenter()
     }
 }
 rootProject.name = "GameScout"
-include ':app'
-include ':core'
+include(":app", ":core")

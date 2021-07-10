@@ -1,6 +1,7 @@
 import com.abhishek101.gamescout.AppVersions
 import com.abhishek101.gamescout.Libs
 import com.abhishek101.gamescout.generatedVersionName
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -86,6 +87,19 @@ android {
     }
 }
 
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        allWarningsAsErrors = false
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs = listOf(
+            "-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check",
+            "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+        )
+    }
+}
+
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
     allRules = false // activate all available (even unstable) rules.
@@ -135,7 +149,7 @@ dependencies {
     // compose
     implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.material)
-    implementation(Libs.flowLayout)
+    implementation(Libs.Accompanist.flowLayout)
     implementation(Libs.AndroidX.Compose.tooling)
     implementation(Libs.AndroidX.Compose.foundation)
     implementation(Libs.AndroidX.Compose.materialIconsExtended)
@@ -157,13 +171,13 @@ dependencies {
     implementation(Libs.Koin.koinCompose)
 
     // Coil
-    implementation(Libs.coil)
+    implementation(Libs.Accompanist.coil)
 
     // SystemUiController
-    implementation(Libs.systemUiController)
+    implementation(Libs.Accompanist.systemUiController)
 
     // Pager
-    implementation(Libs.composePager)
+    implementation(Libs.Accompanist.composePager)
 
     // testing
     testImplementation(Libs.mockk)

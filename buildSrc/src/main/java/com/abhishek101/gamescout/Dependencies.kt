@@ -19,12 +19,6 @@ object Libs {
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
-    const val coil = "com.google.accompanist:accompanist-coil:0.12.0"
-    const val composePager = "com.google.accompanist:accompanist-pager:0.12.0"
-    const val flowLayout = "com.google.accompanist:accompanist-flowlayout:0.12.0"
-
-    const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:0.12.0"
-
     const val mockk = "io.mockk:mockk:1.10.0"
     const val androidMockk = "io.mockk:mockk-android:1.10.0"
     const val kotlinxDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.0"
@@ -57,17 +51,21 @@ object Libs {
     }
 
     object Koin {
-        private const val version = "3.1.0"
+        private const val version = "3.1.1"
 
         const val koinCore = "io.insert-koin:koin-core:$version"
         const val koinAndroid = "io.insert-koin:koin-android:$version"
-        const val koinCompose = "io.insert-koin:koin-androidx-compose:3.1.0"
+        const val koinCompose = "io.insert-koin:koin-androidx-compose:$version"
     }
 
     object Accompanist {
-        private const val version = "0.12.0"
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
+        private const val version = "0.13.0"
         const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
+        const val composePager = "com.google.accompanist:accompanist-pager:$version"
+        const val flowLayout = "com.google.accompanist:accompanist-flowlayout:$version"
+        const val coil = "com.google.accompanist:accompanist-coil:$version"
+
+        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     }
 
     object Kotlin {
@@ -104,7 +102,7 @@ object Libs {
 
         object Compose {
             private const val snapshot = ""
-            const val version = "1.0.0-beta09"
+            const val version = "1.0.0-rc01"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val foundation = "androidx.compose.foundation:foundation:${version}"

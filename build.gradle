@@ -4,18 +4,16 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter()
         maven {
-            url("https://plugins.gradle.org/m2/")
+            url = uri("https://plugins.gradle.org/m2/")
         }
     }
-
     dependencies {
-        classpath Libs.androidGradlePlugin
-        classpath Libs.Kotlin.gradlePlugin
-        classpath Libs.SqlDelight.gradlePlugin
-        classpath "org.jetbrains.kotlin:kotlin-serialization:${Libs.Kotlin.version}"
-        classpath Libs.buildKonfig
+        classpath(Libs.androidGradlePlugin)
+        classpath(Libs.Kotlin.gradlePlugin)
+        classpath(Libs.SqlDelight.gradlePlugin)
+        classpath("org.jetbrains.kotlin:kotlin-serialization:${Libs.Kotlin.version}")
+        classpath(Libs.buildKonfig)
         classpath("org.jlleitschuh.gradle:ktlint-gradle:10.1.0")
     }
 }
@@ -28,30 +26,6 @@ subprojects {
     repositories {
         google()
         mavenCentral()
-
-        // Jetpack Compose SNAPSHOTs
-        if (!Libs.AndroidX.Compose.snapshot.isEmpty()) {
-            maven { url "https://androidx.dev/snapshots/builds/${Libs.AndroidX.Compose.snapshot}/artifacts/repository/" }
-            maven { url "http://androidx.dev/storage/repository/androidx/constraintlayout" }
-        }
-
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-    }
-
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions {
-            // Treat all Kotlin warnings as errors
-            allWarningsAsErrors = false
-
-            freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
-
-            // Enable experimental coroutines APIs, including Flow
-            freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi'
-            freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.FlowPreview'
-            freeCompilerArgs += '-Xopt-in=kotlin.Experimental'
-
-            // Set JVM target to 1.8
-            jvmTarget = "1.8"
-        }
+        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
     }
 }
