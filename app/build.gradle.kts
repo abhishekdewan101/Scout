@@ -1,6 +1,7 @@
 import com.abhishek101.gamescout.AppVersions
 import com.abhishek101.gamescout.Libs
 import com.abhishek101.gamescout.generatedVersionName
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -83,6 +84,19 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
         useIR = true
+    }
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        allWarningsAsErrors = false
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs = listOf(
+            "-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check",
+            "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+        )
     }
 }
 
