@@ -135,7 +135,7 @@ dependencies {
     // compose
     implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.material)
-    implementation(Libs.flowLayout)
+    implementation(Libs.Accompanist.flowLayout)
     implementation(Libs.AndroidX.Compose.tooling)
     implementation(Libs.AndroidX.Compose.foundation)
     implementation(Libs.AndroidX.Compose.materialIconsExtended)
@@ -157,13 +157,13 @@ dependencies {
     implementation(Libs.Koin.koinCompose)
 
     // Coil
-    implementation(Libs.coil)
+    implementation(Libs.Accompanist.coil)
 
     // SystemUiController
-    implementation(Libs.systemUiController)
+    implementation(Libs.Accompanist.systemUiController)
 
     // Pager
-    implementation(Libs.composePager)
+    implementation(Libs.Accompanist.composePager)
 
     // testing
     testImplementation(Libs.mockk)
