@@ -11,8 +11,6 @@ import com.abhishek101.core.repositories.LibraryRepository
 import com.abhishek101.core.repositories.LibraryRepositoryImpl
 import com.abhishek101.core.repositories.PlatformRepository
 import com.abhishek101.core.repositories.PlatformRepositoryImpl
-import com.abhishek101.core.repositories.QueueRepository
-import com.abhishek101.core.repositories.QueueRepositoryImpl
 import org.koin.dsl.module
 import kotlin.time.ExperimentalTime
 
@@ -32,8 +30,5 @@ val repoModule = module {
     }
     single<LibraryRepository> {
         LibraryRepositoryImpl(get(), get())
-    }
-    single<QueueRepository> {
-        QueueRepositoryImpl(get())
     }
 }
