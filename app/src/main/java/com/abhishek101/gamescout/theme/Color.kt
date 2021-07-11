@@ -2,8 +2,6 @@ package com.abhishek101.gamescout.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Black = Color(0xFF22201F)
-val White = Color(0xFFFEFEFE)
 val Purple = Color(0xFF33235D)
 val PurpleLight = Color(0XFF9E8EDE)
 val PurpleDark = Color(0XFF0d0033)
@@ -15,4 +13,6 @@ val RedLight = Color(0xFFc04532)
 val RedDark = Color(0xFF570000)
 
 val DebugColor = Color(0xFFFFEB3B)
-val BrandPrimary = Color(0xFF33235D)
+val BackgroundPrimary = Color(0xFF33235D)
+val White = Color(0xFFFEFEFE)
+val Black = Color(0xFF22201F)

@@ -11,17 +11,20 @@ import androidx.compose.ui.graphics.Color
 
 // region Scout Color Definitions
 private val LightColorPalette = ScoutColors(
-    brandPrimary = BrandPrimary,
+    primaryBackground = BackgroundPrimary,
+    progressIndicatorOnPrimaryBackground = White,
     isDarkTheme = false
 )
 
 private val DarkColorPalette = ScoutColors(
-    brandPrimary = BrandPrimary,
+    primaryBackground = BackgroundPrimary,
+    progressIndicatorOnPrimaryBackground = White,
     isDarkTheme = true
 )
 
 data class ScoutColors(
-    val brandPrimary: Color,
+    val primaryBackground: Color,
+    val progressIndicatorOnPrimaryBackground: Color,
     val isDarkTheme: Boolean
 )
 
