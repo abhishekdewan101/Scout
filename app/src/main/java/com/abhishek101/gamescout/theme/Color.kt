@@ -13,3 +13,6 @@ val BeigeLight = Color(0xFFffffff)
 val Red = Color(0xFF890f0a)
 val RedLight = Color(0xFFc04532)
 val RedDark = Color(0xFF570000)
+
+val DebugColor = Color(0xFFFFEB3B)
+val BrandPrimary = Color(0xFF33235D)
