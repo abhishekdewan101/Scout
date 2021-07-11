@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.db.Genre
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewModel
@@ -38,7 +37,6 @@ import com.abhishek101.gamescout.design.CircularSelectableImage
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
-import com.abhishek101.gamescout.theme.GameTrackerTheme
 import com.abhishek101.gamescout.theme.White
 import org.koin.androidx.compose.get
 
@@ -191,23 +189,3 @@ private fun Header() {
         )
     }
 }
-
-@Preview
-@Composable
-fun GenreSelectionWithData() {
-    GameTrackerTheme {
-        GenreSelectionList(
-            genreList = genreTestData,
-            backgroundColor = MaterialTheme.colors.primary,
-            onGenreSelected = { _, _ -> },
-            onGenreSelectionComplete = {},
-            favoriteCount = 1
-        )
-    }
-}
-
-val genreTestData = listOf(
-    Genre(1, "adventure", "Adventure", false),
-    Genre(1, "shooter", "Shooter", true),
-    Genre(1, "platform", "Platformer", true),
-)
