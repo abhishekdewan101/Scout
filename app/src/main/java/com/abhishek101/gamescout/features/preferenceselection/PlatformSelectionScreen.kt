@@ -3,13 +3,18 @@ package com.abhishek101.gamescout.features.preferenceselection
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
@@ -25,13 +30,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewModel
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewState
+import com.abhishek101.gamescout.design.new.image.SelectableRemoteImage
 import com.abhishek101.gamescout.design.new.system.SystemUiControlView
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 
 @Composable
 fun PlatformSelectionScreen(
-    viewModel: PreferenceSelectionViewModel = get()
+    viewModel: PreferenceSelectionViewModel = get(),
+    platformSelectionCompleted: () -> Unit
 ) {
     val viewState by viewModel.viewState.collectAsState()
 
@@ -75,8 +82,16 @@ fun PlatformSelectionScreen(
 
                 item {
                     when (viewState) {
-                        PreferenceSelectionViewState.Loading -> CircularProgressIndicator(color = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
-                        else -> PlatformListView(viewState as PreferenceSelectionViewState.Result)
+                        PreferenceSelectionViewState.Loading ->
+                            CircularProgressIndicator(color = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
+                        else -> PlatformListView(
+                            result = viewState as PreferenceSelectionViewState.Result
+                        ) { slug: String, isOwned: Boolean ->
+                            viewModel.togglePlatform(
+                                platformSlug = slug,
+                                isOwned = isOwned
+                            )
+                        }
                     }
                 }
 
@@ -86,9 +101,9 @@ fun PlatformSelectionScreen(
             }
 
             (viewState as? PreferenceSelectionViewState.Result)?.let {
-                if (it.ownedPlatformCount == 0) {
+                if (it.ownedPlatformCount > 0) {
                     DoneButtonView(modifier = Modifier.padding(bottom = 15.dp)) {
-                        println("Going to genre selection")
+                        platformSelectionCompleted()
                     }
                 }
             }
@@ -97,11 +112,46 @@ fun PlatformSelectionScreen(
 }
 
 @Composable
-private fun PlatformListView(result: PreferenceSelectionViewState.Result) {
+private fun PlatformListView(
+    result: PreferenceSelectionViewState.Result,
+    togglePlatformSelection: (String, Boolean) -> Unit
+) {
     val rows = result.platforms.chunked(2)
     for (row in rows) {
-        Row {
-            for (platform in row) {
+        BoxWithConstraints(modifier = Modifier.padding(top = 10.dp)) {
+            val halfWidth = maxWidth / 2 - 20.dp
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                for (platform in row) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.sizeIn(maxWidth = halfWidth)
+                    ) {
+                        SelectableRemoteImage(
+                            request = platform.imageId,
+                            shape = CircleShape,
+                            selectionColor = ScoutTheme.colors.textOnPrimaryBackground,
+                            isSelected = platform.isOwned!!,
+                            imageSize = halfWidth,
+                            backgroundColor = ScoutTheme.colors.textOnPrimaryBackground
+                        ) {
+                            togglePlatformSelection(
+                                platform.slug,
+                                platform.isOwned!!.not()
+                            )
+                        }
+
+                        Text(
+                            text = platform.name,
+                            color = ScoutTheme.colors.textOnPrimaryBackground,
+                            style = MaterialTheme.typography.body1,
+                            maxLines = 1,
+                            modifier = Modifier.padding(top = 5.dp)
+                        )
+                    }
+                }
             }
         }
     }

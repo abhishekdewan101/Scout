@@ -70,7 +70,8 @@ object ScoutTheme {
 /**
  * ScoutTheme composable that provides access to the ScoutColors
  *
- * Note: MaterialTheme has debug colors to allow easy debug where color theming hasn't been applied and is using material theme colors
+ * Note: MaterialTheme has debug colors to allow easy debug where color
+ * theming hasn't been applied and is using material theme colors
  */
 @Composable
 fun ScoutTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {

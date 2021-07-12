@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.abhishek101.gamescout.theme
 
 import androidx.compose.ui.graphics.Color
