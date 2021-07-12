@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.authentication.AuthenticationViewModel
 import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.design.new.system.SystemUiControlView
+import com.abhishek101.gamescout.features.preferenceselection.PlatformSelectionScreen
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 
@@ -33,7 +34,7 @@ fun AuthenticationScreen(viewModel: AuthenticationViewModel = get()) {
 
     when {
         !viewState.isAuthenticated && !viewState.isOnboardingCompleted -> SplashScreenView()
-        !viewState.isOnboardingCompleted -> Text("Show onboarding screen")
+        !viewState.isOnboardingCompleted -> PlatformSelectionScreen()
         else -> Text("Show home screen")
     }
 }

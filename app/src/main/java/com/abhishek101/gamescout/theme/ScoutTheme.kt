@@ -13,18 +13,24 @@ import androidx.compose.ui.graphics.Color
 private val LightColorPalette = ScoutColors(
     primaryBackground = BackgroundPrimary,
     progressIndicatorOnPrimaryBackground = White,
+    textOnPrimaryBackground = White,
+    secondaryButton = RedLight,
     isDarkTheme = false
 )
 
 private val DarkColorPalette = ScoutColors(
     primaryBackground = BackgroundPrimary,
     progressIndicatorOnPrimaryBackground = White,
+    textOnPrimaryBackground = White,
+    secondaryButton = RedLight,
     isDarkTheme = true
 )
 
 data class ScoutColors(
     val primaryBackground: Color,
     val progressIndicatorOnPrimaryBackground: Color,
+    val textOnPrimaryBackground: Color,
+    var secondaryButton: Color,
     val isDarkTheme: Boolean
 )
 
