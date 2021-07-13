@@ -16,11 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.authentication.AuthenticationViewModel
 import com.abhishek101.gamescout.R
-import com.abhishek101.gamescout.theme.GameTrackerTheme
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.get
 
@@ -61,13 +59,5 @@ fun SplashScreenContent() {
     ) {
         Image(painter = logo, contentDescription = "", modifier = Modifier.size(128.dp, 128.dp))
         CircularProgressIndicator(color = Color.White)
-    }
-}
-
-@Preview(showBackground = false)
-@Composable
-fun Splash_Screen_Invalid_Authentication_Preview() {
-    GameTrackerTheme {
-        SplashScreenContent()
     }
 }
