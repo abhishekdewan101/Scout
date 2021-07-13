@@ -1,5 +1,3 @@
-@file:Suppress("MagicNumber")
-
 package com.abhishek101.gamescout.design.new.image
 
 import androidx.compose.foundation.BorderStroke
@@ -25,6 +23,7 @@ import androidx.compose.ui.unit.dp
 fun SelectableRemoteImage(
     request: Any,
     imageSize: Dp,
+    scaleImageFactor: Float = 0.6f,
     shape: CornerBasedShape,
     backgroundColor: Color = Color.Transparent,
     isSelected: Boolean = false,
@@ -55,7 +54,9 @@ fun SelectableRemoteImage(
             RemoteImage(
                 request = request,
                 contentDescription = "selectable image",
-                modifier = Modifier.size(imageSize.times(0.6f))
+                modifier = Modifier.size(
+                    imageSize.times(scaleImageFactor)
+                )
             )
         }
     }

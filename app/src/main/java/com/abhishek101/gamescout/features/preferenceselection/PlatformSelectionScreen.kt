@@ -38,7 +38,7 @@ import org.koin.androidx.compose.get
 @Composable
 fun PlatformSelectionScreen(
     viewModel: PreferenceSelectionViewModel = get(),
-    platformSelectionCompleted: () -> Unit
+    platformSelectionDone: () -> Unit
 ) {
     val viewState by viewModel.viewState.collectAsState()
 
@@ -82,8 +82,7 @@ fun PlatformSelectionScreen(
 
                 item {
                     when (viewState) {
-                        PreferenceSelectionViewState.Loading ->
-                            CircularProgressIndicator(color = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
+                        PreferenceSelectionViewState.Loading -> LoadingView()
                         else -> PlatformListView(
                             result = viewState as PreferenceSelectionViewState.Result
                         ) { slug: String, isOwned: Boolean ->
@@ -103,11 +102,23 @@ fun PlatformSelectionScreen(
             (viewState as? PreferenceSelectionViewState.Result)?.let {
                 if (it.ownedPlatformCount > 0) {
                     DoneButtonView(modifier = Modifier.padding(bottom = 15.dp)) {
-                        platformSelectionCompleted()
+                        platformSelectionDone()
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LoadingView() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        CircularProgressIndicator(color = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
     }
 }
 
