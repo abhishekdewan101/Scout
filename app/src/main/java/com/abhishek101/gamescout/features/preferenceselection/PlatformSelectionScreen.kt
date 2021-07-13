@@ -167,18 +167,24 @@ private fun DoneButtonView(
         contentColor = ScoutTheme.colors.textOnPrimaryBackground
     )
 
-    Button(
-        onClick = onTap,
-        colors = colors,
-        shape = MaterialTheme.shapes.medium,
-        modifier = modifier.width(200.dp)
-    ) {
-        Row {
-            Text(
-                text = "Done",
-                color = ScoutTheme.colors.textOnPrimaryBackground,
-                style = MaterialTheme.typography.body1
-            )
+    BoxWithConstraints {
+        Button(
+            onClick = onTap,
+            colors = colors,
+            shape = MaterialTheme.shapes.medium,
+            modifier = modifier
+                .width(maxWidth)
+                .height(50.dp)
+                .padding(horizontal = 50.dp)
+        ) {
+            Row {
+                Text(
+                    text = "Done",
+                    color = ScoutTheme.colors.textOnPrimaryBackground,
+                    style = MaterialTheme.typography.h6,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
