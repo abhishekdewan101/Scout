@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.abhishek101.gamescout.features.mainapp.navigator.MainNavigator
+import com.abhishek101.gamescout.features.main.AppNavigator
 import com.abhishek101.gamescout.features.preferenceselection.PreferenceSelectionStage.GENRE
 import com.abhishek101.gamescout.features.preferenceselection.PreferenceSelectionStage.HOME
 import com.abhishek101.gamescout.features.preferenceselection.PreferenceSelectionStage.PLATFORM
@@ -37,7 +37,7 @@ fun PreferenceSelectionNavigator() {
         }
 
         composable(HOME.name) {
-            MainNavigator()
+            AppNavigator()
         }
     }
 }

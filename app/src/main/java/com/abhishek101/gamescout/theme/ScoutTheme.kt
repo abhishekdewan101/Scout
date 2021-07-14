@@ -15,6 +15,11 @@ private val LightColorPalette = ScoutColors(
     progressIndicatorOnPrimaryBackground = White,
     textOnPrimaryBackground = White,
     secondaryButton = RedLight,
+    bottomNavBarBackground = PurpleLight,
+    bottomItemSelected = White,
+    bottomItemUnselected = DarkGray,
+    secondaryBackground = White,
+    textOnSecondaryBackground = Black,
     isDarkTheme = false
 )
 
@@ -23,6 +28,11 @@ private val DarkColorPalette = ScoutColors(
     progressIndicatorOnPrimaryBackground = White,
     textOnPrimaryBackground = White,
     secondaryButton = RedLight,
+    bottomNavBarBackground = PurpleDark,
+    bottomItemSelected = White,
+    bottomItemUnselected = Gray,
+    secondaryBackground = Black,
+    textOnSecondaryBackground = White,
     isDarkTheme = true
 )
 
@@ -31,6 +41,11 @@ data class ScoutColors(
     val progressIndicatorOnPrimaryBackground: Color,
     val textOnPrimaryBackground: Color,
     var secondaryButton: Color,
+    var bottomNavBarBackground: Color,
+    var bottomItemSelected: Color,
+    var bottomItemUnselected: Color,
+    val secondaryBackground: Color,
+    val textOnSecondaryBackground: Color,
     val isDarkTheme: Boolean
 )
 

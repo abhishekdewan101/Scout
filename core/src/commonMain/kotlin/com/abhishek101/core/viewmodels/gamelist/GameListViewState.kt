@@ -1,6 +1,7 @@
 package com.abhishek101.core.viewmodels.gamelist
 
 import com.abhishek101.core.models.IgdbGame
+import kotlinx.serialization.Serializable
 
 sealed class GameListViewState {
     object Loading : GameListViewState()
@@ -11,6 +12,7 @@ sealed class GameListViewState {
     ) : GameListViewState()
 }
 
+@Serializable
 data class GameListData(
     val listType: ListType,
     val title: String,

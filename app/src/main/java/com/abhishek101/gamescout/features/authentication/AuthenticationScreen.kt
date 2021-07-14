@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.authentication.AuthenticationViewModel
 import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.design.new.system.SystemUiControlView
-import com.abhishek101.gamescout.features.mainapp.navigator.MainNavigator
+import com.abhishek101.gamescout.features.main.AppNavigator
 import com.abhishek101.gamescout.features.preferenceselection.PreferenceSelectionNavigator
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
@@ -37,7 +37,7 @@ fun AuthenticationScreen(viewModel: AuthenticationViewModel = get()) {
     when {
         !viewState.isAuthenticated && !viewState.isOnboardingCompleted -> SplashScreenView()
         !viewState.isOnboardingCompleted -> PreferenceSelectionNavigator()
-        else -> MainNavigator()
+        else -> AppNavigator()
     }
 }
 
