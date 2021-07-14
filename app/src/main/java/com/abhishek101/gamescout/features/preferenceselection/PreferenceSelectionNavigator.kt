@@ -2,19 +2,23 @@
 
 package com.abhishek101.gamescout.features.preferenceselection
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.abhishek101.gamescout.features.mainapp.navigator.MainNavigator
 import com.abhishek101.gamescout.features.preferenceselection.PreferenceSelectionStage.GENRE
+import com.abhishek101.gamescout.features.preferenceselection.PreferenceSelectionStage.HOME
 import com.abhishek101.gamescout.features.preferenceselection.PreferenceSelectionStage.PLATFORM
 
 enum class PreferenceSelectionStage {
     PLATFORM,
     GENRE,
-    HOME
+    HOME,
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PreferenceSelectionNavigator() {
     val navController = rememberNavController()
@@ -27,7 +31,13 @@ fun PreferenceSelectionNavigator() {
         }
 
         composable(GENRE.name) {
-            GenreSelectionScreen()
+            GenreSelectionScreen {
+                navController.navigate(HOME.name)
+            }
+        }
+
+        composable(HOME.name) {
+            MainNavigator()
         }
     }
 }

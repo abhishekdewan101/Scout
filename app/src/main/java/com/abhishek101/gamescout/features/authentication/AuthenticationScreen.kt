@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -20,10 +20,12 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.authentication.AuthenticationViewModel
 import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.design.new.system.SystemUiControlView
+import com.abhishek101.gamescout.features.mainapp.navigator.MainNavigator
 import com.abhishek101.gamescout.features.preferenceselection.PreferenceSelectionNavigator
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AuthenticationScreen(viewModel: AuthenticationViewModel = get()) {
     val viewState by viewModel.viewState.collectAsState()
@@ -35,7 +37,7 @@ fun AuthenticationScreen(viewModel: AuthenticationViewModel = get()) {
     when {
         !viewState.isAuthenticated && !viewState.isOnboardingCompleted -> SplashScreenView()
         !viewState.isOnboardingCompleted -> PreferenceSelectionNavigator()
-        else -> Text("Show home screen")
+        else -> MainNavigator()
     }
 }
 
