@@ -51,7 +51,7 @@ fun HomeScreenScaffold(navigateToScreen: (AppScreens, String) -> Unit) {
 private fun HomePagerContent(navController: NavHostController, navigateToScreen: (AppScreens, String) -> Unit) {
     NavHost(navController = navController, startDestination = Discover.route) {
         composable(route = Discover.route) {
-            DiscoverTab()
+            DiscoverTab(navigateToScreen = navigateToScreen)
         }
         composable(route = Search.route) {
             SearchTab()

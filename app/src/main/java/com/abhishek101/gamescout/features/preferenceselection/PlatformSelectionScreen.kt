@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewModel
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewState
 import com.abhishek101.gamescout.design.new.image.SelectableRemoteImage
+import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.design.new.system.SystemUiControlView
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
@@ -82,7 +82,8 @@ fun PlatformSelectionScreen(
 
                 item {
                     when (viewState) {
-                        PreferenceSelectionViewState.Loading -> LoadingView()
+                        PreferenceSelectionViewState.Loading ->
+                            ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
                         else -> PlatformListView(
                             result = viewState as PreferenceSelectionViewState.Result
                         ) { slug: String, isOwned: Boolean ->
@@ -107,18 +108,6 @@ fun PlatformSelectionScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun LoadingView() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        CircularProgressIndicator(color = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
     }
 }
 
