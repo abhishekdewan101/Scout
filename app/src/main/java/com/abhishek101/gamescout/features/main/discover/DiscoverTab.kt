@@ -1,5 +1,6 @@
 package com.abhishek101.gamescout.features.main.discover
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -10,10 +11,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -21,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.gamelist.GameListData
@@ -104,6 +109,7 @@ private fun ScreenshotShowcase(data: GameListData, onTap: (String) -> Unit) {
 
 @Composable
 private fun DiscoverTopBar() {
+    val context = LocalContext.current
     TopAppBar(
         backgroundColor = ScoutTheme.colors.topBarBackground,
         title = {
@@ -111,6 +117,20 @@ private fun DiscoverTopBar() {
                 text = "Discover",
                 fontWeight = FontWeight.Bold,
                 color = ScoutTheme.colors.topBarTextColor
+            )
+        },
+        actions = {
+            Icon(
+                imageVector = Icons.Outlined.MoreVert,
+                contentDescription = "preferences",
+                tint = ScoutTheme.colors.topBarTextColor,
+                modifier = Modifier
+                    .padding(end = 5.dp)
+                    .clickable {
+                        Toast
+                            .makeText(context, "Implement Changing Users Selections", Toast.LENGTH_SHORT)
+                            .show()
+                    }
             )
         }
     )

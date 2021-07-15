@@ -32,11 +32,10 @@ fun RemoteImage(
         fadeIn = fadeIn
     )
 
-    Box {
+    Box(modifier = modifier) {
         Image(
             painter = remotePainter,
             contentDescription = contentDescription,
-            modifier = modifier,
             contentScale = contentScale
         )
         when (remotePainter.loadState) {

@@ -79,7 +79,7 @@ fun GenreSelectionScreen(
         navigationBarColor = ScoutTheme.colors.primaryBackground,
         useDarkIcons = false
     ) {
-        Box(
+        BoxWithConstraints(
             contentAlignment = Alignment.BottomCenter,
             modifier = Modifier.fillMaxSize()
         ) {
@@ -111,7 +111,9 @@ fun GenreSelectionScreen(
                 item {
                     when (viewState) {
                         PreferenceSelectionViewState.Loading ->
-                            ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
+                            Box(modifier = Modifier.height(maxHeight)) {
+                                ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
+                            }
                         else -> GenreListView(
                             result = viewState as PreferenceSelectionViewState.Result
                         ) { slug: String, isFavorite: Boolean ->

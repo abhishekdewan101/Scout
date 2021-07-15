@@ -51,7 +51,7 @@ fun PlatformSelectionScreen(
         navigationBarColor = ScoutTheme.colors.primaryBackground,
         useDarkIcons = false
     ) {
-        Box(
+        BoxWithConstraints(
             contentAlignment = Alignment.BottomCenter,
             modifier = Modifier.fillMaxSize()
         ) {
@@ -83,7 +83,9 @@ fun PlatformSelectionScreen(
                 item {
                     when (viewState) {
                         PreferenceSelectionViewState.Loading ->
-                            ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
+                            Box(modifier = Modifier.height(maxHeight)) {
+                                ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
+                            }
                         else -> PlatformListView(
                             result = viewState as PreferenceSelectionViewState.Result
                         ) { slug: String, isOwned: Boolean ->
