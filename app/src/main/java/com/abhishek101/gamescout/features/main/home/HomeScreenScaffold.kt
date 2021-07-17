@@ -36,6 +36,7 @@ fun HomeScreenScaffold(navigateToScreen: (AppScreens, String) -> Unit) {
         navigationBarColor = ScoutTheme.colors.bottomNavBarBackground
     ) {
         Scaffold(
+            backgroundColor = ScoutTheme.colors.secondaryBackground,
             scaffoldState = scaffoldState,
             bottomBar = {
                 HomeBottomNavBar(selectedRoute = extractSelectedRoute(entry = currentBackStackEntry)) {
