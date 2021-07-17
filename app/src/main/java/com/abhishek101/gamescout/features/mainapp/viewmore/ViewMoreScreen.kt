@@ -10,7 +10,6 @@ import com.abhishek101.gamescout.design.HeadingContainer
 import com.abhishek101.gamescout.design.LazyGridImageList
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
-import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 
 @Composable
@@ -36,7 +35,7 @@ fun ViewMoreScreen(
                         data = covers, columns = 3, imageWidth = 125.dp,
                         imageHeight = 175.dp
                     ) {
-                        navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
+                        // navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
                     }
                 }
             } else {

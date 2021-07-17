@@ -29,7 +29,6 @@ import com.abhishek101.gamescout.design.ImageGrid
 import com.abhishek101.gamescout.design.LoadingIndicator
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.SearchTextInput
-import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 
 @Composable
@@ -128,7 +127,7 @@ private fun RenderSearchGrid(
                     prefillSearchTerm = searchTerm,
                     onTextFieldClearing = { }
                 ) {
-                    navigate("${MainAppDestinations.Search.name}/$it")
+                    // navigate("${MainAppDestinations.Search.name}/$it")
                 }
                 Spacer(modifier = Modifier.height(10.dp))
             }
@@ -140,7 +139,7 @@ private fun RenderSearchGrid(
                 imageWidth = 125.dp,
                 imageHeight = 175.dp
             ) {
-                navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
+                // navigate("${MainAppDestinations.GameDetail.name}/${games[it].slug}")
             }
         }
     }

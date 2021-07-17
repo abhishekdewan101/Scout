@@ -62,7 +62,6 @@ import com.abhishek101.gamescout.design.MediaGallery
 import com.abhishek101.gamescout.design.Padding
 import com.abhishek101.gamescout.design.SafeArea
 import com.abhishek101.gamescout.design.TitleContainer
-import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
@@ -375,7 +374,7 @@ private fun RenderRelatedGames(
                     itemWidth = 150.dp,
                     itemHeight = 200.dp
                 ) {
-                    navigate("${MainAppDestinations.GameDetail.name}/${slugs[it]}")
+                    // navigate("${MainAppDestinations.GameDetail.name}/${slugs[it]}")
                 }
             }
         }
