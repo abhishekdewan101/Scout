@@ -171,7 +171,7 @@ private fun CoverList(
 
             item {
                 ViewMoreButton {
-                    onTap(data.listType.name)
+                    onMoreClicked(data.listType.name)
                 }
             }
         }
