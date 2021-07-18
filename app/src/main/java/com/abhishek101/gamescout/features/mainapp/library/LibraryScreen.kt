@@ -1,3 +1,5 @@
+@file:Suppress("UnusedPrivateMember")
+
 package com.abhishek101.gamescout.features.mainapp.library
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -37,7 +39,6 @@ import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.COMPLET
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.PLAYING
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.QUEUE
 import com.abhishek101.gamescout.features.mainapp.library.LibraryFilters.WANTED
-import com.abhishek101.gamescout.features.mainapp.navigator.MainAppDestinations
 import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -100,11 +101,11 @@ fun LibraryScreen(viewModel: LibraryViewModel = get(), navigate: (String) -> Uni
                             imageWidth = maxWidth / 3,
                             imageHeight = 175.dp
                         ) {
-                            navigate(
-                                "${MainAppDestinations.GameDetail}/${
-                                viewModel.libraryGames[it].slug
-                                }"
-                            )
+                            // navigate(
+                            //     // "${MainAppDestinations.GameDetail}/${
+                            //     // viewModel.libraryGames[it].slug
+                            //     // }"
+                            // )
                         }
                     }
                 } else {

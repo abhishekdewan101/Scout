@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +31,7 @@ import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionVi
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewState
 import com.abhishek101.gamescout.R
 import com.abhishek101.gamescout.design.new.image.SelectableRemoteImage
+import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.design.new.system.SystemUiControlView
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
@@ -79,7 +79,7 @@ fun GenreSelectionScreen(
         navigationBarColor = ScoutTheme.colors.primaryBackground,
         useDarkIcons = false
     ) {
-        Box(
+        BoxWithConstraints(
             contentAlignment = Alignment.BottomCenter,
             modifier = Modifier.fillMaxSize()
         ) {
@@ -110,7 +110,10 @@ fun GenreSelectionScreen(
 
                 item {
                     when (viewState) {
-                        PreferenceSelectionViewState.Loading -> LoadingView()
+                        PreferenceSelectionViewState.Loading ->
+                            Box(modifier = Modifier.height(maxHeight)) {
+                                ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
+                            }
                         else -> GenreListView(
                             result = viewState as PreferenceSelectionViewState.Result
                         ) { slug: String, isFavorite: Boolean ->
@@ -136,17 +139,6 @@ fun GenreSelectionScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun LoadingView() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        CircularProgressIndicator(color = ScoutTheme.colors.progressIndicatorOnPrimaryBackground)
     }
 }
 
