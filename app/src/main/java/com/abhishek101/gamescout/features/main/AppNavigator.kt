@@ -58,7 +58,14 @@ fun AppNavigator() {
             require(listType != null) {
                 "Cannot navigate to a view more screen with a null list type"
             }
-            ViewMoreScreen(listType = listType)
+            ViewMoreScreen(
+                listType = listType,
+                navigateBack = {
+                    navController.popBackStack()
+                }
+            ) { screen, data ->
+                navController.navigate("${screen.name}/$data")
+            }
         }
     }
 }

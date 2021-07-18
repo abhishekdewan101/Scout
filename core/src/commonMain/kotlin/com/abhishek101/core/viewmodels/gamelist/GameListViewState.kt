@@ -10,6 +10,10 @@ sealed class GameListViewState {
         val headerList: GameListData,
         val otherLists: List<GameListData>
     ) : GameListViewState()
+
+    data class ViewMoreViewState(
+        val data: GameListData
+    ) : GameListViewState()
 }
 
 @Serializable

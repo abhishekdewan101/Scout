@@ -1,3 +1,5 @@
+@file:Suppress("UnusedPrivateMember")
+
 package com.abhishek101.gamescout.features.mainapp.search
 
 import androidx.compose.foundation.ExperimentalFoundationApi

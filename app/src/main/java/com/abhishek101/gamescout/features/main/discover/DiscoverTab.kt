@@ -52,6 +52,8 @@ import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 
+const val POSTER_GRID_SIZE = 9
+
 @Composable
 fun DiscoverTab(
     viewModel: GameListViewModel = get(),
@@ -106,11 +108,21 @@ private fun DiscoverContent(
         items(data.otherLists.size) {
             val showShowGrid = it % 2 != 0
             if (showShowGrid) {
-                CoverGrid(data = data.otherLists[it]) { slug ->
+                CoverGrid(
+                    data = data.otherLists[it],
+                    onMoreClicked = { type ->
+                        navigateToScreen(AppScreens.VIEW_MORE, type)
+                    }
+                ) { slug ->
                     navigateToScreen(AppScreens.DETAIL, slug)
                 }
             } else {
-                CoverList(data = data.otherLists[it]) { slug ->
+                CoverList(
+                    data = data.otherLists[it],
+                    onMoreClicked = { type ->
+                        navigateToScreen(AppScreens.VIEW_MORE, type)
+                    }
+                ) { slug ->
                     navigateToScreen(AppScreens.DETAIL, slug)
                 }
             }
@@ -122,20 +134,24 @@ private fun DiscoverContent(
 }
 
 @Composable
-private fun CoverList(data: GameListData, onTap: (String) -> Unit) {
+private fun CoverList(
+    data: GameListData,
+    onMoreClicked: (String) -> Unit,
+    onTap: (String) -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier.padding(top = 10.dp)
     ) {
         TitleBar(title = data.title) {
-            onTap(data.listType.name)
+            onMoreClicked(data.listType.name)
         }
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp)
         ) {
-            val games = data.games.filter { it.cover != null }.take(9)
+            val games = data.games.filter { it.cover != null }.take(POSTER_GRID_SIZE)
             items(games) {
                 Box(
                     modifier = Modifier
@@ -222,14 +238,18 @@ private fun ViewMoreButton(onTap: () -> Unit) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun CoverGrid(data: GameListData, onTap: (String) -> Unit) {
-    val games = data.games.filter { it.cover != null }.take(9)
+private fun CoverGrid(
+    data: GameListData,
+    onMoreClicked: (String) -> Unit,
+    onTap: (String) -> Unit
+) {
+    val games = data.games.filter { it.cover != null }.take(POSTER_GRID_SIZE)
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier.padding(top = 10.dp)
     ) {
         TitleBar(title = data.title) {
-            onTap(data.listType.name)
+            onMoreClicked(data.listType.name)
         }
         RemoteImageGrid(
             data = games,
