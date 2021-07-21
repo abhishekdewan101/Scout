@@ -3,6 +3,7 @@
 package com.abhishek101.gamescout.features.main
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,7 +29,13 @@ fun AppNavigator() {
     NavHost(navController = navController, startDestination = HOME.name) {
         composable(route = HOME.name) {
             HomeScreenScaffold { screen, data ->
-                navController.navigate("${screen.name}/$data")
+                navController.navigate("${screen.name}/$data") {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }
         }
         composable(

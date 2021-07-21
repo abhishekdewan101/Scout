@@ -38,7 +38,7 @@ val viewModelModule = module {
         )
     }
 
-    factory {
+    single {
         SearchViewModel(
             get(),
             get(),

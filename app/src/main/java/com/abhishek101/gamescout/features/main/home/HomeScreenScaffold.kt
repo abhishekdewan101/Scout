@@ -42,11 +42,12 @@ fun HomeScreenScaffold(navigateToScreen: (AppScreens, String) -> Unit) {
             bottomBar = {
                 HomeBottomNavBar(selectedRoute = extractSelectedRoute(entry = currentBackStackEntry)) {
                     navController.navigate(it) {
+                        launchSingleTop = true
+                        restoreState = true
+
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 }
             },
@@ -62,7 +63,7 @@ private fun HomePagerContent(navController: NavHostController, navigateToScreen:
             DiscoverTab(navigateToScreen = navigateToScreen)
         }
         composable(route = Search.route) {
-            SearchTab()
+            SearchTab(navigateToScreen = navigateToScreen)
         }
         composable(route = Collection.route) {
             CollectionTab()
