@@ -9,6 +9,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,7 +41,14 @@ fun HomeScreenScaffold(navigateToScreen: (AppScreens, String) -> Unit) {
             scaffoldState = scaffoldState,
             bottomBar = {
                 HomeBottomNavBar(selectedRoute = extractSelectedRoute(entry = currentBackStackEntry)) {
-                    navController.navigate(it)
+                    navController.navigate(it) {
+                        launchSingleTop = true
+                        restoreState = true
+
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                    }
                 }
             },
             content = { HomePagerContent(navController = navController, navigateToScreen = navigateToScreen) }
@@ -55,7 +63,7 @@ private fun HomePagerContent(navController: NavHostController, navigateToScreen:
             DiscoverTab(navigateToScreen = navigateToScreen)
         }
         composable(route = Search.route) {
-            SearchTab()
+            SearchTab(navigateToScreen = navigateToScreen)
         }
         composable(route = Collection.route) {
             CollectionTab()

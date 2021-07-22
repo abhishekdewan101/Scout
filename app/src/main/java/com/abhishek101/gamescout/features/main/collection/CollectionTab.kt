@@ -1,20 +1,35 @@
 package com.abhishek101.gamescout.features.main.collection
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import com.abhishek101.gamescout.theme.ScoutTheme
 
 @Composable
 fun CollectionTab() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ScoutTheme.colors.secondaryBackground)
-    ) {
-        Text("Collection Tab", color = ScoutTheme.colors.textOnSecondaryBackground)
-    }
+    val scaffoldState = rememberScaffoldState()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = { CollectionTopBar() },
+        content = {
+        },
+        backgroundColor = ScoutTheme.colors.secondaryBackground
+    )
+}
+
+@Composable
+private fun CollectionTopBar() {
+    TopAppBar(
+        backgroundColor = ScoutTheme.colors.topBarBackground,
+        title = {
+            Text(
+                text = "Collection",
+                fontWeight = FontWeight.Bold,
+                color = ScoutTheme.colors.topBarTextColor
+            )
+        }
+    )
 }
