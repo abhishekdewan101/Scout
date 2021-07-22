@@ -209,6 +209,7 @@ private fun RegularSearchBar(toggleEditingMode: () -> Unit) {
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 private fun EditingSearchBar(
     inputTextField: TextFieldValue,
