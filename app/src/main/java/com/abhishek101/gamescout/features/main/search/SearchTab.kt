@@ -82,10 +82,12 @@ fun SearchTab(
         },
         content = {
             if (!isTopBarEditing) {
-                RecentSearchList(searchTerms = recentSearchViewState) {
-                    isTopBarEditing = true
-                    inputTextField = TextFieldValue(it)
-                    viewModel.searchForGame(inputTextField.text)
+                if (recentSearchViewState.isNotEmpty()) {
+                    RecentSearchList(searchTerms = recentSearchViewState) {
+                        isTopBarEditing = true
+                        inputTextField = TextFieldValue(it)
+                        viewModel.searchForGame(inputTextField.text)
+                    }
                 }
             } else {
                 when (viewState) {
