@@ -1,8 +1,12 @@
 package com.abhishek101.gamescout.features.main.details
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,7 +21,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Save
@@ -29,7 +33,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
@@ -38,6 +41,8 @@ import com.abhishek101.gamescout.design.new.image.RemoteImage
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
+
+private val COVER_HEIGHT = 250.dp
 
 @ExperimentalMaterialApi
 @Composable
@@ -48,6 +53,7 @@ fun GameDetailScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val viewState by viewModel.viewState.collectAsState()
+    val scrollState = rememberScrollState()
 
     SideEffect {
         viewModel.constructGameDetails(slug = data)
@@ -55,15 +61,17 @@ fun GameDetailScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            GameDetailTopBar(viewState = viewState) {
-                updateModalState(ModalBottomSheetValue.Expanded)
-            }
-        },
         content = {
-            when (viewState) {
-                GameDetailViewState.EmptyViewState -> ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnSecondaryBackground)
-                else -> GameDetails(game = viewState as GameDetailViewState.NonEmptyViewState)
+            Box(modifier = Modifier.fillMaxSize()) {
+                when (viewState) {
+                    GameDetailViewState.EmptyViewState -> ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnSecondaryBackground)
+                    else -> {
+                        GameDetails(game = viewState as GameDetailViewState.NonEmptyViewState, scrollState = scrollState)
+                        FadingToolBar(game = viewState as GameDetailViewState.NonEmptyViewState, scrollState = scrollState) {
+                            updateModalState(ModalBottomSheetValue.Expanded)
+                        }
+                    }
+                }
             }
         },
         backgroundColor = ScoutTheme.colors.secondaryBackground
@@ -72,8 +80,7 @@ fun GameDetailScreen(
 
 // region Content
 @Composable
-private fun GameDetails(game: GameDetailViewState.NonEmptyViewState) {
-    val scrollState = rememberScrollState()
+private fun GameDetails(game: GameDetailViewState.NonEmptyViewState, scrollState: ScrollState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -92,7 +99,7 @@ private fun HeaderImage(mediaList: List<String>) {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)
+                .height(COVER_HEIGHT)
         )
     }
 }
@@ -100,87 +107,79 @@ private fun HeaderImage(mediaList: List<String>) {
 // endregion Content
 
 // region TopBar
-@Composable
-private fun GameDetailTopBar(viewState: GameDetailViewState, showAddGameModal: () -> Unit) {
-    when {
-        viewState is GameDetailViewState.EmptyViewState -> LoadingTopBar()
-        viewState is GameDetailViewState.NonEmptyViewState -> RegularTopBar(game = viewState, showAddGameModal = showAddGameModal)
-    }
-}
 
 @Composable
-fun LoadingTopBar() {
-    TopAppBar(backgroundColor = ScoutTheme.colors.topBarBackground) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "Loading...",
-                style = MaterialTheme.typography.h6,
-                color = ScoutTheme.colors.topBarTextColor,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-}
-
-@Composable
-private fun RegularTopBar(game: GameDetailViewState.NonEmptyViewState, showAddGameModal: () -> Unit) {
-    TopAppBar(backgroundColor = ScoutTheme.colors.topBarBackground) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+private fun FadingToolBar(game: GameDetailViewState.NonEmptyViewState, scrollState: ScrollState, showAddGameModal: () -> Unit) {
+    val alphaOffset = 0f.coerceAtLeast(scrollState.value / COVER_HEIGHT.value).coerceIn(0f..1f)
+    TopAppBar(
+        backgroundColor = ScoutTheme.colors.topBarBackground.copy(alpha = alphaOffset),
+        elevation = 0.dp
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
             Icon(
-                imageVector = Icons.Outlined.ArrowBack,
+                imageVector = Icons.Outlined.ArrowBackIos,
                 contentDescription = "Back",
                 tint = ScoutTheme.colors.topBarTextColor,
                 modifier = Modifier
-                    .padding(end = 5.dp)
-                    .weight(1f)
+                    .padding(horizontal = 10.dp)
                     .clickable {
                     }
             )
+
             Text(
                 text = game.name,
                 style = MaterialTheme.typography.h6,
-                color = ScoutTheme.colors.topBarTextColor,
+                color = ScoutTheme.colors.topBarTextColor.copy(alpha = alphaOffset),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(6f)
+                modifier = Modifier
+                    .weight(6f)
             )
-
-            if (game.inLibrary) {
-                Icon(
-                    imageVector = Icons.Outlined.Edit,
-                    contentDescription = "Edit",
-                    tint = ScoutTheme.colors.topBarTextColor,
-                    modifier = Modifier
-                        .padding(end = 5.dp)
-                        .weight(1f)
-                        .clickable {
-                        }
-                )
-                Icon(
-                    imageVector = Icons.Outlined.Delete,
-                    contentDescription = "Delete",
-                    tint = ScoutTheme.colors.topBarTextColor,
-                    modifier = Modifier
-                        .padding(end = 5.dp)
-                        .weight(1f)
-                        .clickable {
-                        }
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Outlined.Save,
-                    contentDescription = "Save",
-                    tint = ScoutTheme.colors.topBarTextColor,
-                    modifier = Modifier
-                        .padding(end = 5.dp)
-                        .weight(1f)
-                        .clickable {
-                            showAddGameModal()
-                        }
-                )
-            }
+            Actions(inLibrary = game.inLibrary, showAddGameModal = showAddGameModal)
         }
+    }
+}
+
+@Composable
+private fun RowScope.Actions(inLibrary: Boolean, showAddGameModal: () -> Unit) {
+    if (inLibrary) {
+        Icon(
+            imageVector = Icons.Outlined.Edit,
+            contentDescription = "Edit",
+            tint = ScoutTheme.colors.topBarTextColor,
+            modifier = Modifier
+                .padding(end = 5.dp)
+                .weight(1f)
+                .clickable {
+                }
+        )
+        Icon(
+            imageVector = Icons.Outlined.Delete,
+            contentDescription = "Delete",
+            tint = ScoutTheme.colors.topBarTextColor,
+            modifier = Modifier
+                .padding(end = 5.dp)
+                .weight(1f)
+                .clickable {
+                }
+        )
+    } else {
+        Icon(
+            imageVector = Icons.Outlined.Save,
+            contentDescription = "Save",
+            tint = ScoutTheme.colors.topBarTextColor,
+            modifier = Modifier
+                .padding(end = 5.dp)
+                .weight(1f)
+                .clickable {
+                    showAddGameModal()
+                }
+        )
     }
 }
 
