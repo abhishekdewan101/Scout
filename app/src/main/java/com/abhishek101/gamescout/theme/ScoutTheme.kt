@@ -25,6 +25,7 @@ private val LightColorPalette = ScoutColors(
     topBarTextColor = White,
     recentSearchesBackground = DarkGray,
     textOnRecentSearchBackground = White,
+    modalBottomSheetBackground = Black.copy(alpha = 0.4f),
     isDarkTheme = false
 )
 
@@ -43,6 +44,7 @@ private val DarkColorPalette = ScoutColors(
     topBarTextColor = White,
     recentSearchesBackground = Gray,
     textOnRecentSearchBackground = White,
+    modalBottomSheetBackground = White.copy(alpha = 0.4f),
     isDarkTheme = true
 )
 
@@ -61,6 +63,7 @@ data class ScoutColors(
     val progressIndicatorOnSecondaryBackground: Color,
     val topBarBackground: Color,
     val topBarTextColor: Color,
+    val modalBottomSheetBackground: Color,
     val isDarkTheme: Boolean
 )
 

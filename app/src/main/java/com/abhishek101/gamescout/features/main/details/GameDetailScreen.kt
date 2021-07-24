@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -37,10 +39,12 @@ import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 
+@ExperimentalMaterialApi
 @Composable
 fun GameDetailScreen(
     viewModel: GameDetailViewModel = get(),
-    data: String
+    data: String,
+    updateModalState: (ModalBottomSheetValue) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     val viewState by viewModel.viewState.collectAsState()
@@ -51,7 +55,11 @@ fun GameDetailScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { GameDetailTopBar(viewState = viewState) },
+        topBar = {
+            GameDetailTopBar(viewState = viewState) {
+                updateModalState(ModalBottomSheetValue.Expanded)
+            }
+        },
         content = {
             when (viewState) {
                 GameDetailViewState.EmptyViewState -> ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnSecondaryBackground)
@@ -93,10 +101,10 @@ private fun HeaderImage(mediaList: List<String>) {
 
 // region TopBar
 @Composable
-private fun GameDetailTopBar(viewState: GameDetailViewState) {
+private fun GameDetailTopBar(viewState: GameDetailViewState, showAddGameModal: () -> Unit) {
     when {
         viewState is GameDetailViewState.EmptyViewState -> LoadingTopBar()
-        viewState is GameDetailViewState.NonEmptyViewState -> RegularTopBar(game = viewState)
+        viewState is GameDetailViewState.NonEmptyViewState -> RegularTopBar(game = viewState, showAddGameModal = showAddGameModal)
     }
 }
 
@@ -116,7 +124,7 @@ fun LoadingTopBar() {
 }
 
 @Composable
-private fun RegularTopBar(game: GameDetailViewState.NonEmptyViewState) {
+private fun RegularTopBar(game: GameDetailViewState.NonEmptyViewState, showAddGameModal: () -> Unit) {
     TopAppBar(backgroundColor = ScoutTheme.colors.topBarBackground) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -168,6 +176,7 @@ private fun RegularTopBar(game: GameDetailViewState.NonEmptyViewState) {
                         .padding(end = 5.dp)
                         .weight(1f)
                         .clickable {
+                            showAddGameModal()
                         }
                 )
             }
