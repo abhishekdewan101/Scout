@@ -7,12 +7,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -32,6 +37,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -42,7 +48,7 @@ import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 
-private val COVER_HEIGHT = 250.dp
+private val COVER_HEIGHT = 350.dp
 
 @ExperimentalMaterialApi
 @Composable
@@ -66,7 +72,13 @@ fun GameDetailScreen(
                 when (viewState) {
                     GameDetailViewState.EmptyViewState -> ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnSecondaryBackground)
                     else -> {
-                        GameDetails(game = viewState as GameDetailViewState.NonEmptyViewState, scrollState = scrollState)
+                        GameDetails(game = viewState as GameDetailViewState.NonEmptyViewState, scrollState = scrollState) { shouldDelete ->
+                            if (shouldDelete) {
+                                viewModel.removeGame()
+                            } else {
+                                updateModalState(ModalBottomSheetValue.Expanded)
+                            }
+                        }
                         FadingToolBar(game = viewState as GameDetailViewState.NonEmptyViewState, scrollState = scrollState) {
                             updateModalState(ModalBottomSheetValue.Expanded)
                         }
@@ -80,13 +92,78 @@ fun GameDetailScreen(
 
 // region Content
 @Composable
-private fun GameDetails(game: GameDetailViewState.NonEmptyViewState, scrollState: ScrollState) {
+private fun GameDetails(game: GameDetailViewState.NonEmptyViewState, scrollState: ScrollState, changeGameState: (Boolean) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(state = scrollState)
     ) {
         HeaderImage(mediaList = game.mediaList)
+        Spacer(modifier = Modifier.height(10.dp))
+        PrimaryDetails(game = game, changeGameState = changeGameState)
+        ThemedDivider()
+    }
+}
+
+@Composable
+private fun ThemedDivider() {
+    Divider(
+        modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp),
+        color = ScoutTheme.colors.dividerColor.copy(alpha = 0.12f), // Get this value from the Divider Composables internal value
+    )
+}
+
+@Composable
+private fun PrimaryDetails(game: GameDetailViewState.NonEmptyViewState, changeGameState: (Boolean) -> Unit) {
+    Row(
+        verticalAlignment = Alignment.Top,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+    ) {
+        RemoteImage(
+            request = game.coverUrl,
+            contentDescription = game.name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(125.dp)
+                .clip(MaterialTheme.shapes.large)
+        )
+        Column(
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .padding(start = 10.dp)
+                .height(125.dp)
+        ) {
+            Text(
+                text = game.name,
+                color = ScoutTheme.colors.textOnSecondaryBackground,
+                style = MaterialTheme.typography.h6,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            game.developer?.let {
+                Text(
+                    text = "by ${it.name}",
+                    color = ScoutTheme.colors.secondaryTextOnSecondaryBackground,
+                    style = MaterialTheme.typography.body1,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            Button(
+                shape = MaterialTheme.shapes.medium,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = if (game.inLibrary) ScoutTheme.colors.deleteButtonColor else ScoutTheme.colors.addButtonColor,
+                    contentColor = ScoutTheme.colors.textOnButtonColor
+                ),
+                onClick = {
+                    changeGameState(game.inLibrary)
+                }
+            ) {
+                if (game.inLibrary) Text("Remove Game") else Text("Save Game")
+            }
+        }
     }
 }
 

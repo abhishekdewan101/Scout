@@ -20,12 +20,17 @@ private val LightColorPalette = ScoutColors(
     bottomItemUnselected = DarkGray,
     secondaryBackground = White,
     textOnSecondaryBackground = Black,
+    secondaryTextOnSecondaryBackground = DarkGray,
     progressIndicatorOnSecondaryBackground = PurpleLight,
     topBarBackground = PurpleLight,
     topBarTextColor = White,
     recentSearchesBackground = DarkGray,
     textOnRecentSearchBackground = White,
     modalBottomSheetBackground = Black.copy(alpha = 0.4f),
+    addButtonColor = PurpleLight,
+    deleteButtonColor = Red,
+    textOnButtonColor = White,
+    dividerColor = DarkGray,
     isDarkTheme = false
 )
 
@@ -34,17 +39,22 @@ private val DarkColorPalette = ScoutColors(
     progressIndicatorOnPrimaryBackground = White,
     textOnPrimaryBackground = White,
     secondaryButton = RedLight,
-    bottomNavBarBackground = PurpleDark,
+    bottomNavBarBackground = Purple,
     bottomItemSelected = White,
     bottomItemUnselected = Gray,
     secondaryBackground = Black,
     textOnSecondaryBackground = White,
+    secondaryTextOnSecondaryBackground = Gray,
     progressIndicatorOnSecondaryBackground = White,
-    topBarBackground = PurpleDark,
+    topBarBackground = Purple,
     topBarTextColor = White,
     recentSearchesBackground = Gray,
     textOnRecentSearchBackground = White,
+    addButtonColor = Purple,
+    deleteButtonColor = Red,
+    textOnButtonColor = White,
     modalBottomSheetBackground = White.copy(alpha = 0.4f),
+    dividerColor = Gray,
     isDarkTheme = true
 )
 
@@ -58,12 +68,17 @@ data class ScoutColors(
     var bottomItemUnselected: Color,
     val secondaryBackground: Color,
     val textOnSecondaryBackground: Color,
+    val secondaryTextOnSecondaryBackground: Color,
     val recentSearchesBackground: Color,
     val textOnRecentSearchBackground: Color,
     val progressIndicatorOnSecondaryBackground: Color,
     val topBarBackground: Color,
     val topBarTextColor: Color,
     val modalBottomSheetBackground: Color,
+    val addButtonColor: Color,
+    val deleteButtonColor: Color,
+    val textOnButtonColor: Color,
+    val dividerColor: Color,
     val isDarkTheme: Boolean
 )
 
