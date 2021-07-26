@@ -31,6 +31,9 @@ private val LightColorPalette = ScoutColors(
     deleteButtonColor = Red,
     textOnButtonColor = White,
     dividerColor = DarkGray,
+    topRatingColor = Green,
+    mediumRatingColor = Yellow,
+    lowRatingColor = Red,
     isDarkTheme = false
 )
 
@@ -55,6 +58,9 @@ private val DarkColorPalette = ScoutColors(
     textOnButtonColor = White,
     modalBottomSheetBackground = White.copy(alpha = 0.4f),
     dividerColor = Gray,
+    topRatingColor = Green,
+    mediumRatingColor = Yellow,
+    lowRatingColor = Red,
     isDarkTheme = true
 )
 
@@ -79,6 +85,9 @@ data class ScoutColors(
     val deleteButtonColor: Color,
     val textOnButtonColor: Color,
     val dividerColor: Color,
+    val topRatingColor: Color,
+    val mediumRatingColor: Color,
+    val lowRatingColor: Color,
     val isDarkTheme: Boolean
 )
 

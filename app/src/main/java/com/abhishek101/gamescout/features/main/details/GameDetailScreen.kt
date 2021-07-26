@@ -1,19 +1,24 @@
 package com.abhishek101.gamescout.features.main.details
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -38,9 +43,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
 import com.abhishek101.gamescout.design.new.image.RemoteImage
@@ -101,12 +110,113 @@ private fun GameDetails(game: GameDetailViewState.NonEmptyViewState, scrollState
         HeaderImage(mediaList = game.mediaList)
         Spacer(modifier = Modifier.height(10.dp))
         PrimaryDetails(game = game, changeGameState = changeGameState)
-        ThemedDivider()
+        ColumnDivider()
+        MetadataDetails(game = game)
+        ColumnDivider()
     }
 }
 
 @Composable
-private fun ThemedDivider() {
+private fun MetadataDetails(game: GameDetailViewState.NonEmptyViewState) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)) {
+            Text(
+                text = "Release Date",
+                color = ScoutTheme.colors.secondaryTextOnSecondaryBackground,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(bottom = 15.dp)
+            )
+            Text(
+                text = game.releaseDate.dateString,
+                color = ScoutTheme.colors.textOnSecondaryBackground,
+                style = MaterialTheme.typography.body1,
+            )
+        }
+        RowDivider()
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)) {
+            Text(
+                text = "Avg Rating",
+                color = ScoutTheme.colors.secondaryTextOnSecondaryBackground,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(bottom = 15.dp)
+            )
+            if (game.rating != null) {
+                GameRating(rating = game.rating!!)
+            } else {
+                Text(
+                    text = "Not Rated",
+                    color = ScoutTheme.colors.textOnSecondaryBackground,
+                    style = MaterialTheme.typography.body1
+                )
+            }
+        }
+        RowDivider()
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)) {
+            Text(
+                text = "Genres",
+                color = ScoutTheme.colors.secondaryTextOnSecondaryBackground,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(bottom = 15.dp)
+            )
+            Text(
+                text = game.genres.joinToString(separator = "\n"),
+                color = ScoutTheme.colors.textOnSecondaryBackground,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.body2
+            )
+        }
+    }
+}
+
+@Composable
+private fun GameRating(rating: Int) {
+    val backgroundColor = when {
+        rating >= 75 -> ScoutTheme.colors.topRatingColor
+        rating in 55..74 -> ScoutTheme.colors.mediumRatingColor
+        else -> ScoutTheme.colors.lowRatingColor
+    }
+    Box(
+        modifier = Modifier
+            .size(36.dp)
+            .clip(RoundedCornerShape(50))
+            .background(backgroundColor)
+    ) {
+        Column(
+            modifier = Modifier
+                .size(36.dp)
+                .clip(RoundedCornerShape(50)),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                rating.toString(),
+                color = Color.White,
+                fontSize = 16.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun RowDivider() {
+    Box(
+        modifier = Modifier
+            .width(1.dp)
+            .fillMaxHeight()
+            .background(ScoutTheme.colors.dividerColor.copy(alpha = 0.12f))
+    )
+}
+
+@Composable
+private fun ColumnDivider() {
     Divider(
         modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp),
         color = ScoutTheme.colors.dividerColor.copy(alpha = 0.12f), // Get this value from the Divider Composables internal value

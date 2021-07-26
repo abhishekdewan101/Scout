@@ -10,6 +10,8 @@ val BeigeDark = Color(0xFFbbb1a9)
 val BeigeLight = Color(0xFFffffff)
 val RedDark = Color(0xFF570000)
 
+val Green = Color(0xFF388E3C)
+val Yellow = Color(0xFFF57C00)
 val RedLight = Color(0xFFc04532)
 val Red = Color(0xFF890f0a)
 val PurpleLight = Color(0XFF9E8EDE)
