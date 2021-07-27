@@ -156,12 +156,13 @@ private fun CoverList(
                 RemoteImage(
                     request = it.cover!!.qualifiedUrl,
                     contentDescription = it.name,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .width(175.dp)
                         .height(225.dp)
                         .padding(end = 10.dp)
-                        .clickable { onTap(it.slug) }
                         .clip(MaterialTheme.shapes.medium)
+                        .clickable { onTap(it.slug) }
                 )
             }
 
