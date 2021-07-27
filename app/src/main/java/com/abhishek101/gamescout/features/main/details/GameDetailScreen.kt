@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -44,7 +43,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,7 +75,9 @@ fun GameDetailScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val viewState by viewModel.viewState.collectAsState()
-    val scrollState = rememberScrollState()
+    val scrollState by rememberSaveable(stateSaver = ScrollState.Saver) {
+        mutableStateOf(ScrollState(0))
+    }
 
     SideEffect {
         viewModel.constructGameDetails(slug = data)
@@ -142,7 +143,7 @@ private fun GameDetails(
 @Composable
 private fun Description(game: GameDetailViewState.NonEmptyViewState) {
     game.summary?.let {
-        var isExpanded by remember { mutableStateOf(false) }
+        var isExpanded by rememberSaveable { mutableStateOf(false) }
         Text(
             text = it,
             style = MaterialTheme.typography.body1,
