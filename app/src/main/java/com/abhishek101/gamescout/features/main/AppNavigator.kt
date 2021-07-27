@@ -56,10 +56,7 @@ fun AppNavigator() {
                 "Cannot navigate to detail with a null slug value"
             }
             GameDetailViewContainer(data = slug) { screen, data ->
-                navController.navigate("${screen.name}/$data") {
-                    launchSingleTop = true
-                    restoreState = true
-                }
+                navController.navigate("${screen.name}/$data")
             }
         }
 

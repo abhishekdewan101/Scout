@@ -43,6 +43,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -131,6 +134,25 @@ private fun GameDetails(
             navigateToScreen(AppScreens.IMAGE_VIEWER, it)
         }
         ColumnDivider()
+        Description(game = game)
+        ColumnDivider()
+    }
+}
+
+@Composable
+private fun Description(game: GameDetailViewState.NonEmptyViewState) {
+    game.summary?.let {
+        var isExpanded by remember { mutableStateOf(false) }
+        Text(
+            text = it,
+            style = MaterialTheme.typography.body1,
+            color = ScoutTheme.colors.textOnSecondaryBackground,
+            maxLines = if (isExpanded) 100 else 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .then(if (!isExpanded) Modifier.clickable { isExpanded = true } else Modifier)
+        )
     }
 }
 
