@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -54,6 +57,7 @@ import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
 import com.abhishek101.gamescout.design.new.image.RemoteImage
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
+import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 
@@ -64,6 +68,7 @@ private val COVER_HEIGHT = 350.dp
 fun GameDetailScreen(
     viewModel: GameDetailViewModel = get(),
     data: String,
+    navigateToScreen: (AppScreens, Any) -> Unit,
     updateModalState: (ModalBottomSheetValue) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -81,7 +86,11 @@ fun GameDetailScreen(
                 when (viewState) {
                     GameDetailViewState.EmptyViewState -> ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnSecondaryBackground)
                     else -> {
-                        GameDetails(game = viewState as GameDetailViewState.NonEmptyViewState, scrollState = scrollState) { shouldDelete ->
+                        GameDetails(
+                            game = viewState as GameDetailViewState.NonEmptyViewState,
+                            scrollState = scrollState,
+                            navigateToScreen = navigateToScreen
+                        ) { shouldDelete ->
                             if (shouldDelete) {
                                 viewModel.removeGame()
                             } else {
@@ -101,7 +110,12 @@ fun GameDetailScreen(
 
 // region Content
 @Composable
-private fun GameDetails(game: GameDetailViewState.NonEmptyViewState, scrollState: ScrollState, changeGameState: (Boolean) -> Unit) {
+private fun GameDetails(
+    game: GameDetailViewState.NonEmptyViewState,
+    scrollState: ScrollState,
+    navigateToScreen: (AppScreens, Any) -> Unit,
+    changeGameState: (Boolean) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -113,6 +127,33 @@ private fun GameDetails(game: GameDetailViewState.NonEmptyViewState, scrollState
         ColumnDivider()
         MetadataDetails(game = game)
         ColumnDivider()
+        ImageGallery(game = game) {
+            navigateToScreen(AppScreens.IMAGE_VIEWER, it)
+        }
+        ColumnDivider()
+    }
+}
+
+@Composable
+private fun ImageGallery(game: GameDetailViewState.NonEmptyViewState, showImageViewer: (String) -> Unit) {
+    val images = game.mediaList
+    BoxWithConstraints {
+        LazyRow(modifier = Modifier.padding(start = 10.dp)) {
+            items(images) {
+                RemoteImage(
+                    request = it,
+                    contentDescription = "game screenshot",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(maxWidth - 20.dp)
+                        .height(height = 200.dp)
+                        .padding(end = 10.dp)
+                        .padding(top = 10.dp)
+                        .clip(shape = MaterialTheme.shapes.medium)
+                        .clickable { showImageViewer(game.slug) }
+                )
+            }
+        }
     }
 }
 

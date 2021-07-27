@@ -8,12 +8,13 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import com.abhishek101.gamescout.design.new.system.SystemUiControlView
+import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun GameDetailViewContainer(data: String) {
+fun GameDetailViewContainer(data: String, navigateToScreen: (AppScreens, Any) -> Unit) {
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     SystemUiControlView(
@@ -27,7 +28,7 @@ fun GameDetailViewContainer(data: String) {
             scrimColor = ScoutTheme.colors.modalBottomSheetBackground,
             sheetShape = MaterialTheme.shapes.small
         ) {
-            GameDetailScreen(data = data) { bottomSheetValue ->
+            GameDetailScreen(data = data, navigateToScreen = navigateToScreen) { bottomSheetValue ->
                 scope.launch {
                     modalBottomSheetState.animateTo(bottomSheetValue)
                 }

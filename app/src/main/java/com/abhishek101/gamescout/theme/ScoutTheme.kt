@@ -34,6 +34,7 @@ private val LightColorPalette = ScoutColors(
     topRatingColor = Green,
     mediumRatingColor = Yellow,
     lowRatingColor = Red,
+    imageViewerBackground = Color.Black,
     isDarkTheme = false
 )
 
@@ -61,6 +62,7 @@ private val DarkColorPalette = ScoutColors(
     topRatingColor = Green,
     mediumRatingColor = Yellow,
     lowRatingColor = Red,
+    imageViewerBackground = Color.Black,
     isDarkTheme = true
 )
 
@@ -88,6 +90,7 @@ data class ScoutColors(
     val topRatingColor: Color,
     val mediumRatingColor: Color,
     val lowRatingColor: Color,
+    val imageViewerBackground: Color,
     val isDarkTheme: Boolean
 )
 
