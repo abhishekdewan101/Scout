@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -50,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -61,6 +61,7 @@ import com.abhishek101.gamescout.design.new.image.RemoteImage
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
+import com.abhishek101.gamescout.utils.buildYoutubeIntent
 import org.koin.androidx.compose.get
 
 private val COVER_HEIGHT = 350.dp
@@ -137,6 +138,52 @@ private fun GameDetails(
         ColumnDivider()
         Description(game = game)
         ColumnDivider()
+        Videos(game = game)
+        ColumnDivider()
+    }
+}
+
+@Composable
+private fun Videos(game: GameDetailViewState.NonEmptyViewState) {
+    val context = LocalContext.current
+    val videos = game.videoList
+    if (videos.isNotEmpty()) {
+        BoxWithConstraints {
+            LazyRow {
+                items(videos.size) {
+                    val video = videos[it]
+                    Box(
+                        contentAlignment = Alignment.BottomCenter,
+                        modifier = Modifier
+                            .width(width = maxWidth - 20.dp)
+                            .height(height = 200.dp)
+                            .padding(end = 10.dp)
+                            .padding(start = if (it == 0) 10.dp else 0.dp)
+                            .clip(shape = MaterialTheme.shapes.medium)
+                            .clickable {
+                                context.startActivity(buildYoutubeIntent(video.youtubeUrl))
+                            }
+                    ) {
+                        RemoteImage(
+                            request = video.screenshotUrl,
+                            contentDescription = "game screenshot",
+                            contentScale = ContentScale.Crop
+                        )
+                        Text(
+                            text = video.name,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(ScoutTheme.colors.secondaryBackground.copy(alpha = 0.7f))
+                                .padding(vertical = 5.dp),
+                            style = MaterialTheme.typography.body1,
+                            fontWeight = FontWeight.Bold,
+                            color = ScoutTheme.colors.textOnSecondaryBackground,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -161,16 +208,17 @@ private fun Description(game: GameDetailViewState.NonEmptyViewState) {
 private fun ImageGallery(game: GameDetailViewState.NonEmptyViewState, showImageViewer: (String) -> Unit) {
     val images = game.mediaList
     BoxWithConstraints {
-        LazyRow(modifier = Modifier.padding(start = 10.dp)) {
-            items(images) {
+        LazyRow {
+            items(images.size) {
                 RemoteImage(
-                    request = it,
+                    request = images[it],
                     contentDescription = "game screenshot",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .width(maxWidth - 20.dp)
-                        .height(height = 200.dp)
+                        .height(height = 250.dp)
                         .padding(end = 10.dp)
+                        .padding(start = if (it == 0) 10.dp else 0.dp)
                         .padding(top = 10.dp)
                         .clip(shape = MaterialTheme.shapes.medium)
                         .clickable { showImageViewer(game.slug) }
