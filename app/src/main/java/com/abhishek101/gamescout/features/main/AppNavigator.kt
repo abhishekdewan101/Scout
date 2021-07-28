@@ -55,12 +55,14 @@ fun AppNavigator() {
             require(slug != null) {
                 "Cannot navigate to detail with a null slug value"
             }
-            GameDetailViewContainer(data = slug) { screen, data ->
+            GameDetailViewContainer(
+                data = slug,
+                navigateBack = { navController.popBackStack() }
+            ) { screen, data ->
                 navController.navigate("${screen.name}/$data") {
                     popUpTo(it.id) {
                         saveState = true
                     }
-                    launchSingleTop = true
                     restoreState = true
                 }
             }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun GameDetailViewContainer(data: String, navigateToScreen: (AppScreens, Any) -> Unit) {
+fun GameDetailViewContainer(data: String, navigateBack: () -> Unit, navigateToScreen: (AppScreens, Any) -> Unit) {
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     SystemUiControlView(
@@ -28,7 +28,7 @@ fun GameDetailViewContainer(data: String, navigateToScreen: (AppScreens, Any) ->
             scrimColor = ScoutTheme.colors.modalBottomSheetBackground,
             sheetShape = MaterialTheme.shapes.small
         ) {
-            GameDetailScreen(data = data, navigateToScreen = navigateToScreen) { bottomSheetValue ->
+            GameDetailScreen(data = data, navigateBack = navigateBack, navigateToScreen = navigateToScreen) { bottomSheetValue ->
                 scope.launch {
                     modalBottomSheetState.animateTo(bottomSheetValue)
                 }

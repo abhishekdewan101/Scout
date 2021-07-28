@@ -1,8 +1,10 @@
 package com.abhishek101.gamescout.features.main.details
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -71,6 +73,7 @@ private val COVER_HEIGHT = 350.dp
 fun GameDetailScreen(
     viewModel: GameDetailViewModel = get(),
     data: String,
+    navigateBack: () -> Unit,
     navigateToScreen: (AppScreens, Any) -> Unit,
     updateModalState: (ModalBottomSheetValue) -> Unit
 ) {
@@ -102,7 +105,11 @@ fun GameDetailScreen(
                                 updateModalState(ModalBottomSheetValue.Expanded)
                             }
                         }
-                        FadingToolBar(game = viewState as GameDetailViewState.NonEmptyViewState, scrollState = scrollState) {
+                        FadingToolBar(
+                            game = viewState as GameDetailViewState.NonEmptyViewState,
+                            scrollState = scrollState,
+                            navigateBack = navigateBack
+                        ) {
                             updateModalState(ModalBottomSheetValue.Expanded)
                         }
                     }
@@ -138,8 +145,79 @@ private fun GameDetails(
         ColumnDivider()
         Description(game = game)
         ColumnDivider()
-        Videos(game = game)
-        ColumnDivider()
+        if (game.videoList.isNotEmpty()) {
+            Videos(game = game)
+            ColumnDivider()
+        }
+        if (game.dlcs.isNotEmpty()) {
+            DownloadableContent(game = game) {
+                navigateToScreen(AppScreens.DETAIL, it)
+            }
+            ColumnDivider()
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun DownloadableContent(game: GameDetailViewState.NonEmptyViewState, navigateToDlcDetails: (String) -> Unit) {
+    val scrollState = rememberSaveable(saver = ScrollState.Saver) {
+        ScrollState(0)
+    }
+    val dlcs = game.dlcs
+    if (dlcs.isNotEmpty()) {
+        BoxWithConstraints {
+            Column {
+                Text(
+                    text = "More from this game",
+                    color = ScoutTheme.colors.textOnSecondaryBackground,
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier.padding(bottom = 10.dp, start = 10.dp)
+                )
+                val columns = dlcs.chunked(2)
+                Row(
+                    modifier = Modifier
+                        .horizontalScroll(state = scrollState)
+                ) {
+                    columns.forEachIndexed { index, column ->
+                        Column(
+                            modifier = Modifier
+                                .width(this@BoxWithConstraints.maxWidth)
+                                .padding(start = 10.dp)
+                                .padding(end = if (index == columns.size - 1) 0.dp else 10.dp),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            column.forEachIndexed { index, dlc ->
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = if (index == 0) 10.dp else 0.dp)
+                                        .clickable {
+                                            navigateToDlcDetails(dlc.slug)
+                                        }
+                                ) {
+                                    RemoteImage(
+                                        request = dlc.url,
+                                        contentDescription = game.name,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(75.dp)
+                                            .clip(MaterialTheme.shapes.large)
+                                    )
+                                    Text(
+                                        text = dlc.name,
+                                        style = MaterialTheme.typography.body2,
+                                        color = ScoutTheme.colors.textOnSecondaryBackground,
+                                        modifier = Modifier.padding(start = 10.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -408,7 +486,12 @@ private fun HeaderImage(mediaList: List<String>) {
 // region TopBar
 
 @Composable
-private fun FadingToolBar(game: GameDetailViewState.NonEmptyViewState, scrollState: ScrollState, showAddGameModal: () -> Unit) {
+private fun FadingToolBar(
+    game: GameDetailViewState.NonEmptyViewState,
+    navigateBack: () -> Unit,
+    scrollState: ScrollState,
+    showAddGameModal: () -> Unit
+) {
     val alphaOffset = 0f.coerceAtLeast(scrollState.value / COVER_HEIGHT.value).coerceIn(0f..1f)
     TopAppBar(
         backgroundColor = ScoutTheme.colors.topBarBackground.copy(alpha = alphaOffset),
@@ -427,6 +510,7 @@ private fun FadingToolBar(game: GameDetailViewState.NonEmptyViewState, scrollSta
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
                     .clickable {
+                        navigateBack()
                     }
             )
 
