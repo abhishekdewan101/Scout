@@ -155,6 +155,46 @@ private fun GameDetails(
             }
             ColumnDivider()
         }
+        if (game.similarGames.isNotEmpty()) {
+            SimilarGames(game = game) {
+                navigateToScreen(AppScreens.DETAIL, it)
+            }
+            ColumnDivider()
+        }
+    }
+}
+
+@Composable
+private fun SimilarGames(game: GameDetailViewState.NonEmptyViewState, navigateToSimilarGameDetails: (String) -> Unit) {
+    val similarGames = game.similarGames
+    if (similarGames.isNotEmpty()) {
+        BoxWithConstraints {
+            Column {
+                Text(
+                    text = "You might also like",
+                    color = ScoutTheme.colors.textOnSecondaryBackground,
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier.padding(bottom = 10.dp, start = 10.dp)
+                )
+                LazyRow(modifier = Modifier.fillMaxWidth()) {
+                    items(similarGames.size) {
+                        val similarGame = similarGames[it]
+                        RemoteImage(
+                            request = similarGame.url,
+                            contentDescription = similarGame.name,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .width(125.dp)
+                                .height(175.dp)
+                                .padding(start = if (it == 0) 10.dp else 0.dp)
+                                .padding(end = 10.dp)
+                                .clip(MaterialTheme.shapes.medium)
+                                .clickable { navigateToSimilarGameDetails(similarGame.slug) }
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
