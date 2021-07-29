@@ -71,7 +71,7 @@ private val COVER_HEIGHT = 350.dp
 @ExperimentalMaterialApi
 @Composable
 fun GameDetailScreen(
-    viewModel: GameDetailViewModel = get(),
+    viewModel: GameDetailViewModel,
     data: String,
     navigateBack: () -> Unit,
     navigateToScreen: (AppScreens, Any) -> Unit,
