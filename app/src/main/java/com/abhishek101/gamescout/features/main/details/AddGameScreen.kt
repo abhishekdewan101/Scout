@@ -19,6 +19,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Slider
 import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
@@ -30,10 +32,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.GameStatus
@@ -42,6 +47,7 @@ import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
 import com.abhishek101.gamescout.design.new.image.RemoteImage
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.theme.ScoutTheme
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import kotlin.math.roundToInt
 
 data class GameListModel(val title: String, val value: GameStatus)
@@ -56,7 +62,7 @@ fun AddGameScreen(viewModel: GameDetailViewModel, closeBottomSheet: () -> Unit) 
         var gameStatusSelection by remember { mutableStateOf<GameStatus?>(null) }
         var ratingSelection by remember { mutableStateOf(50f) }
         val scrollState = remember { ScrollState(0) }
-
+        var notes by remember { mutableStateOf(TextFieldValue()) }
         BoxWithConstraints {
             Column(
                 modifier = Modifier
@@ -65,21 +71,25 @@ fun AddGameScreen(viewModel: GameDetailViewModel, closeBottomSheet: () -> Unit) 
                     .background(ScoutTheme.colors.secondaryBackground)
                     .verticalScroll(state = scrollState)
             ) {
-                Header(game = game)
-                SelectPlatform(game = game, isPlatformSelected = { platformSelections.contains(it) }) { platform ->
-                    if (platformSelections.contains(platform)) {
-                        platformSelections.remove(platform)
-                    } else {
-                        platformSelections.add(platform)
+                Column(modifier = Modifier.navigationBarsWithImePadding()) {
+                    Header(game = game)
+                    SelectPlatform(game = game, isPlatformSelected = { platformSelections.contains(it) }) { platform ->
+                        if (platformSelections.contains(platform)) {
+                            platformSelections.remove(platform)
+                        } else {
+                            platformSelections.add(platform)
+                        }
                     }
+                    GameStatus(isGameStatusSelected = { gameStatusSelection == it }) { gameStatus ->
+                        gameStatusSelection = gameStatus
+                    }
+                    if (gameStatusSelection != null && (gameStatusSelection == GameStatus.COMPLETED || gameStatusSelection == GameStatus.ABANDONED)) {
+                        RatingAndNotes(currentRating = ratingSelection, updateRating = { ratingSelection = it }, notes = notes) {
+                            notes = it
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
-                GameStatus(isGameStatusSelected = { gameStatusSelection == it }) { gameStatus ->
-                    gameStatusSelection = gameStatus
-                }
-                if (gameStatusSelection != null && (gameStatusSelection == GameStatus.COMPLETED || gameStatusSelection == GameStatus.ABANDONED)) {
-                    RatingAndNotes(currentRating = ratingSelection, updateRating = { ratingSelection = it })
-                }
-                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     } else {
@@ -87,8 +97,9 @@ fun AddGameScreen(viewModel: GameDetailViewModel, closeBottomSheet: () -> Unit) 
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun RatingAndNotes(currentRating: Float, updateRating: (Float) -> Unit) {
+private fun RatingAndNotes(currentRating: Float, updateRating: (Float) -> Unit, notes: TextFieldValue, updateNotes: (TextFieldValue) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -138,6 +149,30 @@ private fun RatingAndNotes(currentRating: Float, updateRating: (Float) -> Unit) 
                     thumbColor = ScoutTheme.colors.textOnSecondaryBackground,
                     activeTrackColor = ScoutTheme.colors.textOnSecondaryBackground
                 )
+            )
+            Text(
+                text = "Notes",
+                color = ScoutTheme.colors.secondaryTextOnSecondaryBackground,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(top = 10.dp)
+            )
+            TextField(
+                value = notes,
+                onValueChange = updateNotes,
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = ScoutTheme.colors.textOnSecondaryBackground,
+                    cursorColor = ScoutTheme.colors.textOnSecondaryBackground,
+                    placeholderColor = ScoutTheme.colors.secondaryTextOnSecondaryBackground,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    backgroundColor = ScoutTheme.colors.secondaryTextOnSecondaryBackground.copy(alpha = 0.5f)
+                ),
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .padding(bottom = 15.dp)
             )
         }
     }
