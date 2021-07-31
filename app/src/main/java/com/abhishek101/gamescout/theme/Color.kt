@@ -4,12 +4,6 @@ package com.abhishek101.gamescout.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PurpleDark = Color(0XFF0d0033)
-val Beige = Color(0xFFede3db)
-val BeigeDark = Color(0xFFbbb1a9)
-val BeigeLight = Color(0xFFffffff)
-val RedDark = Color(0xFF570000)
-
 val Green = Color(0xFF388E3C)
 val Yellow = Color(0xFFF57C00)
 val RedLight = Color(0xFFc04532)

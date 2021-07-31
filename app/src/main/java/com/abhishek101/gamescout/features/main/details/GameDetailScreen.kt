@@ -97,7 +97,7 @@ fun GameDetailScreen(
                             }
                         }
                         FadingToolBar(
-                            game = viewState as GameDetailViewState.NonEmptyViewState,
+                            game = viewState,
                             scrollState = scrollState,
                             navigateBack = navigateBack,
                             showAddGameModal = showGameAddModal,

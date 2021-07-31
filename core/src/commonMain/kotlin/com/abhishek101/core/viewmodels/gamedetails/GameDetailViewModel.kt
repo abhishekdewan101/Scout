@@ -81,47 +81,6 @@ class GameDetailViewModel(
         }
     }
 
-    fun updateAdditionViewState(newState: GameAdditionViewState) {
-        _additionViewState.value = newState
-    }
-
-    fun updateGameInLibrary(gameNotes: String?) {
-        (_viewState.value as? NonEmptyViewState)?.let {
-            val inLibrary = it.inLibrary
-            val slug = it.slug
-
-            if (inLibrary) {
-                libraryRepository.updateGame(
-                    gameStatus = additionViewState.value.gameStatus,
-                    platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
-                    notes = gameNotes ?: additionViewState.value.gameNotes,
-                    rating = additionViewState.value.gameRating.toLong(),
-                    slug = slug
-                )
-            } else {
-                val name = it.name
-                val coverUrl = it.coverUrl
-                val releaseDate = it.releaseDate
-                libraryRepository.insertGameIntoLibrary(
-                    slug = slug,
-                    name = name,
-                    coverUrl = coverUrl,
-                    releaseDate = releaseDate.epoch,
-                    rating = if (additionViewState.value.gameStatus == GameStatus.COMPLETED ||
-                        additionViewState.value.gameStatus == GameStatus.ABANDONED
-                    ) {
-                        additionViewState.value.gameRating.toLong()
-                    } else {
-                        null
-                    },
-                    gameStatus = additionViewState.value.gameStatus,
-                    platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
-                    notes = gameNotes ?: additionViewState.value.gameNotes,
-                )
-            }
-        }
-    }
-
     fun saveGameToLibrary(gameStatus: GameStatus, platforms: List<String>, notes: String, rating: Int) {
         (_viewState.value as? NonEmptyViewState)?.let {
             val inLibrary = it.inLibrary
