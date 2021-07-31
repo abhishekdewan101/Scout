@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.GameStatus
@@ -47,7 +48,7 @@ import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
 import com.abhishek101.gamescout.design.new.image.RemoteImage
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.theme.ScoutTheme
-import com.google.accompanist.insets.navigationBarsWithImePadding
+import com.google.accompanist.insets.imePadding
 import kotlin.math.roundToInt
 
 data class GameListModel(val title: String, val value: GameStatus)
@@ -71,7 +72,7 @@ fun AddGameScreen(viewModel: GameDetailViewModel, closeBottomSheet: () -> Unit) 
                     .background(ScoutTheme.colors.secondaryBackground)
                     .verticalScroll(state = scrollState)
             ) {
-                Column(modifier = Modifier.navigationBarsWithImePadding()) {
+                Column(modifier = Modifier.imePadding()) {
                     Header(game = game)
                     SelectPlatform(game = game, isPlatformSelected = { platformSelections.contains(it) }) { platform ->
                         if (platformSelections.contains(platform)) {
@@ -88,12 +89,46 @@ fun AddGameScreen(viewModel: GameDetailViewModel, closeBottomSheet: () -> Unit) 
                             notes = it
                         }
                     }
+                    if (platformSelections.size > 0 && gameStatusSelection != null) {
+                        DoneButton {
+                            viewModel.saveGameToLibrary(
+                                gameStatus = gameStatusSelection!!,
+                                platforms = platformSelections,
+                                notes = notes.text,
+                                rating = ratingSelection.roundToInt()
+                            )
+                            closeBottomSheet()
+                        }
+                    }
                     Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }
     } else {
         ProgressIndicator(indicatorColor = ScoutTheme.colors.progressIndicatorOnSecondaryBackground)
+    }
+}
+
+@Composable
+private fun DoneButton(addGameToLibrary: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp)
+            .padding(top = 15.dp)
+            .clip(MaterialTheme.shapes.medium)
+            .background(ScoutTheme.colors.secondaryTextOnSecondaryBackground.copy(alpha = 0.3f))
+            .clickable { addGameToLibrary() }
+    ) {
+        Text(
+            text = "Done",
+            style = MaterialTheme.typography.h6,
+            color = ScoutTheme.colors.textOnSecondaryBackground,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp)
+        )
     }
 }
 
