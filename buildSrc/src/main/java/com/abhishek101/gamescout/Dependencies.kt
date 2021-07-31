@@ -60,7 +60,7 @@ object Libs {
 
     object Accompanist {
         private const val version = "0.13.0"
-        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
+        const val insets = "com.google.accompanist:accompanist-insets:$version"
         const val composePager = "com.google.accompanist:accompanist-pager:$version"
         const val flowLayout = "com.google.accompanist:accompanist-flowlayout:$version"
         const val coil = "com.google.accompanist:accompanist-coil:$version"

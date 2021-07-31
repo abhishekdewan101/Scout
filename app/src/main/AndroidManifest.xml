@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:windowSoftInputMode="adjustResize"
         android:name="com.abhishek101.gamescout.GSApplication"
         android:theme="@style/Theme.GameTracker">
         <activity

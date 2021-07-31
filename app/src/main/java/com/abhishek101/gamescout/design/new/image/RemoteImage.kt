@@ -35,6 +35,7 @@ fun RemoteImage(
     Box(modifier = modifier) {
         Image(
             painter = remotePainter,
+            modifier = Modifier.fillMaxSize(),
             contentDescription = contentDescription,
             contentScale = contentScale
         )

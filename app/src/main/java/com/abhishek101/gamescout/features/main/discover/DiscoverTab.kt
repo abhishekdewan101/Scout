@@ -153,20 +153,17 @@ private fun CoverList(
         ) {
             val games = data.games.filter { it.cover != null }.take(POSTER_GRID_SIZE)
             items(games) {
-                Box(
+                RemoteImage(
+                    request = it.cover!!.qualifiedUrl,
+                    contentDescription = it.name,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .width(175.dp)
                         .height(225.dp)
                         .padding(end = 10.dp)
+                        .clip(MaterialTheme.shapes.medium)
                         .clickable { onTap(it.slug) }
-                ) {
-                    RemoteImage(
-                        request = it.cover!!.qualifiedUrl,
-                        contentDescription = it.name,
-                        modifier = Modifier
-                            .clip(MaterialTheme.shapes.medium)
-                    )
-                }
+                )
             }
 
             item {

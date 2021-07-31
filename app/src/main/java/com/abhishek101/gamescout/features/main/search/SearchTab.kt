@@ -21,7 +21,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.rememberScaffoldState
@@ -82,10 +82,12 @@ fun SearchTab(
         },
         content = {
             if (!isTopBarEditing) {
-                RecentSearchList(searchTerms = recentSearchViewState) {
-                    isTopBarEditing = true
-                    inputTextField = TextFieldValue(it)
-                    viewModel.searchForGame(inputTextField.text)
+                if (recentSearchViewState.isNotEmpty()) {
+                    RecentSearchList(searchTerms = recentSearchViewState) {
+                        isTopBarEditing = true
+                        inputTextField = TextFieldValue(it)
+                        viewModel.searchForGame(inputTextField.text)
+                    }
                 }
             } else {
                 when (viewState) {
@@ -226,7 +228,7 @@ private fun EditingSearchBar(
     )
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
-            imageVector = Icons.Outlined.ArrowBack,
+            imageVector = Icons.Outlined.ArrowBackIos,
             contentDescription = "Back",
             tint = ScoutTheme.colors.topBarTextColor,
             modifier = Modifier
