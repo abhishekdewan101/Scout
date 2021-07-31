@@ -29,7 +29,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -40,8 +39,6 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -57,36 +54,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
 import com.abhishek101.gamescout.design.new.image.RemoteImage
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
-import org.koin.androidx.compose.get
 
 private val COVER_HEIGHT = 350.dp
 
 @ExperimentalMaterialApi
 @Composable
 fun GameDetailScreen(
-    viewModel: GameDetailViewModel,
-    data: String,
+    viewState: GameDetailViewState,
+    removeGame: () -> Unit,
     navigateBack: () -> Unit,
     navigateToScreen: (AppScreens, Any) -> Unit,
-    updateModalState: (ModalBottomSheetValue) -> Unit
+    showGameAddModal: () -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    val viewState by viewModel.viewState.collectAsState()
+
     val scrollState by rememberSaveable(stateSaver = ScrollState.Saver) {
         mutableStateOf(ScrollState(0))
     }
-
-    SideEffect {
-        viewModel.constructGameDetails(slug = data)
-    }
-
     Scaffold(
         scaffoldState = scaffoldState,
         content = {
@@ -100,18 +90,18 @@ fun GameDetailScreen(
                             navigateToScreen = navigateToScreen
                         ) { shouldDelete ->
                             if (shouldDelete) {
-                                viewModel.removeGame()
+                                removeGame()
                             } else {
-                                updateModalState(ModalBottomSheetValue.Expanded)
+                                showGameAddModal()
                             }
                         }
                         FadingToolBar(
                             game = viewState as GameDetailViewState.NonEmptyViewState,
                             scrollState = scrollState,
-                            navigateBack = navigateBack
-                        ) {
-                            updateModalState(ModalBottomSheetValue.Expanded)
-                        }
+                            navigateBack = navigateBack,
+                            showAddGameModal = showGameAddModal,
+                            removeGame = removeGame
+                        )
                     }
                 }
             }
@@ -511,7 +501,7 @@ private fun PrimaryDetails(game: GameDetailViewState.NonEmptyViewState, changeGa
 private fun HeaderImage(mediaList: List<String>) {
     if (mediaList.isNotEmpty()) {
         RemoteImage(
-            request = mediaList.random(),
+            request = mediaList.first(),
             contentDescription = "game cover image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -530,7 +520,8 @@ private fun FadingToolBar(
     game: GameDetailViewState.NonEmptyViewState,
     navigateBack: () -> Unit,
     scrollState: ScrollState,
-    showAddGameModal: () -> Unit
+    showAddGameModal: () -> Unit,
+    removeGame: () -> Unit
 ) {
     val alphaOffset = 0f.coerceAtLeast(scrollState.value / COVER_HEIGHT.value).coerceIn(0f..1f)
     TopAppBar(
@@ -563,13 +554,13 @@ private fun FadingToolBar(
                 modifier = Modifier
                     .weight(6f)
             )
-            Actions(inLibrary = game.inLibrary, showAddGameModal = showAddGameModal)
+            Actions(inLibrary = game.inLibrary, showAddGameModal = showAddGameModal, removeGame = removeGame)
         }
     }
 }
 
 @Composable
-private fun RowScope.Actions(inLibrary: Boolean, showAddGameModal: () -> Unit) {
+private fun RowScope.Actions(inLibrary: Boolean, showAddGameModal: () -> Unit, removeGame: () -> Unit) {
     if (inLibrary) {
         Icon(
             imageVector = Icons.Outlined.Edit,
@@ -579,6 +570,7 @@ private fun RowScope.Actions(inLibrary: Boolean, showAddGameModal: () -> Unit) {
                 .padding(end = 5.dp)
                 .weight(1f)
                 .clickable {
+                    showAddGameModal()
                 }
         )
         Icon(
@@ -589,6 +581,7 @@ private fun RowScope.Actions(inLibrary: Boolean, showAddGameModal: () -> Unit) {
                 .padding(end = 5.dp)
                 .weight(1f)
                 .clickable {
+                    removeGame()
                 }
         )
     } else {

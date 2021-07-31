@@ -37,22 +37,7 @@ class GameDetailViewModel(
     val libraryState: StateFlow<LibraryState?> = _libraryViewState
 
     fun constructGameDetails(slug: String) {
-        defaultScope.launch {
-            val remoteDetails = gameRepository.getGameDetailForSlug(slug)
-            libraryRepository.getGameForSlug(slug).collect { libraryGame ->
-                genreRepository.getCachedGenres().collect { genres ->
-                    _viewState.value = buildGameViewState(
-                        remoteDetails = remoteDetails,
-                        libraryDetails = libraryGame,
-                        genres = genres
-                    )
-                    _additionViewState.value = setAdditionViewState(
-                        remoteDetails = remoteDetails,
-                        libraryDetails = libraryGame
-                    )
-                }
-            }
-        }
+        getGameDetails(slug = slug)
     }
 
     fun constructGameDetails(
@@ -68,6 +53,10 @@ class GameDetailViewModel(
             libraryListener(it)
         }.launchIn(defaultScope)
 
+        getGameDetails(slug)
+    }
+
+    private fun getGameDetails(slug: String) {
         defaultScope.launch {
             val remoteDetails = gameRepository.getGameDetailForSlug(slug)
             genreRepository.getCachedGenres().onEach { genres ->
@@ -90,24 +79,6 @@ class GameDetailViewModel(
                 }.collect()
             }.collect()
         }
-    }
-
-    private fun setAdditionViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameAdditionViewState {
-        val platformList = if (libraryDetails != null) {
-            remoteDetails.platform!!.map { it.name to libraryDetails.platform.contains(it.name) }.toMap()
-        } else {
-            remoteDetails.platform!!.map { it.name to false }.toMap()
-        }
-        val currentGameStatus = libraryDetails?.gameStatus ?: additionViewState.value.gameStatus
-        val currentRating = libraryDetails?.rating?.toInt() ?: additionViewState.value.gameRating
-        val currentNotes = libraryDetails?.notes ?: additionViewState.value.gameNotes
-
-        return GameAdditionViewState(
-            platformList = platformList,
-            gameStatus = currentGameStatus,
-            gameRating = currentRating,
-            gameNotes = currentNotes
-        )
     }
 
     fun updateAdditionViewState(newState: GameAdditionViewState) {

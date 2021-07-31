@@ -25,7 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -43,8 +43,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.GameStatus
-import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
+import com.abhishek101.core.viewmodels.gamedetails.LibraryState
 import com.abhishek101.gamescout.design.new.image.RemoteImage
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.theme.ScoutTheme
@@ -54,16 +54,28 @@ import kotlin.math.roundToInt
 data class GameListModel(val title: String, val value: GameStatus)
 
 @Composable
-fun AddGameScreen(viewModel: GameDetailViewModel, closeBottomSheet: () -> Unit) {
-    val viewState by viewModel.viewState.collectAsState()
-
+fun AddGameScreen(viewState: GameDetailViewState, libraryState: LibraryState?, saveGame: (GameStatus, List<String>, String, Int) -> Unit) {
     if (viewState is GameDetailViewState.NonEmptyViewState) {
-        val game = viewState as GameDetailViewState.NonEmptyViewState
         val platformSelections = remember { mutableStateListOf<String>() }
         var gameStatusSelection by remember { mutableStateOf<GameStatus?>(null) }
         var ratingSelection by remember { mutableStateOf(50f) }
         val scrollState = remember { ScrollState(0) }
         var notes by remember { mutableStateOf(TextFieldValue()) }
+
+        SideEffect {
+            if (libraryState != null) {
+                gameStatusSelection = libraryState.gameStatus
+                ratingSelection = libraryState.gameRating?.toFloat() ?: 50f
+                notes = TextFieldValue(libraryState.gameNotes ?: "")
+                platformSelections.addAll(libraryState.platformList)
+            } else {
+                gameStatusSelection = null
+                ratingSelection = 50f
+                notes = TextFieldValue()
+                platformSelections.clear()
+            }
+        }
+
         BoxWithConstraints {
             Column(
                 modifier = Modifier
@@ -73,8 +85,8 @@ fun AddGameScreen(viewModel: GameDetailViewModel, closeBottomSheet: () -> Unit) 
                     .verticalScroll(state = scrollState)
             ) {
                 Column(modifier = Modifier.imePadding()) {
-                    Header(game = game)
-                    SelectPlatform(game = game, isPlatformSelected = { platformSelections.contains(it) }) { platform ->
+                    Header(game = viewState)
+                    SelectPlatform(game = viewState, isPlatformSelected = { platformSelections.contains(it) }) { platform ->
                         if (platformSelections.contains(platform)) {
                             platformSelections.remove(platform)
                         } else {
@@ -91,13 +103,12 @@ fun AddGameScreen(viewModel: GameDetailViewModel, closeBottomSheet: () -> Unit) 
                     }
                     if (platformSelections.size > 0 && gameStatusSelection != null) {
                         DoneButton {
-                            viewModel.saveGameToLibrary(
-                                gameStatus = gameStatusSelection!!,
-                                platforms = platformSelections,
-                                notes = notes.text,
-                                rating = ratingSelection.roundToInt()
+                            saveGame(
+                                gameStatusSelection!!,
+                                platformSelections,
+                                notes.text,
+                                ratingSelection.roundToInt()
                             )
-                            closeBottomSheet()
                         }
                     }
                     Spacer(modifier = Modifier.height(20.dp))
