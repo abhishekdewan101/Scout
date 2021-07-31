@@ -62,6 +62,7 @@ import com.abhishek101.gamescout.theme.ScoutTheme
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
 
 private val COVER_HEIGHT = 350.dp
+private const val MAX_LINE_COUNT = 100
 
 @ExperimentalMaterialApi
 @Composable
@@ -303,7 +304,7 @@ private fun Description(game: GameDetailViewState.NonEmptyViewState) {
             text = it,
             style = MaterialTheme.typography.body1,
             color = ScoutTheme.colors.textOnSecondaryBackground,
-            maxLines = if (isExpanded) 100 else 2,
+            maxLines = if (isExpanded) MAX_LINE_COUNT else 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .padding(horizontal = 10.dp)
@@ -514,7 +515,7 @@ private fun HeaderImage(mediaList: List<String>) {
 // endregion Content
 
 // region TopBar
-
+@Suppress("MagicNumber")
 @Composable
 private fun FadingToolBar(
     game: GameDetailViewState.NonEmptyViewState,

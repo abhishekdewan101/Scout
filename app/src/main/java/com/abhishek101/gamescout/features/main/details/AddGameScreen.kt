@@ -51,8 +51,7 @@ import com.abhishek101.gamescout.theme.ScoutTheme
 import com.google.accompanist.insets.imePadding
 import kotlin.math.roundToInt
 
-data class GameListModel(val title: String, val value: GameStatus)
-
+@Suppress("MagicNumber")
 @Composable
 fun AddGameScreen(viewState: GameDetailViewState, libraryState: LibraryState?, saveGame: (GameStatus, List<String>, String, Int) -> Unit) {
     if (viewState is GameDetailViewState.NonEmptyViewState) {
@@ -143,6 +142,7 @@ private fun DoneButton(addGameToLibrary: () -> Unit) {
     }
 }
 
+@Suppress("MagicNumber")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun RatingAndNotes(currentRating: Float, updateRating: (Float) -> Unit, notes: TextFieldValue, updateNotes: (TextFieldValue) -> Unit) {
@@ -264,7 +264,11 @@ private fun GameStatus(isGameStatusSelected: (GameStatus) -> Boolean, toggleGame
                             .padding(bottom = if (index == gameStatusList.size - 1) 10.dp else 0.dp)
                     ) {
                         Icon(
-                            imageVector = if (isGameStatusSelected(gameListModel.value)) Icons.Outlined.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
+                            imageVector = if (isGameStatusSelected(gameListModel.value)) {
+                                Icons.Outlined.CheckCircle
+                            } else {
+                                Icons.Outlined.RadioButtonUnchecked
+                            },
                             contentDescription = "More",
                             tint = ScoutTheme.colors.textOnSecondaryBackground,
                             modifier = Modifier.padding(end = 10.dp)
