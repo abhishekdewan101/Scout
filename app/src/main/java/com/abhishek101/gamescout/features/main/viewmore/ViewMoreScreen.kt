@@ -21,6 +21,7 @@ import com.abhishek101.core.viewmodels.gamelist.GameListData
 import com.abhishek101.core.viewmodels.gamelist.GameListViewModel
 import com.abhishek101.core.viewmodels.gamelist.GameListViewState
 import com.abhishek101.core.viewmodels.gamelist.GameListViewState.Loading
+import com.abhishek101.gamescout.design.new.image.toGridItem
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
@@ -67,12 +68,13 @@ fun ViewMoreScreen(
 
 @Composable
 private fun ViewMoreGrid(data: GameListData, onTap: (String) -> Unit) {
-    val games = data.games.filter { it.cover != null }
+    val games = data.games.filter { it.cover != null }.map { it.toGridItem() }
     LazyRemoteImageGrid(
         data = games,
         columns = 3,
         preferredWidth = 130.dp,
         preferredHeight = 180.dp,
+        bottomPadding = 10.dp,
         onTap = onTap
     )
 }

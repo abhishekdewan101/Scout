@@ -2,6 +2,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,16 +15,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.abhishek101.core.models.IgdbGame
+import com.abhishek101.gamescout.design.new.image.GridItem
 import com.abhishek101.gamescout.design.new.image.RemoteImage
 
 @Composable
 fun LazyRemoteImageGrid(
-    data: List<IgdbGame>,
+    data: List<GridItem>,
     columns: Int,
     preferredWidth: Dp,
     preferredHeight: Dp,
     modifier: Modifier = Modifier,
+    addBottomPadding: Boolean = true,
+    bottomPadding: Dp = 72.dp,
     onTap: (String) -> Unit
 ) {
     val rows = data.chunked(columns)
@@ -45,7 +48,7 @@ fun LazyRemoteImageGrid(
                                 .clickable { onTap(game.slug) }
                         ) {
                             RemoteImage(
-                                request = game.cover!!.qualifiedUrl,
+                                request = game.coverUrl,
                                 contentDescription = game.name,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -54,6 +57,11 @@ fun LazyRemoteImageGrid(
                         }
                     }
                 }
+            }
+        }
+        if (addBottomPadding) {
+            item {
+                Spacer(modifier = Modifier.height(bottomPadding))
             }
         }
     }

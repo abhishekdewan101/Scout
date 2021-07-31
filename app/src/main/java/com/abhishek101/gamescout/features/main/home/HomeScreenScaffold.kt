@@ -66,7 +66,7 @@ private fun HomePagerContent(navController: NavHostController, navigateToScreen:
             SearchTab(navigateToScreen = navigateToScreen)
         }
         composable(route = Collection.route) {
-            CollectionTab()
+            CollectionTab(navigateToScreen = navigateToScreen)
         }
     }
 }

@@ -47,6 +47,7 @@ import com.abhishek101.core.viewmodels.gamelist.GameListViewState
 import com.abhishek101.core.viewmodels.gamelist.GameListViewState.Loading
 import com.abhishek101.gamescout.design.new.image.RemoteImage
 import com.abhishek101.gamescout.design.new.image.RemoteImageGrid
+import com.abhishek101.gamescout.design.new.image.toGridItem
 import com.abhishek101.gamescout.design.new.system.ProgressIndicator
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
@@ -240,7 +241,7 @@ private fun CoverGrid(
     onMoreClicked: (String) -> Unit,
     onTap: (String) -> Unit
 ) {
-    val games = data.games.filter { it.cover != null }.take(POSTER_GRID_SIZE)
+    val games = data.games.filter { it.cover != null }.take(POSTER_GRID_SIZE).map { it.toGridItem() }
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier.padding(top = 10.dp)
