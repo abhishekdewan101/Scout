@@ -42,8 +42,8 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.viewmodels.search.SearchViewModel
 import com.abhishek101.core.viewmodels.search.SearchViewState
-import com.abhishek101.gamescout.design.new.image.toGridItem
-import com.abhishek101.gamescout.design.new.system.ProgressIndicator
+import com.abhishek101.gamescout.design.image.toGridItem
+import com.abhishek101.gamescout.design.system.ProgressIndicator
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get

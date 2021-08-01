@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.design.new.system
+package com.abhishek101.gamescout.design.system
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect

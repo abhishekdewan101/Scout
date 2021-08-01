@@ -15,8 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.abhishek101.gamescout.design.new.image.GridItem
-import com.abhishek101.gamescout.design.new.image.RemoteImage
+import com.abhishek101.gamescout.design.image.GridItem
+import com.abhishek101.gamescout.design.image.RemoteImage
 
 @Composable
 fun LazyRemoteImageGrid(

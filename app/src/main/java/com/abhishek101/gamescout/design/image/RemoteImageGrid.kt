@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.design.new.image
+package com.abhishek101.gamescout.design.image
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween

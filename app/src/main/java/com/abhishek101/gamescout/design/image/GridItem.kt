@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.design.new.image
+package com.abhishek101.gamescout.design.image
 
 import com.abhishek101.core.db.LibraryGame
 import com.abhishek101.core.models.IgdbGame

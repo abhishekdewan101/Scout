@@ -29,9 +29,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
-import com.abhishek101.gamescout.design.new.image.RemoteImage
-import com.abhishek101.gamescout.design.new.system.ProgressIndicator
-import com.abhishek101.gamescout.design.new.system.SystemUiControlView
+import com.abhishek101.gamescout.design.image.RemoteImage
+import com.abhishek101.gamescout.design.system.ProgressIndicator
+import com.abhishek101.gamescout.design.system.SystemUiControlView
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 

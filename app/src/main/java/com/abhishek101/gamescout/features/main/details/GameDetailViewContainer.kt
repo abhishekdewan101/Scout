@@ -11,7 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewModel
-import com.abhishek101.gamescout.design.new.system.SystemUiControlView
+import com.abhishek101.gamescout.design.system.SystemUiControlView
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import kotlinx.coroutines.launch

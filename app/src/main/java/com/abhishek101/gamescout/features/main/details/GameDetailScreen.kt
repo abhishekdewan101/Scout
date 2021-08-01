@@ -56,8 +56,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
-import com.abhishek101.gamescout.design.new.image.RemoteImage
-import com.abhishek101.gamescout.design.new.system.ProgressIndicator
+import com.abhishek101.gamescout.design.image.RemoteImage
+import com.abhishek101.gamescout.design.system.ProgressIndicator
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
