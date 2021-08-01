@@ -1,5 +1,6 @@
 package com.abhishek101.gamescout.features.main.details
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -55,8 +56,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
-import com.abhishek101.gamescout.design.new.image.RemoteImage
-import com.abhishek101.gamescout.design.new.system.ProgressIndicator
+import com.abhishek101.gamescout.design.image.RemoteImage
+import com.abhishek101.gamescout.design.system.ProgressIndicator
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import com.abhishek101.gamescout.utils.buildYoutubeIntent
@@ -78,6 +79,14 @@ fun GameDetailScreen(
     val scrollState by rememberSaveable(stateSaver = ScrollState.Saver) {
         mutableStateOf(ScrollState(0))
     }
+
+    /**
+     * TODO: Figure out why we need to hit back twice without this in place when accessed from ContentTab
+     */
+    BackHandler {
+        navigateBack()
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         content = {

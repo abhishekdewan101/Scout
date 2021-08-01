@@ -45,8 +45,8 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.GameStatus
 import com.abhishek101.core.viewmodels.gamedetails.GameDetailViewState
 import com.abhishek101.core.viewmodels.gamedetails.LibraryState
-import com.abhishek101.gamescout.design.new.image.RemoteImage
-import com.abhishek101.gamescout.design.new.system.ProgressIndicator
+import com.abhishek101.gamescout.design.image.RemoteImage
+import com.abhishek101.gamescout.design.system.ProgressIndicator
 import com.abhishek101.gamescout.theme.ScoutTheme
 import com.google.accompanist.insets.imePadding
 import kotlin.math.roundToInt

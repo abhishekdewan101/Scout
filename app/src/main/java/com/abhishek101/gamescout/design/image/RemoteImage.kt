@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.design.new.image
+package com.abhishek101.gamescout.design.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.abhishek101.gamescout.R
-import com.abhishek101.gamescout.design.new.system.ProgressIndicator
+import com.abhishek101.gamescout.design.system.ProgressIndicator
 import com.abhishek101.gamescout.theme.ScoutTheme
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState

@@ -15,7 +15,13 @@ class LibraryViewModel(
 
     private val _libraryGames = MutableStateFlow(listOf<LibraryGame>())
 
-    private val libraryGames: StateFlow<List<LibraryGame>> = _libraryGames
+    val libraryGames: StateFlow<List<LibraryGame>> = _libraryGames
+
+    fun getLibraryGames() {
+        libraryRepository.getAllGames().onEach {
+            _libraryGames.value = it
+        }.launchIn(defaultScope)
+    }
 
     fun getLibraryGames(listener: (List<LibraryGame>) -> Unit) {
         libraryGames.onEach {

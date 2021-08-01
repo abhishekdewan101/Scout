@@ -29,9 +29,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewModel
 import com.abhishek101.core.viewmodels.preferenceselection.PreferenceSelectionViewState
-import com.abhishek101.gamescout.design.new.image.SelectableRemoteImage
-import com.abhishek101.gamescout.design.new.system.ProgressIndicator
-import com.abhishek101.gamescout.design.new.system.SystemUiControlView
+import com.abhishek101.gamescout.design.image.SelectableRemoteImage
+import com.abhishek101.gamescout.design.system.ProgressIndicator
+import com.abhishek101.gamescout.design.system.SystemUiControlView
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 

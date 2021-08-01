@@ -15,7 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.abhishek101.gamescout.design.new.system.SystemUiControlView
+import com.abhishek101.gamescout.design.system.SystemUiControlView
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.features.main.collection.CollectionTab
 import com.abhishek101.gamescout.features.main.discover.DiscoverTab
@@ -66,7 +66,7 @@ private fun HomePagerContent(navController: NavHostController, navigateToScreen:
             SearchTab(navigateToScreen = navigateToScreen)
         }
         composable(route = Collection.route) {
-            CollectionTab()
+            CollectionTab(navigateToScreen = navigateToScreen)
         }
     }
 }

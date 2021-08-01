@@ -1,4 +1,4 @@
-package com.abhishek101.gamescout.design.new.image
+package com.abhishek101.gamescout.design.image
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
@@ -15,11 +15,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.abhishek101.core.models.IgdbGame
 
 @Composable
 fun RemoteImageGrid(
-    data: List<IgdbGame>,
+    data: List<GridItem>,
     columns: Int,
     preferredWidth: Dp,
     preferredHeight: Dp,
@@ -37,7 +36,7 @@ fun RemoteImageGrid(
             ) {
                 row.forEachIndexed { index, game ->
                     RemoteImage(
-                        request = game.cover!!.qualifiedUrl,
+                        request = game.coverUrl,
                         contentDescription = game.name,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

@@ -42,7 +42,8 @@ import androidx.compose.ui.unit.dp
 import com.abhishek101.core.models.IgdbGame
 import com.abhishek101.core.viewmodels.search.SearchViewModel
 import com.abhishek101.core.viewmodels.search.SearchViewState
-import com.abhishek101.gamescout.design.new.system.ProgressIndicator
+import com.abhishek101.gamescout.design.image.toGridItem
+import com.abhishek101.gamescout.design.system.ProgressIndicator
 import com.abhishek101.gamescout.features.main.AppScreens
 import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
@@ -107,16 +108,13 @@ fun SearchTab(
 
 @Composable
 private fun SearchResults(results: List<IgdbGame>, onTap: (String) -> Unit) {
-    val games = results.filter { it.cover != null }
-
+    val games = results.filter { it.cover != null }.map { it.toGridItem() }
     LazyRemoteImageGrid(
         data = games,
         columns = 3,
         preferredWidth = 130.dp,
         preferredHeight = 180.dp,
-        onTap = onTap,
-        modifier = Modifier
-            .padding(top = 10.dp)
+        onTap = onTap
     )
 }
 
