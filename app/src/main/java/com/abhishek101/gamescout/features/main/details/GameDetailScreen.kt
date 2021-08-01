@@ -1,5 +1,6 @@
 package com.abhishek101.gamescout.features.main.details
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -78,6 +79,14 @@ fun GameDetailScreen(
     val scrollState by rememberSaveable(stateSaver = ScrollState.Saver) {
         mutableStateOf(ScrollState(0))
     }
+
+    /**
+     * TODO: Figure out why we need to hit back twice without this in place when accessed from ContentTab
+     */
+    BackHandler {
+        navigateBack()
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         content = {

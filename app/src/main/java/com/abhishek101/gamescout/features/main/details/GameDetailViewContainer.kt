@@ -56,7 +56,15 @@ fun GameDetailViewContainer(
             GameDetailScreen(
                 viewState = viewState,
                 removeGame = viewModel::removeGame,
-                navigateBack = navigateBack,
+                navigateBack = {
+                    if (modalBottomSheetState.isVisible) {
+                        scope.launch {
+                            modalBottomSheetState.hide()
+                        }
+                    } else {
+                        navigateBack()
+                    }
+                },
                 navigateToScreen = navigateToScreen,
             ) {
                 scope.launch {
