@@ -1,25 +1,30 @@
 package com.abhishek101.gamescout.features.main.collection
 
 import LazyRemoteImageGrid
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Filter
+import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,7 +43,7 @@ import org.koin.androidx.compose.get
 @Composable
 fun CollectionTab(libraryViewModel: LibraryViewModel = get(), navigateToScreen: (AppScreens, String) -> Unit) {
     val viewState by libraryViewModel.libraryGames.collectAsState()
-    var filter by rememberSaveable { mutableStateOf<CollectionFilter>(CollectionFilter.All) }
+    var filter by rememberSaveable(saver = CollectionFilterSaver) { mutableStateOf(CollectionFilter.All) }
 
     SideEffect {
         libraryViewModel.getLibraryGames()
@@ -56,7 +61,7 @@ fun CollectionTab(libraryViewModel: LibraryViewModel = get(), navigateToScreen: 
             if (viewState.isEmpty()) {
                 EmptyLibrary()
             } else {
-                Library(games = viewState) {
+                Library(games = viewState, filter = filter) {
                     navigateToScreen(AppScreens.DETAIL, it)
                 }
             }
@@ -83,8 +88,13 @@ fun EmptyLibrary() {
 }
 
 @Composable
-private fun Library(games: List<LibraryGame>, onTap: (String) -> Unit) {
-    val data = games.map { it.toGridItem() }
+private fun Library(games: List<LibraryGame>, filter: CollectionFilter, onTap: (String) -> Unit) {
+    val filterGames = if (filter != CollectionFilter.All) {
+        games.filter { it.gameStatus == filter.filter }
+    } else {
+        games
+    }
+    val data = filterGames.map { it.toGridItem() }
     LazyRemoteImageGrid(
         data = data,
         columns = 3,
@@ -96,6 +106,7 @@ private fun Library(games: List<LibraryGame>, onTap: (String) -> Unit) {
 
 @Composable
 private fun CollectionTopBar(currentFilter: CollectionFilter, updateFilter: (CollectionFilter) -> Unit) {
+    var expandedFilter by remember { mutableStateOf(false) }
     TopAppBar(
         backgroundColor = ScoutTheme.colors.topBarBackground,
         title = {
@@ -106,15 +117,42 @@ private fun CollectionTopBar(currentFilter: CollectionFilter, updateFilter: (Col
             )
         },
         actions = {
-            Icon(
-                imageVector = Icons.Outlined.Filter,
-                contentDescription = "filter",
-                tint = ScoutTheme.colors.topBarTextColor,
+            DropdownMenu(
+                expanded = expandedFilter,
+                onDismissRequest = { expandedFilter = false },
                 modifier = Modifier
-                    .padding(end = 5.dp)
-                    .clickable {
+                    .background(ScoutTheme.colors.secondaryBackground)
+            ) {
+                AllFilters.forEach {
+                    DropdownMenuItem(
+                        onClick = {
+                            expandedFilter = false
+                            updateFilter(it)
+                        }
+                    ) {
+                        Text(text = it.title, color = ScoutTheme.colors.textOnSecondaryBackground)
                     }
-            )
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .clickable { expandedFilter = true }
+                    .padding(end = 10.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.FilterList,
+                    contentDescription = "Filter",
+                    tint = ScoutTheme.colors.topBarTextColor,
+                    modifier = Modifier
+                        .padding(end = 5.dp)
+                )
+                Text(
+                    currentFilter.title,
+                    color = ScoutTheme.colors.topBarTextColor,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier
+                )
+            }
         }
     )
 }
