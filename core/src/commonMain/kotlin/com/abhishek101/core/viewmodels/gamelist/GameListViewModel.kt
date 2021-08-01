@@ -31,7 +31,11 @@ class GameListViewModel(
 ) {
     private val _viewState: MutableStateFlow<GameListViewState> = MutableStateFlow(GameListViewState.Loading)
 
+    private val _viewMoreViewState: MutableStateFlow<GameListViewState> = MutableStateFlow(GameListViewState.Loading)
+
     val viewState: StateFlow<GameListViewState> = _viewState
+
+    val viewMoreViewState: StateFlow<GameListViewState> = _viewMoreViewState
 
     fun getGameLists() {
         _viewState.value = GameListViewState.Loading
@@ -63,6 +67,19 @@ class GameListViewModel(
             }.collect()
         }
         getGameLists()
+    }
+
+    fun getGameListForType(listType: String) {
+        defaultScope.launch {
+            val type = ListType.valueOf(listType)
+            gameRepository.getListDataForType(type = type).collect {
+                _viewMoreViewState.value = GameListViewState.ViewMoreViewState(data = it)
+            }
+        }
+    }
+
+    fun resetViewMoreState() {
+        _viewMoreViewState.value = GameListViewState.Loading
     }
 
     private fun GameListData.filter(condition: (IgdbGame) -> Boolean): GameListData {

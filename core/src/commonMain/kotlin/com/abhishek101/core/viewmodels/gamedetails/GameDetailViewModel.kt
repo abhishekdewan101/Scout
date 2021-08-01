@@ -37,22 +37,7 @@ class GameDetailViewModel(
     val libraryState: StateFlow<LibraryState?> = _libraryViewState
 
     fun constructGameDetails(slug: String) {
-        defaultScope.launch {
-            val remoteDetails = gameRepository.getGameDetailForSlug(slug)
-            libraryRepository.getGameForSlug(slug).collect { libraryGame ->
-                genreRepository.getCachedGenres().collect { genres ->
-                    _viewState.value = buildGameViewState(
-                        remoteDetails = remoteDetails,
-                        libraryDetails = libraryGame,
-                        genres = genres
-                    )
-                    _additionViewState.value = setAdditionViewState(
-                        remoteDetails = remoteDetails,
-                        libraryDetails = libraryGame
-                    )
-                }
-            }
-        }
+        getGameDetails(slug = slug)
     }
 
     fun constructGameDetails(
@@ -68,6 +53,10 @@ class GameDetailViewModel(
             libraryListener(it)
         }.launchIn(defaultScope)
 
+        getGameDetails(slug)
+    }
+
+    private fun getGameDetails(slug: String) {
         defaultScope.launch {
             val remoteDetails = gameRepository.getGameDetailForSlug(slug)
             genreRepository.getCachedGenres().onEach { genres ->
@@ -89,65 +78,6 @@ class GameDetailViewModel(
                     }
                 }.collect()
             }.collect()
-        }
-    }
-
-    private fun setAdditionViewState(remoteDetails: IgdbGameDetail, libraryDetails: LibraryGame?): GameAdditionViewState {
-        val platformList = if (libraryDetails != null) {
-            remoteDetails.platform!!.map { it.name to libraryDetails.platform.contains(it.name) }.toMap()
-        } else {
-            remoteDetails.platform!!.map { it.name to false }.toMap()
-        }
-        val currentGameStatus = libraryDetails?.gameStatus ?: additionViewState.value.gameStatus
-        val currentRating = libraryDetails?.rating?.toInt() ?: additionViewState.value.gameRating
-        val currentNotes = libraryDetails?.notes ?: additionViewState.value.gameNotes
-
-        return GameAdditionViewState(
-            platformList = platformList,
-            gameStatus = currentGameStatus,
-            gameRating = currentRating,
-            gameNotes = currentNotes
-        )
-    }
-
-    fun updateAdditionViewState(newState: GameAdditionViewState) {
-        _additionViewState.value = newState
-    }
-
-    fun updateGameInLibrary(gameNotes: String?) {
-        (_viewState.value as? NonEmptyViewState)?.let {
-            val inLibrary = it.inLibrary
-            val slug = it.slug
-
-            if (inLibrary) {
-                libraryRepository.updateGame(
-                    gameStatus = additionViewState.value.gameStatus,
-                    platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
-                    notes = gameNotes ?: additionViewState.value.gameNotes,
-                    rating = additionViewState.value.gameRating.toLong(),
-                    slug = slug
-                )
-            } else {
-                val name = it.name
-                val coverUrl = it.coverUrl
-                val releaseDate = it.releaseDate
-                libraryRepository.insertGameIntoLibrary(
-                    slug = slug,
-                    name = name,
-                    coverUrl = coverUrl,
-                    releaseDate = releaseDate.epoch,
-                    rating = if (additionViewState.value.gameStatus == GameStatus.COMPLETED ||
-                        additionViewState.value.gameStatus == GameStatus.ABANDONED
-                    ) {
-                        additionViewState.value.gameRating.toLong()
-                    } else {
-                        null
-                    },
-                    gameStatus = additionViewState.value.gameStatus,
-                    platform = additionViewState.value.platformList.filter { it.value }.map { it.key }.toList(),
-                    notes = gameNotes ?: additionViewState.value.gameNotes,
-                )
-            }
         }
     }
 

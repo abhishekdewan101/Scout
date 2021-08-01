@@ -178,6 +178,7 @@ dependencies {
 
     // Pager
     implementation(Libs.Accompanist.composePager)
+    implementation(Libs.Accompanist.insets)
 
     // testing
     testImplementation(Libs.mockk)

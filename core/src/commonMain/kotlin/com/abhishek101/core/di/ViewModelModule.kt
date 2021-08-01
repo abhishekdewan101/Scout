@@ -31,14 +31,14 @@ val viewModelModule = module {
             get(qualifier = named("DefaultScope"))
         )
     }
-    factory {
+    single {
         GameListViewModel(
             get(),
             get(qualifier = named("DefaultScope"))
         )
     }
 
-    factory {
+    single {
         SearchViewModel(
             get(),
             get(),
