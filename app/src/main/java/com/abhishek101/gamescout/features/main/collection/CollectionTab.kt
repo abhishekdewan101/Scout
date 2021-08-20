@@ -41,7 +41,10 @@ import com.abhishek101.gamescout.theme.ScoutTheme
 import org.koin.androidx.compose.get
 
 @Composable
-fun CollectionTab(libraryViewModel: LibraryViewModel = get(), navigateToScreen: (AppScreens, String) -> Unit) {
+fun CollectionTab(
+    libraryViewModel: LibraryViewModel = get(),
+    navigateToScreen: (AppScreens, String) -> Unit
+) {
     val viewState by libraryViewModel.libraryGames.collectAsState()
     var filter by rememberSaveable(saver = CollectionFilterSaver) { mutableStateOf(CollectionFilter.All) }
 
@@ -77,7 +80,11 @@ fun EmptyLibrary() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        RemoteImage(request = R.drawable.corgi, contentDescription = "Empty Corgi", modifier = Modifier.size(64.dp))
+        RemoteImage(
+            data = R.drawable.corgi,
+            contentDescription = "Empty Corgi",
+            modifier = Modifier.size(64.dp)
+        )
         Text(
             text = "Oops! No games found",
             style = MaterialTheme.typography.body1,
@@ -105,7 +112,10 @@ private fun Library(games: List<LibraryGame>, filter: CollectionFilter, onTap: (
 }
 
 @Composable
-private fun CollectionTopBar(currentFilter: CollectionFilter, updateFilter: (CollectionFilter) -> Unit) {
+private fun CollectionTopBar(
+    currentFilter: CollectionFilter,
+    updateFilter: (CollectionFilter) -> Unit
+) {
     var expandedFilter by remember { mutableStateOf(false) }
     TopAppBar(
         backgroundColor = ScoutTheme.colors.topBarBackground,

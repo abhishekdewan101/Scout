@@ -165,7 +165,10 @@ private fun GameDetails(
 }
 
 @Composable
-private fun SimilarGames(game: GameDetailViewState.NonEmptyViewState, navigateToSimilarGameDetails: (String) -> Unit) {
+private fun SimilarGames(
+    game: GameDetailViewState.NonEmptyViewState,
+    navigateToSimilarGameDetails: (String) -> Unit
+) {
     val similarGames = game.similarGames
     if (similarGames.isNotEmpty()) {
         BoxWithConstraints {
@@ -180,7 +183,7 @@ private fun SimilarGames(game: GameDetailViewState.NonEmptyViewState, navigateTo
                     items(similarGames.size) {
                         val similarGame = similarGames[it]
                         RemoteImage(
-                            request = similarGame.url,
+                            data = similarGame.url,
                             contentDescription = similarGame.name,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -200,7 +203,10 @@ private fun SimilarGames(game: GameDetailViewState.NonEmptyViewState, navigateTo
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun DownloadableContent(game: GameDetailViewState.NonEmptyViewState, navigateToDlcDetails: (String) -> Unit) {
+private fun DownloadableContent(
+    game: GameDetailViewState.NonEmptyViewState,
+    navigateToDlcDetails: (String) -> Unit
+) {
     val scrollState = rememberSaveable(saver = ScrollState.Saver) {
         ScrollState(0)
     }
@@ -238,7 +244,7 @@ private fun DownloadableContent(game: GameDetailViewState.NonEmptyViewState, nav
                                         }
                                 ) {
                                     RemoteImage(
-                                        request = dlc.url,
+                                        data = dlc.url,
                                         contentDescription = game.name,
                                         contentScale = ContentScale.Crop,
                                         modifier = Modifier
@@ -283,7 +289,7 @@ private fun Videos(game: GameDetailViewState.NonEmptyViewState) {
                             }
                     ) {
                         RemoteImage(
-                            request = video.screenshotUrl,
+                            data = video.screenshotUrl,
                             contentDescription = "game screenshot",
                             contentScale = ContentScale.Crop
                         )
@@ -323,13 +329,16 @@ private fun Description(game: GameDetailViewState.NonEmptyViewState) {
 }
 
 @Composable
-private fun ImageGallery(game: GameDetailViewState.NonEmptyViewState, showImageViewer: (String) -> Unit) {
+private fun ImageGallery(
+    game: GameDetailViewState.NonEmptyViewState,
+    showImageViewer: (String) -> Unit
+) {
     val images = game.mediaList
     BoxWithConstraints {
         LazyRow {
             items(images.size) {
                 RemoteImage(
-                    request = images[it],
+                    data = images[it],
                     contentDescription = "game screenshot",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -454,7 +463,10 @@ private fun ColumnDivider() {
 }
 
 @Composable
-private fun PrimaryDetails(game: GameDetailViewState.NonEmptyViewState, changeGameState: (Boolean) -> Unit) {
+private fun PrimaryDetails(
+    game: GameDetailViewState.NonEmptyViewState,
+    changeGameState: (Boolean) -> Unit
+) {
     Row(
         verticalAlignment = Alignment.Top,
         modifier = Modifier
@@ -462,7 +474,7 @@ private fun PrimaryDetails(game: GameDetailViewState.NonEmptyViewState, changeGa
             .padding(horizontal = 10.dp)
     ) {
         RemoteImage(
-            request = game.coverUrl,
+            data = game.coverUrl,
             contentDescription = game.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -511,7 +523,7 @@ private fun PrimaryDetails(game: GameDetailViewState.NonEmptyViewState, changeGa
 private fun HeaderImage(mediaList: List<String>) {
     if (mediaList.isNotEmpty()) {
         RemoteImage(
-            request = mediaList.first(),
+            data = mediaList.first(),
             contentDescription = "game cover image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -564,13 +576,21 @@ private fun FadingToolBar(
                 modifier = Modifier
                     .weight(6f)
             )
-            Actions(inLibrary = game.inLibrary, showAddGameModal = showAddGameModal, removeGame = removeGame)
+            Actions(
+                inLibrary = game.inLibrary,
+                showAddGameModal = showAddGameModal,
+                removeGame = removeGame
+            )
         }
     }
 }
 
 @Composable
-private fun RowScope.Actions(inLibrary: Boolean, showAddGameModal: () -> Unit, removeGame: () -> Unit) {
+private fun RowScope.Actions(
+    inLibrary: Boolean,
+    showAddGameModal: () -> Unit,
+    removeGame: () -> Unit
+) {
     if (inLibrary) {
         Icon(
             imageVector = Icons.Outlined.Edit,

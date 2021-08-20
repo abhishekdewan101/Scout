@@ -36,7 +36,7 @@ fun RemoteImageGrid(
             ) {
                 row.forEachIndexed { index, game ->
                     RemoteImage(
-                        request = game.coverUrl,
+                        data = game.coverUrl,
                         contentDescription = game.name,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

@@ -99,7 +99,7 @@ private fun ImageViewer(images: List<String>) {
         LazyRow(modifier = Modifier.fillMaxSize()) {
             items(images) {
                 RemoteImage(
-                    request = it,
+                    data = it,
                     contentDescription = "game screenshot",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier

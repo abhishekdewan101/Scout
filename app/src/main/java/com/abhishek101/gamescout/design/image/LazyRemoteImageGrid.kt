@@ -48,7 +48,7 @@ fun LazyRemoteImageGrid(
                                 .clickable { onTap(game.slug) }
                         ) {
                             RemoteImage(
-                                request = game.coverUrl,
+                                data = game.coverUrl,
                                 contentDescription = game.name,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier

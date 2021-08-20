@@ -15,7 +15,7 @@ fun generatedVersionName() =
     "${AppVersions.versionMajor}.${AppVersions.versionMinor}.${AppVersions.versionPatch}"
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta05"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.1"
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
@@ -26,6 +26,8 @@ object Libs {
     const val googleTruth = "com.google.truth:truth:1.0.1"
 
     const val buildKonfig = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.7.0"
+
+    const val coil = "io.coil-kt:coil-compose:1.3.2"
 
     object SqlDelight {
         private const val version = "1.5.0"
@@ -59,24 +61,25 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.13.0"
+        private const val version = "0.16.0"
         const val insets = "com.google.accompanist:accompanist-insets:$version"
         const val composePager = "com.google.accompanist:accompanist-pager:$version"
         const val flowLayout = "com.google.accompanist:accompanist-flowlayout:$version"
-        const val coil = "com.google.accompanist:accompanist-coil:$version"
+        const val drawable = "com.google.accompanist:accompanist-drawablepainter:$version"
 
-        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
+        const val systemUiController =
+            "com.google.accompanist:accompanist-systemuicontroller:$version"
     }
 
     object Kotlin {
-        const val version = "1.5.10"
+        const val version = "1.5.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
     }
 
     object Coroutines {
-        private const val version = "1.5.0-native-mt"
+        private const val version = "1.5.1-native-mt"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -96,13 +99,12 @@ object Libs {
         const val material = "com.google.android.material:material:1.3.0"
 
         object Navigation {
-            private const val version = "2.4.0-alpha03"
+            private const val version = "2.4.0-alpha06"
             const val composeNavigation = "androidx.navigation:navigation-compose:$version"
         }
 
         object Compose {
-            private const val snapshot = ""
-            const val version = "1.0.0-rc01"
+            const val version = "1.0.1"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val foundation = "androidx.compose.foundation:foundation:${version}"

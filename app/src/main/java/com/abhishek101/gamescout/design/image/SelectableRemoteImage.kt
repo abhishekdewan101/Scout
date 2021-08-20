@@ -52,7 +52,7 @@ fun SelectableRemoteImage(
             verticalArrangement = Arrangement.Center
         ) {
             RemoteImage(
-                request = request,
+                data = request,
                 contentDescription = "selectable image",
                 modifier = Modifier.size(
                     imageSize.times(scaleImageFactor)

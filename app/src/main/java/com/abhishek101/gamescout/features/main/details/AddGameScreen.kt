@@ -53,7 +53,11 @@ import kotlin.math.roundToInt
 
 @Suppress("MagicNumber")
 @Composable
-fun AddGameScreen(viewState: GameDetailViewState, libraryState: LibraryState?, saveGame: (GameStatus, List<String>, String, Int) -> Unit) {
+fun AddGameScreen(
+    viewState: GameDetailViewState,
+    libraryState: LibraryState?,
+    saveGame: (GameStatus, List<String>, String, Int) -> Unit
+) {
     if (viewState is GameDetailViewState.NonEmptyViewState) {
         val platformSelections = remember { mutableStateListOf<String>() }
         var gameStatusSelection by remember { mutableStateOf<GameStatus?>(null) }
@@ -85,7 +89,10 @@ fun AddGameScreen(viewState: GameDetailViewState, libraryState: LibraryState?, s
             ) {
                 Column(modifier = Modifier.imePadding()) {
                     Header(game = viewState)
-                    SelectPlatform(game = viewState, isPlatformSelected = { platformSelections.contains(it) }) { platform ->
+                    SelectPlatform(
+                        game = viewState,
+                        isPlatformSelected = { platformSelections.contains(it) }
+                    ) { platform ->
                         if (platformSelections.contains(platform)) {
                             platformSelections.remove(platform)
                         } else {
@@ -96,7 +103,11 @@ fun AddGameScreen(viewState: GameDetailViewState, libraryState: LibraryState?, s
                         gameStatusSelection = gameStatus
                     }
                     if (gameStatusSelection != null && (gameStatusSelection == GameStatus.COMPLETED || gameStatusSelection == GameStatus.ABANDONED)) {
-                        RatingAndNotes(currentRating = ratingSelection, updateRating = { ratingSelection = it }, notes = notes) {
+                        RatingAndNotes(
+                            currentRating = ratingSelection,
+                            updateRating = { ratingSelection = it },
+                            notes = notes
+                        ) {
                             notes = it
                         }
                     }
@@ -145,7 +156,12 @@ private fun DoneButton(addGameToLibrary: () -> Unit) {
 @Suppress("MagicNumber")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun RatingAndNotes(currentRating: Float, updateRating: (Float) -> Unit, notes: TextFieldValue, updateNotes: (TextFieldValue) -> Unit) {
+private fun RatingAndNotes(
+    currentRating: Float,
+    updateRating: (Float) -> Unit,
+    notes: TextFieldValue,
+    updateNotes: (TextFieldValue) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -212,7 +228,9 @@ private fun RatingAndNotes(currentRating: Float, updateRating: (Float) -> Unit, 
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
-                    backgroundColor = ScoutTheme.colors.secondaryTextOnSecondaryBackground.copy(alpha = 0.5f)
+                    backgroundColor = ScoutTheme.colors.secondaryTextOnSecondaryBackground.copy(
+                        alpha = 0.5f
+                    )
                 ),
                 modifier = Modifier
                     .padding(top = 10.dp)
@@ -225,7 +243,10 @@ private fun RatingAndNotes(currentRating: Float, updateRating: (Float) -> Unit, 
 }
 
 @Composable
-private fun GameStatus(isGameStatusSelected: (GameStatus) -> Boolean, toggleGameStatus: (GameStatus) -> Unit) {
+private fun GameStatus(
+    isGameStatusSelected: (GameStatus) -> Boolean,
+    toggleGameStatus: (GameStatus) -> Unit
+) {
     val gameStatusList = listOf(
         GameListModel(title = "I want to buy it", value = GameStatus.WANT),
         GameListModel(title = "I own it", value = GameStatus.OWNED),
@@ -360,7 +381,7 @@ private fun Header(game: GameDetailViewState.NonEmptyViewState) {
             .padding(horizontal = 15.dp)
     ) {
         RemoteImage(
-            request = game.coverUrl,
+            data = game.coverUrl,
             contentDescription = game.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier
