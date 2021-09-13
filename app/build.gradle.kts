@@ -171,7 +171,8 @@ dependencies {
     implementation(Libs.Koin.koinCompose)
 
     // Coil
-    implementation(Libs.Accompanist.coil)
+    implementation(Libs.coil)
+    implementation(Libs.Accompanist.drawable)
 
     // SystemUiController
     implementation(Libs.Accompanist.systemUiController)

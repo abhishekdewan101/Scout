@@ -6,7 +6,7 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -28,11 +28,12 @@ fun GameDetailViewContainer(
     val viewState by viewModel.viewState.collectAsState()
     val libraryState by viewModel.libraryState.collectAsState()
 
-    SideEffect {
+    LaunchedEffect(key1 = viewModel) {
         viewModel.constructGameDetails(slug = data)
     }
 
-    val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val modalBottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     SystemUiControlView(
         statusBarColor = ScoutTheme.colors.topBarBackground,
@@ -42,8 +43,16 @@ fun GameDetailViewContainer(
         ModalBottomSheetLayout(
             sheetState = modalBottomSheetState,
             sheetContent = {
-                AddGameScreen(viewState = viewState, libraryState = libraryState) { gameStatus, platforms, notes, rating ->
-                    viewModel.saveGameToLibrary(gameStatus = gameStatus, platforms = platforms, notes = notes, rating = rating)
+                AddGameScreen(
+                    viewState = viewState,
+                    libraryState = libraryState
+                ) { gameStatus, platforms, notes, rating ->
+                    viewModel.saveGameToLibrary(
+                        gameStatus = gameStatus,
+                        platforms = platforms,
+                        notes = notes,
+                        rating = rating
+                    )
                     scope.launch {
                         modalBottomSheetState.hide()
                     }

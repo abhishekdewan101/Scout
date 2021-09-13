@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,7 +30,7 @@ import org.koin.androidx.compose.get
 fun AuthenticationScreen(viewModel: AuthenticationViewModel = get()) {
     val viewState by viewModel.viewState.collectAsState()
 
-    SideEffect {
+    LaunchedEffect(key1 = viewModel) {
         viewModel.checkAuthentication()
     }
 

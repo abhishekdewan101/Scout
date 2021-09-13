@@ -31,7 +31,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -63,7 +63,7 @@ fun DiscoverTab(
     val viewState by viewModel.viewState.collectAsState()
     val scaffoldState = rememberScaffoldState()
 
-    SideEffect {
+    LaunchedEffect(key1 = viewModel) {
         if (viewState is Loading) {
             viewModel.getGameLists()
         }
@@ -155,7 +155,7 @@ private fun CoverList(
             val games = data.games.filter { it.cover != null }.take(POSTER_GRID_SIZE)
             items(games) {
                 RemoteImage(
-                    request = it.cover!!.qualifiedUrl,
+                    data = it.cover!!.qualifiedUrl,
                     contentDescription = it.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -241,7 +241,8 @@ private fun CoverGrid(
     onMoreClicked: (String) -> Unit,
     onTap: (String) -> Unit
 ) {
-    val games = data.games.filter { it.cover != null }.take(POSTER_GRID_SIZE).map { it.toGridItem() }
+    val games =
+        data.games.filter { it.cover != null }.take(POSTER_GRID_SIZE).map { it.toGridItem() }
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier.padding(top = 10.dp)
@@ -269,7 +270,7 @@ private fun ScreenshotShowcase(data: GameListData, onTap: (String) -> Unit) {
         LazyRow(modifier = Modifier.padding(top = 5.dp)) {
             items(gamesWithScreenshots) {
                 RemoteImage(
-                    request = it.screenShots!![0].qualifiedUrl,
+                    data = it.screenShots!![0].qualifiedUrl,
                     contentDescription = "game screenshot",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -306,7 +307,11 @@ private fun DiscoverTopBar() {
                     .padding(end = 5.dp)
                     .clickable {
                         Toast
-                            .makeText(context, "Implement Changing Users Selections", Toast.LENGTH_SHORT)
+                            .makeText(
+                                context,
+                                "Implement Changing Users Selections",
+                                Toast.LENGTH_SHORT
+                            )
                             .show()
                     }
             )

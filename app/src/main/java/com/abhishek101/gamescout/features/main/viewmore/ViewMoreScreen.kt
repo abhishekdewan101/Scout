@@ -11,7 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -37,7 +37,7 @@ fun ViewMoreScreen(
     val viewState by viewModel.viewMoreViewState.collectAsState()
     val scaffoldState = rememberScaffoldState()
 
-    SideEffect {
+    LaunchedEffect(key1 = viewModel) {
         if (viewState is Loading) {
             viewModel.getGameListForType(listType = listType)
         }

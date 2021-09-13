@@ -20,7 +20,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -70,7 +70,7 @@ fun GenreSelectionScreen(
 
     val viewState by viewModel.viewState.collectAsState()
 
-    SideEffect {
+    LaunchedEffect(key1 = viewModel) {
         viewModel.getGenres()
     }
 
@@ -143,7 +143,10 @@ fun GenreSelectionScreen(
 }
 
 @Composable
-fun GenreListView(result: PreferenceSelectionViewState.Result, toggleGenreSelection: (String, Boolean) -> Unit) {
+fun GenreListView(
+    result: PreferenceSelectionViewState.Result,
+    toggleGenreSelection: (String, Boolean) -> Unit
+) {
     val rows = result.genres.chunked(2)
     for (row in rows) {
         BoxWithConstraints(modifier = Modifier.padding(top = 10.dp)) {

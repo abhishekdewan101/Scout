@@ -1,7 +1,7 @@
 package com.abhishek101.gamescout.design.system
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import com.abhishek101.gamescout.theme.DebugColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -20,7 +20,7 @@ fun SystemUiControlView(
     content: @Composable () -> Unit
 ) {
     val uiController = rememberSystemUiController()
-    SideEffect {
+    LaunchedEffect(key1 = statusBarColor) {
         uiController.setStatusBarColor(
             color = statusBarColor,
             darkIcons = useDarkIcons
