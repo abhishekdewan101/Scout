@@ -20,7 +20,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -42,7 +42,7 @@ fun PlatformSelectionScreen(
 ) {
     val viewState by viewModel.viewState.collectAsState()
 
-    SideEffect {
+    LaunchedEffect(key1 = viewModel) {
         viewModel.getPlatforms()
     }
 

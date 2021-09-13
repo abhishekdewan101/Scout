@@ -20,7 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +48,7 @@ fun CollectionTab(
     val viewState by libraryViewModel.libraryGames.collectAsState()
     var filter by rememberSaveable(saver = CollectionFilterSaver) { mutableStateOf(CollectionFilter.All) }
 
-    SideEffect {
+    LaunchedEffect(key1 = libraryViewModel) {
         libraryViewModel.getLibraryGames()
     }
 

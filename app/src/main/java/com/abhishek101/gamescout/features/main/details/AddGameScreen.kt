@@ -25,7 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,7 +65,7 @@ fun AddGameScreen(
         val scrollState = remember { ScrollState(0) }
         var notes by remember { mutableStateOf(TextFieldValue()) }
 
-        SideEffect {
+        LaunchedEffect(key1 = libraryState) {
             if (libraryState != null) {
                 gameStatusSelection = libraryState.gameStatus
                 ratingSelection = libraryState.gameRating?.toFloat() ?: 50f

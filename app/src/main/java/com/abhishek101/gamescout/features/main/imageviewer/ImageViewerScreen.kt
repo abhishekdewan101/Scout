@@ -18,7 +18,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -42,7 +42,7 @@ fun ImageViewerScreen(
 ) {
     val viewState by viewModel.viewState.collectAsState()
 
-    SideEffect {
+    LaunchedEffect(key1 = viewModel) {
         viewModel.constructGameDetails(slug = slug)
     }
 
